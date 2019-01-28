@@ -88,7 +88,7 @@ Added MAJA error catching. As a result, the processing of a whole time series st
 # Data format 
 - the MAJA version with "Sentinel2-TM" plugin uses the Theia format as output. [This format is described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352). 
 
-- the other version still use the native format, [described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464). We migght decide to stop support for this format in the coming versions.
+- the other version still uses the native format, [described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464). We might decide to stop support for this format in the coming versions.
 
 
 
