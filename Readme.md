@@ -52,7 +52,6 @@ Several improvement were brought :
 <details><summary>Older versions</summary>
 <p>
 
-```
 
 
 ## V3.1 (2018/07/09)
