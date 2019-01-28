@@ -96,7 +96,7 @@ Added MAJA error catching. As a result, the processing of a whole time series st
 # Get MAJA
 ## Get MAJA Sofware
 
-MAJA is provided as a binary code and should at least work on RedHat (6 ad 7), Cesnt 0S, or Ubuntu recent versions. Its licence prevents commercial use of the code. For a licence allowing commercial use, please contact CNES (Olivier Hagolle). MAJA's distribution site is https://logiciels.cnes.fr/en/content/maja. However, this venerable site is limited in size (500 MB) per software, and MAJA excutable, shipped with parameters and libraries is about 1.5 GB. As a result, we provide provisionnaly download links here. 
+MAJA is provided as a binary code and should at least work on RedHat (6 and 7), Cent 0S, or Ubuntu recent versions. Its licence prevents commercial use of the code. For a licence allowing commercial use, please contact CNES (Olivier Hagolle). MAJA's distribution site is https://logiciels.cnes.fr/en/content/maja. However, this venerable site is limited in size (500 MB) per software, and MAJA excutable, shipped with parameters and libraries is about 1.5 GB. As a result, we provide provisionnaly download links here. 
 
 ** MAJA is distributed with a licence that [you have to accept here](https://logiciels.cnes.fr/en/content/maja). Downloading MAJA from the links below without accepting the licence, and providing the necessary information, is therefore illegal.**
 
