@@ -1,0 +1,6 @@
+repCode=/home/hagolleo/PROG/S2/Start_MAJA
+repWork=/mnt/data/SENTINEL2/MAJA
+repL1  =/mnt/data/SENTINEL2/L1C_PDGS
+repL2  =/mnt/data/SENTINEL2/L2A_MAJA
+repMaja=/home/hagolleo/PROG/S2/MAJA/Install/maja/3.1.2/bin/maja
+repCAMS=/mnt/data/CAMS
