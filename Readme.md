@@ -3,7 +3,7 @@
 # Content
 
 1. [Introduction](#intro)
-2. [MAJA versions](#versions)
+2. [Change log](#ChangeLog)
 3. [MAJA output format](#format)
 4. [Get and Install MAJA](#maja)
 5. [Use start_maja](#Basic)
@@ -35,8 +35,8 @@ To get all details on the methods, MAJA's ATBD is available here : http://tully.
 
 MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal repository](http://tully.ups-tlse.fr/olivier/gipp/tree/master) containing parameters for all sensors actually processed by MAJA, including Sentinel-2, Venµs and LANDSAT 8. This repository is kept up to date with the operational processors. See also [the parameters section](#parameters) below.
 
-<a name="versions"></a>
-# Recent changes
+<a name="ChangeLog"></a>
+# Change Log
 
 ## V3.2 (2019/02/01)
 We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it. So we started from scratch.
