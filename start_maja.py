@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 Processes a Sentinel-2 time series for a tile using MAJA processor for atmospheric correction and cloud screening.
 
@@ -33,8 +34,9 @@ import os
 import os.path
 import shutil
 import sys
-print sys.path
+sys.path.insert(0, os.getcwd()+"/cams_download")
 import zipfile
+
 from convert_CAMS_DBL import exocam_creation
 import logging
 
