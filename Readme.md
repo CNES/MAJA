@@ -37,7 +37,9 @@ MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal rep
 
 <a name="System"></a>
 # System
-MAJA works on Linux platforms. We have tested it for **Linux RedHat 6+, CentOS 6+, Ubuntu 12+**. It requires at least 8GB of memory per instance of MAJA running in parallel. It also requires disk space (1GB per input L1C, 2GB per outpult L2A), and can use several threads in parallel. This is set in the userconf files, and the default value is 8. Above 8, the improvement or performances is not linear with the number of threads. In this situation with a two years old computer, it takes 22 minutes to make a L2A product, except for initialisation in "backward mode" (the first product in a time series, which takes about 1 hour).
+MAJA works on Linux platforms. We have tested it for **Linux RedHat 6+, CentOS 6+, Ubuntu 12+**. It requires at least 8GB of memory per instance of MAJA running in parallel. It also requires disk space (1GB per input L1C, 2GB per outpult L2A), and can use several threads in parallel. This is set in the userconf files, and the default value is 8 threads. Above 8, the improvement of performances is not linear with the number of threads.
+
+On our two years old computer, 8GB and 8 threads, it takes 22 minutes to make a L2A product, except for initialisation in "backward mode" (the first product in a time series, which takes about 1 hour).
 
 
 
@@ -45,19 +47,19 @@ MAJA works on Linux platforms. We have tested it for **Linux RedHat 6+, CentOS 6
 # Change Log
 
 ## V3.2 (2019/02/01)
-We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it. So we started from scratch.
+We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it, had grown a lot and took a long time to download. So we started from scratch.
 
-The older repository is still accessible : from https://github.com/olivierhagolle/Start_maja, but not up-to-date.
+The older repository is still accessible : from https://github.com/olivierhagolle/Start_maja, but will not be updated anymore.
 
-Several improvement were brought :
-- in the interface
+Several improvements were brought :
+- in the command line interface
 - to adapt it to CNES HPC context (optional of course)
 - to account from MAJA V3.2 and work with CAMS data.
 - to simplify DEM preparation
-- we removed this stupid (mine ;) ) idea to remove the GIPP_ characters to form the context name
+- we removed this stupid (OH's) idea to remove the GIPP_ characters to form the context name
 
-MAJA V3.2 brings a couple of improvements :
-- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order since October 2018.
+MAJA V3.2 brings a couple of improvements compared to V3.1:
+- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order si,nce October 2018.
 - The CAMS data can also be used as a default value for AOT estimates. The default CAMS AOT is used with a low weight in the cost function. If MAJA does not find many suitable pixels to estimate the AOT, the CAMS value will have an influence, but in general, a large number of measurements are available in an image, and in that case, CAMS has no influence (except on the aerosol type, see below, V3.1). Finally, this improvement will be usefull over snow covered landscapes, or bright deserts, of for images almost fully covered by clouds.
 
 ## V3.1 (2018/07/09)
@@ -95,11 +97,10 @@ Added MAJA error catching. As a result, the processing of a whole time series st
 
 <a name="format"></a>
 # Data format 
+We provide two versions of MAJA's binary code depending on the format you wish to use :
 - the MAJA version with "Sentinel2-TM" plugin uses the Theia format as output. [This format is described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352). 
 
 - the other version still uses the native format, [described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464). We might decide to stop support for this format in the coming versions.
-
-
 
 <a name="maja"></a>
 # Get MAJA
@@ -109,7 +110,7 @@ MAJA is provided as a binary code and should at least work on RedHat (6 and 7), 
 
 MAJA is provided under two versions depending on the format you would like to use. 
 
-If you wish to use MUSCATE formay, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352), you will have to download the TM binary.
+If you wish to use MUSCATE format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352), you will have to download the TM binary.
 
 If you wish to use the native format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464), as for MAJA 1_0, you will have to download the "NoTM" version. Anyway, be aware that we will probably not maintain that version in the coming years.
 
