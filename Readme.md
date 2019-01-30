@@ -134,9 +134,9 @@ https://github.com/olivierhagolle/peps_download
 The tool needs a lot of configuration files which are provided in two directories "userconf" and "GIPP_S2AS2B". I tend to never change the "userconf", but the GIPP_S2AS2B contains the parameters and look-up tables, which you might want to change. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_context, where *context* is passed as a parameter of the command line with option -c . 
 
 We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
-- Parameters without CAMS : http://tully.ups-tlse.fr/olivier/gipp/tree/master/GIPP_MAJA_3_1_S2AS2B_MUSCATE_TM
-- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp/tree/master/GIPP_MAJA_3_1_S2AS2B_CAMS (but we don't recommend to use it)
-The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file. (I know, it's a bit complicated)
+- Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
+- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
+The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in your GIPP folder (I know, it's a bit complicated)
 
 ## Folder structure
 To run MAJA, you need to store all the necessary data in an input folder. Here is an example of its content in nominal mode.
