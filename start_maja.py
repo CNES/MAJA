@@ -245,7 +245,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
     if not(os.path.exists(repDtm)):
         logger.error("DTM dir %s does not exist", repDtm)
         sys.exit(-1)
-    repGipp = repCode + "/GIPP_%s" % context
+    repGipp = repCode + "/%s" % context
     if not(os.path.exists(repGipp)):
         logger.error("GIPP dir %s does not exist", repGipp)
         sys.exit(-1)
