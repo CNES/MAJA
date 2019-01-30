@@ -209,8 +209,6 @@ The DBL file is a tar file (I am innocent for this choice...) that can be opened
 if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. A download tool is provided [in the cams_download directory of this repository](xxx)
 
 <a name="workflow"></a>
-
-
 # Example workflow
 
 Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
@@ -222,9 +220,6 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 - Clone the current repository to get start_maja.py
 `https://github.com/CNES/Start-MAJA.git`
 
-
-
-
 ## Retrieve Sentinel-2 L1C data.
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 
@@ -234,7 +229,7 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 
 - Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
-## add GIPP parameters durectory in the Start_maja folder
+## Add GIPP parameters directory in the Start_maja folder
 (see parameters section above)
 
 ## Create DTM
