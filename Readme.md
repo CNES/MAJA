@@ -15,7 +15,7 @@
 <a name="intro"></a>
 # Introduction
 
-**Start maja has been updated to work with MAJA 3.1. It is not compatible with MAJA 1.0. If you wish to use MAJA 1.0, please use the corresponding version of Start_Maja, and [read the corresponding readme file](https://github.com/olivierhagolle/Start_maja/tree/v1.0).** To do that, please use `git checkout Start_maja_V1`.
+**Start maja has been updated to work with MAJA 3.2. It is not compatible with MAJA 1.0. If you wish to use MAJA 1.0, please use the corresponding version of Start_Maja, and [read the corresponding readme file](https://github.com/olivierhagolle/Start_maja/tree/v1.0).** To do that, please use `git checkout Start_maja_V1`.
 
 The following script will help you run the MAJA L2A processor on your computer, for Sentinel-2 data only so far. You can also run MAJA on [CNES PEPS collaborative ground segment](https://theia.cnes.fr) using the [maja-peps script also available on github](https://github.com/olivierhagolle/maja_peps). Using PEPS will be much easier, but is not meant for mass processing.
 
@@ -25,7 +25,7 @@ MAJA stands for Maccs-Atcor Joint Algorithm. This atmospheric correction and clo
 
 - A second version of MAJA, v2-1 was used in Theia, but was not distributed to users, because the version 3 was available shortly afterwards. 
 
-- This version of start_maja.py is made to run MAJA 3.1. 
+- This version of start_maja.py is made to run MAJA 3.2. 
 
 MAJA has a very unique feature among all atmospheric correction processors: it uses multi-temporal criteria to improve cloud detection and aerosol retrieval. Because of this feature, it is important to use MAJA to process *time series* of images and not single images. Moreover, these images have to be processed chronologically. To initialise processing of a time series, a special mode is used, named "backward mode". To get a correct first product, we process in fact a small number of products in anti-chronological order (default value of number of images processed in backward mode is 8, but consider increasing it if your region is very cloudy). Then all the products are processed in "nominal" mode and chronological order. When a product is fully or nearly fully cloudy, it is not issued to save processing time and disk space.
 
@@ -49,7 +49,11 @@ Several improvement were brought :
 - to account from MAJA V3.2 and work with CAMS data.
 - to simplify DEM preparation
 
-<details><summary>Older versions</summary>
+MAJA V3.2 brings a couple of improvements :
+- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order since October 2018.
+- The CAMS data can also be used as a default value for AOT estimates. The default CAMS AOT is used with a low weight in the cost function. If MAJA does not find many suitable pixels to estimate the AOT, the CAMS value will have an influence, but in general, a large number of measurements are available in an image, and in that case, CAMS has no influence (except on the aerosol type, see below, V3.1). Finally, this improvement will be usefull over snow covered landscapes, or bright deserts, of for images almost fully covered by clouds.
+
+<details><summary>Older versions (click to unfold)</summary>
 <p>
 
 
@@ -96,25 +100,21 @@ Added MAJA error catching. As a result, the processing of a whole time series st
 # Get MAJA
 ## Get MAJA Sofware
 
-MAJA is provided as a binary code and should at least work on RedHat (6 and 7), Cent 0S, or Ubuntu recent versions. Its licence prevents commercial use of the code. For a licence allowing commercial use, please contact CNES (Olivier Hagolle). MAJA's distribution site is https://logiciels.cnes.fr/en/content/maja. However, this venerable site is limited in size (500 MB) per software, and MAJA excutable, shipped with parameters and libraries is about 1.5 GB. As a result, we provide provisionnaly download links here. 
-
-** MAJA is distributed with a licence that [you have to accept here](https://logiciels.cnes.fr/en/content/maja). Downloading MAJA from the links below without accepting the licence, and providing the necessary information, is therefore illegal.**
+MAJA is provided as a binary code and should at least work on RedHat (6 and 7), Cent 0S, or Ubuntu recent versions. Its licence prevents commercial use of the code. For a licence allowing commercial use, please contact CNES (Olivier Hagolle). MAJA's distribution site is https://logiciels.cnes.fr/en/content/maja. 
 
 MAJA is provided under two versions depending on the format you would like to use. 
 
-[You may download MAJA 3.1 from here if you wish to use MUSCATE format](https://mycore.core-cloud.net/index.php/s/K0wk1OA0SezjreO). The format is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352).
+If you wish to use MUSCATE formay, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352), you will have to download the TM binary.
 
-[You may download MAJA 3.1 from here if you wish to use the native format, as for MAJA 1_0](https://mycore.core-cloud.net/index.php/s/XQKQFxAJjGUtLkK). Anyway, be aware that we will probably not maintain that version in the coming years. The Native format is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464)
+If you wish to use the native format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464), as for MAJA 1_0, you will have to download the "NoTM" version. Anyway, be aware that we will probably not maintain that version in the coming years.
 
 
 
 ## install MAJA
-This is explained in the documentation provided with MAJA software.
-Some users have had issues with some missing libraries, depending on how the linux system is configured. Running the following commands, with administration rights, might help.
-```
-# sudo yum --disableplugin=fastestmirror -y update (if necessary)
-sudo yum --disableplugin=fastestmirror -y install gd libxslt libxml2
-```
+Installation of MAJA is straightforward on linux systems. You just have to unzip the provided package and use 
+the following command :
+
+`>>> bash MAJA-3.2.2_TM.run --target /path/to/install`
 
 
 <a name="Basic"></a>
