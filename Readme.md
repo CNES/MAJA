@@ -3,12 +3,13 @@
 # Content
 
 1. [Introduction](#intro)
-2. [Change log](#ChangeLog)
-3. [MAJA output format](#format)
-4. [Get and Install MAJA](#maja)
-5. [Use start_maja](#Basic)
-6. [Example workflow](#workflow)
-7. [Docker](#docker)
+2. [System](#System)
+3. [Change log](#ChangeLog)
+4. [MAJA output format](#format)
+5. [Get and Install MAJA](#maja)
+6. [Use start_maja](#Basic)
+7. [Example workflow](#workflow)
+8. [Questions](#Questions)
 
 <a href="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406.png"><img  title="Ambaro Bay, Madagascar" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406-300x300.png" alt="" width="300" height="300" align="middle"  /></a>
 
@@ -33,7 +34,14 @@ For more information about MAJA methods but without details, please read : http:
 To get all details on the methods, MAJA's ATBD is available here : http://tully.ups-tlse.fr/olivier/maja_atbd/blob/master/atbd_maja.pdf, or reference <sup>[1](#ref4)</sup>, below.
 
 
-MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal repository](http://tully.ups-tlse.fr/olivier/gipp/tree/master) containing parameters for all sensors actually processed by MAJA, including Sentinel-2, Venµs and LANDSAT 8. This repository is kept up to date with the operational processors. See also [the parameters section](#parameters) below.
+MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal repository](http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master) containing parameters for all sensors actually processed by MAJA, including Sentinel-2, Venµs and LANDSAT 8. This repository is kept up to date with the operational processors. See also [the parameters section](#parameters) below.
+
+
+<a name="System"></a>
+# System
+MAJA works on Linux platforms. We have tested it for **Linux RedHat 6+, CentOS 6+, Ubuntu 12+**. It requires at least 8GB of memory per instance of MAJA running in parallel. It also requires disk space (1GB per input L1C, 2GB per outpult L2A), and can use several threads in parallel. This is set in the userconf files, and the default value is 8. Above 8, the improvement or performances is not linear with the number of threads. In this situation with a two years old computer, it takes 22 minutes to make a L2A product, except for initialisation in "backward mode" (the first product in a time series, which takes about 1 hour).
+
+
 
 <a name="ChangeLog"></a>
 # Change Log
@@ -282,29 +290,11 @@ Caution, *when a product has more than 90% of clouds, the L2A is not issued*. Ho
 Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despited repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
 
 
-<a name="docker"></a>
-# Docker
+<a name="Questions"></a>
+# Questions
+If you have issues or questions with MAJA, please raise an issue on this github repository. It will serve as a forum.
 
-Dániel Kristóf provided us with a Dockerfile (Thank you Dániel), which, on any linux system retrieves the CentOS System, installs what is necessary and configures MAJA. I am really not a Docker expert, and when I tried, our lab system engineer immediately told me that there are some securities issues with Docker, and I should not install it like that...So, I never tested it.
-
-But if we follow Daniel's guidelines :
-
-- First, download the test data set and store them in ~/MAJA/S2_NOMINAL
-- Then configure the folders.txt file according to your configuration
-- Then :
-```
-sudo docker build -t maja .
-
-(or behind a proxy)
-sudo docker build -t maja --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --build-arg ftp_proxy=$ftp_proxy .
-```
-And then, you may run MAJA with the test data sets with
-```
-
-```
-
-
-## References :
+# References :
 <a name="ref1">1</a>: A multi-temporal method for cloud detection, applied to FORMOSAT-2, VENµS, LANDSAT and SENTINEL-2 images, O Hagolle, M Huc, D. Villa Pascual, G Dedieu, Remote Sensing of Environment 114 (8), 1747-1755
 
 <a name="ref2">2</a>: Correction of aerosol effects on multi-temporal images acquired with constant viewing angles: Application to Formosat-2 images, O Hagolle, G Dedieu, B Mougenot, V Debaecker, B Duchemin, A Meygret, Remote Sensing of Environment 112 (4), 1689-1701
