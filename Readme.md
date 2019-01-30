@@ -212,7 +212,7 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 - Install MAJA
 
 - Clone the current repository to get start_maja.py
-`git clone https://github.com/olivierhagolle/Start_maja`
+`https://github.com/CNES/Start-MAJA.git`
 
 
 
@@ -226,11 +226,16 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 
 - Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
+## add GIPP parameters durectory in the Start_maja folder
+(see parameters section above)
+
 ## Create DTM
 Follow DTM generation instructions : http://tully.ups-tlse.fr/olivier/prepare_mnt
+Copy DTM in "DTM" folder within Start_Maja folder.
 
 ## Download CAMS data
-Follow cams_download tool instructions : https://github.com/olivierhagolle/Start_maja/tree/master/cams_download
+if you want to use CAMS option, follow cams_download tool instructions : https://github.com/CNES/Start-MAJA/tree/master/cams_download
+Downloading CAMS data can be quite long these days from ECMWF servers.
 
 ## Execute start_maja.py
 
