@@ -3,19 +3,18 @@
 # Content
 
 1. [Introduction](#intro)
-2. [Change log](#ChangeLog)
-3. [MAJA output format](#format)
-4. [Get and Install MAJA](#maja)
-5. [Use start_maja](#Basic)
-6. [Example workflow](#workflow)
-7. [Docker](#docker)
+2. [System](#System)
+3. [Change log](#ChangeLog)
+4. [MAJA output format](#format)
+5. [Get and Install MAJA](#maja)
+6. [Use start_maja](#Basic)
+7. [Example workflow](#workflow)
+8. [Questions](#Questions)
 
 <a href="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406.png"><img  title="Ambaro Bay, Madagascar" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406-300x300.png" alt="" width="300" height="300" align="middle"  /></a>
 
 <a name="intro"></a>
 # Introduction
-
-**Start maja has been updated to work with MAJA 3.2. It is not compatible with MAJA 1.0. If you wish to use MAJA 1.0, please use the corresponding version of Start_Maja, and [read the corresponding readme file](https://github.com/olivierhagolle/Start_maja/tree/v1.0).** To do that, please use `git checkout Start_maja_V1`.
 
 The following script will help you run the MAJA L2A processor on your computer, for Sentinel-2 data only so far. You can also run MAJA on [CNES PEPS collaborative ground segment](https://theia.cnes.fr) using the [maja-peps script also available on github](https://github.com/olivierhagolle/maja_peps). Using PEPS will be much easier, but is not meant for mass processing.
 
@@ -33,25 +32,34 @@ For more information about MAJA methods but without details, please read : http:
 To get all details on the methods, MAJA's ATBD is available here : http://tully.ups-tlse.fr/olivier/maja_atbd/blob/master/atbd_maja.pdf, or reference <sup>[1](#ref4)</sup>, below.
 
 
-MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal repository](http://tully.ups-tlse.fr/olivier/gipp/tree/master) containing parameters for all sensors actually processed by MAJA, including Sentinel-2, Venµs and LANDSAT 8. This repository is kept up to date with the operational processors. See also [the parameters section](#parameters) below.
+MAJA needs parameters, that ESA names GIPP. We have also set-up [an internal repository](http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master) containing parameters for all sensors actually processed by MAJA, including Sentinel-2, Venµs and LANDSAT 8. This repository is kept up to date with the operational processors. See also [the parameters section](#parameters) below.
+
+
+<a name="System"></a>
+# System
+MAJA works on Linux platforms. We have tested it for **Linux RedHat 6+, CentOS 6+, Ubuntu 12+**. It requires at least 8GB of memory per instance of MAJA running in parallel. It also requires disk space (1GB per input L1C, 2GB per outpult L2A), and can use several threads in parallel. This is set in the userconf files, and the default value is 8 threads. Above 8, the improvement of performances is not linear with the number of threads.
+
+On our two years old computer, 8GB and 8 threads, it takes 22 minutes to make a L2A product, except for initialisation in "backward mode" (the first product in a time series, which takes about 1 hour).
+
+
 
 <a name="ChangeLog"></a>
 # Change Log
 
 ## V3.2 (2019/02/01)
-We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it. So we started from scratch.
+We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it, had grown a lot and took a long time to download. So we started from scratch.
 
-The older repository is still accessible : from https://github.com/olivierhagolle/Start_maja, but not up-to-date.
+The older repository is still accessible : from https://github.com/olivierhagolle/Start_maja, but will not be updated anymore.
 
-Several improvement were brought :
-- in the interface
+Several improvements were brought :
+- in the command line interface
 - to adapt it to CNES HPC context (optional of course)
 - to account from MAJA V3.2 and work with CAMS data.
 - to simplify DEM preparation
-- we removed this stupid (mine ;) ) idea to remove the GIPP_ characters to form the context name
+- we removed this stupid (OH's) idea to remove the GIPP_ characters to form the context name
 
-MAJA V3.2 brings a couple of improvements :
-- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order since October 2018.
+MAJA V3.2 brings a couple of improvements compared to V3.1:
+- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order si,nce October 2018.
 - The CAMS data can also be used as a default value for AOT estimates. The default CAMS AOT is used with a low weight in the cost function. If MAJA does not find many suitable pixels to estimate the AOT, the CAMS value will have an influence, but in general, a large number of measurements are available in an image, and in that case, CAMS has no influence (except on the aerosol type, see below, V3.1). Finally, this improvement will be usefull over snow covered landscapes, or bright deserts, of for images almost fully covered by clouds.
 
 ## V3.1 (2018/07/09)
@@ -89,11 +97,10 @@ Added MAJA error catching. As a result, the processing of a whole time series st
 
 <a name="format"></a>
 # Data format 
+We provide two versions of MAJA's binary code depending on the format you wish to use :
 - the MAJA version with "Sentinel2-TM" plugin uses the Theia format as output. [This format is described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352). 
 
 - the other version still uses the native format, [described here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464). We might decide to stop support for this format in the coming versions.
-
-
 
 <a name="maja"></a>
 # Get MAJA
@@ -103,7 +110,7 @@ MAJA is provided as a binary code and should at least work on RedHat (6 and 7), 
 
 MAJA is provided under two versions depending on the format you would like to use. 
 
-If you wish to use MUSCATE formay, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352), you will have to download the TM binary.
+If you wish to use MUSCATE format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=8352), you will have to download the TM binary.
 
 If you wish to use the native format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464), as for MAJA 1_0, you will have to download the "NoTM" version. Anyway, be aware that we will probably not maintain that version in the coming years.
 
@@ -201,8 +208,6 @@ The DBL file is a tar file (I am innocent for this choice...) that can be opened
 if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. A download tool is provided [in the cams_download directory of this repository](xxx)
 
 <a name="workflow"></a>
-
-
 # Example workflow
 
 Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
@@ -214,9 +219,6 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 - Clone the current repository to get start_maja.py
 `https://github.com/CNES/Start-MAJA.git`
 
-
-
-
 ## Retrieve Sentinel-2 L1C data.
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 
@@ -226,7 +228,7 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 
 - Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
-## add GIPP parameters durectory in the Start_maja folder
+## Add GIPP parameters directory in the Start_maja folder
 (see parameters section above)
 
 ## Create DTM
@@ -282,29 +284,11 @@ Caution, *when a product has more than 90% of clouds, the L2A is not issued*. Ho
 Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despited repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
 
 
-<a name="docker"></a>
-# Docker
+<a name="Questions"></a>
+# Questions
+If you have issues or questions with MAJA, please raise an issue on this github repository. It will serve as a forum.
 
-Dániel Kristóf provided us with a Dockerfile (Thank you Dániel), which, on any linux system retrieves the CentOS System, installs what is necessary and configures MAJA. I am really not a Docker expert, and when I tried, our lab system engineer immediately told me that there are some securities issues with Docker, and I should not install it like that...So, I never tested it.
-
-But if we follow Daniel's guidelines :
-
-- First, download the test data set and store them in ~/MAJA/S2_NOMINAL
-- Then configure the folders.txt file according to your configuration
-- Then :
-```
-sudo docker build -t maja .
-
-(or behind a proxy)
-sudo docker build -t maja --build-arg http_proxy=$http_proxy --build-arg https_proxy=$https_proxy --build-arg ftp_proxy=$ftp_proxy .
-```
-And then, you may run MAJA with the test data sets with
-```
-
-```
-
-
-## References :
+# References :
 <a name="ref1">1</a>: A multi-temporal method for cloud detection, applied to FORMOSAT-2, VENµS, LANDSAT and SENTINEL-2 images, O Hagolle, M Huc, D. Villa Pascual, G Dedieu, Remote Sensing of Environment 114 (8), 1747-1755
 
 <a name="ref2">2</a>: Correction of aerosol effects on multi-temporal images acquired with constant viewing angles: Application to Formosat-2 images, O Hagolle, G Dedieu, B Mougenot, V Debaecker, B Duchemin, A Meygret, Remote Sensing of Environment 112 (4), 1689-1701
