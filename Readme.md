@@ -55,7 +55,7 @@ Several improvements were brought :
 - in the command line interface
 - to adapt it to CNES HPC context (optional of course)
 - to account from MAJA V3.2 and work with CAMS data.
-- to simplify DEM preparation
+- to simplify DTM preparation (thanks to Peter Kettig contribution)
 - we removed this stupid (OH's) idea to remove the GIPP_ characters to form the context name
 
 MAJA V3.2 brings a couple of improvements compared to V3.1:
@@ -194,15 +194,7 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 </details>
 
 ## DTM
-A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_mnt" folder](https://github.com/olivierhagolle/Start_maja/tree/master/prepare_mnt).
-
-An example of DTM file is available here for tile 31TFJ in Provence, France, near Avignon. Both files should be placed in a folder named DTM/S2__TEST_AUX_REFDE2_T31TFJ_0001 in the start_maja directory.
-
-http://osr-cesbio.ups-tlse.fr/echangeswww/majadata//S2__TEST_AUX_REFDE2_T31TFJ_0001.DBL
-
-http://osr-cesbio.ups-tlse.fr/echangeswww/majadata//S2__TEST_AUX_REFDE2_T31TFJ_0001.HDR
-
-The DBL file is a tar file (I am innocent for this choice...) that can be opened with `tar xvf `. MAJA can use both the archive or un-archived version. The tool above provides the un-archived version (DBL.DIR).
+A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
 
 ## CAMS
 if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. A download tool is provided [in the cams_download directory of this repository](xxx)
@@ -232,7 +224,7 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 (see parameters section above)
 
 ## Create DTM
-Follow DTM generation instructions : http://tully.ups-tlse.fr/olivier/prepare_mnt
+Follow DTM generation instructions : https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md
 Copy DTM in "DTM" folder within Start_Maja folder.
 
 ## Download CAMS data
