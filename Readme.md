@@ -56,10 +56,10 @@ Several improvements were brought :
 - to adapt it to CNES HPC context (optional of course)
 - to account from MAJA V3.2 and work with CAMS data.
 - to simplify DTM preparation (thanks to Peter Kettig contribution)
-- we removed this stupid (OH's) idea to remove the GIPP_ characters to form the context name
+- we removed this stupid (OH's) idea to remove the "GIPP_" characters to form the context name
 
 MAJA V3.2 brings a couple of improvements compared to V3.1:
-- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order si,nce October 2018.
+- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order since October 2018.
 - The CAMS data can also be used as a default value for AOT estimates. The default CAMS AOT is used with a low weight in the cost function. If MAJA does not find many suitable pixels to estimate the AOT, the CAMS value will have an influence, but in general, a large number of measurements are available in an image, and in that case, CAMS has no influence (except on the aerosol type, see below, V3.1). Finally, this improvement will be usefull over snow covered landscapes, or bright deserts, of for images almost fully covered by clouds.
 
 ## V3.1 (2018/07/09)
