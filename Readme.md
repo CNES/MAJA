@@ -124,7 +124,7 @@ the following command :
 
 
 <a name="Basic"></a>
-# Basic Supervisor for MAJA processor
+# Gow to use start_maja, basic orchestrator for MAJA
 
 The basic supervisor **start_maja** enables to process successively all files in a time series of Sentinel-2 images for a given tile, stored in a folder. The initialisation of the time series is performed with the "backward mode", and then all the dates are processed in "nominal" mode. The backward mode takes much more time than the nominal mode. On my computer, which is a fast one, the nominal mode takes 15 minutes, and the backward mode takes almost one hour. No control is done on the outputs, and it does not check if the time elapsed between two successive products used as input is not too long and would require restarting the initialisation in backward mode.
 
