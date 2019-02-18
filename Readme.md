@@ -132,7 +132,7 @@ The basic supervisor **start_maja** enables to process successively all files in
 To use this start_maja.py, you will need to configure the directories within the folder.txt file.
 
 ## Download Sentinel-2 data :
-The use of peps_download.py to download Sentinel-2 l1c PRODUCTS is recommended :
+The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended :
 https://github.com/olivierhagolle/peps_download
 
 <a name="parameters"></a>
@@ -146,6 +146,28 @@ We provide two sets of parameters, one to work without CAMS data, and one to wor
 The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in your GIPP folder (I know, it's a bit complicated)
 
 ## Folder structure
+
+Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
+```
+#files downloaded grom github
+Readme.md  #This readme
+start_maja.py  #orchestrator 
+cams_download/ #utilities to downlaod cams data
+Common/ # some common libraries
+Prepare_DTM/ # modules to prepare DTM files
+useconf/ # configuration files for MAJA
+
+# Some folders to add (see below how to get these files)
+DTM/       #to store the DEM files necessary as input to MAJA
+GIPP_MAJA_3.../ #parameter files
+
+```
+
+
+
+
+
+
 To run MAJA, you need to store all the necessary data in an input folder. Here is an example of its content in nominal mode.
 <details><summary>Folder structure...</summary>
 <p>
@@ -194,14 +216,6 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 </p>
 </details>
 
-## DTM
-A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
-
-## CAMS
-if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. A download tool is provided [in the cams_download directory of this repository](https://github.com/CNES/Start-MAJA/tree/master/cams_download).
-
-CAMS data can be downloaded after a simple registration, but these days, probably due to a large success, it takes more tha a day to download a day of CAMS data. Through agreements with ECMWF or through your countries weather agency, iyt is possible to get a priviledged access, which grants far better performances. To get a better access, it is also possible to download data month per month, instead of day per day. Donwloading a month takes almost the same time as downloading a day. But it does not work for real time processing, which needs day per day downloads.
-
 
 
 <a name="workflow"></a>
@@ -229,12 +243,18 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 (see parameters section above)
 
 ## Create DTM
+A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
+
+
 Follow DTM generation instructions : https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md
 Copy DTM in "DTM" folder within Start_Maja folder.
 
 ## Download CAMS data
+if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. 
+
+CAMS data can be downloaded after a simple registration, but these days, probably due to a large success, it takes more than a day to download a day of CAMS data. Through agreements with ECMWF or through your countries weather agency, iyt is possible to get a priviledged access, which grants far better performances. To get a better access, it is also possible to download data month per month, instead of day per day. Donwloading a month takes almost the same time as downloading a day. But it does not work for real time processing, which needs day per day downloads.
+
 if you want to use CAMS option, follow cams_download tool instructions : https://github.com/CNES/Start-MAJA/tree/master/cams_download
-Downloading CAMS data can be quite long these days from ECMWF servers.
 
 ## Execute start_maja.py
 
