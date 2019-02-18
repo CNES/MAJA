@@ -145,30 +145,41 @@ We provide two sets of parameters, one to work without CAMS data, and one to wor
 
 The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in your GIPP folder (I know, it's a bit complicated)
 
-## Folder structure
+
+
+
+
+<a name="workflow"></a>
+# Example workflow
+
+Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
+
+## Install
+
+- [Install MAJA](https://logiciels.cnes.fr/en/content/maja)
+
+- Clone the current repository to get start_maja.py
+`git clone https://github.com/CNES/Start-MAJA.git`
+
+## Prepare folders and input files
 
 Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
 ```
 #files downloaded grom github
-Readme.md  #This readme
+Readme.md      #This readme
 start_maja.py  #orchestrator 
 cams_download/ #utilities to downlaod cams data
-Common/ # some common libraries
-Prepare_DTM/ # modules to prepare DTM files
-useconf/ # configuration files for MAJA
+Common/        #some common libraries
+Prepare_DTM/   #modules to prepare DTM files
+useconf/       #folder which contains configuration files for MAJA
 
 # Some folders to add (see below how to get these files)
-DTM/       #to store the DEM files necessary as input to MAJA
-GIPP_MAJA_3.../ #parameter files
+DTM/            #to store the DEM files necessary as input to MAJA
+GIPP_MAJA_3.../ #parameter files (see above)
 
 ```
 
-
-
-
-
-
-To run MAJA, you need to store all the necessary data in an input folder. Here is an example of its content in nominal mode.
+To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode.
 <details><summary>Folder structure...</summary>
 <p>
 
@@ -215,20 +226,6 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 
 </p>
 </details>
-
-
-
-<a name="workflow"></a>
-# Example workflow
-
-Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
-
-## Install
-
-- Install MAJA
-
-- Clone the current repository to get start_maja.py
-`https://github.com/CNES/Start-MAJA.git`
 
 ## Retrieve Sentinel-2 L1C data.
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
@@ -297,8 +294,9 @@ Caution, *when a product has more than 90% of clouds, the L2A is not issued*. Ho
 
 ## Known Errors
 
+Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despite repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
 
-Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despited repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
+We still have some difficulties with detecting the edges of the swath, which results in false detections of clouds or shadows on the edges. We hope to solve this shortly.
 
 
 <a name="Questions"></a>
