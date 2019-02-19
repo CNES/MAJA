@@ -85,7 +85,7 @@ def getRoot():
     xsi = "http://www.w3.org/2001/XMLSchema-instance"
     schemaLocation = "http://eop-cfi.esa.int/CFI ./EXO_CAMS_CamsData.xsd"
     typeXsi = "CAMS_Header_Type"
-    root = ET.Element("Earth_Explorer_Header", attrib={"schema_version":"1.00",
+    root = ET.Element("Earth_Explorer_Header", attrib={"schema_version": "1.00",
                                                        "{" + xsi + "}schemaLocation": schemaLocation,
                                                        "{" + xsi + "}type": typeXsi},
                       nsmap={'xsi': xsi, None: xmlns})
@@ -115,6 +115,7 @@ def myGlob(directory, filePattern):
     :return:
     """
     return glob.glob(os.path.join(directory, filePattern))
+
 
 def nodes(root, mission, basename_out, dbl_file, date_now, acquisition_date, cams_files):
 
@@ -167,7 +168,7 @@ def nodes(root, mission, basename_out, dbl_file, date_now, acquisition_date, cam
     b4.text = "http://"
 
     b4 = ET.SubElement(b3, "DBL_Organization")
-    b5 = ET.SubElement(b4, "List_of_Packaged_DBL_Files", count = str(len(cams_files)))
+    b5 = ET.SubElement(b4, "List_of_Packaged_DBL_Files", count=str(len(cams_files)))
     for index, cams_file in enumerate(cams_files):
         b6 = ET.SubElement(b5, "Packaged_DBL_File", sn=str(index+1))
         b7 = ET.SubElement(b6, "Relative_File_Path")
@@ -182,7 +183,8 @@ def nodes(root, mission, basename_out, dbl_file, date_now, acquisition_date, cam
 def compress_directory_bzip2(destination_filename, source_directory):
     basePath = os.path.dirname(source_directory)
     baseModule = os.path.basename(source_directory)
-    command = "tar -cjf {} -C{} {} --exclude '.svn'".format(destination_filename, basePath, baseModule)
+    command = "tar -cjf {} -C{} {} --exclude '.svn'".format(
+        destination_filename, basePath, baseModule)
     os.system(command)
 
 
@@ -209,7 +211,7 @@ def create_archive(aot_file, mr_file, rh_file, output_file_basename, ncdf_dir, a
     shutil.copy(mr_file, os.path.join(temp_dir, os.path.basename(mr_file)))
     shutil.copy(rh_file, os.path.join(temp_dir, os.path.basename(rh_file)))
 
-    compress_directory_bzip2(destination_filepath, archive_dir)
+    #compress_directory_bzip2(destination_filepath, archive_dir)
     cams_file_to_return = [os.path.join(destination_filename + ".DIR", os.path.basename(aot_file)),
                            os.path.join(destination_filename + ".DIR", os.path.basename(mr_file)),
                            os.path.join(destination_filename + ".DIR", os.path.basename(rh_file))]
@@ -218,7 +220,7 @@ def create_archive(aot_file, mr_file, rh_file, output_file_basename, ncdf_dir, a
 
 def get_date(cams_file):
     try:
-        res = re.search (r".+_.+_(.+)\.nc", cams_file).group(1)
+        res = re.search(r".+_.+_(.+)\.nc", cams_file).group(1)
     except IndexError:
         print("No date found in {}".format(cams_file))
         return None
@@ -231,12 +233,13 @@ def get_date(cams_file):
 
 def check_and_return_date(aot_file, mr_file, rh_file):
 
-    date_aot = re.search (r"AOT_(.+)\.nc", aot_file).group(1)
-    date_mr = re.search (r"MR_(.+)\.nc", mr_file).group(1)
-    date_rh = re.search (r"RH_(.+)\.nc", rh_file).group(1)
+    date_aot = re.search(r"AOT_(.+)\.nc", aot_file).group(1)
+    date_mr = re.search(r"MR_(.+)\.nc", mr_file).group(1)
+    date_rh = re.search(r"RH_(.+)\.nc", rh_file).group(1)
 
     if date_aot != date_mr != date_rh:
-        raise Exception("The 3 files must be from the same date ! \n{}\n{}\n{}".format(aot_file, mr_file, rh_file))
+        raise Exception("The 3 files must be from the same date ! \n{}\n{}\n{}".format(
+            aot_file, mr_file, rh_file))
     return datetime.datetime.strptime(date_aot, "%Y%m%dUTC%H%M%S")
 
 
@@ -256,12 +259,13 @@ def process_one_file(aot_file, mr_file, rh_file, ncdf_dir, archive_dir):
     output_file_basename = "S2__TEST_EXO_CAMS_{}_{}".format(date_time_for_naming(date_file),
                                                             date_time_for_naming(date_now))
 
-    #create archive
-    dbl_filename, cams = create_archive(aot_file, mr_file, rh_file, output_file_basename, ncdf_dir, archive_dir)
+    # create archive
+    dbl_filename, cams = create_archive(
+        aot_file, mr_file, rh_file, output_file_basename, ncdf_dir, archive_dir)
 
     print("Step 1/2", end='\r')
 
-    #create hdr
+    # create hdr
     output_filename = os.path.join(archive_dir, output_file_basename + ".HDR")
     LOGGER.debug(output_filename)
     basename_out = os.path.basename(os.path.splitext(output_filename)[0])
@@ -277,5 +281,3 @@ def process_one_file(aot_file, mr_file, rh_file, ncdf_dir, archive_dir):
     f.write(ET.tostring(tree, pretty_print=True, xml_declaration=True,
                         encoding="UTF-8"))
     f.close()
-
-
