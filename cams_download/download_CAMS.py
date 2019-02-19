@@ -30,6 +30,7 @@ import datetime
 import timeit
 import optparse
 import calendar
+import glob
 from dateutil.relativedelta import relativedelta
 import sys
 
@@ -45,89 +46,93 @@ class OptionParser (optparse.OptionParser):
           self.error("%s option not supplied" % option)
 
 ###########################################################################
-def download_files(download_date,file_type,time,step,path_out):
+def download_files(download_date,file_type,time,step,OutNames):
 
+    
+    if download_date.find('/TO/')>=0:
+        month_name=download_date[0:6]
+        print("month_name %s"% month_name)
+        
+    if file_type['surface'] == True:
+        #=================
+        #     Surface
+        # Recupere AOT a 550nm pour BC, SS, SU, DU, OM
+        #=================
+        nom_AOT = path_out + "/CAMS_AOT_" + month_name + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print 'Nom fichier de sortie AOT :',nom_AOT
 
-        if file_type['surface'] == True:
-            #=================
-            #     Surface
-            # Recupere AOT a 550nm pour BC, SS, SU, DU, OM
-            #=================
-            nom_AOT = path_out + "/CAMS_AOT_" + download_date + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie AOT :',nom_AOT
+        server.retrieve({
+            'stream'  : "oper",
+            'class'   : "mc",
+            'dataset' : "cams_nrealtime",
+            'expver'  : '0001',
+            'step'    : step,
+            'levtype' : "SFC",
+            'date'    : download_date,
+            'time'    : time,
+            'type'    : "fc",
+            'param'   : "208.210/209.210/210.210/211.210/212.210",
+            'area'    : "G",
+            'grid'    : "1.25/1.25",
+            'format'  : "netcdf",
+            'target'  : nom_AOT
+            })
+        #208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
 
-            server.retrieve({
-                'stream'  : "oper",
-                'class'   : "mc",
-                'dataset' : "cams_nrealtime",
-                'expver'  : '0001',
-                'step'    : step,
-                'levtype' : "SFC",
-                'date'    : download_date,
-                'time'    : time,
-                'type'    : "fc",
-                'param'   : "208.210/209.210/210.210/211.210/212.210",
-                'area'    : "G",
-                'grid'    : "1.25/1.25",
-                'format'  : "netcdf",
-                'target'  : nom_AOT
-                })
-            #208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
+    if file_type['pressure'] == True:
+        #=========================
+        #     Pressure levels
+        #
+        # Recupere Relative Humidity RH
+        #=========================
+        nom_RH = path_out + "/CAMS_RH_" + month_name + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print 'Nom fichier de sortie RH :',nom_RH
 
-        if file_type['pressure'] == True:
-            #=========================
-            #     Pressure levels
-            #
-            # Recupere Relative Humidity RH
-            #=========================
-            nom_RH = path_out + "/CAMS_RH_" + download_date + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie RH :',nom_RH
+        server.retrieve({
+              'stream'  : "oper",
+              'class'   : "mc",
+              'dataset' : "cams_nrealtime",
+              'expver'  : "0001",
+              'step'    : step,
+              'levtype' : "pl",
+              "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
+              'date'    : download_date,
+              'time'    : time,
+              'type'    : "fc",
+              'param'   : "157.128",
+              'area'    : "G",
+              'grid'    : "1.25/1.25",
+              'format'  : "netcdf",
+              'target'  : nom_RH
+              })
 
-            server.retrieve({
-                  'stream'  : "oper",
-                  'class'   : "mc",
-                  'dataset' : "cams_nrealtime",
-                  'expver'  : "0001",
-                  'step'    : step,
-                  'levtype' : "pl",
-                  "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
-                  'date'    : download_date,
-                  'time'    : time,
-                  'type'    : "fc",
-                  'param'   : "157.128",
-                  'area'    : "G",
-                  'grid'    : "1.25/1.25",
-                  'format'  : "netcdf",
-                  'target'  : nom_RH
-                  })
+    if file_type['model'] == True:
+        #=========================
+        #     Model levels
+        #
+        # Recupere les mixing ratios : 3 bins DUST, 3 bins SEASALT, ORGANICMATTER hydrophile et hydrophobe, BLACKCARBON hydrophile et hydrophobe, et SULFATE.
+        #=========================
+        nom_MR = path_out + "/CAMS_MR_" + month_name + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print 'Nom fichier de sortie mixRatios :',nom_MR
 
-        if file_type['model'] == True:
-            #=========================
-            #     Model levels
-            #
-            # Recupere les mixing ratios : 3 bins DUST, 3 bins SEASALT, ORGANICMATTER hydrophile et hydrophobe, BLACKCARBON hydrophile et hydrophobe, et SULFATE.
-            #=========================
-            nom_MR = path_out + "/CAMS_MR_" + download_date + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie mixRatios :',nom_MR
-
-            server.retrieve({
-                'stream'  : "oper",
-                'class'   : "mc",
-                'dataset' : "cams_nrealtime",
-                'expver'  : "0001",
-                'step'    : step,
-                'levtype' : "ml",
-                "levelist": "1/to/60",
-                'date'    : download_date,
-                'time'    : time,
-                'type'    : "fc",
-                'param'   : "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
-                'area'    : "G",
-                'grid'    : "1.25/1.25",
-                'format'  : "netcdf",
-                'target'  : nom_MR
-                })
-        return nom_AOT, nom_RH, nom_MR
+        server.retrieve({
+            'stream'  : "oper",
+            'class'   : "mc",
+            'dataset' : "cams_nrealtime",
+            'expver'  : "0001",
+            'step'    : step,
+            'levtype' : "ml",
+            "levelist": "1/to/60",
+            'date'    : download_date,
+            'time'    : time,
+            'type'    : "fc",
+            'param'   : "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
+            'area'    : "G",
+            'grid'    : "1.25/1.25",
+            'format'  : "netcdf",
+            'target'  : nom_MR
+            })
+    return nom_AOT, nom_RH, nom_MR
 
         
 def split_daily(month,OutNames,file_type,startDate,lastDate,split):
@@ -302,6 +307,9 @@ else :
         help="Path where the archive DBL files are stored")
     parser.add_option("-k","--keep", dest="keep", action="store_true",  \
                       help="keep netcdf files",default=False)
+    parser.add_option("-s","--split_mode", dest="split_mode", action="store",type="choice", \
+                      choices=['cdo','ncks'],help="Option to split monthly file into daily files (using 'cdo' or 'ncks' , default:cdo)",default='cdo')
+
     
     #parser.add_option("-t", "--time",dest="time", action="store", type="choice", \
     #    choices=['00','12'],help="Time of forecast (Currently '00'or'12)",default='00')
@@ -335,14 +343,14 @@ if dt1.year!=today.year and  dt1.month!=today.month:
     dt2= datetime.datetime(year = dt2.year, month = dt2.month, day = days_in_month)
     mode="monthly"
 else:
-    mode="dayly"
+    mode="daily"
 
 
 nb_days = (dt2-dt1).days + 1
-print('\nNumber of days =',nb_days)
+print('\nNumber of days =%s'%nb_days)
 
-nb_months=relativedelta.relativedelta(dt1, dt2).months
-print('\nNumber of months =',nb_months)
+nb_months=relativedelta(dt1, dt2).months+(dt2.year- dt1.year)*12+1
+print('\nNumber of months =%s'%nb_months)
 
 #Analysis times
 #Two possibilities :
@@ -369,7 +377,7 @@ file_type={'surface':True,'pressure':True,'model':True}
 
 
 #Boucle sur les jours a telecharger
-if mode=="dayly":
+if mode=="daily":
     for i in range(nb_days):
         dt = dt1 + datetime.timedelta(days=i)
         request_date = '%04d%02d%02d' % (dt.year, dt.month, dt.day)
@@ -390,17 +398,25 @@ elif mode=="monthly":
         numberOfDays = calendar.monthrange(dt.year,dt.month)[1]
         startDate = '%04d%02d%02d' % (dt.year, dt.month, 1)
         lastDate = '%04d%02d%02d' % (dt.year, dt.month, numberOfDays)
+        month = '%04d%02d' % (dt.year, dt.month)
+        
         #Range of dates to download from CAMS
         requestDates = (startDate + "/TO/" + lastDate)
-        print('Dates to download:',requestDates)
+        print('Dates to download:%s'%requestDates)
         for t in range(len(time)):
-            (nom_AOT,nom_RH,nom_MR)=download_files(RequestDates,file_type,time[t],step,path_out)
-            split_daily(options.dates,path_out,file_type,startDate,lastDate,split)
+            OutNames = {}
+            OutNames['surface'] = path_out + "/CAMS_AOT_" + month + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
+            OutNames['pressure'] = path_out + "/CAMS_RH_" + month + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
+            OutNames['model'] = path_out + "/CAMS_MR_" + month + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
+            #(nom_AOT,nom_RH,nom_MR)=download_files(requestDates,file_type,time[t],step,OutNames)
+
+            
+            split_daily(month, OutNames, file_type, startDate, lastDate, options.split_mode)
             for day in range(calendar.monthrange(dt.year,dt.month)):
                 download_date='%04d%02d%02d' % (dt.year, dt.month, day)
                 nom_AOT = path_out + "/CAMS_AOT_" + download_date + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
-                nom_MR = path_out + "/CAMS_MR_" + download_date + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
-                nom_RH = path_out + "/CAMS_RH_" + download_date + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
+                nom_MR = path_out + "/CAMS_RH_" + download_date + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
+                nom_RH = path_out + "/CAMS_MR_" + download_date + 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
                 
                 process_one_file(nom_AOT, nom_MR, nom_RH, path_out, options.archive_dir)
                 if not(options.keep):
