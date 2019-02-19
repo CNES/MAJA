@@ -55,11 +55,11 @@ Several improvements were brought :
 - in the command line interface
 - to adapt it to CNES HPC context (optional of course)
 - to account from MAJA V3.2 and work with CAMS data.
-- to simplify DEM preparation
-- we removed this stupid (OH's) idea to remove the GIPP_ characters to form the context name
+- to simplify DTM preparation (thanks to Peter Kettig contribution)
+- we removed this stupid (OH's) idea to remove the "GIPP_" characters to form the context name
 
 MAJA V3.2 brings a couple of improvements compared to V3.1:
-- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order si,nce October 2018.
+- MAJA 3.2 adapts to a bug from Sentinel-2 L1C products, which sometimes (but quite frequently) provide the detector footprints in an incorrect order since October 2018.
 - The CAMS data can also be used as a default value for AOT estimates. The default CAMS AOT is used with a low weight in the cost function. If MAJA does not find many suitable pixels to estimate the AOT, the CAMS value will have an influence, but in general, a large number of measurements are available in an image, and in that case, CAMS has no influence (except on the aerosol type, see below, V3.1). Finally, this improvement will be usefull over snow covered landscapes, or bright deserts, of for images almost fully covered by clouds.
 
 ## V3.1 (2018/07/09)
@@ -124,7 +124,7 @@ the following command :
 
 
 <a name="Basic"></a>
-# Basic Supervisor for MAJA processor
+# Gow to use start_maja, basic orchestrator for MAJA
 
 The basic supervisor **start_maja** enables to process successively all files in a time series of Sentinel-2 images for a given tile, stored in a folder. The initialisation of the time series is performed with the "backward mode", and then all the dates are processed in "nominal" mode. The backward mode takes much more time than the nominal mode. On my computer, which is a fast one, the nominal mode takes 15 minutes, and the backward mode takes almost one hour. No control is done on the outputs, and it does not check if the time elapsed between two successive products used as input is not too long and would require restarting the initialisation in backward mode.
 
@@ -132,7 +132,7 @@ The basic supervisor **start_maja** enables to process successively all files in
 To use this start_maja.py, you will need to configure the directories within the folder.txt file.
 
 ## Download Sentinel-2 data :
-The use of peps_download.py to download Sentinel-2 l1c PRODUCTS is recommended :
+The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended :
 https://github.com/olivierhagolle/peps_download
 
 <a name="parameters"></a>
@@ -142,10 +142,44 @@ The tool needs a lot of configuration files which are provided in two directorie
 We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
 - Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
 - Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
+
 The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in your GIPP folder (I know, it's a bit complicated)
 
-## Folder structure
-To run MAJA, you need to store all the necessary data in an input folder. Here is an example of its content in nominal mode.
+
+
+
+
+<a name="workflow"></a>
+# Example workflow
+
+Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
+
+## Install
+
+- [Install MAJA](https://logiciels.cnes.fr/en/content/maja)
+
+- Clone the current repository to get start_maja.py
+`git clone https://github.com/CNES/Start-MAJA.git`
+
+## Prepare folders and input files
+
+Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
+```
+#files downloaded grom github
+Readme.md      #This readme
+start_maja.py  #orchestrator 
+cams_download/ #utilities to downlaod cams data
+Common/        #some common libraries
+Prepare_DTM/   #modules to prepare DTM files
+useconf/       #folder which contains configuration files for MAJA
+
+# Some folders to add (see below how to get these files)
+DTM/            #to store the DEM files necessary as input to MAJA
+GIPP_MAJA_3.../ #parameter files (see above)
+
+```
+
+To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode.
 <details><summary>Folder structure...</summary>
 <p>
 
@@ -193,32 +227,6 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 </p>
 </details>
 
-## DTM
-A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_mnt" folder](https://github.com/olivierhagolle/Start_maja/tree/master/prepare_mnt).
-
-An example of DTM file is available here for tile 31TFJ in Provence, France, near Avignon. Both files should be placed in a folder named DTM/S2__TEST_AUX_REFDE2_T31TFJ_0001 in the start_maja directory.
-
-http://osr-cesbio.ups-tlse.fr/echangeswww/majadata//S2__TEST_AUX_REFDE2_T31TFJ_0001.DBL
-
-http://osr-cesbio.ups-tlse.fr/echangeswww/majadata//S2__TEST_AUX_REFDE2_T31TFJ_0001.HDR
-
-The DBL file is a tar file (I am innocent for this choice...) that can be opened with `tar xvf `. MAJA can use both the archive or un-archived version. The tool above provides the un-archived version (DBL.DIR).
-
-## CAMS
-if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. A download tool is provided [in the cams_download directory of this repository](xxx)
-
-<a name="workflow"></a>
-# Example workflow
-
-Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
-
-## Install
-
-- Install MAJA
-
-- Clone the current repository to get start_maja.py
-`https://github.com/CNES/Start-MAJA.git`
-
 ## Retrieve Sentinel-2 L1C data.
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 
@@ -232,12 +240,18 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 (see parameters section above)
 
 ## Create DTM
-Follow DTM generation instructions : http://tully.ups-tlse.fr/olivier/prepare_mnt
+A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
+
+
+Follow DTM generation instructions : https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md
 Copy DTM in "DTM" folder within Start_Maja folder.
 
 ## Download CAMS data
+if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. 
+
+CAMS data can be downloaded after a simple registration, but these days, probably due to a large success, it takes more than a day to download a day of CAMS data. Through agreements with ECMWF or through your countries weather agency, iyt is possible to get a priviledged access, which grants far better performances. To get a better access, it is also possible to download data month per month, instead of day per day. Donwloading a month takes almost the same time as downloading a day. But it does not work for real time processing, which needs day per day downloads.
+
 if you want to use CAMS option, follow cams_download tool instructions : https://github.com/CNES/Start-MAJA/tree/master/cams_download
-Downloading CAMS data can be quite long these days from ECMWF servers.
 
 ## Execute start_maja.py
 
@@ -280,8 +294,9 @@ Caution, *when a product has more than 90% of clouds, the L2A is not issued*. Ho
 
 ## Known Errors
 
+Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despite repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
 
-Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despited repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
+We still have some difficulties with detecting the edges of the swath, which results in false detections of clouds or shadows on the edges. We hope to solve this shortly.
 
 
 <a name="Questions"></a>
