@@ -4,8 +4,14 @@
 Downloads necessary CAMS data for MAJA and converts them into MAJA input format
 Written by B.Rouquie, O.Hagolle, CESBIO/CNES
 
+If the user asks to download CAMS products from the current month, it will download daily files
+which is slow when using a standard account. If the user asks to download older CAMS products,
+monthly files will be downloaded and split into daily files, which is much faster.
+
+Splitting the files requires a netCDF utility, either cdo (within nco package) or NCKS.
+
 # ==================== Copyright
-Software downloads_CAMS_daily.py
+Software downloads_CAMS.py
 
 Copyright© 2018 Centre National d’Etudes Spatiales
 
@@ -272,16 +278,6 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
 #     MAIN
 # ==============
 
-# ===========================
-#   Data volumes
-# ===========================
-# 1 fichier Surface  = 0.8 Mo
-# 1 fichier Pressure = 1.7 Mo
-# 1 fichier Model    = 53 Mo
-#
-# => 20 Go par an (40 Go par an avec les deux forecasts (minuit et midi))
-#
-
 # =============================
 #  Aerosol types
 # =============================
@@ -433,7 +429,8 @@ elif mode == "monthly":
                     str(int(time[t])+int(step)).zfill(2) + '0000.nc'
                 nom_MR = path_out + "/CAMS_MR_" + download_date + 'UTC' + \
                     str(int(time[t])+int(step)).zfill(2) + '0000.nc'
-                # create header and Datablock files expeted by MAJA
+                # create header and Datablock files expected by MAJA
+
                 process_one_file(nom_AOT, nom_MR, nom_RH, path_out, options.archive_dir)
                 if not(options.keep):
                     os.remove(nom_AOT)
