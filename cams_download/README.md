@@ -1,6 +1,12 @@
-# download_CAMS_daily
+# download CAMS aerosol data
 
-This tool is designed to download daily CAMS near-real-time forecast products from ECMWF. Otherwise, the graphical interface provided by ECMWF is available here: http://apps.ecmwf.int/datasets/data/macc-nrealtime/levtype=sfc/
+This tool is designed to download daily CAMS near-real-time forecast products from ECMWF. Otherwise, the graphical interface provided by ECMWF is available here: http://apps.ecmwf.int/datasets/data/macc-nrealtime/levtype=sfc/. We are providing two tools to download CAMS data and package them as expected by MAJA.
+
+download_CAMS_daily.py downloads CAMS data day per day (ane even twice a day). But with a standard ECMWF account, it is slow. It takes currently (Feb 2019) about a day to download a day.
+
+download_CAMS.py downloads monthly files, and splits them into daily files, except for the current month which is still downloaded daily. It can download several months per day. To split the monthly files into daily files, it is necessary to install netCDF utilities.
+- [cdo, within the nco package](https://code.mpimet.mpg.de/projects/cdo) (by default)
+- ncks netCDF kitchen sink (which does not seem to be well maintained anymore, sorry if we are wrong)
 
 The tool downloads several types of fields :
 - the Aerosol Optical Thickness AOT, for 5 types of aerosols, which are stored in the AOT file
@@ -38,6 +44,10 @@ The files are then converted in one archive using the Earth Explorer format, whi
 # Example
 
 `python download_CAMS_daily.py -d 20180101 -f 20180102  -w /path/to/my/CAMSfolderNetCDF -a  /path/to/my/CAMSfolderNetDBL`
+
+or
+
+`python download_CAMS.py -d 20180101 -f 20180102  -w /path/to/my/CAMSfolderNetCDF -a  /path/to/my/CAMSfolderNetDBL`
 
 
 # Parameters
