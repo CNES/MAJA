@@ -412,8 +412,31 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
             if os.path.exists(repWork + "/in"):
                 shutil.rmtree(repWork + "/in")
             os.makedirs(repWork + "/in")
+            # Mode Init
+            if options.initMode is True :
+                logger.info("Processing in init mode ")
+                add_parameter_files(repGipp, repWork + "/in/", tile, repCams)
+                add_DEM(repDtm, repWork + "/in/", tile)
+                # copy (or symlink) L1C
+                if options.zip:
+                    unzipAndMoveL1C(prod_par_dateImg[d], repWork + "/in/", tile)
+                else:
+                    os.symlink(prod_par_dateImg[d],
+                               repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
+                Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
+                logger.debug(os.listdir(os.path.join(repWork, "in")))
+                commande = "%s %s -i %s -o %s -m L2INIT -ucs %s --TileId %s &> %s" % (
+                    maja, debug_option, repWork + "/in", repL2, repWork + "/userconf", tile, Maja_logfile)
+                logger.info("#################################")
+                logger.info("#################################")
+                logger.info("processing %s in Init Mode" % prod_par_dateImg[d])
+                logger.info("Init mode goes with suboptimal performances")
+                logger.info("MAJA logfile: %s", Maja_logfile)
+                logger.info("#################################")
+                os.system(commande)
+                
             # Mode Backward, if it is the first date in the list
-            if i == 0:
+            elif i == 0:
                 nb_prod_backward = min(len(dates_diff), nb_backward)
                 logger.info("dates to process in backward mode :")
                 for date_backward in dates_diff[0:nb_prod_backward]:
@@ -554,6 +577,9 @@ if __name__ == '__main__':
 
         parser.add_option("-v", "--verbose", dest="verbose", action="store_true",
                           help="Will provide verbose start_maja logs", default=False)
+
+        parser.add_option("-i", "--initMode", dest="initMode", action="store_true",
+                          help="Will launch MAJA in init mode, for tests, degraded performances", default=False)
 
         parser.add_option("--debug", dest="debug", action="store_true",
                           help="Use MAJA Debug mode to get verbose logs", default=False)
