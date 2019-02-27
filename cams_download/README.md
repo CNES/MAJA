@@ -4,7 +4,7 @@ This tool is designed to download daily CAMS near-real-time forecast products fr
 
 download_CAMS_daily.py downloads CAMS data day per day (ane even twice a day). But with a standard ECMWF account, it is slow. It takes currently (Feb 2019) about a day to download a day.
 
-download_CAMS.py downloads monthly files, and splits them into daily files, except for the current month which is still downloaded daily. It can download several months per day. To split the monthly files into daily files, it is necessary to install netCDF utilities.
+download_CAMS.py downloads monthly files, and splits them into daily files, except for the current month which is still downloaded daily. It can download several months per day. To split the monthly files into daily files, it is necessary to install netCDF utilities, either :
 - [cdo, within the nco package](https://code.mpimet.mpg.de/projects/cdo) (by default)
 - ncks netCDF kitchen sink (which does not seem to be well maintained anymore, sorry if we are wrong)
 
