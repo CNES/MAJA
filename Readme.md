@@ -16,7 +16,7 @@
 <a name="intro"></a>
 # Introduction
 
-**NB : in some cases, the interpolation of CAMS files for the "fallback" AOT in MAJA is wrong. We are trying to solbve this issue. Meanwhile, with regrets, we do not recommend to activate the CAMS option with MAJA 3.2.** 
+**NB : in some cases, the interpolation of CAMS files for the "fallback" AOT in MAJA is wrong. We are trying to solve this issue. Meanwhile, with regrets, we do not recommend to activate the CAMS option with MAJA 3.2.2** 
 
 The following script will help you run the MAJA L2A processor on your computer, for Sentinel-2 data only so far. You can also run MAJA on [CNES PEPS collaborative ground segment](https://theia.cnes.fr) using the [maja-peps script also available on github](https://github.com/olivierhagolle/maja_peps). Using PEPS will be much easier, but is not meant for mass processing.
 
