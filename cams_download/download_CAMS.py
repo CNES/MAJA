@@ -30,21 +30,22 @@ https://www.gnu.org/licenses/gpl-3.0.fr.html
 """
 
 import os
-from ecmwfapi import ECMWFDataServer
-from convert_to_exo import process_one_file
+
 import datetime
-import timeit
 import optparse
 import calendar
 import glob
-from dateutil.relativedelta import relativedelta
 import sys
+import os.path
+from dateutil.relativedelta import relativedelta
+from ecmwfapi import ECMWFDataServer
+from convert_to_exo import process_one_file
 
 server = ECMWFDataServer()
 ###########################################################################
 
 
-class OptionParser (optparse.OptionParser):
+class OptionParser(optparse.OptionParser):
 
     def check_required(self, opt):
         option = self.get_option(opt)
@@ -69,25 +70,25 @@ def download_files(download_date, file_type, time, step, OutNames):
         # =================
         nom_AOT = path_out + "/CAMS_AOT_" + month_name + \
             'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-        print 'Nom fichier de sortie AOT :', nom_AOT
-
-        server.retrieve({
-            'stream': "oper",
-            'class': "mc",
-            'dataset': "cams_nrealtime",
-            'expver': '0001',
-            'step': step,
-            'levtype': "SFC",
-            'date': download_date,
-            'time': time,
-            'type': "fc",
-            'param': "208.210/209.210/210.210/211.210/212.210",
-            'area': "G",
-            'grid': "1.25/1.25",
-            'format': "netcdf",
-            'target': nom_AOT
-        })
-        # 208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
+        if not os.path.exists(nom_AOT):
+            print 'Nom fichier de sortie AOT :', nom_AOT
+            server.retrieve({
+                'stream': "oper",
+                'class': "mc",
+                'dataset': "cams_nrealtime",
+                'expver': '0001',
+                'step': step,
+                'levtype': "SFC",
+                'date': download_date,
+                'time': time,
+                'type': "fc",
+                'param': "208.210/209.210/210.210/211.210/212.210",
+                'area': "G",
+                'grid': "1.25/1.25",
+                'format': "netcdf",
+                'target': nom_AOT
+            })
+            # 208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
 
     if file_type['pressure'] == True:
         # =========================
@@ -97,25 +98,26 @@ def download_files(download_date, file_type, time, step, OutNames):
         # =========================
         nom_RH = path_out + "/CAMS_RH_" + month_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
-        print 'Nom fichier de sortie RH :', nom_RH
+        if not os.path.exists(nom_RH):
+            print 'Nom fichier de sortie RH :', nom_RH
 
-        server.retrieve({
-            'stream': "oper",
-            'class': "mc",
-            'dataset': "cams_nrealtime",
-            'expver': "0001",
-            'step': step,
-            'levtype': "pl",
-            "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
-            'date': download_date,
-            'time': time,
-            'type': "fc",
-            'param': "157.128",
-            'area': "G",
-            'grid': "1.25/1.25",
-            'format': "netcdf",
-            'target': nom_RH
-        })
+            server.retrieve({
+                'stream': "oper",
+                'class': "mc",
+                'dataset': "cams_nrealtime",
+                'expver': "0001",
+                'step': step,
+                'levtype': "pl",
+                "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
+                'date': download_date,
+                'time': time,
+                'type': "fc",
+                'param': "157.128",
+                'area': "G",
+                'grid': "1.25/1.25",
+                'format': "netcdf",
+                'target': nom_RH
+            })
 
     if file_type['model'] == True:
         # =========================
@@ -125,25 +127,25 @@ def download_files(download_date, file_type, time, step, OutNames):
         # =========================
         nom_MR = path_out + "/CAMS_MR_" + month_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
-        print 'Nom fichier de sortie mixRatios :', nom_MR
-
-        server.retrieve({
-            'stream': "oper",
-            'class': "mc",
-            'dataset': "cams_nrealtime",
-            'expver': "0001",
-            'step': step,
-            'levtype': "ml",
-            "levelist": "1/to/60",
-            'date': download_date,
-            'time': time,
-            'type': "fc",
-            'param': "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
-            'area': "G",
-            'grid': "1.25/1.25",
-            'format': "netcdf",
-            'target': nom_MR
-        })
+        if not os.path.exists(nom_MR):
+            print 'Nom fichier de sortie mixRatios :', nom_MR
+            server.retrieve({
+                'stream': "oper",
+                'class': "mc",
+                'dataset': "cams_nrealtime",
+                'expver': "0001",
+                'step': step,
+                'levtype': "ml",
+                "levelist": "1/to/60",
+                'date': download_date,
+                'time': time,
+                'type': "fc",
+                'param': "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
+                'area': "G",
+                'grid': "1.25/1.25",
+                'format': "netcdf",
+                'target': nom_MR
+            })
     return nom_AOT, nom_RH, nom_MR
 
 
@@ -349,10 +351,10 @@ else:
 
 
 nb_days = (dt2-dt1).days + 1
-print('\nNumber of days =%s' % nb_days)
+print('Number of days =%s' % nb_days)
 
 nb_months = relativedelta(dt1, dt2).months+(dt2.year - dt1.year)*12+1
-print('\nNumber of months =%s' % nb_months)
+print('Number of months =%s' % nb_months)
 
 # Analysis times
 # Two possibilities :
@@ -365,7 +367,7 @@ time = ["00", "12"]
 # step = 3 corresponds to preisions, 3h after analysis.
 # Examples : time = 00 and step = 3 => 03:00:00 UTC
 #           time = 12 and step = 3 => 15:00:00 UTC
-step = "3"
+step = "0"
 
 # Path out
 path_out = options.write_dir
