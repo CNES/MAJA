@@ -155,25 +155,29 @@ def add_parameter_files(repGipp, repWorkIn, tile, repCams):
             replace_tile_name(fic, repWorkIn + '/' + base.replace("36JTT", tile), "36JTT", tile)
         else:
             logger.debug("Linking %s to %s", fic, repWorkIn + '/' + base)
-            os.symlink(fic, repWorkIn + '/' + base)
+            if not os.path.exists(repWorkIn + '/' + base):
+                os.symlink(fic, os.path.join(repWorkIn, base))
 
     # links for CAMS files
     if repCams is not None:
         for fic in glob.glob(os.path.join(repCams, "*")):
             base = os.path.basename(fic)
             #logger.debug("Linking %s in %s", fic, repWorkIn)
-            os.symlink(fic, os.path.join(repWorkIn, base))
+            if not os.path.exists(repWorkIn + '/' + base):
+                os.symlink(fic, os.path.join(repWorkIn, base))
 
 
 def add_DEM(repDEM, repWorkIn, tile):
     logger.debug("%s/*%s*/*", repDEM, tile)
     for fic in glob.glob(repDEM + "/S2_*%s*/*" % tile):
         base = os.path.basename(fic)
-        os.symlink(fic, repWorkIn + base)
+        if not os.path.exists(repWorkIn + '/' + base):
+            os.symlink(fic, os.path.join(repWorkIn, base))
 
 
 def add_config_files(repConf, repWorkConf):
-    os.symlink(repConf, repWorkConf)
+    if not os.path.exists(repWorkConf):
+        os.symlink(repConf, repWorkConf)
 
 
 def manage_rep_cams(repCams, repCamsRaw, working_dir):
@@ -218,15 +222,15 @@ def test_valid_L2A(L2A_DIR):
                     else:
                         shutil.rmtree(dir_name+"/L2NOTV_"+prod_name)
                         os.rename(L2A_DIR, dir_name+"/L2NOTV_"+prod_name)
-                    print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-                    print "L2A product %s is not valid (probably due to too many clouds or No_data values)" % dir_name
-                    print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    print( "L2A product %s is not valid (probably due to too many clouds or No_data values)" % dir_name)
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     except IOError:
         valid = False
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-        print "L2A product %s not found " % L2A_DIR
-        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("L2A product %s not found " % L2A_DIR)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     return(valid)
 
@@ -357,7 +361,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
         nomL2_par_dateImg_MUSCATE[d] = "SENTINEL2?_%s-*_T%s_C_V*" % (d, tile)
         logger.debug("d %s, prod_par_dateImg[d] %s", d, prod_par_dateImg[d])
 
-    print
+    print("\n")
     # find the first image to process
 
     logger.debug("dates_diff %s", dates_diff)
@@ -421,7 +425,8 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                 if options.zip:
                     unzipAndMoveL1C(prod_par_dateImg[d], repWork + "/in/", tile)
                 else:
-                    os.symlink(prod_par_dateImg[d],
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[d])):
+                        os.symlink(prod_par_dateImg[d],
                                repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
@@ -444,7 +449,8 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                     if options.zip:
                         unzipAndMoveL1C(prod_par_dateImg[date_backward], repWork + "/in/", tile)
                     else:
-                        os.symlink(prod_par_dateImg[date_backward],
+                        if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward])):
+                            os.symlink(prod_par_dateImg[date_backward],
                                    repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward]))
                 add_parameter_files(repGipp, repWork + "/in/", tile, repCams)
                 add_DEM(repDtm, repWork + "/in/", tile)
@@ -483,17 +489,22 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                 if options.zip:
                     unzipAndMoveL1C(prod_par_dateImg[d], repWork + "/in/", tile)
                 else:
-                    os.symlink(prod_par_dateImg[d],
-                               repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[d])):
+                        os.symlink(prod_par_dateImg[d],
+                                   repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
                 # find type of L2A
                 if L2type == "Natif":
-                    os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
-                    os.symlink(nomL2.replace("DBL.DIR", "HDR"),
-                               repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR"))
-                    os.symlink(nomL2.replace("DIR", ""), repWork + "/in/" +
-                               os.path.basename(nomL2).replace("DIR", ""))
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2)):
+                        os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR")):
+                        os.symlink(nomL2.replace("DBL.DIR", "HDR"),
+                                repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR"))
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2).replace("DIR", "")):
+                        os.symlink(nomL2.replace("DIR", ""), repWork + "/in/" +
+                                os.path.basename(nomL2).replace("DIR", ""))
                 elif L2type == "MUSCATE":
-                    os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
+                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2)):
+                        os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
 
@@ -527,7 +538,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
             with open(Maja_logfile, "r") as logfile:
                 for line in logfile:
                     if line.find("[E]") > 0:
-                        print line
+                        print(line)
                         Error = True
             if Error:
                 logger.info("#######################################")
@@ -540,12 +551,12 @@ if __name__ == '__main__':
     # ========== command line
     if len(sys.argv) == 1:
         prog = os.path.basename(sys.argv[0])
-        print '      ' + sys.argv[0] + ' [options]'
-        print "     Aide : ", prog, " --help"
-        print "        ou : ", prog, " -h"
+        print('      ' + sys.argv[0] + ' [options]')
+        print("     Aide : ", prog, " --help")
+        print("        ou : ", prog, " -h")
 
-        print "exemple : "
-        print "\t python %s -f folders.txt -c nominal -t 40KCB -s Reunion  -d 20160401 " % sys.argv[0]
+        print("exemple : ")
+        print("\t python %s -f folders.txt -c nominal -t 40KCB -s Reunion  -d 20160401 " % sys.argv[0])
         sys.exit(-1)
     else:
         usage = "usage: %prog [options] "
