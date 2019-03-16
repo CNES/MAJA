@@ -476,6 +476,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                 nomL2 = ""
                 # Search for previous L2 product
                 if L2type is None:
+                    logger.info("MAJA command failed : %s", commande)
                     logger.error(
                         "First backward processing was unsuccessful, check MAJA installation")
                     sys.exit(-1)
