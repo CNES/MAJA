@@ -126,7 +126,7 @@ def read_folders(fic_txt):
         logger.error("repCAMS %s is missing", repCAMS_raw)
 
     if directory_missing:
-        raise Exception("One or more directories are missing. See log file for more information.")
+        raise Exception("One or more directories defined in foldersconfig files are missing")
 
     sys.path.insert(0, repCode+"/cams_download")
     from convert_CAMS_DBL import exocam_creation
@@ -150,7 +150,6 @@ def replace_tile_name(fic_in, fic_out, tile_in, tile_out):
 def add_parameter_files(repGipp, repWorkIn, tile, repCams):
 
     for fic in glob.glob(repGipp + "/*"):
-
         base = os.path.basename(fic)
         if fic.find("36JTT") > 0:
             replace_tile_name(fic, repWorkIn + '/' + base.replace("36JTT", tile), "36JTT", tile)
@@ -338,6 +337,9 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
     logger.debug("set %s", set(dateImg))
 
     dates_diff = list(set(dateImg))
+    if len(dates_diff) == 0:
+        logger.error("there is no date to process")
+        sys.exit(-2)
     dates_diff.sort()
 
     prod_par_dateImg = {}
@@ -433,7 +435,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                                    repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
-                commande = "%s %s -i %s -o %s -m L2INIT -ucs %s --TileId %s &> %s" % (
+                commande = "%s %s -i %s -o %s -m L2INIT -ucs %s --TileId %s > %s 2>&1" % (
                     maja, debug_option, repWork + "/in", repL2, repWork + "/userconf", tile, Maja_logfile)
                 logger.info("#################################")
                 logger.info("#################################")
@@ -460,7 +462,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
-                commande = "%s %s -i %s -o %s -m L2BACKWARD -ucs %s --TileId %s &> %s" % (
+                commande = "%s %s -i %s -o %s -m L2BACKWARD -ucs %s --TileId %s >%s 2>&1" % (
                     maja, debug_option, repWork + "/in", repL2, repWork + "/userconf", tile, Maja_logfile)
                 logger.info("#################################")
                 logger.info("#################################")
@@ -522,7 +524,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
 
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
 
-                commande = "%s %s -i %s -o %s -m L2NOMINAL -ucs %s --TileId %s &> %s" % (
+                commande = "%s %s -i %s -o %s -m L2NOMINAL -ucs %s --TileId %s > %s 2>&1" % (
                     maja, debug_option, repWork + "/in", repL2, repWork + "/userconf", tile, Maja_logfile)
                 logger.info("#################################")
                 logger.info("#################################")
