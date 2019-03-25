@@ -450,10 +450,10 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
     for swbd in liste_fic_eau:
         filenameWater = r"%s\w.zip" % swbd
         files = [f for f in os.listdir(rep_swbd) if re.search(filenameWater, f)]
-        if len(files) != 1:
-            raise OSError("No unique SWBD file found for %s in %s" % (swbd, rep_swbd))
-        commande = "unzip -o %s -d %s" % (pjoin(rep_swbd, files[0]), working_dir)
-        os.system(commande)
+        if len(files) == 1:
+            #raise OSError("No unique SWBD file found for %s in %s" % (swbd, rep_swbd))
+            commande = "unzip -o %s -d %s" % (pjoin(rep_swbd, files[0]), working_dir)
+            os.system(commande)
     for fic in liste_fic_mnt:
         print("FIC: {0}".format(fic))
         print(type(rep_mnt), type(fic))
@@ -503,8 +503,6 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
         ds_out = None
 
         # remplissage de ce fichier avec les fichiers SWBD
-        liste_tuiles_manquantes = ["e017n03", "e006n30", "e006n29", "e005n30", "e005n29", "e015n00", "e015s24",
-                                   "e022n28", "e023n28", "w074n01", "e034n02", "e035n02"]
         for i, racine_nom_eau in enumerate(liste_fic_eau):
             print(racine_nom_eau)
             shp = glob.glob(os.path.join(working_dir, racine_nom_eau + "*.shp"))
