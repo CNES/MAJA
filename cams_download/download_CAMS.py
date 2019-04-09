@@ -60,15 +60,17 @@ class OptionParser(optparse.OptionParser):
 def download_files(download_date, file_type, time, step, OutNames):
 
     if download_date.find('/TO/') >= 0:
-        month_name = download_date[0:6]
-        print("month_name %s" % month_name)
+        date_name = download_date[0:6]
+        print("date_name %s" % date_name)
+    else:
+        date_name = download_date
 
     if file_type['surface'] == True:
         # =================
         #     Surface
         # Recupere AOT a 550nm pour BC, SS, SU, DU, OM
         # =================
-        nom_AOT = path_out + "/CAMS_AOT_" + month_name + \
+        nom_AOT = path_out + "/CAMS_AOT_" + date_name + \
             'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_AOT):
             print 'Nom fichier de sortie AOT :', nom_AOT
@@ -96,7 +98,7 @@ def download_files(download_date, file_type, time, step, OutNames):
         #
         # Recupere Relative Humidity RH
         # =========================
-        nom_RH = path_out + "/CAMS_RH_" + month_name + 'UTC' + \
+        nom_RH = path_out + "/CAMS_RH_" + date_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_RH):
             print 'Nom fichier de sortie RH :', nom_RH
@@ -125,7 +127,7 @@ def download_files(download_date, file_type, time, step, OutNames):
         #
         # Recupere les mixing ratios : 3 bins DUST, 3 bins SEASALT, ORGANICMATTER hydrophile et hydrophobe, BLACKCARBON hydrophile et hydrophobe, et SULFATE.
         # =========================
-        nom_MR = path_out + "/CAMS_MR_" + month_name + 'UTC' + \
+        nom_MR = path_out + "/CAMS_MR_" + date_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_MR):
             print 'Nom fichier de sortie mixRatios :', nom_MR
@@ -341,7 +343,7 @@ if dt2 < dt1:
     sys.exit(-2)
 
 # download whole months except for current month
-if dt1.year != today.year and dt1.month != today.month:
+if dt1.year != today.year or dt1.month != today.month:
     dt1 = datetime.datetime(year=dt1.year, month=dt1.month, day=1)
     days_in_month = calendar.monthrange(dt2.year, dt2.month)[1]
     dt2 = datetime.datetime(year=dt2.year, month=dt2.month, day=days_in_month)
@@ -384,9 +386,9 @@ if mode == "daily":
     for i in range(nb_days):
         dt = dt1 + datetime.timedelta(days=i)
         request_date = '%04d%02d%02d' % (dt.year, dt.month, dt.day)
-        print "=================================="
-        print "Downloading files for date %s" % dt
-        print "=================================="
+        print("==================================")
+        print("Downloading files for date %s" % dt)
+        print("==================================")
         for t in range(len(time)):
             (nom_AOT, nom_RH, nom_MR) = download_files(
                 request_date, file_type, time[t], step, path_out)
@@ -406,7 +408,9 @@ elif mode == "monthly":
 
         # Range of dates to download from CAMS
         requestDates = (startDate + "/TO/" + lastDate)
+        print("==================================")
         print('Dates to download:%s' % requestDates)
+        print("==================================")
         for t in range(len(time)):
             OutNames = {}
             OutNames['surface'] = path_out + "/CAMS_AOT_" + month + \
