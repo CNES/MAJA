@@ -370,6 +370,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
 
     logger.debug("dates_diff %s", dates_diff)
 
+    L2type = None
     derniereDate = ""
     for d in dates_diff:
         logger.debug("d %s", d)
@@ -379,7 +380,6 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
         #logger.debug(glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[d])))
 
         # test existence of a L2 with MAJA name convention
-        L2type = None
         nomL2init_Natif = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_Natif[d]))
         nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[d]))
         if len(nomL2init_Natif) > 0:
