@@ -143,7 +143,25 @@ The description below will explain how to process a set of data above tile 31TFJ
 
 ## Prepare folders and input files
 
-Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
+- To use the start_maja script, you need to configure the directories, within the folder.txt file.
+Here is my own configuration, also provided in the folders.txt file in this repository.
+```
+repCode=/mnt/data/home/hagolleo/PROG/S2/lance_maja
+repWork=/mnt/data/SENTINEL2/MAJA
+repL1  =/mnt/data/SENTINEL2/L1C_PDGS
+repL2  =/mnt/data/SENTINEL2/L2A_MAJA
+repMaja=/mnt/data/home/hagolleo/Install-MAJA/maja/core/1.0/bin/maja
+repCAMS  =/mnt/data/SENTINEL2/CAMS
+```
+- repCode is where Start_maja.py is stored, together with the DTM, userconf and GIPP directories
+- repWork is a directory to store the temporary files
+- repL1 is where to find the L1C data (without the site name which is added aferward)
+  - Les produits SAFE doivent donc être stockés à l'emplacement suivant : repL1  = repL1/site
+- repL2 is for the L2A data (without the site name which is added aferward)
+- repMAJA is where the Maja binary code is
+- repCAMS is where CAMS data are stored
+
+- Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
 ```
 #files downloaded grom github
 Readme.md       #This readme
@@ -232,10 +250,11 @@ We provide two sets of parameters, one to work without CAMS data, and one to wor
 
 The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
 
-- Look-up tables for Sentinel2: https://zenodo.org/record/2553164 . You can download them directly with curl utility:
+- Look-up tables for Sentinel2: https://zenodo.org/record/2635467. 
+You can download them directly with curl utility:
 
 ```
-curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2553164/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz?download=1
+curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2635467/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz?download=1
 cd <repCode>
 tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz
 ```
@@ -258,26 +277,6 @@ CAMS data can be downloaded after a simple registration, but these days, probabl
 if you want to use CAMS option, follow cams_download tool instructions : https://github.com/CNES/Start-MAJA/tree/master/cams_download
 
 ## Execute start_maja.py
-
-- To use the start_maja script, you need to configure the directories, within the folder.txt file.
-Here is my own configuration, also provided in the folders.txt file in this repository.
-```
-repCode=/mnt/data/home/hagolleo/PROG/S2/lance_maja
-repWork=/mnt/data/SENTINEL2/MAJA
-repL1  =/mnt/data/SENTINEL2/L1C_PDGS
-repL2  =/mnt/data/SENTINEL2/L2A_MAJA
-repMaja=/mnt/data/home/hagolleo/Install-MAJA/maja/core/1.0/bin/maja
-repCAMS  =/mnt/data/SENTINEL2/CAMS
-```
-- repCode is where Start_maja.py is stored, together with the DTM, userconf and GIPP directories
-- repWork is a directory to store the temporary files
-- repL1 is where to find the L1C data (without the site name which is added aferward)
-  - Les produits SAFE doivent donc être stockés à l'emplacement suivant : repL1  = repL1/site
-- repL2 is for the L2A data (without the site name which is added aferward)
-- repMAJA is where the Maja binary code is
-- repCAMS is where CAMS data are stored
-
-
 
 Here is an example of command line
 ```
