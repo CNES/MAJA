@@ -7,8 +7,7 @@
 3. [Change log](#ChangeLog)
 4. [MAJA output format](#format)
 5. [Get and Install MAJA](#maja)
-6. [Use start_maja](#Basic)
-7. [Example workflow](#workflow)
+6. [start_maja user_manual](#User_manual)
 8. [Questions](#Questions)
 
 <a href="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406.png"><img  title="Ambaro Bay, Madagascar" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2017/05/20160406-300x300.png" alt="" width="300" height="300" align="middle"  /></a>
@@ -119,48 +118,21 @@ If you wish to use MUSCATE format, which is documented [here](http://www.cesbio.
 
 If you wish to use the native format, which is documented [here](http://www.cesbio.ups-tlse.fr/multitemp/?page_id=10464), as for MAJA 1_0, you will have to download the "NoTM" version. Anyway, be aware that we will probably not maintain that version in the coming years.
 
-
-
 ## install MAJA
 Installation of MAJA is straightforward on linux systems. You just have to unzip the provided package and use 
 the following command :
 
 `>>> bash MAJA-3.2.2_TM.run --target /path/to/install`
 
-
-<a name="Basic"></a>
-# How to use start_maja, basic orchestrator for MAJA
-
-The basic supervisor **start_maja** enables to process successively all files in a time series of Sentinel-2 images for a given tile, stored in a folder. The initialisation of the time series is performed with the "backward mode", and then all the dates are processed in "nominal" mode. The backward mode takes much more time than the nominal mode. On my computer, which is a fast one, the nominal mode takes 15 minutes, and the backward mode takes almost one hour. No control is done on the outputs, and it does not check if the time elapsed between two successive products used as input is not too long and would require restarting the initialisation in backward mode.
-
-
 To use this start_maja.py, you will need to configure the directories within the folder.txt file.
 
-## Download Sentinel-2 data :
-The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended :
-https://github.com/olivierhagolle/peps_download
-
-<a name="parameters"></a>
-## Parameters
-The tool needs a lot of configuration files which are provided in three directories "userconf", "GIPP_S2AS2B_xxx" LUT_S2AS2B_xxx. I tend to never change the "userconf", the Look_up tables in the LUT directory depend on the satellitre, but do not change frequently with time, but the GIPP_S2AS2B, which contains the parameters, may  change often. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
-
-**GIPP**
-
-We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
-- Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
-- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
-
-**LUT**
-The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
-
-- Look-up tables for Sentinel2: https://zenodo.org/record/2553164
 
 
+<a name="User_manual"></a>
+# Start_maja User manual 
+The basic supervisor **start_maja** enables to process successively all files in a time series of Sentinel-2 images for a given tile, stored in a folder. The initialisation of the time series is performed with the "backward mode", and then all the dates are processed in "nominal" mode. The backward mode takes much more time than the nominal mode. On my computer, which is a fast one, the nominal mode takes 15 minutes, and the backward mode takes almost one hour. No control is done on the outputs, and it does not check if the time elapsed between two successive products used as input is not too long and would require restarting the initialisation in backward mode.
 
-<a name="workflow"></a>
-# Example workflow
-
-Here is how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
+The description below will explain how to process a set of data above tile 31TFJ, near Avignon in Provence, France. To process any other tile, you will need to prepare the DTM and store the data in the DTM folder.
 
 ## Install
 
@@ -174,17 +146,17 @@ Here is how to process a set of data above tile 31TFJ, near Avignon in Provence,
 Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
 ```
 #files downloaded grom github
-Readme.md      #This readme
-start_maja.py  #orchestrator 
-cams_download/ #utilities to downlaod cams data
-Common/        #some common libraries
-Prepare_DTM/   #modules to prepare DTM files
-useconf/       #folder which contains configuration files for MAJA
+Readme.md       #This readme
+start_maja.py   #orchestrator 
+cams_download/  #utilities to downlaod cams data
+Common/         #some common libraries
+Prepare_DTM/    #modules to prepare DTM files
+useconf/        #folder which contains configuration files for MAJA
 
 # Some folders to add (see below how to get these files)
-DTM/            #to store the DEM files necessary as input to MAJA
-GIPP_MAJA_3.../ #parameter files (see above)
-LUT_S2A8S2B_xxx   #LUT (look-up tables) files
+DTM/             #to store the DEM files necessary as input to MAJA
+GIPP_S2AS2B_xxx/ #parameter files (see above)
+LUT_S2AS2B_xxx/  #LUT (look-up tables) files
 
 ```
 
@@ -237,16 +209,31 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 </details>
 
 ## Retrieve Sentinel-2 L1C data.
-- For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
+The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended : https://github.com/olivierhagolle/peps_download
 
+- For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 `python ./peps_download.py -c S2ST -l 'Avignon' -a peps.txt -d 2017-01-01 -f 2017-04-01 -w /path/to/L1C_DATA/Avignon`
 
 - I tend to store the data per site. A given site can contain several tiles. All the L1C tiles corresponding to a site are stored in a directory named /path/to/L1C_DATA/Site
 
 - Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
-## Add GIPP parameters directory in the Start_maja folder
-(see parameters section above)
+<a name="parameters"></a>
+## Parameters
+The tool needs a lot of configuration files which are provided in three directories "userconf", "GIPP_S2AS2B_xxx" LUT_S2AS2B_xxx. I tend to never change the "userconf", the Look_up tables in the LUT directory depend on the satellitre, but do not change frequently with time, but the GIPP_S2AS2B, which contains the parameters, may  change often. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
+
+**GIPP**
+
+We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
+- Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
+- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
+
+**LUT**
+The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
+
+- Look-up tables for Sentinel2: https://zenodo.org/record/2553164
+
+
 
 ## Create DTM
 A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
