@@ -144,13 +144,13 @@ https://github.com/olivierhagolle/peps_download
 ## Parameters
 The tool needs a lot of configuration files which are provided in three directories "userconf", "GIPP_S2AS2B_xxx" LUT_S2AS2B_xxx. I tend to never change the "userconf", the Look_up tables in the LUT directory depend on the satellitre, but do not change frequently with time, but the GIPP_S2AS2B, which contains the parameters, may  change often. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
 
-### GIPP
+**GIPP**
 
 We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
 - Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
 - Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
 
-### LUT
+**LUT**
 The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
 
 - Look-up tables for Sentinel2: https://zenodo.org/record/2553164
