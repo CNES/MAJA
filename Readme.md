@@ -48,6 +48,9 @@ On our two years old computer, 8GB and 8 threads, it takes 22 minutes to make a 
 <a name="ChangeLog"></a>
 # Change Log
 
+## V3.2.1 (2019/04/10)
+changed a little the command line interface to store the GIPP parameters, and the LUTS in different folders. GIPP parameters evolve faster than LUTS, so it is better to separate them. I replaced the `-c context` option by two other options, `-g GIPP_folder -l LUT_folder`
+
 ## V3.2 (2019/02/01)
 We moved start-maja to a new repository, pertaining to CNES and not to Olivier Hagolle's personal github. It is also an opportunity to clean the repository, as the initial one had binary parameters in it, had grown a lot and took a long time to download. So we started from scratch.
 
@@ -139,13 +142,13 @@ https://github.com/olivierhagolle/peps_download
 
 <a name="parameters"></a>
 ## Parameters
-The tool needs a lot of configuration files which are provided in two directories "userconf" and "GIPP_S2AS2B". I tend to never change the "userconf", but the GIPP_S2AS2B contains the parameters and look-up tables, which you might want to change. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_context, where *context* is passed as a parameter of the command line with option -c . 
+The tool needs a lot of configuration files which are provided in two directories "userconf" and "GIPP_S2AS2B". I tend to never change the "userconf", but the GIPP_S2AS2B contains the parameters and look-up tables, which you might want to change. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
 
 We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
 - Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
 - Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
 
-The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in your GIPP folder (I know, it's a bit complicated)
+The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in a LUT_S2 folder (I know, it's a bit complicated)
 
 
 
@@ -280,19 +283,19 @@ repCAMS  =/mnt/data/SENTINEL2/CAMS
 Here is an example of command line
 ```
 Usage   : python ./start_maja.py -f <folder_file>-c <context> -t <tile name> -s <Site Name> -d <start date>
-Example : python ./start_maja.py -f folders.txt -c GIPP_MAJA_3_0_S2AS2B_CAMS -t 31TFJ -s Avignon -d 20170101 -e 20180101
+Example : python ./start_maja.py -f folders.txt -g GIPP_S2AS2B_xxx -l LUT_S2AS2B -t 31TFJ -s Avignon -d 20170101 -e 20180101
 ```
 Description of command line options :
 * -f provides the folders filename
-* -c is the context, MAJA uses the GIPP files contained in GIPP_xxx directory. The L2A products will be created in 
-rep_L2/Site/Tile/GIPP_xxx folder 
+* -g defines GIPP folder, which is searched in repCode. MAJA uses the GIPP files contained in GIPP_S2AS2B_xxx directory. The L2A products will be created in rep_L2/Site/Tile/GIPP_xxx folder 
+* -l is the LUT folder
 * -t is the tile number
 * -s is the site name
 * -d (aaaammdd) is the first date to process within the time series
 * -e (aaaammdd) is the last date to process within the time serie-s
 * -z directly uses zipped L1C files
 
-Caution, *when a product has more than 90% of clouds, the L2A is not issued*. However, a folder with _NOTVALD_ is created.
+Caution, *when a product has more than 90% of clouds, the L2A is not issued*. However, a folder with _NOTVALD_ in the filename is created.
 
 ## Known Errors
 
