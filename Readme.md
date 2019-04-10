@@ -229,9 +229,17 @@ We provide two sets of parameters, one to work without CAMS data, and one to wor
 - Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
 
 **LUT**
+
 The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
 
-- Look-up tables for Sentinel2: https://zenodo.org/record/2553164
+- Look-up tables for Sentinel2: https://zenodo.org/record/2553164 . You can download them directly with curl utility:
+
+```
+curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2553164/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz?download=1
+cd <repCode>
+tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz
+```
+
 
 
 
