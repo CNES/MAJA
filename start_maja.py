@@ -147,7 +147,7 @@ def replace_tile_name(fic_in, fic_out, tile_in, tile_out):
                 f_out.write(l)
 
 
-def add_parameter_files(repGipp, repWorkIn, tile, repCams):
+def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
 
     for fic in glob.glob(repGipp + "/*"):
         base = os.path.basename(fic)
@@ -157,6 +157,11 @@ def add_parameter_files(repGipp, repWorkIn, tile, repCams):
             logger.debug("Linking %s to %s", fic, repWorkIn + '/' + base)
             if not os.path.exists(repWorkIn + '/' + base):
                 os.symlink(fic, os.path.join(repWorkIn, base))
+    for fic in glob.glob(repLUT + "/*"):
+        base = os.path.basename(fic)
+        logger.debug("Linking %self to %s", fic, repWorkIn + '/' + base)
+        if not os.path.exists(repWorkIn + '/' + base):
+            os.symlink(fic, os.path.join(repWorkIn, base))
 
     # links for CAMS files
     if repCams is not None:
@@ -235,9 +240,11 @@ def test_valid_L2A(L2A_DIR):
 
     return(valid)
 
+# ###################################################################
 
-def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, debug_mode):
-    # =================directories
+
+def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, debug_mode):
+    # =================check directories
     (repCode, repWork, repL1, repL2, maja, repCams, repCamsRaw) = read_folders(folder_file)
 
     repCams = manage_rep_cams(repCams, repCamsRaw, repWork)
@@ -250,12 +257,16 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
     if not(os.path.exists(repDtm)):
         logger.error("DTM dir %s does not exist", repDtm)
         sys.exit(-1)
-    repGipp = repCode + "/%s" % context
+    repGipp = repCode + "/%s" % gipp
     if not(os.path.exists(repGipp)):
         logger.error("GIPP dir %s does not exist", repGipp)
         sys.exit(-1)
+    repLUT = repCode + "/%s" % lut
+    if not(os.path.exists(repLUT)):
+        logger.error("LUT dir %s does not exist", repLUT)
+        sys.exit(-1)
 
-    repWork = "%s/%s/%s/%s/" % (repWork, site, tile, context)
+    repWork = "%s/%s/%s/%s/" % (repWork, site, tile, gipp)
     if not (os.path.exists(repWork)):
         try:
             os.makedirs(repWork)
@@ -263,7 +274,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
             logger.error("something wrong when creating %s", repWork)
             sys.exit(-1)
     repL1 = "%s/%s/" % (repL1, site)
-    repL2 = "%s/%s/%s/%s/" % (repL2, site, tile, context)
+    repL2 = "%s/%s/%s/%s/" % (repL2, site, tile, gipp)
 
     # check existence of folders
     for fic in repL1, repCode, repWork, maja:
@@ -424,7 +435,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
             # Mode Init
             if options.initMode is True:
                 logger.info("Processing in init mode ")
-                add_parameter_files(repGipp, repWork + "/in/", tile, repCams)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
                 add_DEM(repDtm, repWork + "/in/", tile)
                 # copy (or symlink) L1C
                 if options.zip:
@@ -457,7 +468,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
                         if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward])):
                             os.symlink(prod_par_dateImg[date_backward],
                                        repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward]))
-                add_parameter_files(repGipp, repWork + "/in/", tile, repCams)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
                 add_DEM(repDtm, repWork + "/in/", tile)
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
@@ -519,7 +530,7 @@ def start_maja(folder_file, context, site, tile, orbit, nb_backward, options, de
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
 
-                add_parameter_files(repGipp, repWork + "/in/", tile, repCams)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
                 add_DEM(repDtm, repWork + "/in/", tile)
 
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
@@ -574,8 +585,11 @@ if __name__ == '__main__':
         usage = "usage: %prog [options] "
         parser = OptionParser(usage=usage, version='%prog {}'.format(START_MAJA_VERSION))
 
-        parser.add_option("-c", "--context", dest="context", action="store",
-                          help="name of the test directory", type="string", default='nominal')
+        parser.add_option("-g", "--gipp", dest="gipp", action="store",
+                          help="name of the GIPP directory", type="string", default='nominal')
+
+        parser.add_option("-l", "--lut", dest="lut", action="store",
+                          help="name of the LUT directory", type="string", default='nominal')
 
         parser.add_option("-t", "--tile", dest="tile", action="store",
                           help="tile number", type="string", default='31TFJ')
@@ -627,10 +641,12 @@ if __name__ == '__main__':
     tile = options.tile
     site = options.site
     orbit = options.orbit
-    context = options.context
+    gipp = options.gipp
+    lut = options.lut
+
     folder_file = options.folder_file
     debug_mode = options.debug
 
     nb_backward = 8  # number of images to process in backward mode
 
-    start_maja(folder_file, context, site, tile, orbit, nb_backward, options, debug_mode)
+    start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, debug_mode)
