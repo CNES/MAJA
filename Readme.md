@@ -148,7 +148,7 @@ We provide two sets of parameters, one to work without CAMS data, and one to wor
 - Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM 
 - Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_MAJA_3.1.2_TM_CAMS 
 
-The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in a LUT_S2 folder (I know, it's a bit complicated)
+The look-up tables are too big to be but on our gitlab server, you will have to download them following the link in the GIPP readme file, and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated)
 
 
 
@@ -181,6 +181,7 @@ useconf/       #folder which contains configuration files for MAJA
 # Some folders to add (see below how to get these files)
 DTM/            #to store the DEM files necessary as input to MAJA
 GIPP_MAJA_3.../ #parameter files (see above)
+LUT_S2A8S2B_xxx   #LUT (look-up tables) files
 
 ```
 
