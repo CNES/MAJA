@@ -278,7 +278,7 @@ Copy DTM in "DTM" folder within Start_Maja folder.
 ## Download CAMS data
 if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. 
 
-CAMS data can be downloaded after a simple registration, but these days, probably due to a large success, it takes more than a day to download a day of CAMS data. Through agreements with ECMWF or through your countries weather agency, iyt is possible to get a priviledged access, which grants far better performances. To get a better access, it is also possible to download data month per month, instead of day per day. Donwloading a month takes almost the same time as downloading a day. But it does not work for real time processing, which needs day per day downloads.
+CAMS data can be downloaded after a simple registration, but these days, probably due to a large success, it takes more than a day to download a day of CAMS data. Through agreements with ECMWF or through your countries weather agency, it is possible to get a priviledged access, which grants far better performances. To get a better access, it is also possible to download data month per month, instead of day per day. Donwloading a month takes almost the same time as downloading a day. But it does not work for real time processing, which needs day per day downloads.
 
 if you want to use CAMS option, follow cams_download tool instructions : https://github.com/CNES/Start-MAJA/tree/master/cams_download
 
