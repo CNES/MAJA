@@ -260,11 +260,11 @@ The look-up tables are too big to be but on our gitlab server, we provide them o
 You can download them directly with curl utility:
 
 ```
-curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2635467/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz?download=1
+curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2636694/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190411.tgz?download=1
 cd <repCode>
-tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz
+tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190411.tgz
 ```
-
+The file is a rather big one, 1GB, so downloading it will take a while. But as you are prepared to process time series of Sentinel-2, I know you have a good network and a lot of disk space.
 
 
 
