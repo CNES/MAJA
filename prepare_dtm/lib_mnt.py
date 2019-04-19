@@ -38,7 +38,6 @@ import tempfile
 from osgeo import gdal, ogr, osr
 import scipy.ndimage as nd
 from os.path import join as pjoin
-import urllib.request
 
 
 # Returns true if coordinate is land
@@ -462,7 +461,11 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
         ficzip = fic.replace('tif', 'zip')
         if not os.path.exists(rep_mnt + '/' + ficzip):
             print("Need to download the file {0}".format(ficzip))
-            urllib.request.urlretrieve("http://srtm.csi.cgiar.org/wp-content/uploads/files/srtm_5x5/TIFF/%s" % ficzip,
+            try:
+                from urllib.request import urlretrieve
+            except ImportError:
+                from urllib import urlretrieve
+            urlretrieve("http://srtm.csi.cgiar.org/wp-content/uploads/files/srtm_5x5/TIFF/%s" % ficzip,
                                        rep_mnt + '/' + ficzip)
             if not os.path.exists(rep_mnt + '/' + ficzip):
                 print("Unable to download the file!")
