@@ -355,7 +355,7 @@ else:
 nb_days = (dt2-dt1).days + 1
 print('Number of days =%s' % nb_days)
 
-nb_months = relativedelta(dt1, dt2).months+(dt2.year - dt1.year)*12+1
+nb_months = relativedelta(dt2, dt1).months+(dt2.year - dt1.year)*12+1
 print('Number of months =%s' % nb_months)
 
 # Analysis times
