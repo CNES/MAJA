@@ -372,7 +372,7 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
         ind = dateProd.index(dpmax)
         logger.debug("date prod max %s index in list %s", dpmax, ind)
         prod_par_dateImg[d] = listeProdFiltree[ind]
-        nomL2_par_dateImg_Natif[d] = "S2?_OPER_SSC_L2VALD_%s____%s.DBL.DIR" % (tile, d)
+        nomL2_par_dateImg_Natif[d] = "S2?_OPER_SSC_L2VALD_%s____T%s.DBL.DIR" % (tile, d)
         nomL2_par_dateImg_MUSCATE[d] = "SENTINEL2?_%s-*_T%s_C_V*" % (d, tile)
         logger.debug("d %s, prod_par_dateImg[d] %s", d, prod_par_dateImg[d])
 
@@ -638,7 +638,10 @@ if __name__ == '__main__':
         logger.addHandler(ch)
     logger.debug("options.stardate %s", options.startDate)
 
+    #remove possible leading T in tile number
     tile = options.tile
+    if tile.startswith('T'):
+        tile=tile[1:]
     site = options.site
     orbit = options.orbit
     gipp = options.gipp
