@@ -149,7 +149,7 @@ def replace_tile_name(fic_in, fic_out, tile_in, tile_out):
 
 def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
 
-    for fic in glob.glob(repGipp + "/*"):
+    for fic in glob.glob(repGipp.replace('[', '[[]') + "/*"):
         base = os.path.basename(fic)
         if fic.find("36JTT") > 0:
             replace_tile_name(fic, repWorkIn + '/' + base.replace("36JTT", tile), "36JTT", tile)
@@ -157,7 +157,7 @@ def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
             logger.debug("Linking %s to %s", fic, repWorkIn + '/' + base)
             if not os.path.exists(repWorkIn + '/' + base):
                 os.symlink(fic, os.path.join(repWorkIn, base))
-    for fic in glob.glob(repLUT + "/*"):
+    for fic in glob.glob(repLUT.replace('[', '[[]') + "/*"):
         base = os.path.basename(fic)
         logger.debug("Linking %self to %s", fic, repWorkIn + '/' + base)
         if not os.path.exists(repWorkIn + '/' + base):
@@ -165,7 +165,7 @@ def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
 
     # links for CAMS files
     if repCams is not None:
-        for fic in glob.glob(os.path.join(repCams, "*")):
+        for fic in glob.glob(os.path.join(repCams.replace('[', '[[]'), "*")):
             base = os.path.basename(fic)
             #logger.debug("Linking %s in %s", fic, repWorkIn)
             if not os.path.exists(repWorkIn + '/' + base):
@@ -173,7 +173,7 @@ def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
 
 
 def add_DEM(repDEM, repWorkIn, tile):
-    logger.debug("%s/*%s*/*", repDEM, tile)
+    logger.debug("%s/*%s*/*", repDEM.replace('[', '[[]'), tile)
     for fic in glob.glob(repDEM + "/S2_*%s*/*" % tile):
         base = os.path.basename(fic)
         if not os.path.exists(repWorkIn + '/' + base):
@@ -213,7 +213,7 @@ def unzipAndMoveL1C(L1Czipped, workdir, tile):
 
 def test_valid_L2A(L2A_DIR):
     # test validity of a Level2A product of MUSCATE type
-    JPIfile = glob.glob("%s/DATA/*_JPI_ALL.xml" % L2A_DIR)[0]
+    JPIfile = glob.glob("%s/DATA/*_JPI_ALL.xml" % L2A_DIR.replace('[', '[[]'))[0]
     valid = True
     try:
         with open(JPIfile) as f:
@@ -287,16 +287,16 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
 
     if options.zip:
         if orbit is not None:
-            listeProd = glob.glob(repL1 + "/S2?_MSIL1C*%s_T%s*.zip" % (orbit, tile))
+            listeProd = glob.glob(repL1.replace('[', '[[]') + "/S2?_MSIL1C*%s_T%s*.zip" % (orbit, tile))
         else:
-            listeProd = glob.glob(repL1 + "/S2?_MSIL1C*_T%s*.zip" % (tile))
+            listeProd = glob.glob(repL1.replace('[', '[[]') + "/S2?_MSIL1C*_T%s*.zip" % (tile))
     elif orbit is not None:
-        listeProd = glob.glob(repL1 + "/S2?_OPER_PRD_MSIL1C*%s_*.SAFE/GRANULE/*%s*" % (orbit, tile))
+        listeProd = glob.glob(repL1.replace('[', '[[]') + "/S2?_OPER_PRD_MSIL1C*%s_*.SAFE/GRANULE/*%s*" % (orbit, tile))
         listeProd = listeProd + \
-            glob.glob(repL1 + "/S2?_MSIL1C*%s_*.SAFE/GRANULE/*%s*" % (orbit, tile))
+            glob.glob(repL1.replace('[', '[[]') + "/S2?_MSIL1C*%s_*.SAFE/GRANULE/*%s*" % (orbit, tile))
     else:
-        listeProd = glob.glob(repL1 + "/S2?_OPER_PRD_MSIL1C*.SAFE/GRANULE/*%s*" % (tile))
-        listeProd = listeProd + glob.glob(repL1 + "/S2?_MSIL1C*.SAFE/GRANULE/*%s*" % (tile))
+        listeProd = glob.glob(repL1.replace('[', '[[]') + "/S2?_OPER_PRD_MSIL1C*.SAFE/GRANULE/*%s*" % (tile))
+        listeProd = listeProd + glob.glob(repL1.replace('[', '[[]') + "/S2?_MSIL1C*.SAFE/GRANULE/*%s*" % (tile))
 
     logger.debug("Liste prod %s", listeProd)
     # list of images to process
@@ -391,8 +391,8 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
         #logger.debug(glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[d])))
 
         # test existence of a L2 with MAJA name convention
-        nomL2init_Natif = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_Natif[d]))
-        nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[d]))
+        nomL2init_Natif = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[d]))
+        nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[d]))
         if len(nomL2init_Natif) > 0:
             derniereDate = d
             L2type = "Natif"
@@ -496,9 +496,9 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
                 logger.info("Using %s L2 type" % L2type)
                 for PreviousDate in dates_diff[0:i]:
                     if L2type == "Natif":
-                        nom_courant = "%s/%s" % (repL2, nomL2_par_dateImg_Natif[PreviousDate])
+                        nom_courant = "%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[PreviousDate])
                     elif L2type == "MUSCATE":
-                        nom_courant = "%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[PreviousDate])
+                        nom_courant = "%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[PreviousDate])
                     try:
                         logger.debug(nom_courant)
                         nomL2 = glob.glob(nom_courant)[0]
@@ -545,8 +545,8 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
                 os.system(commande)
 
             # check for errors in MAJA executions
-            nomL2init_Natif = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_Natif[d]))
-            nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2, nomL2_par_dateImg_MUSCATE[d]))
+            nomL2init_Natif = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[d]))
+            nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[d]))
             if len(nomL2init_Natif) > 0:
                 L2type = "Natif"
             elif len(nomL2init_MUSCATE) > 0:
