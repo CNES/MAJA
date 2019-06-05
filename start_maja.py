@@ -36,6 +36,7 @@ import shutil
 import sys
 import logging
 import zipfile
+import errno
 
 
 START_MAJA_VERSION = 3.1
@@ -136,6 +137,32 @@ def read_folders(fic_txt):
 
 # =============== Module to copy and link files
 
+def copy_or_link(src, dst, copy=True, log=False):
+    """
+    Copy or create a symbolic link from src to dst.
+    :param str src: path to the source file or directory
+    :param str dst: path to the destination directory
+    :param bool copy: if True, src is copied to dst, else src is linked to dst
+    :param bool log: if True, write a log message about the copy/link
+    """
+    if not copy:
+        if log:
+            logger.debug("Linking %s to %s", src, dst)
+        if not os.path.exists(dst):
+            os.symlink(src, dst)
+    else:
+        if log:
+            logger.debug("Copying %s to %s", src, dst)
+        if not os.path.exists(dst):
+            try:
+                shutil.copytree(src, dst)
+            except OSError as exc:
+                if exc.errno == errno.ENOTDIR:
+                    shutil.copy(src, dst)
+                else:
+                    raise
+
+
 # replace tile name in example files
 def replace_tile_name(fic_in, fic_out, tile_in, tile_out):
     with file(fic_in) as f_in:
@@ -147,42 +174,34 @@ def replace_tile_name(fic_in, fic_out, tile_in, tile_out):
                 f_out.write(l)
 
 
-def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams):
+def add_parameter_files(repGipp, repLUT, repWorkIn, tile, repCams, hardCopy):
 
     for fic in glob.glob(repGipp.replace('[', '[[]') + "/*"):
         base = os.path.basename(fic)
         if fic.find("36JTT") > 0:
             replace_tile_name(fic, repWorkIn + '/' + base.replace("36JTT", tile), "36JTT", tile)
         else:
-            logger.debug("Linking %s to %s", fic, repWorkIn + '/' + base)
-            if not os.path.exists(repWorkIn + '/' + base):
-                os.symlink(fic, os.path.join(repWorkIn, base))
+            copy_or_link(fic, os.path.join(repWorkIn, base), copy=hardCopy, log=True)
     for fic in glob.glob(repLUT.replace('[', '[[]') + "/*"):
         base = os.path.basename(fic)
-        logger.debug("Linking %self to %s", fic, repWorkIn + '/' + base)
-        if not os.path.exists(repWorkIn + '/' + base):
-            os.symlink(fic, os.path.join(repWorkIn, base))
+        copy_or_link(fic, os.path.join(repWorkIn, base), copy=hardCopy, log=True)
 
     # links for CAMS files
     if repCams is not None:
         for fic in glob.glob(os.path.join(repCams.replace('[', '[[]'), "*")):
             base = os.path.basename(fic)
-            #logger.debug("Linking %s in %s", fic, repWorkIn)
-            if not os.path.exists(repWorkIn + '/' + base):
-                os.symlink(fic, os.path.join(repWorkIn, base))
+            copy_or_link(fic, os.path.join(repWorkIn, base), copy=hardCopy, log=False)
 
 
-def add_DEM(repDEM, repWorkIn, tile):
+def add_DEM(repDEM, repWorkIn, tile, hardCopy):
     logger.debug("%s/*%s*/*", repDEM.replace('[', '[[]'), tile)
     for fic in glob.glob(repDEM + "/S2_*%s*/*" % tile):
         base = os.path.basename(fic)
-        if not os.path.exists(repWorkIn + '/' + base):
-            os.symlink(fic, os.path.join(repWorkIn, base))
+        copy_or_link(fic, os.path.join(repWorkIn, base), copy=hardCopy, log=False)
 
 
-def add_config_files(repConf, repWorkConf):
-    if not os.path.exists(repWorkConf):
-        os.symlink(repConf, repWorkConf)
+def add_config_files(repConf, repWorkConf, hardCopy):
+    copy_or_link(repConf, repWorkConf, copy=hardCopy, log=False)
 
 
 def manage_rep_cams(repCams, repCamsRaw, working_dir):
@@ -421,7 +440,7 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
         os.makedirs(repWork)
     if not (os.path.exists(repWork + "userconf")):
         #logger.debug("create %s userconf %s", repWork)
-        add_config_files(repConf, repWork + "userconf")
+        add_config_files(repConf, repWork + "userconf", hardCopy=options.hardCopy)
 
     logger.debug("derniereDate %s", derniereDate)
     for i in range(nb_dates):
@@ -435,15 +454,16 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
             # Mode Init
             if options.initMode is True:
                 logger.info("Processing in init mode ")
-                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
-                add_DEM(repDtm, repWork + "/in/", tile)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams, hardCopy=options.hardCopy)
+                add_DEM(repDtm, repWork + "/in/", tile, hardCopy=options.hardCopy)
                 # copy (or symlink) L1C
                 if options.zip:
                     unzipAndMoveL1C(prod_par_dateImg[d], repWork + "/in/", tile)
                 else:
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[d])):
-                        os.symlink(prod_par_dateImg[d],
-                                   repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
+                    copy_or_link(prod_par_dateImg[d],
+                                 repWork + "/in/" + os.path.basename(prod_par_dateImg[d]),
+                                 copy=options.hardCopy,
+                                 log=False)
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
                 commande = "%s %s -i %s -o %s -m L2INIT -ucs %s --TileId %s > %s 2>&1" % (
@@ -465,11 +485,12 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
                     if options.zip:
                         unzipAndMoveL1C(prod_par_dateImg[date_backward], repWork + "/in/", tile)
                     else:
-                        if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward])):
-                            os.symlink(prod_par_dateImg[date_backward],
-                                       repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward]))
-                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
-                add_DEM(repDtm, repWork + "/in/", tile)
+                        copy_or_link(prod_par_dateImg[date_backward],
+                                     repWork + "/in/" + os.path.basename(prod_par_dateImg[date_backward]),
+                                     copy=options.hardCopy,
+                                     log=False)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams, hardCopy=options.hardCopy)
+                add_DEM(repDtm, repWork + "/in/", tile, hardCopy=options.hardCopy)
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
@@ -511,27 +532,28 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
                 if options.zip:
                     unzipAndMoveL1C(prod_par_dateImg[d], repWork + "/in/", tile)
                 else:
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(prod_par_dateImg[d])):
-                        os.symlink(prod_par_dateImg[d],
-                                   repWork + "/in/" + os.path.basename(prod_par_dateImg[d]))
+                    copy_or_link(prod_par_dateImg[d],
+                                 repWork + "/in/" + os.path.basename(prod_par_dateImg[d]),
+                                 copy=options.hardCopy,
+                                 log=False)
                 # find type of L2A
                 if L2type == "Natif":
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2)):
-                        os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR")):
-                        os.symlink(nomL2.replace("DBL.DIR", "HDR"),
-                                   repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR"))
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2).replace("DIR", "")):
-                        os.symlink(nomL2.replace("DIR", ""), repWork + "/in/" +
-                                   os.path.basename(nomL2).replace("DIR", ""))
+                    copy_or_link(nomL2, repWork + "/in/" + os.path.basename(nomL2), copy=options.hardCopy, log=False)
+                    copy_or_link(nomL2.replace("DBL.DIR", "HDR"),
+                                 repWork + "/in/" + os.path.basename(nomL2).replace("DBL.DIR", "HDR"),
+                                 copy=options.hardCopy,
+                                 log=False)
+                    copy_or_link(nomL2.replace("DIR", ""), repWork + "/in/" +
+                                 os.path.basename(nomL2).replace("DIR", ""),
+                                 copy=options.hardCopy,
+                                 log=False)
                 elif L2type == "MUSCATE":
-                    if not os.path.exists(repWork + "/in/" + os.path.basename(nomL2)):
-                        os.symlink(nomL2, repWork + "/in/" + os.path.basename(nomL2))
+                    copy_or_link(nomL2, repWork + "/in/" + os.path.basename(nomL2), copy=options.hardCopy, log=False)
 
                 Maja_logfile = "%s/%s.log" % (repL2, os.path.basename(prod_par_dateImg[d]))
 
-                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams)
-                add_DEM(repDtm, repWork + "/in/", tile)
+                add_parameter_files(repGipp, repLUT, repWork + "/in/", tile, repCams, hardCopy=options.hardCopy)
+                add_DEM(repDtm, repWork + "/in/", tile, hardCopy=options.hardCopy)
 
                 logger.debug(os.listdir(os.path.join(repWork, "in")))
 
@@ -612,6 +634,9 @@ if __name__ == '__main__':
         parser.add_option("-z", "--zip", dest="zip", action="store_true",
                           help="input L1C are zip files", default=False)
 
+        parser.add_option("-c", "--hardCopy", dest="hardCopy", action="store_true",
+                          help="Hard copying the files instead of creating symbolic links", default=False)
+
         parser.add_option("-v", "--verbose", dest="verbose", action="store_true",
                           help="Will provide verbose start_maja logs", default=False)
 
@@ -641,7 +666,7 @@ if __name__ == '__main__':
     #remove possible leading T in tile number
     tile = options.tile
     if tile.startswith('T'):
-        tile=tile[1:]
+        tile = tile[1:]
     site = options.site
     orbit = options.orbit
     gipp = options.gipp
