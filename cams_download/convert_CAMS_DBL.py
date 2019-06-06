@@ -121,12 +121,12 @@ if __name__ == '__main__':
     # ========== command line
     if len(sys.argv) == 1:
         prog = os.path.basename(sys.argv[0])
-        print '      ' + sys.argv[0] + ' [options]'
-        print "     Aide : ", prog, " --help"
-        print "        ou : ", prog, " -h"
+        print ('      ' + sys.argv[0] + ' [options]')
+        print ("     Aide : ", prog, " --help")
+        print ("        ou : ", prog, " -h")
 
-        print "exemple : "
-        print "\t python %s -f folders.txt -c nominal -t 40KCB -s Reunion  -d 20160401 " % sys.argv[0]
+        print ("exemple : ")
+        print ("\t python %s -f folders.txt -c nominal -t 40KCB -s Reunion  -d 20160401 " % sys.argv[0])
         sys.exit(-1)
     else:
         usage = "usage: %prog [options] "

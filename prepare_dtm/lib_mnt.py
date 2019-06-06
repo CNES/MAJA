@@ -459,6 +459,7 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
         print(type(rep_mnt), type(fic))
         print(rep_mnt + '/' + fic)
         ficzip = fic.replace('tif', 'zip')
+        outfolder = ficzip.replace('.zip', '')
         if not os.path.exists(rep_mnt + '/' + ficzip):
             print("Need to download the file {0}".format(ficzip))
             try:
@@ -476,14 +477,14 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
         nom_mnt = tempfile.mkstemp(prefix="mnt_{}".format(nom_site), suffix=".tif", dir=working_dir)[1]
         commande = "gdal_merge.py -o " + nom_mnt
         for fic_mnt in liste_fic_mnt:
-            commande = commande + " " + pjoin(working_dir, fic_mnt) + " "
+            commande = commande + " " + pjoin(working_dir, outfolder, fic_mnt) + " "
         if os.path.exists(nom_mnt):
             os.remove(nom_mnt)
         print(commande)
         os.system(commande)
 
     elif len(liste_fic_mnt) == 1:
-        nom_mnt = pjoin(working_dir, liste_fic_mnt[0])
+        nom_mnt = pjoin(working_dir, outfolder, liste_fic_mnt[0])
     else:
         print("liste_fic_mnt is empty")
         raise ("ErreurDeParametreSite")

@@ -278,6 +278,6 @@ def process_one_file(aot_file, mr_file, rh_file, ncdf_dir, archive_dir):
 
     tree = ET.ElementTree(root)
     f = open(output_filename, "w")
-    f.write(ET.tostring(tree, pretty_print=True, xml_declaration=True,
-                        encoding="UTF-8"))
+    # f.write(ET.tostring(tree, pretty_print=True, xml_declaration=True,encoding="UTF-8"))
+    f.write(ET.tostring(tree, pretty_print=True, xml_declaration=True).decode('utf-8'))
     f.close()

@@ -73,7 +73,7 @@ def download_files(download_date, file_type, time, step, OutNames):
         nom_AOT = path_out + "/CAMS_AOT_" + date_name + \
             'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_AOT):
-            print 'Nom fichier de sortie AOT :', nom_AOT
+            print ('Nom fichier de sortie AOT :', nom_AOT)
             server.retrieve({
                 'stream': "oper",
                 'class': "mc",
@@ -101,7 +101,7 @@ def download_files(download_date, file_type, time, step, OutNames):
         nom_RH = path_out + "/CAMS_RH_" + date_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_RH):
-            print 'Nom fichier de sortie RH :', nom_RH
+            print ('Nom fichier de sortie RH :', nom_RH)
 
             server.retrieve({
                 'stream': "oper",
@@ -130,7 +130,7 @@ def download_files(download_date, file_type, time, step, OutNames):
         nom_MR = path_out + "/CAMS_MR_" + date_name + 'UTC' + \
             str(int(time)+int(step)).zfill(2) + '0000.nc'
         if not os.path.exists(nom_MR):
-            print 'Nom fichier de sortie mixRatios :', nom_MR
+            print ('Nom fichier de sortie mixRatios :', nom_MR)
             server.retrieve({
                 'stream': "oper",
                 'class': "mc",
@@ -162,10 +162,10 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
 
     ### CDO ###
     if split == 'cdo':
-        print '\n### CDO ###'
+        print ('\n### CDO ###')
 
         if file_type['surface'] == True:
-            print '\nSplit surface file daily'
+            print ('\nSplit surface file daily')
             # Extraction of UTC030000 or UTC150000, to add to output names created by cdo
             UTCtime = OutNames['surface'].split(month)[1].split('.')[0]
             # Extract output basename
@@ -178,7 +178,7 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
             # Add UTC030000 or UTC150000 to output files
             outFiles = glob.glob(outBaseName+'??.nc')
             if len(outFiles) == 0:
-                print 'ERROR: no output files from cdo'
+                print ('ERROR: no output files from cdo')
             else:
                 for f in outFiles:
                     fFinalName = f.split('.')[0]+UTCtime+'.nc'
@@ -186,7 +186,7 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
                     os.system(cmd)
 
         if file_type['pressure'] == True:
-            print '\nSplit pressure file daily'
+            print ('\nSplit pressure file daily')
             # Extraction of UTC030000 or UTC150000, to add to output names created by cdo
             UTCtime = OutNames['pressure'].split(month)[1].split('.')[0]
             # Extract output basename
@@ -199,7 +199,7 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
             # Add UTC030000 or UTC150000 to output files
             outFiles = glob.glob(outBaseName+'??.nc')
             if len(outFiles) == 0:
-                print 'ERROR: no output files from cdo'
+                print ('ERROR: no output files from cdo')
             else:
                 for f in outFiles:
                     fFinalName = f.split('.')[0]+UTCtime+'.nc'
@@ -207,7 +207,7 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
                     os.system(cmd)
 
         if file_type['model'] == True:
-            print '\nSplit model file daily'
+            print ('\nSplit model file daily')
             # Extraction of UTC030000 or UTC150000, to add to output names created by cdo
             UTCtime = OutNames['model'].split(month)[1].split('.')[0]
             # Extract output basename
@@ -220,7 +220,7 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
             # Add UTC030000 or UTC150000 to output files
             outFiles = glob.glob(outBaseName+'??.nc')
             if len(outFiles) == 0:
-                print 'ERROR: no output files from cdo'
+                print ('ERROR: no output files from cdo')
             else:
                 for f in outFiles:
                     fFinalName = f.split('.')[0]+UTCtime+'.nc'
@@ -229,20 +229,20 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
 
     ### NCKS ###
     if split == 'ncks':
-        print '\n### NCKS ###'
+        print ('\n### NCKS ###')
         # Create datetime objects to loop over each day of the month
         dt1 = datetime.datetime.strptime(startDate, '%Y%m%d')
         dt2 = datetime.datetime.strptime(lastDate, '%Y%m%d')
         nb_days = (dt2-dt1).days + 1
 
         if file_type['surface'] == True:
-            print '\nSplit surface file daily'
+            print ('\nSplit surface file daily')
             # Loop over days
             for i in range(nb_days):
                 dt = dt1 + datetime.timedelta(days=i)
                 daySplit = str(dt.year)+'-%02d' % (dt.month)+'-%02d' % (dt.day)
                 daySaved = str(dt.year)+'%02d' % (dt.month)+'%02d' % (dt.day)
-                print dt
+                print (dt)
 
                 # Split into daily file
                 cmd = 'ncks -O -d time,'+daySplit+','+daySplit+' ' + \
@@ -250,13 +250,13 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
                 os.system(cmd)
 
         if file_type['pressure'] == True:
-            print '\nSplit pressure file daily'
+            print ('\nSplit pressure file daily')
             # Loop over days
             for i in range(nb_days):
                 dt = dt1 + datetime.timedelta(days=i)
                 daySplit = str(dt.year)+'-%02d' % (dt.month)+'-%02d' % (dt.day)
                 daySaved = str(dt.year)+'%02d' % (dt.month)+'%02d' % (dt.day)
-                print dt
+                print (dt)
 
                 # Split into daily file
                 cmd = 'ncks -O -d time,'+daySplit+','+daySplit+' ' + \
@@ -264,13 +264,13 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
                 os.system(cmd)
 
         if file_type['model'] == True:
-            print '\nSplit model file daily'
+            print ('\nSplit model file daily')
             # Loop over days
             for i in range(nb_days):
                 dt = dt1 + datetime.timedelta(days=i)
                 daySplit = str(dt.year)+'-%02d' % (dt.month)+'-%02d' % (dt.day)
                 daySaved = str(dt.year)+'%02d' % (dt.month)+'%02d' % (dt.day)
-                print dt
+                print (dt)
 
                 # Split into daily file
                 cmd = 'ncks -O -d time,'+daySplit+','+daySplit+' ' + \
@@ -297,10 +297,10 @@ def split_daily(month, OutNames, file_type, startDate, lastDate, split):
 # ==================
 if len(sys.argv) == 1:
     prog = os.path.basename(sys.argv[0])
-    print '      '+sys.argv[0]+' [options]'
-    print "     Aide : ", prog, " --help"
-    print "        ou : ", prog, " -h"
-    print "example : python %s -d 20171101 -f 20171201 -a /mnt/data/DONNEES_AUX/CAMS_DBL/ -w /mnt/data/DONNEES_AUX/CAMS_TMP/ " % prog
+    print ('      '+sys.argv[0]+' [options]')
+    print ("     Aide : ", prog, " --help")
+    print ("        ou : ", prog, " -h")
+    print ("example : python %s -d 20171101 -f 20171201 -a /mnt/data/DONNEES_AUX/CAMS_DBL/ -w /mnt/data/DONNEES_AUX/CAMS_TMP/ " % prog)
     sys.exit(-1)
 else:
     usage = "usage: %prog [options] "

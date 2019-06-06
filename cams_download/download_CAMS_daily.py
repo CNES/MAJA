@@ -45,90 +45,89 @@ class OptionParser (optparse.OptionParser):
 ###########################################################################
 def download_files(dt,file_type,time,step,path_out):
 
+    date_courante = str(dt.year)+'%02d'%(dt.month)+'%02d'%(dt.day)
+    print('\nCurrent_date =',date_courante)
 
-	date_courante = str(dt.year)+'%02d'%(dt.month)+'%02d'%(dt.day)
-        print '\nCurrent_date =',date_courante
+    if file_type['surface'] == True:
+        #=================
+        #     Surface
+        # Recupere AOT a 550nm pour BC, SS, SU, DU, OM
+        #=================
+        nom_AOT = path_out + "/CAMS_AOT_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print ('Nom fichier de sortie AOT :',nom_AOT)
 
-        if file_type['surface'] == True:
-            #=================
-            #     Surface
-            # Recupere AOT a 550nm pour BC, SS, SU, DU, OM
-            #=================
-            nom_AOT = path_out + "/CAMS_AOT_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie AOT :',nom_AOT
+        server.retrieve({
+            'stream'  : "oper",
+            'class'   : "mc",
+            'dataset' : "cams_nrealtime",
+            'expver'  : '0001',
+            'step'    : step,
+            'levtype' : "SFC",
+            'date'    : date_courante,
+            'time'    : time,
+            'type'    : "fc",
+            'param'   : "208.210/209.210/210.210/211.210/212.210",
+            'area'    : "G",
+            'grid'    : "1.25/1.25",
+            'format'  : "netcdf",
+            'target'  : nom_AOT
+            })
+        #208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
 
-            server.retrieve({
-                'stream'  : "oper",
-                'class'   : "mc",
-                'dataset' : "cams_nrealtime",
-                'expver'  : '0001',
-                'step'    : step,
-                'levtype' : "SFC",
-                'date'    : date_courante,
-                'time'    : time,
-                'type'    : "fc",
-                'param'   : "208.210/209.210/210.210/211.210/212.210",
-                'area'    : "G",
-                'grid'    : "1.25/1.25",
-                'format'  : "netcdf",
-                'target'  : nom_AOT
-                })
-            #208.210/209.210/210.210/211.210/212.210 : AOT at 550nm for BC, SS, OM, SU, DU
+    if file_type['pressure'] == True:
+        #=========================
+        #     Pressure levels
+        #
+        # Recupere Relative Humidity RH
+        #=========================
+        nom_RH = path_out + "/CAMS_RH_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print ('Nom fichier de sortie RH :',nom_RH)
 
-        if file_type['pressure'] == True:
-            #=========================
-            #     Pressure levels
-            #
-            # Recupere Relative Humidity RH
-            #=========================
-            nom_RH = path_out + "/CAMS_RH_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie RH :',nom_RH
+        server.retrieve({
+              'stream'  : "oper",
+              'class'   : "mc",
+              'dataset' : "cams_nrealtime",
+              'expver'  : "0001",
+              'step'    : step,
+              'levtype' : "pl",
+              "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
+              'date'    : date_courante,
+              'time'    : time,
+              'type'    : "fc",
+              'param'   : "157.128",
+              'area'    : "G",
+              'grid'    : "1.25/1.25",
+              'format'  : "netcdf",
+              'target'  : nom_RH
+              })
 
-            server.retrieve({
-                  'stream'  : "oper",
-                  'class'   : "mc",
-                  'dataset' : "cams_nrealtime",
-                  'expver'  : "0001",
-                  'step'    : step,
-                  'levtype' : "pl",
-                  "levelist": "1/2/3/5/7/10/20/30/50/70/100/150/200/250/300/400/500/600/700/850/925/1000",
-                  'date'    : date_courante,
-                  'time'    : time,
-                  'type'    : "fc",
-                  'param'   : "157.128",
-                  'area'    : "G",
-                  'grid'    : "1.25/1.25",
-                  'format'  : "netcdf",
-                  'target'  : nom_RH
-                  })
+    if file_type['model'] == True:
+        #=========================
+        #     Model levels
+        #
+        # Recupere les mixing ratios : 3 bins DUST, 3 bins SEASALT, ORGANICMATTER hydrophile et hydrophobe, BLACKCARBON hydrophile et hydrophobe, et SULFATE.
+        #=========================
+        nom_MR = path_out + "/CAMS_MR_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
+        print ('Nom fichier de sortie mixRatios :',nom_MR)
 
-        if file_type['model'] == True:
-            #=========================
-            #     Model levels
-            #
-            # Recupere les mixing ratios : 3 bins DUST, 3 bins SEASALT, ORGANICMATTER hydrophile et hydrophobe, BLACKCARBON hydrophile et hydrophobe, et SULFATE.
-            #=========================
-            nom_MR = path_out + "/CAMS_MR_" + date_courante + 'UTC' + str(int(time)+int(step)).zfill(2) + '0000.nc'
-            print 'Nom fichier de sortie mixRatios :',nom_MR
-
-            server.retrieve({
-                'stream'  : "oper",
-                'class'   : "mc",
-                'dataset' : "cams_nrealtime",
-                'expver'  : "0001",
-                'step'    : step,
-                'levtype' : "ml",
-                "levelist": "1/to/60",
-                'date'    : date_courante,
-                'time'    : time,
-                'type'    : "fc",
-                'param'   : "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
-                'area'    : "G",
-                'grid'    : "1.25/1.25",
-                'format'  : "netcdf",
-                'target'  : nom_MR
-                })
-        return nom_AOT, nom_RH, nom_MR
+        server.retrieve({
+            'stream'  : "oper",
+            'class'   : "mc",
+            'dataset' : "cams_nrealtime",
+            'expver'  : "0001",
+            'step'    : step,
+            'levtype' : "ml",
+            "levelist": "1/to/60",
+            'date'    : date_courante,
+            'time'    : time,
+            'type'    : "fc",
+            'param'   : "1.210/2.210/3.210/4.210/5.210/6.210/7.210/8.210/9.210/10.210/11.210",
+            'area'    : "G",
+            'grid'    : "1.25/1.25",
+            'format'  : "netcdf",
+            'target'  : nom_MR
+            })
+    return nom_AOT, nom_RH, nom_MR
 
 
 #==============
@@ -161,10 +160,10 @@ def download_files(dt,file_type,time,step,path_out):
 #==================
 if len(sys.argv) == 1:
     prog = os.path.basename(sys.argv[0])
-    print '      '+sys.argv[0]+' [options]'
-    print "     Aide : ", prog, " --help"
-    print "        ou : ", prog, " -h"
-    print "example : python %s -d 20171101 -f 20171201 -a /mnt/data/DONNEES_AUX/CAMS_DBL/ -w /mnt/data/DONNEES_AUX/CAMS_TMP/ "%prog
+    print ('      '+sys.argv[0]+' [options]')
+    print ("     Aide : ", prog, " --help")
+    print ("        ou : ", prog, " -h")
+    print ("example : python %s -d 20171101 -f 20171201 -a /mnt/data/DONNEES_AUX/CAMS_DBL/ -w /mnt/data/DONNEES_AUX/CAMS_TMP/ "%prog)
     sys.exit(-1)
 else :
     usage = "usage: %prog [options] "
@@ -201,7 +200,7 @@ dt1 = datetime.datetime.strptime(options.start_date,'%Y%m%d')
 dt2 = datetime.datetime.strptime(options.end_date,'%Y%m%d')
 
 nb_days = (dt2-dt1).days + 1
-print '\nNumber of days =',nb_days
+print ('\nNumber of days =',nb_days)
 
 #Time de l'analyse voulue
 #Two possibilities :
@@ -230,9 +229,9 @@ file_type={'surface':True,'pressure':True,'model':True}
 #Boucle sur les jours a telecharger
 for i in range(nb_days):
         dt = dt1 + datetime.timedelta(days=i)
-        print "=================================="
-        print "Downloading files for date %s"%dt
-        print "=================================="
+        print ("==================================")
+        print ("Downloading files for date %s"%dt)
+        print ("==================================")
         for t in range(len(time)):
             (nom_AOT,nom_RH,nom_MR)=download_files(dt,file_type,time[t],step,path_out)
             #conversion to MAJA DBL/HDR format
