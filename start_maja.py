@@ -645,4 +645,4 @@ if __name__ == '__main__':
 
     nb_backward = 8  # number of images to process in backward mode
 
-start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, debug_mode)
+    start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, debug_mode)
