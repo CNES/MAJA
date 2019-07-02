@@ -57,8 +57,9 @@ class OptionParser(optparse.OptionParser):
 ###########################################################################
 
 
-def download_files(download_date, file_type, time, step, OutNames):
+def download_files(download_date, file_type, time, step, OutNames, dataset, expver):
 
+        
     if download_date.find('/TO/') >= 0:
         date_name = download_date[0:6]
         print("date_name %s" % date_name)
@@ -77,8 +78,8 @@ def download_files(download_date, file_type, time, step, OutNames):
             server.retrieve({
                 'stream': "oper",
                 'class': "mc",
-                'dataset': "cams_nrealtime",
-                'expver': '0001',
+                'dataset': dataset,
+                'expver': expver,
                 'step': step,
                 'levtype': "SFC",
                 'date': download_date,
@@ -315,6 +316,8 @@ else:
                       help="Path where the archive DBL files are stored")
     parser.add_option("-k", "--keep", dest="keep", action="store_true",
                       help="keep netcdf files", default=False)
+    parser.add_option("-r", "--reanalysis", dest="NRT", action="store_false",
+                      help="get reanalysis instead of NRT", default=True)
     parser.add_option("-s", "--split_mode", dest="split_mode", action="store", type="choice",
                       choices=['cdo', 'ncks'], help="Option to split monthly file into daily files (using 'cdo' or 'ncks' , default:cdo)", default='cdo')
 
@@ -331,6 +334,20 @@ else:
 # ====================
 #     PARAMETERS
 # ====================
+
+if options.NRT==True:
+    dataset="cams_nrealtime"
+    expver='0001'
+    # Analysis times
+    # Two possibilities :
+    # - 00:00:00 UTC (minuit)
+    # - 12:00:00 UTC (midi)
+
+    time = ["00", "12"]
+else:
+    dataset="cams_reanalysis"
+    expver='eac4'
+    time = ["00", "03", "06", "09", "12", "15", "18", "21"]
 
 
 # Create date objects
@@ -358,12 +375,7 @@ print('Number of days =%s' % nb_days)
 nb_months = relativedelta(dt2, dt1).months+(dt2.year - dt1.year)*12+1
 print('Number of months =%s' % nb_months)
 
-# Analysis times
-# Two possibilities :
-# - 00:00:00 UTC (minuit)
-# - 12:00:00 UTC (midi)
 
-time = ["00", "12"]
 
 # Forcast times
 # step = 3 corresponds to preisions, 3h after analysis.
@@ -421,7 +433,7 @@ elif mode == "monthly":
                 'UTC' + str(int(time[t])+int(step)).zfill(2) + '0000.nc'
             # Download CAMS files from ECMWFDataServer
             (nom_AOT, nom_RH, nom_MR) = download_files(
-                requestDates, file_type, time[t], step, OutNames)
+                requestDates, file_type, time[t], step, OutNames, dataset, expver)
 
             # Split monthly files into daily files
             split_daily(month, OutNames, file_type, startDate, lastDate, options.split_mode)
