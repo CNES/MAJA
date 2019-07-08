@@ -220,17 +220,18 @@ def test_valid_L2A(L2A_DIR):
             for ligne in f:
                 if ligne.find("<Value>L2NOTV</Value>") >= 0:
                     valid = False
-                    prod_name = os.path.basename(L2A_DIR)
-                    dir_name = os.path.dirname(L2A_DIR)
-                    if not(os.path.exists(dir_name+"/L2NOTV_"+prod_name)):
-                        os.rename(L2A_DIR, dir_name+"/L2NOTV_"+prod_name)
-                    else:
-                        shutil.rmtree(dir_name+"/L2NOTV_"+prod_name)
-                        os.rename(L2A_DIR, dir_name+"/L2NOTV_"+prod_name)
-                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                    print(
-                        "L2A product %s is not valid (probably due to too many clouds or No_data values)" % dir_name)
-                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        if valid is False:
+            prod_name = os.path.basename(L2A_DIR)
+            dir_name = os.path.dirname(L2A_DIR)
+            if not(os.path.exists(dir_name+"/L2NOTV_"+prod_name)):
+                os.rename(L2A_DIR, dir_name+"/L2NOTV_"+prod_name)
+            else:
+                shutil.rmtree(dir_name+"/L2NOTV_"+prod_name)
+                os.rename(L2A_DIR, dir_name+"/L2NOTV_"+prod_name)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print(
+                "L2A product %s is not valid (probably due to too many clouds or No_data values)" % dir_name)
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     except IOError:
         valid = False
@@ -394,12 +395,17 @@ def start_maja(folder_file, gipp, lut, site, tile, orbit, nb_backward, options, 
         nomL2init_Natif = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[d]))
         nomL2init_MUSCATE = glob.glob("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[d]))
         if len(nomL2init_Natif) > 0:
+            logger.info("L2A found %s"%("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[d])))
             derniereDate = d
             L2type = "Natif"
 
         elif len(nomL2init_MUSCATE) > 0:
+            logger.info("L2A found %s"%("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[d])))
             L2type = "MUSCATE"
             derniereDate = d
+        else:
+            logger.info(" %s not found"%("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_Natif[d])))
+            logger.info(" %s not found"%("%s/%s" % (repL2.replace('[', '[[]'), nomL2_par_dateImg_MUSCATE[d])))
 
     if derniereDate == "":
         logger.info("No existing L2 product, we start with backward mode")
