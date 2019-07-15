@@ -487,9 +487,9 @@ def fusion_mnt(liste_fic_mnt, liste_fic_eau, liste_centre_eau, rep_mnt, rep_swbd
         os.system(commande)
 
     elif len(liste_fic_mnt) == 1:
-        if os.path.exists(pjoin(working_dir, outfolder, fic_mnt)):
+        if os.path.exists(pjoin(working_dir, outfolder, liste_fic_mnt[0])):
             nom_mnt = pjoin(working_dir, outfolder, liste_fic_mnt[0])
-        elif os.path.exists(pjoin(working_dir, fic_mnt)):
+        elif os.path.exists(pjoin(working_dir, liste_fic_mnt[0])):
             nom_mnt = pjoin(working_dir, liste_fic_mnt[0])
     else:
         print("liste_fic_mnt is empty")
