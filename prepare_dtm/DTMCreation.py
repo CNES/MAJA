@@ -207,9 +207,17 @@ class DTMCreator():
             ULY = str(tree.xpath(xpathULY, namespaces=namespace)[0].text)
             #Get TileID
             tileFilenameItems = tileFilename.split("_")
-            assert len(tileFilenameItems) == 11
-            assert tileFilenameItems[9][0] == "T"
-            tileName = str(tileFilenameItems[9][1:])
+            try:    # [JC] for fix_issue26
+                tileName = ""
+                for s in range(len(tileFilenameItems)):
+                    if re.match(r"T[0-9]{2}[A-Z]{3}", tileFilenameItems[s]):
+                        tileName = str(tileFilenameItems[s][1:])
+
+                    assert bool(re.match(r"[0-9]{2}[A-Z]{3}", tileName))
+
+            except AssertionError:
+                print("ERROR: no string matching tile name pattern found in %s" % tileFilename)
+                sys.exit(1)
             #EPSG_out e.g. 32632
             assert CSCode[0:4] == "EPSG"
             EPSGOut = int(CSCode[5:])
