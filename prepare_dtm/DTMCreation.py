@@ -213,7 +213,7 @@ class DTMCreator():
                     if re.match(r"T[0-9]{2}[A-Z]{3}", tileFilenameItems[s]):
                         tileName = str(tileFilenameItems[s][1:])
 
-                    assert bool(re.match(r"[0-9]{2}[A-Z]{3}", tileName))
+                        assert bool(re.match(r"[0-9]{2}[A-Z]{3}", tileName))
 
             except AssertionError:
                 print("ERROR: no string matching tile name pattern found in %s" % tileFilename)
