@@ -52,7 +52,7 @@ Running the DTMCreation needs therefore the following parameters:
 * -g: Granule- or Tile-ID (e.g. 29RPQ)
 
 ```
-python DTMCreation.py -k ~/Downloads/S2A_OPER_GIP_TILPAR_MPC__20151209T095117_V20150622T000000_21000101T000000_B00.kml -g 29RPQ -s ~/MAJA/DTM/Creation/SRTM/ -w ~/MAJA/DTM/Creation/Water/ -o ~/MAJA/DTM/29RPQ
+python DTMCreation.py -k S2A_OPER_GIP_TILPAR_MPC__20151209T095117_V20150622T000000_21000101T000000_B00.kml -g 20LPP -s /work/CESBIO/projects/Maja/SRTM/ -w /work/CESBIO/projects/Maja/SWBD/ -o ../DTM
 ```
 
 ### Manual operation
