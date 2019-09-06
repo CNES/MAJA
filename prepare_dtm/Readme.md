@@ -37,7 +37,7 @@ python DTMCreation.py --help
 The following line executes the DTM creation for the example tile 29RPQ with an L1 product downloaded from [peps.cnes.fr](https://peps.cnes.fr/rocket/#/home) (using [peps-download](https://github.com/olivierhagolle/peps_download)):
 
 ```
-python DTMCreation.py -i S2A_MSIL1C_20180706T110621_N0206_R137_T29RPQ_20180706T132942.SAFE/ -s ~/MAJA/DTM/SRTM/ -w ~/MAJA/DTM/Water/ -o ~/MAJA/DTM/29RPQ
+python DTMCreation.py -i S2A_MSIL1C_20180706T110621_N0206_R137_T29RPQ_20180706T132942.SAFE/ -s ~/MAJA/DTM/SRTM/ -w ~/MAJA/DTM/Water/ -o ~/MAJA/DTM/
 ```
 
 ### DTMCreation-tool using the Sentinel2 tiling grid kml
