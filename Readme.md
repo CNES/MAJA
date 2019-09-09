@@ -247,8 +247,8 @@ The tool needs a lot of configuration files which are provided in three director
 **GIPP**
 
 We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
-- Parameters without CAMS :http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_S2_MAJA_3.3_TM
-- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/GIPP_S2_MAJA_3.3_TM_CAMS
+- Parameters without CAMS : http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/SENTINEL2_TM_CAMS
+- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/SENTINEL2_TM
 
 You can retrieve the data with command lines using git
 '''
