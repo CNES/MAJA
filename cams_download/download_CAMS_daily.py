@@ -1,26 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Downloads necessary CAMS data for MAJA and converts them into MAJA input format
-Written by B.Rouquie, O.Hagolle, CESBIO/CNES
+Copyright (C) CNES, CS-SI, CESBIO - All Rights Reserved
+This file is subject to the terms and conditions defined in
+file 'LICENSE.md', which is part of this source code package.
 
-#==================== Copyright
-Software downloads_CAMS_daily.py
-
-Copyright© 2018 Centre National d’Etudes Spatiales
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License version 3
-as published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this program.  If not, see
-https://www.gnu.org/licenses/gpl-3.0.fr.html
+Author:         Peter KETTIG <peter.kettig@cnes.fr>,
+                Bastien ROUQUIE (CESBIO),
+                Olivier HAGOLLE (CESBIO)
+Project:        Start-MAJA, CNES
 """
 
 import os
@@ -29,6 +17,9 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
 
 def download_files(dt, file_type, t_hour, step, path_out):
+    """
+    Downloads necessary CAMS data for MAJA and converts them into MAJA input format
+    """
     from ecmwfapi import ECMWFDataServer
     from datetime import datetime
 

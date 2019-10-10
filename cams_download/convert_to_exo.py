@@ -1,9 +1,13 @@
-# -*- coding: utf-8 -*-6
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-:author: Alexia Mondot
-:copyright: 2018 CNES. All rights reserved.
-:license: license
-:created: 27 Mar 2018
+Copyright (C) CNES, CS-SI, CESBIO - All Rights Reserved
+This file is subject to the terms and conditions defined in
+file 'LICENSE.md', which is part of this source code package.
+
+Author:         Peter KETTIG <peter.kettig@cnes.fr>,
+                Alexia MONDOT (CS-SI)
+Project:        Start-MAJA, CNES
 """
 
 from __future__ import absolute_import

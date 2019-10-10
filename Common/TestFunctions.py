@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul  5 17:42:44 2018
+Copyright (C) CNES, CS-SI, CESBIO - All Rights Reserved
+This file is subject to the terms and conditions defined in
+file 'LICENSE.md', which is part of this source code package.
 
-@author: akynos
+Author:         Peter KETTIG <peter.kettig@cnes.fr>,
+Project:        Start-MAJA, CNES
 """
 
 
