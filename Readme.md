@@ -1,4 +1,4 @@
-<img  title="logo CNES" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2015/11/logo_cnes.jpg" alt="" width="130"  /> <img  title="logo CESBIO" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2015/11/logo_cesbio.png" alt="" width="110"  /> <img  title="logo DLR" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2015/11/logo_DLR.jpg" alt="" width="90"  /> <img  title="logo MAJA" src="http://www.cesbio.ups-tlse.fr/multitemp/wp-content/uploads/2015/11/logo_maja.png" alt="" width="80"  /> 
+<img  title="logo CNES" src="https://github.com/petket-5/Start_maja_int/blob/181205_start_maja_reprog/images/start_maja_cnes.png" alt="" width="80"  /> <img  title="logo CESBIO" src="https://github.com/petket-5/Start_maja_int/blob/181205_start_maja_reprog/images/start_maja_cesbio.png" alt="" width="80"  /> <img  title="logo DLR" src="https://github.com/petket-5/Start_maja_int/blob/181205_start_maja_reprog/images/start_maja_dlr.png" alt="" width="80"  /> <img  title="logo MAJA" src="https://github.com/petket-5/Start_maja_int/blob/181205_start_maja_reprog/images/start_maja_maja.png" alt="" width="80"  /> 
 
 # Content
 
