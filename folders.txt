@@ -1,6 +1,8 @@
-repCode=/home/hagolleo/PROG/S2/Start_MAJA
-repWork=/mnt/data/SENTINEL2/MAJA
-repL1  =/mnt/data/SENTINEL2/L1C_PDGS
-repL2  =/mnt/data/SENTINEL2/L2A_MAJA
-repMaja=/home/hagolleo/PROG/S2/MAJA/Install/maja/3.1.2/bin/maja
-repCAMS=/mnt/data/CAMS
+[PATH]
+repWork=./maja
+repGipp=./gipp
+repMnt=/work/Maja/DTM
+repL1  =/datalake/S2-L1C
+repL2  =L2-Products
+exeMaja=/opt/Maja-3.3.1_TM/bin/maja
+#exeMaja=/home/akynos/AnacondaProjects36/Maja-4.0/install/maja/4.0.0/bin/maja

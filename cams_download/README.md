@@ -1,12 +1,6 @@
-# download CAMS aerosol data
+# download_CAMS
 
-This tool is designed to download daily CAMS near-real-time forecast products from ECMWF. Otherwise, the graphical interface provided by ECMWF is available here: http://apps.ecmwf.int/datasets/data/macc-nrealtime/levtype=sfc/. We are providing two tools to download CAMS data and package them as expected by MAJA.
-
-download_CAMS_daily.py downloads CAMS data day per day (ane even twice a day). But with a standard ECMWF account, it is slow. It takes currently (Feb 2019) about a day to download a day.
-
-download_CAMS.py downloads monthly files, and splits them into daily files, except for the current month which is still downloaded daily. It can download several months per day. To split the monthly files into daily files, it is necessary to install netCDF utilities, either :
-- [cdo, within the nco package](https://code.mpimet.mpg.de/projects/cdo) (by default)
-- ncks netCDF kitchen sink (which does not seem to be well maintained anymore, sorry if we are wrong)
+This tool is designed to download daily CAMS near-real-time forecast products from ECMWF. Otherwise, the graphical interface provided by ECMWF is available here: http://apps.ecmwf.int/datasets/data/macc-nrealtime/levtype=sfc/
 
 The tool downloads several types of fields :
 - the Aerosol Optical Thickness AOT, for 5 types of aerosols, which are stored in the AOT file
@@ -20,9 +14,7 @@ CAMS_MR_yyyymmdd_UTC_hhmm.nc
 CAMS_RH_yyyymmdd_UTC_hhmm.nc
 ```
 
-The files are then converted in one archive using the Earth Explorer format, which was selected as the standard format for MAJA external data. We have a HDR xml file, and a bzipped DBL archive, which contains the three files above for a given time and date. (I regret this choice which complexifies the use of data within MAJA, compared to using the plain netCDF files, but it the current situation)
-
-
+The files are then converted in one archive using the Earth Explorer format, which was selected as the standard format for MAJA external data. 
 
 # Configuration
 
@@ -45,10 +37,6 @@ The files are then converted in one archive using the Earth Explorer format, whi
 
 `python download_CAMS_daily.py -d 20180101 -f 20180102  -w /path/to/my/CAMSfolderNetCDF -a  /path/to/my/CAMSfolderNetDBL`
 
-or
-
-`python download_CAMS.py -d 20180101 -f 20180102  -w /path/to/my/CAMSfolderNetCDF -a  /path/to/my/CAMSfolderNetDBL`
-
 
 # Parameters
 
@@ -61,6 +49,7 @@ The user can choose the following parameters with the command line:
  - w: path to folder where netcdf data are stored (can be considered as a temporary file)
  - a: path to folder where DBL/HDR files are stored
  - k: to keep the netcdf files
+ - p: The platform identifier
 
 Other parameters could be accessed within the code :
 
@@ -86,6 +75,13 @@ duaod550	  Dust Aerosol Optical Depth at 550nm
 omaod550	  OrganicMatter Aerosol Optical Depth at 550nm
 ```
 
+From 2019/07/10 onwards, the format changed. The follwing AOT models were added:
+```
+Variable name     Description
+niaod550          Nitrate Aerosol Optical Depth at 550nm
+amaod550          Ammonium Aerosol Optical Depth at 550nm
+```
+
  - Model files: mass Mixing Ratios (MR: expressed in kg of aerosol per kg of dry air [kg/kg]) of the aerosol models at 60 different altitude levels (model levels).
 ```
 Variable name	  Description
@@ -100,6 +96,14 @@ aermr08		  Hydrophilic Organic Matter Aerosol Mixing Ratio
 aermr09		  Hydrophobic Black Carbon Aerosol Mixing Ratio
 aermr10		  Hydrophilic Black Carbon Aerosol Mixing Ratio
 aermr11		  Sulphate Aerosol Mixing Ratio
+```
+
+From 2019/07/10 onwards, the format changed. The follwing mixing ratios were added:
+```
+Variable name     Description
+aermr16           Nitrate fine mode aerosol mass mixing ratio
+aermr17           Nitrate coarse mode aerosol mass mixing ratio
+aermr18           Ammonium aerosol mass mixing ratio
 ```
 
  - Pressure files: Relative Humidity (RH: expressed in %) at 22 different altitude levels (pressure levels).

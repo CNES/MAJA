@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 /************************************************************************************************************
  *                                                                                                          *
@@ -61,7 +61,7 @@
       </GRID_Reference_Altitudes>
       <Atmospheric_Absorption_Correction>
         <!-- Option to use default constant value available in GIPP instead of meteorological data to determine the ozone amount -->
-        <Use_Default_Constant_Ozone_Amount>false</Use_Default_Constant_Ozone_Amount>
+        <Use_Default_Constant_Ozone_Amount>true</Use_Default_Constant_Ozone_Amount>
       </Atmospheric_Absorption_Correction>
     </Algorithms>
 </Config>

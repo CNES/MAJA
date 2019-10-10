@@ -2,11 +2,13 @@
 
 from datetime import datetime as dt
 
+
 def datetimeToString(timestamp):
     """
     @brief Convert datetime to string %Y-%m-%dT%H:%M:%S.%f
     """
     return timestamp.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
 
 def datetimeToStringShort(timestamp):
     """
@@ -14,11 +16,13 @@ def datetimeToStringShort(timestamp):
     """
     return timestamp.strftime("%Y%m%d")
 
+
 def datetimeToStringName(timestamp):
     """
     @brief Convert datetime to string YYYYMMDD
     """
     return timestamp.strftime("%Y%m%d-%H%M%S-%f")[:-3]
+
 
 def stringToDatetime(s):
     """

@@ -2,6 +2,9 @@
 
 # Content
 
+[![Build Status](https://travis-ci.com/petket-5/Start_maja_int.svg?branch=181205_start_maja_reprog)](https://travis-ci.com/petket-5/Start_maja_int)
+[![Coverage Status](https://coveralls.io/repos/github/petket-5/Start_maja_int/badge.svg)](https://coveralls.io/github/petket-5/Start_maja_int)
+
 1. [Introduction](#intro)
 2. [System](#System)
 3. [Change log](#ChangeLog)
@@ -150,41 +153,36 @@ The description below will explain how to process a set of data above tile 31TFJ
 - To use the start_maja script, you need to configure the directories, within the folder.txt file.
 Here is my own configuration, also provided in the folders.txt file in this repository.
 ```
-repCode=/mnt/data/home/hagolleo/PROG/S2/lance_maja
-repWork=/mnt/data/SENTINEL2/MAJA
-repL1  =/mnt/data/SENTINEL2/L1C_PDGS
+[PATH]
+repWork=maja-work
+repGipp=maja-gipp
+repMnt=/work/Maja/DTM
+repL1  =/datalake/S2-L1C
 repL2  =/mnt/data/SENTINEL2/L2A_MAJA
-repMaja=/mnt/data/home/hagolleo/MAJA/3.3/bin/maja
-repCAMS  =/mnt/data/SENTINEL2/CAMS
+exeMaja=/opt/Maja_3.3.1/bin/maja
+repCAMS=/mnt/data/CAMS
 ```
-- repCode is where Start_maja.py is stored, together with the DTM, userconf and GIPP directories
 - repWork is a directory to store the temporary files
-- repL1 is where to find the L1C data (without the site name which is added aferward)
-  - Les produits SAFE doivent donc être stockés à l'emplacement suivant : repL1  = repL1/site
-- repL2 is for the L2A data (without the site name which is added aferward)
-- repMAJA is where the Maja binary code is
-- repCAMS is where CAMS data are stored
+- repL1 is where to find the L1C data (without the site name which is added aferward optionally)
+  - Les produits .SAFE doivent donc être stockés à l'emplacement suivant : repL1  = repL1/site
+- repL2 is for the L2A data (without the site name which is added aferwards, optionally again)
+- exeMaja is where the Maja binary code is
+- repCAMS is where CAMS data are stored. You do not need to specify this directory.
 
-- Start_MAJA expects the presence of several directories and files in the Start_Maja folder.
 ```
 #files downloaded grom github
-Readme.md       #This readme
-start_maja.py   #orchestrator 
-cams_download/  #utilities to downlaod cams data
-Common/         #some common libraries
-Prepare_DTM/    #modules to prepare DTM files
-useconf/        #folder which contains configuration files for MAJA
-
-# Some folders to add (see below how to get these files)
-DTM/             #to store the DEM files necessary as input to MAJA
-GIPP_S2AS2B_xxx/ #parameter files (see above)
-LUT_S2AS2B_xxx/  #LUT (look-up tables) files
-
+Readme.md       # This readme
+start_maja.py   # Orchestrator 
+cams_download/  # Utilities to downlaod cams data
+Common/         # Common libraries
+prepare_dtm/    # Modules to prepare DTM files
+userconf/        # Folder which contains configuration files for MAJA
 ```
 
 To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode.
-<details><summary>Folder structure...</summary>
+<details><summary>Click to expand folder structure. </summary>
 <p>
+To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode:
 
 ```
 S2A_MSIL1C_20180316T103021_N0206_R108_T32TMR_20180316T123927.SAFE
@@ -223,7 +221,10 @@ S2__TEST_AUX_REFDE2_T32TMR_0001.HDR
 S2__TEST_GIP_L2SITE_S_31TJF____10001_00000000_99999999.EEF
 ```
 
-The .SAFE file is the input product. THE L2VALD files are the L2A product, which is the result from a previous execution  of MAJA. The files with GIP are parameter files for S2A and S2B, that you will find in this repository. The REFDE2 files are the DTM files. How to obtain them is explained below. 
+* .SAFE file is the input product
+* L2VALD files are the L2A products, which is the result from a previous execution  of MAJA
+* GIP are parameter files for S2A and S2B, that you will find in this repository
+* REFDE2 files are the DTM files. How to obtain them is explained in `prepare_dtm`. 
 
 A "userconf" folder is also necessary, but it is also provided in this repository.
 
@@ -231,7 +232,7 @@ A "userconf" folder is also necessary, but it is also provided in this repositor
 </details>
 
 ## Retrieve Sentinel-2 L1C data.
-The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended : https://github.com/olivierhagolle/peps_download
+The use of peps_download.py to download Sentinel-2 L1C products is recommended : https://github.com/olivierhagolle/peps_download
 
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 `python ./peps_download.py -c S2ST -l 'Avignon' -a peps.txt -d 2017-01-01 -f 2017-04-01 -w /path/to/L1C_DATA/Avignon`
@@ -241,6 +242,7 @@ The use of peps_download.py to download Sentinel-2 L1c PRODUCTS is recommended :
 - Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
 <a name="parameters"></a>
+
 ## Parameters
 The tool needs a lot of configuration files which are provided in three directories "userconf", "GIPP_S2AS2B_xxx" LUT_S2AS2B_xxx. I tend to never change the "userconf", the Look_up tables in the LUT directory depend on the satellitre, but do not change frequently with time, but the GIPP_S2AS2B, which contains the parameters, may  change often. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
 
@@ -271,13 +273,9 @@ tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190411.tgz
 The file is a rather big one, 1GB, so downloading it will take a while. But as you are prepared to process time series of Sentinel-2, I know you have a good network and a lot of disk space.
 
 
-
 ## Create DTM
 A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. A tool exists to create this DTM, [it is available in the "prepare_dtm" folder](https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md).
 
-
-Follow DTM generation instructions : https://github.com/CNES/Start-MAJA/blob/master/prepare_dtm/Readme.md
-Copy DTM in "DTM" folder within Start_Maja folder.
 
 ## Download CAMS data
 if you intend to use the data from Copernicus Atmosphere Monitoring Service (CAMS), that we use to get an information on the aerosol type, you will need to download the CAMS data. 
@@ -290,13 +288,11 @@ if you want to use CAMS option, follow cams_download tool instructions : https:/
 
 Here is an example of command line
 ```
-Usage   : python ./start_maja.py -f <folder_file>-c <context> -t <tile name> -s <Site Name> -d <start date>
-Example : python ./start_maja.py -f folders.txt -g GIPP_S2AS2B_xxx -l LUT_S2AS2B -t 31TFJ -s Avignon -d 20170101 -e 20180101
+Usage   : python ./start_maja.py -f <folder_file> -t <tile name> -s <Site Name> -d <start date>
+Example : python ./start_maja.py -f folders.txt -t 31TFJ -s Avignon -d 20170101 -e 20180101
 ```
 Description of command line options :
 * -f provides the folders filename
-* -g defines GIPP folder, which is searched in repCode. MAJA uses the GIPP files contained in GIPP_S2AS2B_xxx directory. The L2A products will be created in rep_L2/Site/Tile/GIPP_xxx folder 
-* -l is the LUT folder
 * -t is the tile number
 * -s is the site name
 * -d (aaaammdd) is the first date to process within the time series

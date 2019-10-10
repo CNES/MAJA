@@ -1,0 +1,2 @@
+This is free software under the GPL v3 licence. See
+http://www.gnu.org/licenses/gpl-3.0.html for details.
