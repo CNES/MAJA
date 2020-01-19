@@ -13,7 +13,7 @@
 6. [start_maja user_manual](#User_manual)
 8. [Questions](#Questions)
 
-<a href="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png"><img  title="Ambaro Bay, Madagascar" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png" alt="" width="300" height="300" align="left"  /></a>
+<a href="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png"><img  title="Ambaro Bay, Madagascar" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png" alt="" width="300" height="300" align="center"  /></a>
 
 <a name="intro"></a>
 # Introduction
