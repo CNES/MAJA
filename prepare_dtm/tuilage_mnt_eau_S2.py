@@ -81,7 +81,8 @@ class TuilageSentinel(object):
     
     def run(self, dirInSRTM, dirInWater, dirOut, dirOutWater, resolution, site, mnt, waterOnly, wdir = None, water_zipped = False):
         from math import ceil, floor
-        from osgeo import osr
+        from osgeo import osr, ogr
+        from shapely.geometry import Polygon
         os.environ['LC_NUMERIC'] = 'C'
         # lecture du fichier de paramètres et du fichier site
         (rep_mnt_in, rep_mnt, rep_swbd, rep_eau) = (dirInSRTM, dirOut, dirInWater, dirOutWater)
@@ -105,27 +106,47 @@ class TuilageSentinel(object):
         lr_latlon = transform.TransformPoint(lrx_site, lry_site, 0)
         
         liste_fic_mnt = []
-        
+
         ############# MNT SRTM du CGIAR
         if mnt == "SRTM":
             # liste des fichiers SRTM nécessaires
             if (ul_latlon[1]) > 60 or (lr_latlon[1] > 60):
                 print("#################################################")
-                print("latitude supérieure à 60 degrés, pas de donnees SRTM")
+                print("latitude supérieure à 60 degrés, donnees ArcticDEM")
                 print("#################################################")
-                sys.exit(-3)
-        
-            ul_latlon_srtm = [int(int(ul_latlon[0] + 180) / 5 + 1), int(int(60 - ul_latlon[1]) / 5 + 1)]
-            lr_latlon_srtm = [int(int(lr_latlon[0] + 180) / 5 + 1), int(int(60 - lr_latlon[1]) / 5 + 1)]
-            print(ul_latlon_srtm)
-            print(lr_latlon_srtm)
-            for x in range(ul_latlon_srtm[0], lr_latlon_srtm[0] + 1):
-                for y in range(ul_latlon_srtm[1], lr_latlon_srtm[1] + 1):
-                    liste_fic_mnt.append("srtm_%02d_%02d.tif" % (x, y))
-        
-            print(ul_latlon, lr_latlon)
-            print(ul_latlon_srtm, lr_latlon_srtm)
-            print(liste_fic_mnt)
+
+                # ARCTIC DEM
+                rep_mnt_in = os.path.join(rep_mnt_in, 'arcticDEM')
+
+                index_arctic = os.path.join(dirInSRTM, 'arcticDEM/arcticDEM_index_4326.shp')
+                driver = ogr.GetDriverByName('ESRI Shapefile')
+                geom = driver.Open(index_arctic)
+                layer = geom.GetLayer()
+                for la in layer:
+                    g = la.GetGeometryRef()
+                    tile = la.GetField('TILE')
+                    xmin, xmax, ymin, ymax = g.GetEnvelope()
+
+                    p1 = Polygon([(xmin, ymax), (xmax, ymax), (xmax, ymin), (xmin, ymin)])
+                    p2 = Polygon([(ul_latlon[0], ul_latlon[1]), (lr_latlon[0], ul_latlon[1]), (lr_latlon[0], lr_latlon[1]), (ul_latlon[0], lr_latlon[1])])
+                    if p1.intersects(p2):
+                        liste_fic_mnt.append('{0:s}_32m_v3.0_reg_dem.tif'.format(tile))
+            else:
+                print("#################################################")
+                print("latitude supérieure à 60 degrés, donnees SRTM")
+                print("#################################################")
+
+                ul_latlon_srtm = [int(int(ul_latlon[0] + 180) / 5 + 1), int(int(60 - ul_latlon[1]) / 5 + 1)]
+                lr_latlon_srtm = [int(int(lr_latlon[0] + 180) / 5 + 1), int(int(60 - lr_latlon[1]) / 5 + 1)]
+                print(ul_latlon_srtm)
+                print(lr_latlon_srtm)
+                for x in range(ul_latlon_srtm[0], lr_latlon_srtm[0] + 1):
+                    for y in range(ul_latlon_srtm[1], lr_latlon_srtm[1] + 1):
+                        liste_fic_mnt.append("srtm_%02d_%02d.tif" % (x, y))
+
+                print(ul_latlon, lr_latlon)
+                print(ul_latlon_srtm, lr_latlon_srtm)
+                print(liste_fic_mnt)
         
         ########## MNT Planet Observer
         elif mnt == "PO":

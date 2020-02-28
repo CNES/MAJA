@@ -403,7 +403,8 @@ class classe_mnt:
         fic_hdr_eau = rac_eau + '.hdr'
         fic_eau = rac_eau + '.eau'
 
-        rac_mnt = rep + rac + '_' + str(self.res) + 'm'
+        # rac_mnt = rep + rac + '_' + str(self.res) + 'm'
+        rac_mnt = rep + '_' + str(self.res) + 'm'
         fic_hdr_mnt = rac_mnt + '.hdr'
         fic_hdr_mnt_float = rac_mnt + 'float.hdr'
         fic_mnt = rac_mnt + 'float.mnt'
@@ -419,7 +420,7 @@ class classe_mnt:
 
         eau.astype('int16').tofile(fic_eau)
         print(fic_eau)
-        shutil.copy(fic_hdr_mnt, fic_hdr_eau)
+        # shutil.copy(fic_hdr_mnt, fic_hdr_eau)
 
     #############################################################
     ########################Decoupage EAU########################
