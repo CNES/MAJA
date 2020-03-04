@@ -22,6 +22,10 @@ class MNTFactory:
         self.mission_field = mission_field
         self.mnt_resolutions = mnt_resolutions
         self.coarse_res = kwargs.get("coarse_res", (240, -240))
+        if type(self.coarse_res) in [float, int, str]:
+            self.coarse_res = (int(self.coarse_res), -1 * int(self.coarse_res))
+        if type(self.coarse_res) != tuple:
+            raise TypeError("Unknown coarse_res type %s: %s" % (type(self.coarse_res), self.coarse_res))
         self.kwargs = kwargs
 
     def factory(self):
@@ -32,6 +36,9 @@ class MNTFactory:
         from prepare_mnt.mnt.SRTM import SRTM
         # TODO Add more options here: ALOS, TDX, EuDEM...
         if self.mnt_type == "srtm":
+            # SRTM is distributed in 90m.
+            # Thus, all initial calculation has to be done at this resolution:
+            self.site.res_x, self.site.res_y = 90, 90
             return SRTM(site=self.site,
                         **self.kwargs).to_maja_format(platform_id=self.plaform_id,
                                                       mission_field=self.mission_field,

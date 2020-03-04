@@ -50,7 +50,8 @@ class DTMCreator:
         :param outdir: Output directory
         :param tempdir: Temporary-/Working-directory
         """
-        self.product.get_mnt(dem_dir=outdir, raw_dem=self.dem_dir, raw_gsw=self.water_dir, wdir=tempdir)
+        self.product.get_mnt(dem_dir=outdir, raw_dem=self.dem_dir, raw_gsw=self.water_dir, wdir=tempdir,
+                             coarse_res=self.coarse_res)
         print("Finished DTM creation for site/tile %s" % self.product.tile)
 
 

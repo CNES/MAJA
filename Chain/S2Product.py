@@ -81,22 +81,38 @@ class Sentinel2Natif(MajaProduct):
         from Common import ImageIO, FileSystem
         wdir = kwargs.get("wdir", self.fpath)
         remove_temp = kwargs.get("remove_temp", True)
-        output_bname = "_".join([self.base, synthetic_band.upper() + ".tif"])
-        output_filename = kwargs.get("output_filename", os.path.join(wdir, output_bname))
+        output_folder = os.path.join(self.fpath, "SYNTHETIC_BANDS")
+        FileSystem.create_directory(output_folder)
+        output_bname = "_".join([self.base.split(".")[0], synthetic_band.upper() + ".tif"])
+        output_filename = kwargs.get("output_filename", os.path.join(output_folder, output_bname))
+        max_value = kwargs.get("max_value", 5000)
+        # Skip existing:
+        if os.path.exists(output_filename):
+            return output_filename
         if synthetic_band.lower() == "ndvi":
             b4 = self.find_file(pattern=r"*B0?4.jp2$")[0]
             b8 = self.find_file(pattern=r"*B0?8.jp2$")[0]
-            ImageIO.gdal_calc(output_filename, "(A-B)/(A+B)", b4, b8, quiet=True)
+            expr = "{0}+{0}*(A.astype(float)-B.astype(float))/(A.astype(float)+B.astype(float))".format(max_value)
+            ImageIO.gdal_calc(output_filename,
+                              expr,
+                              b4, b8, quiet=True, type="Int16",  overwrite=True)
         elif synthetic_band.lower() == "ndsi":
             b3 = self.find_file(pattern=r"*B0?3.jp2$")[0]
             b11 = self.find_file(pattern=r"*B11.jp2$")[0]
             rescaled_filename = os.path.join(wdir, "res_" + output_bname)
-            ImageIO.gdal_translate(rescaled_filename, b11,
-                                   tr=str(self.mnt_resolution[0]) + " " + str(self.mnt_resolution[1]),
+            expr = "{0}+{0}*(A.astype(float)-B.astype(float))/(A.astype(float)+B.astype(float))".format(max_value)
+            ImageIO.gdal_translate(rescaled_filename, b3,
+                                   tr="20 20",
                                    q=True)
-            ImageIO.gdal_calc(output_filename, "(A-B)/(A+B)", b3, rescaled_filename, quiet=True)
+            ImageIO.gdal_calc(output_filename,
+                              expr,
+                              rescaled_filename, b11, type="Int16", quiet=True, overwrite=True)
             if remove_temp:
                 FileSystem.remove_file(rescaled_filename)
+        elif synthetic_band.lower() == "mca_sim":
+            b4 = self.find_file(pattern=r"*B0?4.jp2$")[0]
+            b3 = self.find_file(pattern=r"*B0?3.jp2$")[0]
+            ImageIO.gdal_calc(output_filename, "(A+B)/2", b3, b4, quiet=True)
         else:
             raise ValueError("Unknown synthetic band %s" % synthetic_band)
         return output_filename

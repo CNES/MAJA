@@ -68,6 +68,7 @@ def __get_item(path, reg):
     """
     import re
     import os
+    path = os.path.abspath(path)
     available_dirs = [f for f in os.listdir(path) if re.search(reg.lower(), f.lower())]
     if not available_dirs:
         raise IOError("Cannot find %s in %s" % (reg, path))
@@ -220,7 +221,7 @@ def download_file(url, filepath, log_level=logging.DEBUG):
     import shutil
     tmp_file = tempfile.mktemp()
     args = ["--retry-connrefused", "--waitretry=1",
-            "--read-timeout=20", "--timeout=15",
+            "--read-timeout=20", "--timeout=15", "--tries=3",
             "-O", tmp_file, url]
     if log_level != logging.DEBUG:
         args.append("-nv")

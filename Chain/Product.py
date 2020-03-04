@@ -26,7 +26,10 @@ class MajaProduct(object):
     reg_vs_nat = r"^VE_\w{4}_VSC_L[12]VALD_\w+.DBL.DIR$"
     reg_s5_mus = r"^SPOT5-HR\w+-XS_(\d{8})-\d{6}-\d{3}_L(1C|2A)_[\w-]+_[DC]_V\d*-\d*$"
     reg_s4_mus = r"^SPOT4-HR\w+-XS_(\d{8})-\d{6}-\d{3}_L(1C|2A)_[\w-]+_[DC]_V\d*-\d*$"
+    reg_pleiades_theia = r"FCGC\d*(-\d)?"
+    reg_pleiades_reprojected = r"DS_PHR\d[A-Z]_\d{15}_\w+_[WE]\d{3}[NS]\d{2}_\d{4}_\d{4}"
     reg_tile = r"T\d{2}[a-zA-Z]{3}"
+    reg_s5_t5_l2a = r"^SPOT5_HRG[1|2]_XS_\d{8}_N2A_\w+$"
 
     base_resolution = (None, None)
 
@@ -39,7 +42,7 @@ class MajaProduct(object):
         self.fpath = p.realpath(filepath)
         self.base = p.basename(self.fpath)
         self.mnt_resolution = kwargs.get("mnt_resolution", self.base_resolution)
-        
+
     def __str__(self):
         return "\n".join(["Product:   " + self.base,
                           "Acq-Date:  " + self.date.strftime("%Y-%m-%d %H:%M:%S"),
@@ -60,7 +63,9 @@ class MajaProduct(object):
         from Chain.S2Product import Sentinel2SSC, Sentinel2Muscate, Sentinel2Natif
         from Chain.L8Product import Landsat8LC1, Landsat8LC2, Landsat8Muscate, Landsat8Natif
         from Chain.VSProduct import VenusNatif, VenusMuscate
-        from Chain.SpotProduct import Spot4Muscate, Spot5Muscate
+        from Chain.SpotProduct import Spot4Muscate, Spot5Muscate, Spot5Take5L2A
+        from Chain.PleiadesProduct import PleiadesTheiaXS, PleiadesPreprojected
+
         # Sentinel-2
         if re.search(self.reg_s2_nat, self.base):
             return Sentinel2Natif(self.fpath)
@@ -87,6 +92,13 @@ class MajaProduct(object):
             return Spot5Muscate(self.fpath)
         if re.search(self.reg_s4_mus, self.base):
             return Spot4Muscate(self.fpath)
+        if re.search(self.reg_s5_t5_l2a, self.base):
+            return Spot5Take5L2A(self.fpath)
+        # Pleiades
+        if re.search(self.reg_pleiades_theia, self.base):
+            return PleiadesTheiaXS(self.fpath)
+        if re.search(self.reg_pleiades_reprojected, self.base):
+            return PleiadesPreprojected(self.fpath)
         pass
 
     @property
@@ -109,7 +121,8 @@ class MajaProduct(object):
                  "landsat8": {"lc1": "LANDSAT_8", "lc2": "LANDSAT_8", "muscate": "LANDSAT8"},
                  "venus": {"natif": "VENuS", "muscate": "VENUS"},
                  "spot5": {"muscate": "SPOT5"},
-                 "spot4": {"muscate": "SPOT4"}
+                 "spot4": {"muscate": "SPOT4"},
+                 "pleiades": {"muscate": "PLEIADES"}
                  }
         return types[platform][ptype]
 
@@ -164,7 +177,9 @@ class MajaProduct(object):
                             "landsat8": "L8",
                             "venus": "VE",
                             "spot5": "SPOT5",
-                            "spot4": "SPOT4"}
+                            "spot4": "SPOT4",
+                            "pleiades": "PLEIADES"}
+
         return platform_choices[self.platform]
 
     def get_mnt(self, **kwargs):
@@ -176,28 +191,34 @@ class MajaProduct(object):
     def get_synthetic_band(self, synthetic_band, **kwargs):
         raise NotImplementedError
 
-    def reproject(self, **kwargs):
-        import os
+    def _reproject_to_epsg(self, img, outpath, epsg):
         import shutil
         import tempfile
-        from Common import ImageIO, FileSystem
+        from Common import ImageIO
+        tmpfile = tempfile.mktemp(prefix="reproject_", suffix=".tif")
+        ImageIO.gdal_warp(tmpfile, img, t_srs="EPSG:%s" % epsg,
+                          tr=" ".join(map(str, self.base_resolution)),
+                          q=True)
+        shutil.move(tmpfile, outpath)
+
+    def reproject(self, **kwargs):
+        import os
+        from Common import FileSystem, ImageIO
         out_dir = kwargs.get("out_dir", self.fpath)
         assert os.path.isdir(out_dir)
         out_dir = os.path.join(out_dir, self.base)
         FileSystem.create_directory(out_dir)
         patterns = kwargs.get("patterns", [r".(tif|jp2)$"])
         imgs = [self.find_file(pattern=p) for p in patterns]
+        epsg = kwargs.get("epsg", None)
         # Flatten
         imgs = [i for img in imgs for i in img]
         for img in imgs:
-            drv = ImageIO.open_tiff(img)
-            epsg = kwargs.get("epsg", ImageIO.get_s2_epsg_code(drv))
+            if not epsg:
+                drv = ImageIO.open_tiff(img)
+                epsg = ImageIO.get_s2_epsg_code(drv)
             outpath = os.path.join(out_dir, os.path.basename(img))
-            tmpfile = tempfile.mktemp(prefix="reproject_", suffix=".tif")
-            ImageIO.gdal_warp(tmpfile, img, t_srs="EPSG:" + epsg,
-                              tr=" ".join(map(str, self.base_resolution)),
-                              q=True)
-            shutil.move(tmpfile, outpath)
+            self._reproject_to_epsg(img, outpath, epsg)
         return out_dir
 
     def __lt__(self, other):

@@ -72,7 +72,7 @@ class SRTM(MNT):
                           srcnodata=-32767,
                           dstnodata=0)
         # Combine to image of fixed extent
-        srtm_full_res = os.path.join(self.wdir, "srtm_%sm.tif" % self.site.res_x)
+        srtm_full_res = os.path.join(self.wdir, "srtm_%sm.tif" % int(self.site.res_x))
         ImageIO.gdal_warp(srtm_full_res, fixed_nodata,
                           r="cubic",
                           te=self.site.te_str,

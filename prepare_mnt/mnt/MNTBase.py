@@ -33,7 +33,7 @@ class MNT(object):
             FileSystem.create_directory(self.dem_dir)
         self.wdir = kwargs.get("wdir", None)
         if not self.wdir:
-            self.wdir = tempfile.mkdtemp(prefix="prepare_mnt_")
+            self.wdir = self.dem_dir
         if not os.path.isdir(self.wdir):
             FileSystem.create_directory(self.wdir)
         self.raw_dem = kwargs.get("raw_dem", None)
@@ -50,6 +50,7 @@ class MNT(object):
         self.dem_version = kwargs.get("dem_version", 1)
         self.gsw_threshold = kwargs.get("gsw_threshold", 30.)
         self.gsw_dst = kwargs.get("gsw_dst", os.path.join(self.wdir, "surface_water_mask.tif"))
+        self.quiet = not kwargs.get("verbose", False)
 
     def get_raw_data(self):
         """
@@ -63,30 +64,53 @@ class MNT(object):
         raise NotImplementedError
 
     @staticmethod
-    def calc_gradient(mnt_arr):
+    def calc_gradient(mnt_arr, res_x, res_y):
         import numpy as np
         from scipy import ndimage
         # TODO Find a pure numpy 2D convolution.
         kernel_horizontal = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
         kernel_vertical = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]])
-        dz_dc = ndimage.convolve(mnt_arr, kernel_horizontal)
-        dz_dl = ndimage.convolve(mnt_arr, kernel_vertical)
+        dz_dc = ndimage.convolve(mnt_arr, kernel_horizontal) / 8. / np.abs(res_x)
+        dz_dl = ndimage.convolve(mnt_arr, kernel_vertical) / 8. / np.abs(res_y)
         return dz_dc, dz_dl
 
     @staticmethod
     def calc_slope_aspect(dz_dc, dz_dl):
         import numpy as np
-        norme = np.sqrt(dz_dc * dz_dc) + (dz_dl * dz_dl)
+        norme = np.sqrt(dz_dc * dz_dc + dz_dl * dz_dl)
         slope = np.arctan(norme)
         aspect = np.where(dz_dc > 0, np.arccos(dz_dl / norme), 2 * np.pi - np.arccos(dz_dl / norme))
-        aspect = np.where(slope == 0, 0, aspect)
+        aspect = np.where(slope < 0.0001, 0, aspect)
+        slope = np.array(slope * 100., dtype=np.int16)
+        aspect = np.array(aspect * 100., dtype=np.int16)
         return slope, aspect
 
     @staticmethod
-    def get_gsw_codes(site):
+    def resample_to_full_resolution(image, mnt_resolution, full_resolution, order=3):
+        """
+        Resample an image from the mnt resolution (usually a low one) to the
+        max resolution of a given product (10m for S2).
+        :param image: A numpy image
+        :param mnt_resolution: The input resolution as tuple (res_x, res_y)
+        :param full_resolution: The output resolution as tuple (res_x, res_y)
+        :param order: The spline interpolation order. Default is 3.
+        :return:
+        """
+        from scipy.ndimage import zoom
+        import numpy as np
+
+        zoom_factor = (np.abs(mnt_resolution[0] / full_resolution[0]),
+                       np.abs(mnt_resolution[1] / full_resolution[1]))
+
+        # Order 3 = Cubic interpolation
+        return zoom(image, zoom_factor, order=order)
+
+    @staticmethod
+    def get_gsw_codes(site, grid_step=10):
         """
         Get the list of GSW files for a given site.
         :param site: The site class
+        :param grid_step: The step size of the grid
         :return: The list of filenames of format 'XX(E/W)_YY(N/S)' needed in order to cover to whole site.
         """
         import math
@@ -94,7 +118,6 @@ class MNT(object):
         if site.ul_latlon[1] > 170 and site.lr_latlon[1] < 160:
             raise ValueError("Cannot wrap around longitude change")
 
-        grid_step = 10
         point = namedtuple("point", ("y", "x"))
         pts = []
         for pt in [site.ul_latlon, site.lr_latlon]:
@@ -146,7 +169,7 @@ class MNT(object):
         from Common import ImageIO
         occ_files = self.get_raw_water_data()
         # Fusion of all gsw files:
-        fusion_path = os.path.join(self.wdir, "occurrence.tiff")
+        fusion_path = os.path.join(self.wdir, "occurrence.tif")
         water_mask = os.path.join(self.wdir, "water_mask_comb.tif")
         ImageIO.gdal_merge(fusion_path, *occ_files)
         # Overlay occurrence image with same extent as the given site.
@@ -168,21 +191,41 @@ class MNT(object):
         from datetime import datetime
         from Common import ImageIO, XMLTools, FileSystem
         from prepare_mnt.mnt.DEMInfo import DEMInfo
+
         assert len(mnt_resolutions) >= 1
         basename = str("%s_TEST_AUX_REFDE2_%s_%s" % (platform_id, self.site.nom, str(self.dem_version).zfill(4)))
         # Get water data
         self.prepare_water_data()
         # Get mnt data
-        mnt_full_res = self.prepare_mnt()
+        mnt_max_res = self.prepare_mnt()
+        mnt_res = (self.site.res_y, self.site.res_x)
         dbl_base = basename + ".DBL.DIR"
         dbl_dir = os.path.join(self.dem_dir, dbl_base)
         FileSystem.create_directory(dbl_dir)
         hdr = os.path.join(self.dem_dir, basename + ".HDR")
 
-        # Read MNT and water mask at full resolution:
-        mnt_in, drv = ImageIO.tiff_to_array(mnt_full_res, array_only=False)
-        grad_y, grad_x = self.calc_gradient(mnt_in)
+        # Calulate gradient mask at MNT resolution:
+        mnt_in, drv = ImageIO.tiff_to_array(mnt_max_res, array_only=False)
+        grad_y_mnt, grad_x_mnt = self.calc_gradient(mnt_in, self.site.res_x, self.site.res_y)
+
+        full_res = (int(mnt_resolutions[0]["val"].split(" ")[1]),
+                    int(mnt_resolutions[0]["val"].split(" ")[0]))
+
+        grad_x = self.resample_to_full_resolution(grad_x_mnt, mnt_resolution=mnt_res, full_resolution=full_res, order=3)
+        grad_y = self.resample_to_full_resolution(grad_y_mnt, mnt_resolution=mnt_res, full_resolution=full_res, order=3)
+
         slope, aspect = self.calc_slope_aspect(grad_y, grad_x)
+
+        # Write full res slope and aspect
+        geotransform = list(drv.GetGeoTransform())
+        geotransform[1] = float(full_res[1])
+        geotransform[-1] = float(full_res[0])
+        projection = drv.GetProjection()
+        tmp_asp = tempfile.mktemp(dir=self.wdir, suffix="_asp.tif")
+        ImageIO.write_geotiff(aspect, tmp_asp, projection, tuple(geotransform))
+        tmp_slp = tempfile.mktemp(dir=self.wdir, suffix="_slp.tif")
+        ImageIO.write_geotiff(slope, tmp_slp, projection, tuple(geotransform))
+
         # Full resolution:
         write_resolution_name = True if len(mnt_resolutions) > 1 else False
         # Names for R1, R2 etc.
@@ -197,27 +240,23 @@ class MNT(object):
             rel_alt = os.path.join(dbl_base, bname_alt)
             path_alt = os.path.join(self.dem_dir, rel_alt)
             all_paths_alt.append(path_alt)
-            ImageIO.gdal_translate(path_alt, mnt_full_res, tr=res["val"])
+            ImageIO.gdal_warp(path_alt, mnt_max_res, tr=res["val"], r="cubic")
             rasters_written.append(rel_alt)
             # ASP:
             bname_asp = basename + "_ASP"
             bname_asp += "_" + res["name"] if write_resolution_name else ""
             bname_asp += ".TIF"
             rel_asp = os.path.join(dbl_base, bname_asp)
-            tmp_asp = tempfile.mktemp(dir=self.wdir)
             path_asp = os.path.join(self.dem_dir, rel_asp)
-            ImageIO.write_geotiff_existing(aspect, tmp_asp, drv)
-            ImageIO.gdal_translate(path_asp, tmp_asp, tr=res["val"])
+            ImageIO.gdal_warp(path_asp, tmp_asp, tr=res["val"], r="cubic")
             rasters_written.append(rel_asp)
             # SLP:
             bname_slp = basename + "_SLP"
             bname_slp += "_" + res["name"] if write_resolution_name else ""
             bname_slp += ".TIF"
             rel_slp = os.path.join(dbl_base, bname_slp)
-            tmp_slp = tempfile.mktemp(dir=self.wdir)
             path_slp = os.path.join(self.dem_dir, rel_slp)
-            ImageIO.write_geotiff_existing(aspect, tmp_slp, drv)
-            ImageIO.gdal_translate(path_slp, tmp_slp, tr=res["val"])
+            ImageIO.gdal_warp(path_slp, tmp_slp, tr=res["val"], r="cubic")
             rasters_written.append(rel_slp)
 
         # Resize all rasters for coarse res.
@@ -226,25 +265,25 @@ class MNT(object):
         bname_alc = basename + "_ALC.TIF"
         rel_alc = os.path.join(dbl_base, bname_alc)
         path_alc = os.path.join(self.dem_dir, rel_alc)
-        ImageIO.gdal_translate(path_alc, path_alt, tr=coarse_res_str)
+        ImageIO.gdal_warp(path_alc, path_alt, tr=coarse_res_str)
         rasters_written.append(rel_alc)
         # ALC:
         bname_asc = basename + "_ASC.TIF"
         rel_asc = os.path.join(dbl_base, bname_asc)
         path_asc = os.path.join(self.dem_dir, rel_asc)
-        ImageIO.gdal_translate(path_asc, path_asp, tr=coarse_res_str)
+        ImageIO.gdal_warp(path_asc, path_asp, tr=coarse_res_str)
         rasters_written.append(rel_asc)
         # ALC:
         bname_slc = basename + "_SLC.TIF"
         rel_slc = os.path.join(dbl_base, bname_slc)
         path_slc = os.path.join(self.dem_dir, rel_slc)
-        ImageIO.gdal_translate(path_slc, path_slp, tr=coarse_res_str)
+        ImageIO.gdal_warp(path_slc, path_slp, tr=coarse_res_str)
         rasters_written.append(rel_slc)
         # Water mask:
         bname_msk = basename + "_MSK.TIF"
         rel_msk = os.path.join(dbl_base, bname_msk)
         path_msk = os.path.join(self.dem_dir, rel_msk)
-        ImageIO.gdal_translate(path_msk, self.gsw_dst, tr=coarse_res_str)
+        ImageIO.gdal_warp(path_msk, self.gsw_dst, tr=coarse_res_str)
         rasters_written.append(rel_msk)
 
         # Write HDR Metadata:

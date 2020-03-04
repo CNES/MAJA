@@ -103,7 +103,9 @@ def get_epsg(driver):
     :return: The EPSG code if existing.
     """
     from osgeo import gdal
-    return int(gdal.Info(driver, format='json')['coordinateSystem']['wkt'].rsplit('"EPSG","', 1)[-1].split('"')[0])
+    import re
+    return int(re.findall(r"\d+",
+                          gdal.Info(driver, format='json')['coordinateSystem']['wkt'].rsplit('"EPSG",', 1)[-1])[0])
 
 
 def get_nodata_value(driver):
@@ -127,6 +129,9 @@ def get_utm_description(driver):
     :return: The UTM Description as string.
     """
     from osgeo import gdal
+    if int(gdal.VersionInfo()) >= 3000000:
+        return gdal.Info(driver, format='json')['coordinateSystem']['wkt'].rsplit('PROJCRS["', 1)[-1].split('"')[0]
+    # 'PROJCS' vs. 'PROJCRS' in rsplit
     return gdal.Info(driver, format='json')['coordinateSystem']['wkt'].rsplit('PROJCS["', 1)[-1].split('"')[0]
 
 
@@ -160,7 +165,7 @@ def transform_point(point, old_epsg, new_epsg=4326):
     :param new_epsg: The EPSG code of the new coordinate system to transfer to. Default is 4326 (WGS84).
     :return: The point's location in the new epsg as (x, y) - z is omitted due to it being 0 most of the time
     """
-    from osgeo import osr
+    from osgeo import osr, gdal
     source = osr.SpatialReference()
     source.ImportFromEPSG(old_epsg)
 
@@ -169,6 +174,8 @@ def transform_point(point, old_epsg, new_epsg=4326):
     target.ImportFromEPSG(new_epsg)
     transform = osr.CoordinateTransformation(source, target)
     new_pt = transform.TransformPoint(point[0], point[1])
+    if int(gdal.VersionInfo()) >= 3000000:
+        return new_pt[0], new_pt[1]
     return new_pt[1], new_pt[0]
 
 
@@ -299,9 +306,7 @@ def gdal_calc(dst, calc, *src, **options):
     file_list = ["--outfile", dst] + ["-" + letter + " " + inp
                                       for inp, letter in zip(list(src), string.ascii_uppercase)]
     options_list = ["--calc='%s'" % calc, "--NoDataValue=0"]
-    [options_list.extend(["-" + k, v])
-     if type(v) is not bool else
-     options_list.extend(["--" + k])
+    [options_list.extend(["--" + k, v])
      for k, v in options.items()]
 
     # Append overwrite by default in order to avoid writing errors:
@@ -331,6 +336,6 @@ def gdal_retile(dst, *src, **options):
     return_code = FileSystem.run_external_app("gdal_retile.py", options_list + file_list)
     # Get the list of newly created tiles
     bnames = [os.path.basename(s).split(".")[0] for s in src]
-    tiles = [FileSystem.find(pattern=r"%s(_\d){2}\.tif$" % bname, path=dst) for bname in bnames]
+    tiles = [FileSystem.find(pattern=r"%s(_\d*){2}\.tif$" % bname, path=dst) for bname in bnames]
     tiles = sorted([item for t in tiles for item in t])
     return return_code, tiles

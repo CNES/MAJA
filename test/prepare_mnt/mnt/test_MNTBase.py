@@ -70,19 +70,19 @@ class TestMNTBase(unittest.TestCase):
 
     def test_calculate_gradient(self):
         import numpy as np
-
+        res_x, res_y = 10, -10
         raw = np.arange(0, 25).reshape(5, 5)
-        grad_y, grad_x = MNTBase.MNT.calc_gradient(raw)
-        expected_y = [[-4, -8, -8, -8, -4],
-                      [-4, -8, -8, -8, -4],
-                      [-4, -8, -8, -8, -4],
-                      [-4, -8, -8, -8, -4],
-                      [-4, -8, -8, -8, -4]]
-        expected_x = [[20, 20, 20, 20, 20],
-                      [40, 40, 40, 40, 40],
-                      [40, 40, 40, 40, 40],
-                      [40, 40, 40, 40, 40],
-                      [20, 20, 20, 20, 20]]
+        grad_y, grad_x = MNTBase.MNT.calc_gradient(raw, res_x, res_y)
+        expected_y = [[-.05, -.1, -.1, -.1, -.05],
+                      [-.05, -.1, -.1, -.1, -.05],
+                      [-.05, -.1, -.1, -.1, -.05],
+                      [-.05, -.1, -.1, -.1, -.05],
+                      [-.05, -.1, -.1, -.1, -.05]]
+        expected_x = [[.25, .25, .25, .25, .25],
+                      [.5, .5, .5, .5, .5],
+                      [.5, .5, .5, .5, .5],
+                      [.5, .5, .5, .5, .5],
+                      [.25, .25, .25, .25, .25]]
         np.testing.assert_array_almost_equal(grad_y, expected_y)
         np.testing.assert_array_almost_equal(grad_x, expected_x)
 
@@ -98,19 +98,37 @@ class TestMNTBase(unittest.TestCase):
                  [20, 20, 20, 20, 20]])
         slope, aspect = MNTBase.MNT.calc_slope_aspect(raw, raw_2)
         expected_slope = np.array(
-                         [[1.56829633, 1.56830257, 1.56830877, 1.56831494, 1.56832108],
-                          [1.57017327, 1.57017366, 1.57017405, 1.57017444, 1.57017482],
-                          [1.57017521, 1.57017559, 1.57017598, 1.57017636, 1.57017675],
-                          [1.57017713, 1.57017751, 1.5701779, 1.57017828, 1.57017866],
-                          [1.56841538, 1.56842103, 1.56842666, 1.56843227, 1.56843784]])
+            [[152, 152, 152, 152, 152],
+             [154, 154, 154, 154, 154],
+             [154, 154, 154, 154, 154],
+             [154, 154, 154, 154, 154],
+             [153, 153, 153, 153, 153]])
         expected_aspect = np.array(
-                          [[4.76240984, 1.52090031, 1.52102454, 1.52114814, 1.52127113],
-                           [1.54587163, 1.54588715, 1.54590265, 1.54591814, 1.5459336],
-                           [1.54594905, 1.54596448, 1.54597988, 1.54599527, 1.54601064],
-                           [1.54602599, 1.54604132, 1.54605664, 1.54607193, 1.5460872],
-                           [1.52315926, 1.5232725, 1.5233852, 1.52349737, 1.52360901]])
+            [[628, 4, 9, 14, 19],
+             [12, 14, 17, 19, 22],
+             [24, 26, 29, 31, 33],
+             [35, 38, 40, 42, 44],
+             [78, 80, 83, 85, 87]])
         np.testing.assert_array_almost_equal(slope, expected_slope)
         np.testing.assert_array_almost_equal(aspect, expected_aspect)
+
+    def test_resample_to_full_resolution(self):
+        import numpy as np
+        res_full = (10, 10)
+        res_mnt = (40, -40)
+
+        img = np.arange(0, 4).reshape(2, 2)
+
+        resampled = MNTBase.MNT.resample_to_full_resolution(img, res_mnt, res_full)
+        expected = np.array([[0, 0, 0, 0, 1, 1, 1, 1],
+                             [0, 0, 0, 1, 1, 1, 1, 1],
+                             [0, 0, 1, 1, 1, 1, 1, 1],
+                             [1, 1, 1, 1, 1, 2, 2, 2],
+                             [1, 1, 1, 2, 2, 2, 2, 2],
+                             [2, 2, 2, 2, 2, 2, 3, 3],
+                             [2, 2, 2, 2, 2, 3, 3, 3],
+                             [2, 2, 2, 2, 3, 3, 3, 3]])
+        np.testing.assert_array_almost_equal(resampled, expected)
 
     def test_gsw_download(self):
         from Common import FileSystem

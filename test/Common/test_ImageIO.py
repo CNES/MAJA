@@ -182,7 +182,7 @@ class TestImageIO(unittest.TestCase):
         center = (653095.355, 5071879.228)
         lat_lon_expected = (45.78349724618419, 4.9694934619557145)
         lat_lon_calc = ImageIO.transform_point(center, old_epsg=32631, new_epsg=4326)
-        self.assertEqual(lat_lon_expected, lat_lon_calc)
+        np.testing.assert_almost_equal(lat_lon_calc, lat_lon_expected)
 
     def test_gdal_merge(self):
         from Common import FileSystem

@@ -71,8 +71,8 @@ class StartMaja(object):
                 raise IOError("Cannot mix multiple platforms: %s" % platform)
             self.platform = platform[0]
         else:
-            assert kwargs.get("platform") in ["sentinel2", "landsat8", "venus"]
             self.platform = kwargs.get("platform")
+        assert self.platform in ["sentinel2", "landsat8", "venus"]
 
         ptype = list(set([prod.type for prod in self.avail_input_l1 + self.avail_input_l2]))
         if len(ptype) != 1:
@@ -401,7 +401,9 @@ class StartMaja(object):
                     workplans.append(Workplan.Backward(wdir=self.rep_work,
                                                        outdir=self.path_input_l2,
                                                        l1=used_prod_l1[0],
-                                                       l1_list=self.avail_input_l1[index_current_prod:self.nbackward],
+                                                       l1_list=self.avail_input_l1[index_current_prod:
+                                                                                   index_current_prod + 1 +
+                                                                                   self.nbackward],
                                                        log_level=self.maja_log_level,
                                                        cams=self.filter_cams_by_product(self.cams_files,
                                                                                         used_prod_l1[0].date)
@@ -440,7 +442,9 @@ class StartMaja(object):
                     workplans.append(Workplan.Backward(wdir=self.rep_work,
                                                        outdir=self.path_input_l2,
                                                        l1=prod,
-                                                       l1_list=self.avail_input_l1[index_current_prod:self.nbackward],
+                                                       l1_list=self.avail_input_l1[index_current_prod:
+                                                                                   index_current_prod + 1 +
+                                                                                   self.nbackward],
                                                        log_level=self.maja_log_level,
                                                        cams=self.filter_cams_by_product(self.cams_files,
                                                                                         prod.date)
