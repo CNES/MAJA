@@ -168,21 +168,25 @@ def __get_return_code(proc, log_level):
     :param log_level: The log level for the messages displayed.
     :return: The return code of the app
     """
+    full_log = []
     while proc.poll() is None:
         line = proc.stdout.readline()  # This blocks until it receives a newline.
         if log_level == logging.DEBUG:
-            print(line.decode('utf-8'), end="")
+            log_line = line.decode('utf-8')
+            print(log_line, end="")
+            full_log.append(log_line.rstrip())
     proc.stdout.close()
-    return proc.wait()
+    return proc.wait(), full_log
 
 
-def run_external_app(name, args, log_level=logging.DEBUG):
+def run_external_app(name, args, log_level=logging.DEBUG, logfile=None):
     """
     Run an external application using the subprocess module
     :param name: the Name of the application
     :param args: The list of arguments to run the app with
     :param log_level: The log level for the messages displayed.
-    :return: The return code of the App
+    :param logfile: Save all logs of the subprocess to this file.
+    :return: The return code of the App with logfile written to disk if desired.
     """
     from timeit import default_timer as timer
     import subprocess
@@ -196,14 +200,24 @@ def run_external_app(name, args, log_level=logging.DEBUG):
     start = timer()
     try:
         with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env) as proc:
-            return_code = __get_return_code(proc, log_level=log_level)
+            return_code, full_log = __get_return_code(proc, log_level=log_level)
     except AttributeError:
         # For Python 2.7, popen has no context manager:
         proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
-        return_code = __get_return_code(proc, log_level=log_level)
+        return_code, full_log = __get_return_code(proc, log_level=log_level)
     if return_code:
         raise subprocess.CalledProcessError(return_code, cmd)
     end = timer()
+    if logfile and not os.path.isdir(logfile):
+        # Filter empty lines:
+        filter_empty_log = list(filter(None, full_log))
+        # Add command and total runtime to log:
+        full_log = ["Running command", cmd] + filter_empty_log +\
+                   ["{0} took {1:.2f}s".format(os.path.basename(name), end - start)]
+        # Write to file
+        with open(logfile, 'w') as f:
+            for item in full_log:
+                f.write("%s\n" % item)
     # Show total execution time for the App:
     log.log(log_level, "{0} took {1:.2f}s".format(os.path.basename(name), end - start))
     return return_code

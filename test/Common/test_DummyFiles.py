@@ -88,30 +88,6 @@ class TestDummyFiles(unittest.TestCase):
         shutil.rmtree(gen.prod)
         self.assertFalse(os.path.exists(gen.prod))
 
-    def test_spot4_l1_generation(self):
-        import shutil
-        gen = DummyFiles.L1Generator(self.root, platform="spot4")
-        prod = gen.generate()
-        self.assertTrue(os.path.exists(gen.mtd))
-        self.assertTrue(os.path.exists(gen.prod))
-        self.assertTrue("MTD_ALL.xml" in os.path.basename(gen.mtd))
-        self.assertTrue("SPOT4" in gen.prod)
-        self.assertEqual(prod, prod)
-        shutil.rmtree(gen.prod)
-        self.assertFalse(os.path.exists(gen.prod))
-
-    def test_spot5_l1_generation(self):
-        import shutil
-        gen = DummyFiles.L1Generator(self.root, platform="spot5")
-        prod = gen.generate()
-        self.assertTrue(os.path.exists(gen.mtd))
-        self.assertTrue(os.path.exists(gen.prod))
-        self.assertTrue("MTD_ALL.xml" in os.path.basename(gen.mtd))
-        self.assertTrue("SPOT5" in gen.prod)
-        self.assertEqual(prod, prod)
-        shutil.rmtree(gen.prod)
-        self.assertFalse(os.path.exists(gen.prod))
-
     def test_l2_generation(self):
         import shutil
         gen = DummyFiles.L2Generator(self.root)
