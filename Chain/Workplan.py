@@ -106,6 +106,8 @@ class Workplan(object):
         :return: The return code of Maja
         """
         from Common import FileSystem
+
+        logfile = os.path.join(outdir, "%s.log" % self.l1.base.split(".")[0])
         args = ["-w",
                 wdir,
                 "--input",
@@ -120,7 +122,7 @@ class Workplan(object):
                 self.tile,
                 "--loglevel",
                 self.log_level]
-        return FileSystem.run_external_app(maja, args)
+        return FileSystem.run_external_app(maja, args, logfile=logfile)
 
 
 class Init(Workplan):
@@ -144,7 +146,8 @@ class Init(Workplan):
     def __str__(self):
         return str("%19s | %5s | %8s | %70s | %15s" % (self.date, self.tile,
                                                        self.mode, self.l1.base,
-                                                       "Init mode - No previous L2"))
+                                                       "Init mode - No previous L2"
+                                                       + (" with CAMS" if self.aux_files else "")))
 
 
 class Backward(Workplan):
@@ -175,7 +178,8 @@ class Backward(Workplan):
     def __str__(self):
         return str("%19s | %5s | %8s | %70s | %15s" % (self.date, self.tile,
                                                        self.mode, self.l1.base,
-                                                       "Backward of %s products" % str(len(self.l1_list) + 1)))
+                                                       "Backward of %s products" % str(len(self.l1_list))
+                                                       + (" with CAMS" if self.aux_files else "")))
 
 
 class Nominal(Workplan):
@@ -188,6 +192,7 @@ class Nominal(Workplan):
         self.l2 = kwargs.get("l2", None)
         self.remaining_l1 = kwargs.get("remaining_l1", [])
         self.nbackward = kwargs.get("nbackward", int(8))
+        self.remaining_cams = kwargs.get("remaining_cams", [])
         super(Nominal, self).__init__(wdir, outdir, l1, log_level, **kwargs)
 
     def _get_available_l2_products(self):
@@ -224,17 +229,21 @@ class Nominal(Workplan):
         :return: The return code of the Maja app
         """
         from Common.FileSystem import remove_directory
+        from Start_maja import StartMaja
         self.create_working_dir(dtm, gipp)
         l2_prods = self._get_available_l2_products()
         if not l2_prods:
             logger.error("Cannot find previous L2 product for date %s in %s" % (self.date, self.outdir))
             if len(self.remaining_l1) >= self.nbackward:
                 logging.info("Setting up a BACKWARD execution instead.")
-                backup_wp = Backward(self.wdir, self.outdir, self.l1, l1_list=self.remaining_l1,
-                                     log_level=self.log_level, cams=self.aux_files)
+                l1_list = self.remaining_l1[:self.nbackward]
+                cams_dates = [prod.date for prod in l1_list + [self.l1]]
+                cams_files = StartMaja.filter_cams_by_products(self.remaining_cams, cams_dates)
+                backup_wp = Backward(self.root, self.outdir, self.l1, l1_list=l1_list,
+                                     log_level=self.log_level, cams=self.aux_files + cams_files)
             else:
                 logging.info("Setting up an INIT execution instead.")
-                backup_wp = Init(self.wdir, self.outdir, self.l1, self.log_level, cams=self.aux_files)
+                backup_wp = Init(self.root, self.outdir, self.l1, self.log_level, cams=self.aux_files)
             return backup_wp.execute(maja, dtm, gipp, conf)
         if len(l2_prods) > 1:
             logger.info("%s products found for date %s" % (len(l2_prods), self.date))
@@ -248,7 +257,8 @@ class Nominal(Workplan):
     def __str__(self):
         return str("%19s | %5s | %8s | %70s | %15s" % (self.date, self.tile,
                                                        self.mode, self.l1.base,
-                                                       "L2 from previous"))
+                                                       "L2 from previous"
+                                                       + (" with CAMS" if self.aux_files else "")))
 
 
 if __name__ == "__main__":

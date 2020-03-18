@@ -19,7 +19,9 @@ import os
 class TestVSProduct(unittest.TestCase):
 
     prod_vs_nat = ["VE_VM01_VSC_L2VALD_ISRAW906_20180317.DBL.DIR",
-                   "VE_OPER_VSC_L1VALD_UNH_20180329.DBL.DIR"]
+                   "VE_OPER_VSC_L1VALD_UNH_20180329.DBL.DIR",
+                   "VE_VM01_VSC_L1VALD_SUDOUE_6_20191110.DBL.DIR",
+                   "VE_VM01_VSC_L1VALD_CHILE____20200311.DBL.DIR"]
     prod_vs_mus = ["VENUS-XS_20180201-051359-000_L1C_KHUMBU_C_V1-0",
                    "VENUS_20180201-051359-000_L2A_KHUMBU_C_V1-0",
                    "VENUS-XS_20180201-000000-000_L3A_KHUMBU_C_V1-0"]
@@ -94,9 +96,9 @@ class TestVSProduct(unittest.TestCase):
             self.assertNotIsInstance(p, VenusMuscate)
 
     def test_reg_vs_natif(self):
-        tiles = ["ISRAW906", "UNH"]
-        dates = ["20180317T120000", "20180329T120000"]
-        levels = ["l2a", "l1c"]
+        tiles = ["ISRAW906", "UNH", "SUDOUE_6", "CHILE"]
+        dates = ["20180317T120000", "20180329T120000", "20191110T120000", "20200311T120000"]
+        levels = ["l2a", "l1c", "l1c", "l1c"]
         for prod, tile, date, level in zip(self.prod_vs_nat, tiles, dates, levels):
             p = MajaProduct(prod).factory()
             self.assertIsInstance(p, VenusNatif)

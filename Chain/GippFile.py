@@ -87,8 +87,8 @@ class GippSet(object):
 
     platforms = ["sentinel2", "landsat8", "venus"]
     plugins = {"sentinel2": ["natif", "muscate", "tm"],
-               "landsat8": ["natif", "muscate"],
-               "venus": ["natif", "muscate"]}
+               "landsat8": ["natif", "muscate", "tm"],
+               "venus": ["natif", "muscate", "tm"]}
 
     def __init__(self, root, platform, gtype, cams=False, log_level=logging.INFO):
         """
@@ -105,8 +105,11 @@ class GippSet(object):
             raise ValueError("Unknown platform found: %s" % platform)
         if gtype not in self.plugins[platform]:
             raise ValueError("No Plugin of type %s existing for platform %s" % (gtype, platform))
+        if gtype == "tm" and platform in ["landsat8", "venus"]:
+            self.gtype = "natif"
+        else:
+            self.gtype = gtype
         self.platform = platform
-        self.gtype = gtype
         self.cams_suffix = "_CAMS" if cams else ""
         self.log_level = log_level
         self.n_sat = 2 if platform == "sentinel2" else 1
@@ -118,7 +121,7 @@ class GippSet(object):
         self.lut_archive = os.path.join(self.fpath, "lut_archive.zip")
         self.temp_folder = os.path.join(self.fpath, "tempdir")
         self.gipp_folder_name = "%s_%s" % (self.platform.upper(), self.gtype.upper()) + self.cams_suffix
-        self.out_path = self.fpath
+        self.out_path = os.path.join(self.fpath, self.gipp_folder_name)
 
     def __clean_up(self):
         """
@@ -202,11 +205,14 @@ class GippSet(object):
         """
         from Common import FileSystem
         n_files_per_model = 5
+        expected_n_models = [6, 8] if self.cams_suffix else [1]
         try:
-            n_models = len(self.get_models())
+            found_n_models = len(self.get_models())
         except ValueError:
             return False
         if not os.path.isdir(self.out_path):
+            return False
+        if found_n_models not in expected_n_models:
             return False
         try:
             hdrs = FileSystem.find("*.HDR", self.out_path)
@@ -216,7 +222,8 @@ class GippSet(object):
             return False
         if len(eefs) < 4:
             return False
-        if len(hdrs) != len(dbls) != n_files_per_model * self.n_sat * n_models:
+        # Models = 4 (TOCR, DIRT, DIFT, ALBD) + 1 constant for WATV per satellite
+        if len(hdrs) != len(dbls) != n_files_per_model * self.n_sat * (found_n_models - 1) + 1 * self.n_sat:
             return False
 
         return True

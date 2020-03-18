@@ -24,12 +24,7 @@ class MajaProduct(object):
     reg_l8_nat = r"^L8_\w{4}_L8C_L[12]VALD_[\d_]+.DBL.DIR$"
     reg_vs_mus = r"^VENUS(-XS)?_\d{8}-\d{6}-\d{3}_L(1C|2A|3A)_\w+_[DC]_V\d*-\d*$"
     reg_vs_nat = r"^VE_\w{4}_VSC_L[12]VALD_\w+.DBL.DIR$"
-    reg_s5_mus = r"^SPOT5-HR\w+-XS_(\d{8})-\d{6}-\d{3}_L(1C|2A)_[\w-]+_[DC]_V\d*-\d*$"
-    reg_s4_mus = r"^SPOT4-HR\w+-XS_(\d{8})-\d{6}-\d{3}_L(1C|2A)_[\w-]+_[DC]_V\d*-\d*$"
-    reg_pleiades_theia = r"FCGC\d*(-\d)?"
-    reg_pleiades_reprojected = r"DS_PHR\d[A-Z]_\d{15}_\w+_[WE]\d{3}[NS]\d{2}_\d{4}_\d{4}"
     reg_tile = r"T\d{2}[a-zA-Z]{3}"
-    reg_s5_t5_l2a = r"^SPOT5_HRG[1|2]_XS_\d{8}_N2A_\w+$"
 
     base_resolution = (None, None)
 
@@ -63,9 +58,6 @@ class MajaProduct(object):
         from Chain.S2Product import Sentinel2SSC, Sentinel2Muscate, Sentinel2Natif
         from Chain.L8Product import Landsat8LC1, Landsat8LC2, Landsat8Muscate, Landsat8Natif
         from Chain.VSProduct import VenusNatif, VenusMuscate
-        from Chain.SpotProduct import Spot4Muscate, Spot5Muscate, Spot5Take5L2A
-        from Chain.PleiadesProduct import PleiadesTheiaXS, PleiadesPreprojected
-
         # Sentinel-2
         if re.search(self.reg_s2_nat, self.base):
             return Sentinel2Natif(self.fpath)
@@ -87,18 +79,6 @@ class MajaProduct(object):
             return VenusMuscate(self.fpath)
         if re.search(self.reg_vs_nat, self.base):
             return VenusNatif(self.fpath)
-        # Spot
-        if re.search(self.reg_s5_mus, self.base):
-            return Spot5Muscate(self.fpath)
-        if re.search(self.reg_s4_mus, self.base):
-            return Spot4Muscate(self.fpath)
-        if re.search(self.reg_s5_t5_l2a, self.base):
-            return Spot5Take5L2A(self.fpath)
-        # Pleiades
-        if re.search(self.reg_pleiades_theia, self.base):
-            return PleiadesTheiaXS(self.fpath)
-        if re.search(self.reg_pleiades_reprojected, self.base):
-            return PleiadesPreprojected(self.fpath)
         pass
 
     @property

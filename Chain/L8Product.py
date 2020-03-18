@@ -109,11 +109,14 @@ class Landsat8Muscate(MajaProduct):
     @property
     def tile(self):
         import re
-        site_basic = self.base.split("_")[3]
-        tile = re.search(self.reg_tile, self.base)
+        if len(self.base.split("_")) == 7:
+            site = "_".join(self.base.split("_")[3:5])
+        else:
+            site = self.base.split("_")[3]
+        tile = re.search(self.reg_tile, site)
         if tile:
             return tile.group()[1:]
-        return site_basic
+        return site
 
     @property
     def metadata_file(self):
