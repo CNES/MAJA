@@ -1,0 +1,68 @@
+diff -burN OTB-6.0.1.orig/Modules/Core/Transform/include/otbStreamingWarpImageFilter.txx OTB-6.0.1/Modules/Core/Transform/include/otbStreamingWarpImageFilter.txx
+--- OTB-6.0.1.orig/Modules/Core/Transform/include/otbStreamingWarpImageFilter.txx	2017-12-19 12:19:57.000000000 +0100
++++ OTB-6.0.1/Modules/Core/Transform/include/otbStreamingWarpImageFilter.txx	2017-12-19 12:25:15.000000000 +0100
+@@ -24,9 +24,6 @@
+ 
+ #include "otbStreamingWarpImageFilter.h"
+ #include "itkImageRegionIteratorWithIndex.h"
+-#include "itkDefaultConvertPixelTraits.h"
+-#include "itkMetaDataObject.h"
+-#include "otbMetaDataKey.h"
+ 
+ namespace otb
+ {
+@@ -44,8 +41,6 @@
+ StreamingWarpImageFilter<TInputImage, TOutputImage, TDisplacementField>
+ ::GenerateInputRequestedRegion()
+  {
+-  Superclass::GenerateInputRequestedRegion();
+-
+   // Get the input and displacement field pointers
+   InputImageType         *       inputPtr
+   = const_cast<InputImageType *>(this->GetInput());
+@@ -211,45 +206,6 @@
+ template<class TInputImage, class TOutputImage, class TDisplacementField>
+ void
+ StreamingWarpImageFilter<TInputImage, TOutputImage, TDisplacementField>
+-::GenerateOutputInformation()
+-{
+-  Superclass::GenerateOutputInformation();
+-
+-  // Set the NoData flag to the edge padding value
+-  itk::MetaDataDictionary& dict = this->GetOutput()->GetMetaDataDictionary();
+-  std::vector<bool> noDataValueAvailable;
+-  bool ret = itk::ExposeMetaData<std::vector<bool> >(dict,MetaDataKey::NoDataValueAvailable,noDataValueAvailable);
+-  if (!ret)
+-    {
+-    noDataValueAvailable.resize(this->GetOutput()->GetNumberOfComponentsPerPixel(),false);
+-    }
+-  std::vector<double> noDataValue;
+-  ret = itk::ExposeMetaData<std::vector<double> >(dict,MetaDataKey::NoDataValue,noDataValue);
+-  if (!ret)
+-    {
+-    noDataValue.resize(this->GetOutput()->GetNumberOfComponentsPerPixel(),0.0);
+-    }
+-  PixelType edgePadding = this->GetEdgePaddingValue();
+-  if (itk::NumericTraits<PixelType>::GetLength(edgePadding) != this->GetOutput()->GetNumberOfComponentsPerPixel())
+-    {
+-    itk::NumericTraits<PixelType>::SetLength(edgePadding,this->GetOutput()->GetNumberOfComponentsPerPixel());
+-    this->SetEdgePaddingValue(edgePadding);
+-    }
+-  for (unsigned int i=0; i<noDataValueAvailable.size() ; ++i)
+-    {
+-    if (!noDataValueAvailable[i])
+-      {
+-      noDataValueAvailable[i] = true;
+-      noDataValue[i] = itk::DefaultConvertPixelTraits<PixelType>::GetNthComponent(i,edgePadding);
+-      }
+-    }
+-  itk::EncapsulateMetaData<std::vector<bool> >(dict,MetaDataKey::NoDataValueAvailable,noDataValueAvailable);
+-  itk::EncapsulateMetaData<std::vector<double> >(dict,MetaDataKey::NoDataValue,noDataValue);
+-}
+-
+-template<class TInputImage, class TOutputImage, class TDisplacementField>
+-void
+-StreamingWarpImageFilter<TInputImage, TOutputImage, TDisplacementField>
+ ::ThreadedGenerateData(
+   const OutputImageRegionType& outputRegionForThread,
+   itk::ThreadIdType threadId )

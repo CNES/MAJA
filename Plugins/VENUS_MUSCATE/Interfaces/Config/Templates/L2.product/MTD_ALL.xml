@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Muscate_Metadata_Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Muscate_Metadata.xsd">
+    <Metadata_Identification>
+        <METADATA_FORMAT version="1.14">METADATA_MUSCATE</METADATA_FORMAT>
+        <METADATA_PROFILE>USER</METADATA_PROFILE>
+        <METADATA_INFORMATION>EXPERT</METADATA_INFORMATION>
+    </Metadata_Identification>
+    <Dataset_Identification>
+        <IDENTIFIER>NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C</IDENTIFIER>
+        <AUTHORITY>NOT_INITIALIZED THEIA</AUTHORITY>
+        <PRODUCER>NOT_INITIALIZED MUSCATE</PRODUCER>
+        <PROJECT>VENUS</PROJECT>
+        <GEOGRAPHICAL_ZONE type="Site">NOT_INITIALIZED EU93066200A00B</GEOGRAPHICAL_ZONE>
+        <ORIGINAL_DATA_DIFFUSER>NOT_INITIALIZED VIP_L1_PROC_00.00</ORIGINAL_DATA_DIFFUSER>
+    </Dataset_Identification>
+    <Product_Characteristics>
+        <PRODUCT_ID>NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0</PRODUCT_ID>
+        <ACQUISITION_DATE>NOT_INITIALIZED 2010-01-18T10:30:00.0</ACQUISITION_DATE>
+        <PRODUCTION_DATE>NOT_INITIALIZED 2014-12-17T09:37:57.0</PRODUCTION_DATE>
+        <PRODUCT_VERSION>NOT_INITIALIZED 1.0</PRODUCT_VERSION>
+        <PRODUCT_LEVEL>L2A</PRODUCT_LEVEL>
+        <PLATFORM>NOT_INITIALIZED LANDSAT5</PLATFORM>        
+        <SPECTRAL_CONTENT>XS</SPECTRAL_CONTENT>
+        <ORBIT_NUMBER type="Orbit">NOT_INITIALIZED 999</ORBIT_NUMBER>
+        <UTC_Acquisition_Range>
+            <MEAN>NOT_INITIALIZED 2010-01-18T10:30:00.0</MEAN>
+            <DATE_PRECISION unit="s">NOT_INITIALIZED 0.0000001</DATE_PRECISION>
+        </UTC_Acquisition_Range>
+        <Band_Global_List count="12">
+            <BAND_ID>B1</BAND_ID>
+            <BAND_ID>B2</BAND_ID>
+            <BAND_ID>B3</BAND_ID>
+            <BAND_ID>B4</BAND_ID>
+            <BAND_ID>B5</BAND_ID>
+            <BAND_ID>B6</BAND_ID>
+            <BAND_ID>B7</BAND_ID>
+            <BAND_ID>B8</BAND_ID>
+            <BAND_ID>B9</BAND_ID>
+            <BAND_ID>B10</BAND_ID>
+            <BAND_ID>B11</BAND_ID>
+            <BAND_ID>B12</BAND_ID>
+        </Band_Global_List>
+        <Band_Group_List>
+            <Group group_id="XS">
+                <Band_List count="12">
+                    <BAND_ID>B1</BAND_ID>
+                    <BAND_ID>B2</BAND_ID>
+                    <BAND_ID>B3</BAND_ID>
+                    <BAND_ID>B4</BAND_ID>
+                    <BAND_ID>B5</BAND_ID>
+                    <BAND_ID>B6</BAND_ID>
+                    <BAND_ID>B7</BAND_ID>
+                    <BAND_ID>B8</BAND_ID>
+                    <BAND_ID>B9</BAND_ID>
+                    <BAND_ID>B10</BAND_ID>
+                    <BAND_ID>B11</BAND_ID>
+                    <BAND_ID>B12</BAND_ID>
+                </Band_List>
+            </Group>
+        </Band_Group_List>
+    </Product_Characteristics>
+    <Product_Organisation>
+        <Muscate_Product>
+      <QUICKLOOK bands_id="B7,B4,B3">NOT_INITIALIZED ./VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_QKL_ALL.jpg</QUICKLOOK>
+      <Image_List>
+        <Image>
+          <Image_Properties>
+            <NATURE>Aerosol_Optical_Thickness</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+          </Image_Properties>
+          <Image_File_List>
+            <IMAGE_FILE band_number="2" group_id="XS">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_ATB_XS.tif</IMAGE_FILE>
+          </Image_File_List>
+        </Image>        
+        <Image>
+          <Image_Properties>
+            <NATURE>Surface_Reflectance</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>int16</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+          </Image_Properties>
+          <Image_File_List>
+            <IMAGE_FILE band_id="B1">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B1.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B10">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B10.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B11">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B11.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B12">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B12.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B2">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B2.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B3">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B3.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B4">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B4.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B5">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B5.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B6">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B6.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B7">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B7.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B8">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B8.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B9">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SRE_B9.tif</IMAGE_FILE>
+          </Image_File_List>
+        </Image>
+        <Image_MACC_template_temporary_node_Flat_Reflectance>
+          <Image_Properties>
+            <NATURE>Flat_Reflectance</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>int16</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+          </Image_Properties>
+          <Image_File_List>
+            <IMAGE_FILE band_id="B1">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B1.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B10">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B10.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B11">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B11.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B12">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B12.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B2">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B2.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B3">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B3.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B4">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B4.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B5">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B5.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B6">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B6.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B7">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B7.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B8">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B8.tif</IMAGE_FILE>
+            <IMAGE_FILE band_id="B9">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_FRE_B9.tif</IMAGE_FILE>
+          </Image_File_List>
+        </Image_MACC_template_temporary_node_Flat_Reflectance>
+        <Image>
+          <Image_Properties>
+            <NATURE>Water_Vapor_Content</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+          </Image_Properties>
+          <Image_File_List>
+            <IMAGE_FILE band_number="1" group_id="XS">NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_ATB_XS.tif</IMAGE_FILE>
+          </Image_File_List>
+        </Image>
+      </Image_List>
+      <Mask_List>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>AOT_Interpolation</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="2">INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_IAB_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Aberrant_Pixels</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>uint16</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>           
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Cloud</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="2">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Cloud_Shadow</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="4">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Detailed_Cloud</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_CLM_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Edge</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_EDG_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Hidden_Surface</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="6">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Saturation</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>uint16</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE band_id="B1" bit_number="1">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B2" bit_number="2">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B3" bit_number="3">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B4" bit_number="4">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B5" bit_number="5">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B6" bit_number="6">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B7" bit_number="7">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B8" bit_number="8">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B9" bit_number="9">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B10" bit_number="10">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B11" bit_number="11">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+            <MASK_FILE band_id="B12" bit_number="12">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_SAT_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Sun_Too_Low</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="7">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Tangent_Sun</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="8">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Topography_Shadow</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="5">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>WVC_Interpolation</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="1">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_IAB_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+        <Mask>
+          <Mask_Properties>
+            <NATURE>Water</NATURE>
+            <FORMAT>image/tiff</FORMAT>
+            <ENCODING>byte</ENCODING>
+            <ENDIANNESS>LittleEndian</ENDIANNESS>
+            <COMPRESSION>DEFLATE</COMPRESSION>
+          </Mask_Properties>
+          <Mask_File_List>
+            <MASK_FILE group_id="XS" bit_number="1">NOT_INITIALIZED MASKS/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_MG2_XS.tif</MASK_FILE>
+          </Mask_File_List>
+        </Mask>
+      </Mask_List>
+      <Data_List>
+        <Data>
+          <Data_Properties>
+            <NATURE>Job_Processing_Informations_File</NATURE>
+            <FORMAT>application/xml</FORMAT>
+          </Data_Properties>
+          <Data_File_List>
+            <DATA_FILE group_id="ALL">NOT_INITIALIZED DATA/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_JPI_ALL.xml</DATA_FILE>
+          </Data_File_List>
+        </Data>
+        <Data>
+          <Data_Properties>
+            <NATURE>Private_Directory</NATURE>
+            <FORMAT>application/vnd+muscate</FORMAT>
+          </Data_Properties>
+          <Data_File_List>
+            <DATA_FILE group_id="ALL">NOT_INITIALIZED DATA/VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0_PVD_ALL</DATA_FILE>
+          </Data_File_List>
+        </Data>
+      </Data_List>
+    </Muscate_Product>
+  </Product_Organisation>
+  <Geoposition_Informations>
+    <Coordinate_Reference_System>
+      <GEO_TABLES>NOT_INITIALIZED EPSG</GEO_TABLES>
+      <Horizontal_Coordinate_System>
+          <HORIZONTAL_CS_TYPE>NOT_INITIALIZED PROJECTED</HORIZONTAL_CS_TYPE>
+          <HORIZONTAL_CS_NAME>NOT_INITIALIZED WGS 84 / UTM zone 31N
+          </HORIZONTAL_CS_NAME>
+          <HORIZONTAL_CS_CODE>NOT_INITIALIZED 32631</HORIZONTAL_CS_CODE>
+      </Horizontal_Coordinate_System>
+    </Coordinate_Reference_System>
+    <Raster_CS>
+        <RASTER_CS_TYPE>NOT_INITIALIZED CELL</RASTER_CS_TYPE>
+        <PIXEL_ORIGIN>NOT_INITIALIZED 0</PIXEL_ORIGIN>
+    </Raster_CS>
+    <Metadata_CS>
+        <METADATA_CS_TYPE>NOT_INITIALIZED CELL</METADATA_CS_TYPE>
+        <PIXEL_ORIGIN>NOT_INITIALIZED 0</PIXEL_ORIGIN>
+    </Metadata_CS>
+    <Geopositioning>
+        <Global_Geopositioning>
+            <Point name="upperLeft">
+                <LAT>NOT_INITIALIZED 44.2465509345</LAT>
+                <LON>NOT_INITIALIZED 4.25248087222</LON>
+                <X>NOT_INITIALIZED 600000.0</X>
+                <Y>NOT_INITIALIZED 4900020.0</Y>
+            </Point>
+            <Point name="upperRight">
+                <LAT>NOT_INITIALIZED 44.2232097399</LAT>
+                <LON>NOT_INITIALIZED 5.6266459737</LON>
+                <X>NOT_INITIALIZED 709800.0</X>
+                <Y>NOT_INITIALIZED 4900020.0</Y>
+            </Point>
+            <Point name="lowerRight">
+                <LAT>NOT_INITIALIZED 43.2356009597</LAT>
+                <LON>NOT_INITIALIZED 5.58380827957</LON>
+                <X>NOT_INITIALIZED 709800.0</X>
+                <Y>NOT_INITIALIZED 4790220.0</Y>
+            </Point>
+            <Point name="lowerLeft">
+                <LAT>NOT_INITIALIZED 43.2581553186</LAT>
+                <LON>NOT_INITIALIZED 4.23203270004</LON>
+                <X>NOT_INITIALIZED 600000.0</X>
+                <Y>NOT_INITIALIZED 4790220.0</Y>
+            </Point>
+            <Point name="center">
+                <LAT>NOT_INITIALIZED 43.7429332781</LAT>
+                <LON>NOT_INITIALIZED 4.92374204516</LON>
+                <X>NOT_INITIALIZED 654900.0</X>
+                <Y>NOT_INITIALIZED 4845120.0</Y>
+            </Point>
+        </Global_Geopositioning>
+        <Group_Geopositioning_List>
+            <Group_Geopositioning group_id="XS">
+                <ULX>NOT_INITIALIZED 600000</ULX>
+                <ULY>NOT_INITIALIZED 4900020</ULY>
+                <XDIM>NOT_INITIALIZED 10</XDIM>
+                <YDIM>NOT_INITIALIZED -10</YDIM>
+                <NROWS>NOT_INITIALIZED 10980</NROWS>
+                <NCOLS>NOT_INITIALIZED 10980</NCOLS>
+            </Group_Geopositioning>
+        </Group_Geopositioning_List>
+    </Geopositioning>
+  </Geoposition_Informations>
+  <Geometric_Informations>
+    <Mean_Value_List>
+      <Sun_Angles>
+        <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+        <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+      </Sun_Angles>
+      <Mean_Viewing_Incidence_Angle_List>
+        <Mean_Viewing_Incidence_Angle detector_id="01">
+          <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+          <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+        </Mean_Viewing_Incidence_Angle>
+        <Mean_Viewing_Incidence_Angle detector_id="02">
+          <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+          <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+        </Mean_Viewing_Incidence_Angle>
+        <Mean_Viewing_Incidence_Angle detector_id="03">
+          <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+          <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+        </Mean_Viewing_Incidence_Angle>
+        <Mean_Viewing_Incidence_Angle detector_id="04">
+          <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+          <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+        </Mean_Viewing_Incidence_Angle>
+      </Mean_Viewing_Incidence_Angle_List>
+    </Mean_Value_List>
+    <Angles_Grids_List>
+      <Sun_Angles_Grids>
+        <Zenith step_unit="m" values_unit="deg">
+          <COL_STEP>NOT_INITIALIZED</COL_STEP>
+          <ROW_STEP>NOT_INITIALIZED</ROW_STEP>
+          <Values_List/>
+        </Zenith>
+        <Azimuth step_unit="m" values_unit="deg">
+          <COL_STEP>NOT_INITIALIZED</COL_STEP>
+          <ROW_STEP>NOT_INITIALIZED</ROW_STEP>
+          <Values_List/>
+        </Azimuth>
+      </Sun_Angles_Grids>
+      <Viewing_Incidence_Angles_Grids_List/>
+    </Angles_Grids_List>
+  </Geometric_Informations>    
+  <Radiometric_Informations>
+    <REFLECTANCE_QUANTIFICATION_VALUE>NOT_INITIALIZED 1000</REFLECTANCE_QUANTIFICATION_VALUE>
+    <WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>NOT_INITIALIZED 10</WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>
+    <AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>NOT_INITIALIZED 200</AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>
+    <Special_Values_List>
+      <SPECIAL_VALUE name="nodata">NOT_INITIALIZED -10000</SPECIAL_VALUE>
+      <SPECIAL_VALUE name="water_vapor_content_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+      <SPECIAL_VALUE name="aerosol_optical_thickness_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+    </Special_Values_List>
+    <Spectral_Band_Informations_List>
+      <Spectral_Band_Informations band_id="B1">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B2">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B3">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B4">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B5">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B6">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B7">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B8">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B9">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B10">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B11">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+      <Spectral_Band_Informations band_id="B12">
+        <Calibration_Coefficients_Lists>
+          <Native_Coefficients_List>
+            <COEFFICIENT name="Ak">NOT_INITIALIZED</COEFFICIENT>
+            <COEFFICIENT name="PolarizationCoefficient">NOT_INITIALIZED</COEFFICIENT>
+          </Native_Coefficients_List>
+        </Calibration_Coefficients_Lists>
+        <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+        <Wavelength/>
+      </Spectral_Band_Informations>
+    </Spectral_Band_Informations_List>
+  </Radiometric_Informations>
+  <Quality_Informations>
+    <Current_Product>
+      <Product_Quality_List level="N2">
+        <Product_Quality>
+          <Source_Product>
+            <PRODUCT_ID>NOT_INITIALIZED VENUS-XS_20120101-105148-000_L2A_CAMARGUE_C_V1-0</PRODUCT_ID>
+            <ACQUISITION_DATE>NOT_INITIALIZED 2012-01-01T10:51:48.000</ACQUISITION_DATE>
+            <PRODUCTION_DATE>NOT_INITIALIZED 2018-07-01T19:28:09.587Z</PRODUCTION_DATE>
+          </Source_Product>
+          <Global_Index_List>
+            <QUALITY_INDEX name="CirrusDetected">NOT_INITIALIZED false</QUALITY_INDEX>
+            <QUALITY_INDEX name="CloudPercent">NOT_INITIALIZED 0</QUALITY_INDEX>
+            <QUALITY_INDEX name="HotSpotDetected">NOT_INITIALIZED false</QUALITY_INDEX>
+            <QUALITY_INDEX name="RainDetected">NOT_INITIALIZED false</QUALITY_INDEX>
+            <QUALITY_INDEX name="SunGlintDetected">NOT_INITIALIZED false</QUALITY_INDEX>
+          </Global_Index_List>
+        </Product_Quality>
+      </Product_Quality_List>
+      <Product_Quality_List level="Natif"/>
+    </Current_Product>
+  </Quality_Informations>
+    <Production_Informations>
+      <Processing_Jobs_List>
+        <Job>
+          <WORKPLAN_ID>NOT_INITIALIZED</WORKPLAN_ID>
+          <STEP_ID>conv_mL1</STEP_ID>
+          <JOB_ID>1</JOB_ID>
+          <PRODUCER_NAME>NOT_INITIALIZED</PRODUCER_NAME>
+          <START_PRODUCTION_DATE>NOT_INITIALIZED</START_PRODUCTION_DATE>
+          <END_PRODUCTION_DATE>NOT_INITIALIZED</END_PRODUCTION_DATE>
+          <Products_List>
+            <Inputs_List>
+              <PRODUCT>
+                <PRODUCT_ID>NOT_INITIALIZED</PRODUCT_ID>
+                <ACQUISITION_DATE>NOT_INITIALIZED</ACQUISITION_DATE>
+                <PRODUCTION_DATE>NOT_INITIALIZED</PRODUCTION_DATE>
+              </PRODUCT>
+            </Inputs_List>
+            <Outputs_List>
+              <PRODUCT>
+                <PRODUCT_ID>NOT_INITIALIZED</PRODUCT_ID>
+                <ACQUISITION_DATE>NOT_INITIALIZED</ACQUISITION_DATE>
+                <PRODUCTION_DATE>NOT_INITIALIZED</PRODUCTION_DATE>
+              </PRODUCT>
+            </Outputs_List>
+          </Products_List>
+        </Job>
+      </Processing_Jobs_List>
+    </Production_Informations>
+</Muscate_Metadata_Document>

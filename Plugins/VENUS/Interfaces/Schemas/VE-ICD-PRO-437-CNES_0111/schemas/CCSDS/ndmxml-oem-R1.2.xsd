@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.3 : DM : VE-FT-847 : 05/08/2015 : Passage au format UNIX
+ 
+  FIN-HISTORIQUE
+ -->
+<xsd:schema targetNamespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2"
+            xmlns="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+<!--********************************************************************-->
+<!-- NOTE: This is version R1.2 of the NDM/XML Schema (09/23/2007).     -->
+<!-- This component of the schema is the "OEM" module, which contains   -->
+<!-- elements that are used exclusively in the Orbit Ephemeris          -->
+<!-- Message (OEM).                                                     -->
+<!--                                                                    -->
+<!-- Compatible document versions are:                                  -->
+<!--    NDM/XML 505.0-R-1.2 Red Book  (09/2007)                         -->
+<!--    ODM     502.0-B-1   Blue Book (09/2004)                         -->
+<!--                                                                    -->
+<!-- *********************  RED BOOK CHANGE LOG  ********************** -->
+<!-- 09/23/2007                                                         -->
+<!-- 1.  No changes beyond schema version.                              -->
+<!-- 01/13/2007                                                         -->
+<!-- 1.  Minor upgrade to convert to NDM/XML 1.2 namespace              -->
+<!-- 07/31/2006 General Major Updates to Schema                         -->
+<!-- 1.  Added compatibility CCSDS XML/SIG recommendations on namespaces-->
+<!-- 2.  "include"d the common schema                                   -->
+<!-- 3.  Made URL's relative                                            -->
+<!--********************************************************************-->
+<!--                                                                    -->
+<!-- ********************* WHITE BOOK CHANGE LOG ********************** -->
+<!-- 09/30/2005 (Action item from Fall Meetings)                        -->
+<!-- 1.  New module, introduced as part of the upgrade to a             -->
+<!--     modularized schema.                                            -->
+<!--********************************************************************-->
+
+<xsd:include schemaLocation="./ndmxml-common-R1.2.xsd"/>
+
+
+<!--********************************************************************-->
+<!-- NOTE: "oem" is the root element in a Orbit Ephemeris Message (OEM) -->
+<!--********************************************************************-->
+
+<xsd:element name="oem" type="oemType"/>
+
+
+<!--********************************************************************-->
+<!-- An OEM consists of a "header" and a "body".  The header is a       -->
+<!-- construct that is shared by all NDM's, found in the "common" schema-->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemType">
+   <xsd:sequence>
+      <xsd:element name="header" type="ndmHeader"/>
+      <xsd:element name="body"   type="oemBody"/>       
+   </xsd:sequence>
+   <xsd:attribute name="id"        use="required" fixed="CCSDS_OEM_VERS"/>
+   <xsd:attribute name="version"   use="required" fixed="1.0"/>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OEM "body" consists of 1 or more "segments", described below.  -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemBody">
+   <xsd:sequence>
+      <xsd:element name="segment" type="oemSegment" 
+         minOccurs="1" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- The OEM "segment" consists of a "metadata" section and a "data"    -->
+<!-- section.  Note that the segment construct is implied, but not      -->
+<!-- explicitly stated, in the structure of each OEM as described in the-->
+<!-- ODM.  Explicit statement of the segment construct is required in   -->
+<!-- order to enforce the ordering and correspondence of metadata       -->
+<!-- sections and data sections that is described in the ODM.           -->
+<!--********************************************************************-->  
+
+<xsd:complexType name="oemSegment">
+   <xsd:sequence>
+      <xsd:element name="metadata" type="oemMetadata"/>
+      <xsd:element name="data" type="oemData"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OEM Metadata Section                                               -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemMetadata">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" 
+         minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="OBJECT_NAME" type="xsd:string"/>
+      <xsd:element name="OBJECT_ID" type="xsd:string"/>
+      <xsd:element name="CENTER_NAME" type="xsd:string"/>
+      <xsd:element name="REF_FRAME" type="xsd:string"/>
+      <xsd:element name="TIME_SYSTEM" type="xsd:string"/>
+      <xsd:element name="START_TIME"  type="epochType"/>
+      <xsd:element name="USEABLE_START_TIME" type="epochType" minOccurs="0"/>
+      <xsd:element name="USEABLE_STOP_TIME"  type="epochType" minOccurs="0"/>
+      <xsd:element name="STOP_TIME"   type="epochType"/>
+      <xsd:element name="INTERPOLATION" type="xsd:string"
+         minOccurs="0"/>
+       <xsd:element name="INTERPOLATION_DEGREE" type="xsd:positiveInteger"
+         minOccurs="0"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+
+<!--********************************************************************-->
+<!-- OEM Data Section                                                   -->
+<!--********************************************************************-->
+
+<xsd:complexType name="oemData">
+   <xsd:sequence>
+      <xsd:element name="COMMENT" type="xsd:string" 
+         minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="stateVector" type="stateVectorType" 
+         minOccurs="1" maxOccurs="unbounded"/>
+   </xsd:sequence>
+</xsd:complexType>
+
+</xsd:schema>

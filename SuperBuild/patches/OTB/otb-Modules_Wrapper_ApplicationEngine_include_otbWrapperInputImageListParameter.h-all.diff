@@ -1,0 +1,12 @@
+--- OTB-7.0.0.orig/Modules/Wrappers/ApplicationEngine/include/otbWrapperInputImageListParameter.h	2019-10-29 10:11:39.000000000 +0100
++++ OTB-7.0.0/Modules/Wrappers/ApplicationEngine/include/otbWrapperInputImageListParameter.h	2020-04-04 10:53:26.000000000 +0200
+@@ -63,6 +63,9 @@
+   const FloatVectorImageType* GetNthImage(std::size_t) const;
+   FloatVectorImageType*       GetNthImage(std::size_t);
+ 
++  const ImageBaseType* GetNthImageBase(std::size_t) const;
++  ImageBaseType*       GetNthImageBase(std::size_t);
++
+   /** Set one specific image. */
+   void SetNthImage(std::size_t, ImageBaseType*);
+ 

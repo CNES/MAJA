@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.42">
+	<xs:include schemaLocation="VE_DictionaryProducts.xsd"/>
+	<!--*** 0.32 patched version ***-->
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="PDREPT_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:PDREPT_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:PDREPT_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.41"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="PDREPT_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:PDREPT_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:PDREPT_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREPT_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_ProductionReport_Id_NewType"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="SystemProductTechnicalData"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type" type="ee:VE_ProductionReport_File_Type_Type"/>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREPT_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:annotation>
+					<xs:documentation>
+</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:PDREPT_Instance_Id_Type"/>
+						<xs:element name="Related_ProductionRequest_Id">
+							<xs:annotation>
+								<xs:documentation>Processing request ID if any</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:union memberTypes="ee:VE_ProductionRequest_Id_Type ee:VE_Nil_Reason_NA_Type"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="List_of_Input_Identifiers">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="Input_Identifier">
+										<xs:annotation>
+											<xs:documentation>Input files using during the processing:
+										- InventoriedRawProduct
+										- LxProduct</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:union memberTypes="ee:VE_InventoriedRawProduct_Id_Type ee:VE_SystemProduct_Id_Type ee:VE_GenericPublishedProduct_Id_Type"/>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="List_of_Production_Parameters">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="Production_Parameter">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Parameter_Name" type="xs:string"/>
+												<xs:element name="Parameter_Value" type="xs:string"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Global_Status">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="SUCCESS"/>
+									<xs:enumeration value="PARTIAL"/>
+									<xs:enumeration value="FAILURE"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="List_of_Output_Identifiers">
+							<xs:complexType>
+								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+									<xs:element name="Output_Identifier" type="ee:VE_Id_Type"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Site_Extraction_Info" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>This is mandatory only in the case of VINV Production Report</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Covered_Sites">
+										<xs:complexType>
+											<xs:sequence minOccurs="0" maxOccurs="unbounded">
+												<xs:element name="Site_ID" type="ee:VE_SiteDefinition_Id_Type"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Not_Scientific_Sites">
+										<xs:complexType>
+											<xs:sequence minOccurs="0" maxOccurs="unbounded">
+												<xs:element name="Site_ID" type="ee:VE_SiteDefinition_Id_Type"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Not_Programmed_Sites">
+										<xs:complexType>
+											<xs:sequence minOccurs="0" maxOccurs="unbounded">
+												<xs:element name="Site_ID" type="ee:VE_SiteDefinition_Id_Type"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREPT_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>Nickname of the corresponding site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Acquisition_Date" type="ee:VE_Special_Date_Type">
+					<xs:annotation>
+						<xs:documentation>for system and L1, L2 products</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:sequence>
+					<xs:annotation>
+						<xs:documentation>for L3 product</xs:documentation>
+					</xs:annotation>
+					<xs:element name="First_Acquisition_Date" type="ee:VE_Special_Date_Type"/>
+					<xs:element name="Last_Acquisition_Date" type="ee:VE_Special_Date_Type"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:annotation>
+						<xs:documentation>for Inventory product</xs:documentation>
+					</xs:annotation>
+					<xs:element name="Telemetry_Type">
+						<xs:simpleType>
+							<xs:restriction base="ee:String_Type">
+								<xs:enumeration value="AUX"/>
+								<xs:enumeration value="IMG"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Acquisition_Orbit" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type"/>
+					<xs:element name="Acquisition_Date" type="ee:VE_Special_Date_Type"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="PDREPT_Body_Type">
+		<xs:sequence>
+			<xs:element name="VE_Production_Report_List_of_Messages_Type">
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="Message">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Date_Time" type="xs:string"/>
+									<xs:element name="Node_Name" type="xs:string"/>
+									<xs:element name="Processor_Name" type="xs:string"/>
+									<xs:element name="Processor_Version" type="xs:string"/>
+									<xs:element name="PID" type="xs:string"/>
+									<xs:element name="Type" type="xs:string"/>
+									<xs:element name="Text" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" type="xs:positiveInteger" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

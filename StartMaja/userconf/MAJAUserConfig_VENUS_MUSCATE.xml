@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                         __  __    __    ___  ___  ___                                    *
+ *                                        (  \/  )  /__\  / __)/ __)/ __)                                   *
+ *                                         )    (  /(__)\( (__( (__ \__ \                                   *
+ *                                        (_/\/\_)(__)(__)\___)\___)(___/                                   *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 3.2.0 : DM : LAIG-DM-MAJA-2381-CNES : 10 juillet 2018 : Nouveau plugin VENUS_MUSCATE           *
+ * VERSION : 4-0-0 : FA : LAIG-FA-MAC-117040-CS : 27 mars 2014 : 											*
+ *										Suppression du parametre Use_Default_Constant_Water_Amount 			*
+ *										deplace au niveau JobOrderProvider									*
+ * VERSION : 3-1-0 : DM : LAIG-DM-MAC-614-CNES : 28 octobre 2013 : Mise a jour suite creation plugin LANDSAT_MUSCATE_PROTO*
+ * VERSION : 3-0-0 : DM : LAIG-DM-MAC-239-CNES : 10 mai 2013 : Modification pour la prise en compte de la DM *
+ *                                                            du MACCS generique (PM LAIG-NT-MAC-0239-CNES) *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 17 avril 2012 : Creation                                   *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maja.fr" xsi:schemaLocation="http://maja.fr MAJAUserConfig.xsd">
+  <Business>
+    <!-- Image divisions size (number of lines) -->
+    <ImageDivision method="strips">
+      <NbStrips>
+        <!-- Image divisions size (in number of lines) for the L2 Init Processing -->
+        <L2InitProcessing>100</L2InitProcessing>
+        <!-- Image divisions size (in number of lines) for the L2 Nominal Processing -->
+        <L2NominalProcessing>100</L2NominalProcessing>
+        <!-- Image divisions size (in number of lines) L2 Backward Processing -->
+        <L2BackwardProcessing>100</L2BackwardProcessing>
+        <!-- Image divisions size (in number of lines) L3 Processing -->
+        <L3Processing>200</L3Processing>
+        <!-- Image divisions size (in number of lines) Checktool -->
+        <ChecktoolProcessing>200</ChecktoolProcessing>
+      </NbStrips>
+    </ImageDivision>
+    <!-- L2 coarse resolution in meter -->
+    <L2CoarseResolution>100</L2CoarseResolution>
+  </Business>
+  <Algorithms>
+    <GRID_Reference_Altitudes>
+      <!-- First reference altitude of solar grid (in meter) -->
+      <SOLH1>3000</SOLH1>
+      <!-- Second reference altitude of solar grid (in meter) -->
+      <SOLH2>8000</SOLH2>
+      <!-- First reference altitude of solar direction (in meter) -->
+      <SOLHRef>4000</SOLHRef>
+      <!-- Reference altitude of viewing direction (in meter) -->
+      <VIEHRef>3000</VIEHRef>
+    </GRID_Reference_Altitudes>
+    <Atmospheric_Absorption_Correction>
+      <!-- Option to use default constant value available in GIPP instead of meteorological data to determine the ozone amount -->
+      <Use_Default_Constant_Ozone_Amount>true</Use_Default_Constant_Ozone_Amount>
+    </Atmospheric_Absorption_Correction>
+  </Algorithms>
+</Config>

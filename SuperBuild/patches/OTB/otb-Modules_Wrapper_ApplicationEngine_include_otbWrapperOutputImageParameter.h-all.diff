@@ -1,0 +1,10 @@
+--- OTB-7.0.0.orig/Modules/Wrappers/ApplicationEngine/include/otbWrapperOutputImageParameter.h	2019-10-29 10:11:39.000000000 +0100
++++ OTB-7.0.0/Modules/Wrappers/ApplicationEngine/include/otbWrapperOutputImageParameter.h	2020-04-04 14:21:28.000000000 +0200
+@@ -141,6 +141,7 @@
+ 
+   // FloatVectorImageType::Pointer m_Image;
+   ImageBaseType::Pointer m_Image;
++  ImageBaseType::Pointer m_ImageCasted;
+ 
+   itk::ProcessObject::Pointer m_InputCaster;
+   itk::ProcessObject::Pointer m_OutputCaster;

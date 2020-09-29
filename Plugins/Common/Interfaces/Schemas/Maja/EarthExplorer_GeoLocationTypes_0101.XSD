@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by USER USER (CNES) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="EarthExplorer_BasicTypes_0101.XSD"/>
+	<xsd:annotation>
+		<xsd:documentation>Geodetic data types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:47 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Longitude_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:restriction base="Angle_Type">
+				<xsd:minInclusive value="-360"/>
+				<xsd:maxInclusive value="360"/>
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="deg"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Latitude_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:restriction base="Angle_Type">
+				<xsd:minInclusive value="-90"/>
+				<xsd:maxInclusive value="90"/>
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="deg"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Azimuth_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:restriction base="Angle_Type">
+				<xsd:minInclusive value="-360"/>
+				<xsd:maxInclusive value="360"/>
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="deg"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Elevation_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:restriction base="Angle_Type">
+				<xsd:minInclusive value="-90"/>
+				<xsd:maxInclusive value="90"/>
+			</xsd:restriction>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Geo_Location_2D_Type">
+		<xsd:sequence>
+			<xsd:element name="Long" type="Longitude_Type"/>
+			<xsd:element name="Lat" type="Latitude_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Geo_Location_Type">
+		<xsd:complexContent>
+			<xsd:extension base="Geo_Location_2D_Type">
+				<xsd:sequence>
+					<xsd:element name="Alt" type="Height_Type"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Pointing_Direction_Type">
+		<xsd:sequence>
+			<xsd:element name="Az" type="Azimuth_Type"/>
+			<xsd:element name="El" type="Elevation_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Polygon_Type_Type">
+		<xsd:sequence>
+			<xsd:element name="Polygon_Pt" type="Geo_Location_2D_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="NonNegativeInteger_Type" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="Mispointing_Angles_Type">
+		<xsd:sequence>
+			<xsd:element name="Pitch" type="Angle_Type"/>
+			<xsd:element name="Roll" type="Angle_Type"/>
+			<xsd:element name="Yaw" type="Angle_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

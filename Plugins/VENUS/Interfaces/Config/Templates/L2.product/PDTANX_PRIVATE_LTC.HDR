@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <?xml-stylesheet type="text/xsl" href="DISPLAY/display.xsl"?>
+  <Earth_Explorer_Header schema_version="0.40" xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://eop-cfi.esa.int/CFI ../../../../../Schemas/Venus/VE_VSC_LUTANX_AnnexLUT.xsd" xsi:type="LUTANX_Header_Type">
+    <Fixed_Header>
+      <File_Name>NOT_INITIALIZED VE_TEST_VSC_LUTANX_L2VALD_CAMARGUE_20120101_LTC</File_Name>
+      <File_Description>AnnexLUT</File_Description>
+      <Notes>NOT_INITIALIZED L2 note</Notes>
+      <Mission>VENuS</Mission>
+      <File_Class>NOT_INITIALIZED TEST</File_Class>
+      <File_Type>VSC_LUTANX</File_Type>
+      <Validity_Period>
+        <Validity_Start>NOT_INITIALIZED UTC=2012-01-01T10:51:44</Validity_Start>
+        <Validity_Stop>NOT_INITIALIZED UTC=2012-01-01T10:51:51</Validity_Stop>
+      </Validity_Period>
+      <File_Version>NOT_INITIALIZED 0001</File_Version>
+      <Source>
+        <System>VIP</System>
+        <Creator>NOT_INITIALIZED MAJA_L2_INIT_CHAIN</Creator>
+        <Creator_Version>00.00</Creator_Version>
+        <Creation_Date>NOT_INITIALIZED UTC=2012-03-27T12:55:55</Creation_Date>
+      </Source>
+    </Fixed_Header>
+    <Variable_Header>
+      <Main_Product_Header>
+        <List_of_Consumers count="0"/>
+        <List_of_Extensions count="0"/>
+      </Main_Product_Header>
+      <Specific_Product_Header>
+        <Instance_Id>
+          <Reference_Product_Semantic>NOT_INITIALIZED L2VALD</Reference_Product_Semantic>
+          <Reference_Product_Instance>NOT_INITIALIZED CAMARGUE_20120101</Reference_Product_Instance>
+          <Annex_Code>LTC</Annex_Code>
+        </Instance_Id>
+        <Reference_Product_Header_Id>NOT_INITIALIZED VE_TEST_VSC_L2VALD_CAMARGUE_20120101</Reference_Product_Header_Id>
+        <Annex_Complete_Name>Lut of Top of Canopy</Annex_Complete_Name>
+        <LUT_Indexes>
+          <Altitude_Indexes>NOT_INITIALIZED 0 1000 2000 3000</Altitude_Indexes>
+          <AOT_Indexes>NOT_INITIALIZED 0.0000 0.0625 0.1250 0.1875 0.2500 0.3125 0.3750 0.4375 0.5000 0.5625 0.6250 0.6875 0.7500 0.8125 0.8750 0.9375 1.0000 1.0625 1.1250 1.1875 1.2500 1.3125 1.3750 1.4375 1.5000</AOT_Indexes>
+          <TOA_Reflectance_Indexes>NOT_INITIALIZED -0.2000 -0.1300 -0.0600 0.0100 0.0800 0.1500 0.2200 0.2900 0.3600 0.4300 0.5000 0.5700 0.6400 0.7100 0.7800</TOA_Reflectance_Indexes>
+        </LUT_Indexes>
+        <List_of_Band_Theoretical_Wavelength/>
+        <List_of_LTC/>
+        <DBL_Organization>
+          <List_of_Packaged_DBL_Files/>
+        </DBL_Organization>
+      </Specific_Product_Header>
+    </Variable_Header>
+  </Earth_Explorer_Header>

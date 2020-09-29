@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:include schemaLocation="dico/misc/misc.xsd"/>
+	<xs:element name="JobProcessingInformations">
+		<xs:annotation>
+			<xs:documentation>fichier d'information sur l'exécution MACCS</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MNT_Statistics">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Min" type="A_LENGTH_VALUE"/>
+							<xs:element name="Max" type="A_LENGTH_VALUE"/>
+							<xs:element name="Average" type="A_LENGTH_VALUE"/>
+							<xs:element name="Standard_Deviation" type="A_LENGTH_VALUE"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Processing_Flags_And_Modes_List">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Processing_Flags_And_Modes" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Key" type="xs:string"/>
+										<xs:element name="Value" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

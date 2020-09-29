@@ -1,0 +1,11 @@
+--- InsightToolkit-4.13.1.orig/Modules/Core/Common/include/itkGaussianOperator.hxx	2020-05-27 14:56:53.834395765 +0200
++++ InsightToolkit-4.13.1/Modules/Core/Common/include/itkGaussianOperator.hxx	2020-05-27 15:05:06.345395208 +0200
+@@ -55,7 +55,7 @@
+       }
+     if ( coeff.size() > m_MaximumKernelWidth )
+       {
+-      itkWarningMacro("Kernel size has exceeded the specified maximum width of "
++      itkDebugMacro("Kernel size has exceeded the specified maximum width of "
+                       << m_MaximumKernelWidth << " and has been truncated to "
+                       << coeff.size()
+                       << " elements.  You can raise the maximum width using the SetMaximumKernelWidth method.");

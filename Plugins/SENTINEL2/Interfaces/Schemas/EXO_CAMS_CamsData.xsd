@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+  <xs:include schemaLocation="Dictionary.xsd"/>
+  <!-- ================= -->
+  <!--Root (Header)-->
+  <!-- ================= -->
+  <xs:complexType name="CAMS_Header_Type">
+    <xs:annotation>
+      <xs:documentation>The MeteoData gives meteorological measurements for a given period of time. It is used by the SMIGS in order to produce the L2Product.
+
+Each MeteoData consists in one file covering the whole globe.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+        <xs:sequence>
+          <xs:element name="Fixed_Header" type="ee:CAMS_Fixed_Header_Type"/>
+          <xs:element name="Variable_Header" type="ee:CAMS_Variable_Header_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.20"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="CAMS_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_CamsData_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="CAMSData"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Generic_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="EXO_CAMS"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CAMS_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:CAMS_Instance_Id_Type"/>
+            <xs:element name="Data_Block_Source_Location" type="ee:String_Type">
+              <xs:annotation>
+                <xs:documentation>Source location of data block (eg : 'ftp: ...')</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="DBL_Organization" type="ee:VE_DBL_Organization_Type"/>
+            <xs:element name="ModelLevels" type="ee:VE_List_of_Double"/>
+            <xs:element minOccurs="0" name="NumberOfNonInterpolableValues"
+              type="xs:nonNegativeInteger"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CAMS_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+        <xs:annotation>
+          <xs:documentation>Period of validity</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Acquisition_Date_Time" type="ee:UTC_Date_Time_Type"/>
+    </xs:sequence>    
+  </xs:complexType>
+</xs:schema>

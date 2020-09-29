@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-0-0 : DM : LAIG-DM-MAC-748-CNES : 4 mars 2014 : Optimisation de la suppression des DBL après *
+ *                                  génération du DBL.DIR afin de réduire le volume du répertoire d'entrée  *
+ * VERSION : 4-0-0 : DM : LAIG-DM-MAC-747-CNES : 3 mars 2014 : Vidage repertoire Caching en PreProcessing.  *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 17 avril 2012 : Creation                                   *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maja.fr ./MAJAUserConfigSystem.xsd" xmlns="http://maja.fr">
+    <!-- Notes insert in the products generated -->
+    <Notes>
+      <L2Note>L2 note</L2Note>
+      <L3Note>L3 note</L3Note>
+      <CheckToolsNote>Checktool note</CheckToolsNote>
+    </Notes>
+    <!-- Computing parameters -->
+    <Computing>
+        <!-- Number of used core -->
+        <NbThreads>8</NbThreads>
+        <!-- Number of MB of RAM to use -->
+        <RAM>8096</RAM>
+        <!-- Option to generate the product image at L2 resolution (ie. public part) -->
+        <EnableL2ResolutionProcessing>true</EnableL2ResolutionProcessing> 
+        <!-- 'Caching' configuration -->
+        <Caching>
+            <!-- Option to clean the caching directory before processing (for reprocessing user case) -->
+            <EnableCleaningCachingDirectoryBeforeProcessing>false</EnableCleaningCachingDirectoryBeforeProcessing>
+            <!-- Option to clean the caching directory after processing (at the end of execution) -->
+            <EnableCleaningCachingDirectoryAfterProcessing>true</EnableCleaningCachingDirectoryAfterProcessing>
+            <!-- Option to convert double cached image into float when writing -->
+            <EnableCachingConvertReflectanceData>true</EnableCachingConvertReflectanceData>     
+        </Caching>
+        <!-- Option to clean the temporary directory after processing (at the end of execution) 
+        Note : contains the caching directory. If true, cleans also the caching directory -->
+        <EnableCleaningTemporaryDirectory>true</EnableCleaningTemporaryDirectory>     
+    </Computing>
+    <!-- Processing parameters -->
+    <Processing>
+        <!-- Option to check XML validity files -->
+        <CheckXMLFilesWithSchema>false</CheckXMLFilesWithSchema>
+        <!-- PreProcessing parameters -->
+        <PreProcessing>
+            <!-- Option to remove the input compressed product after uncompress processing -->
+            <CleanInputZipFiles>false</CleanInputZipFiles>
+        </PreProcessing>
+        <!-- PostProcessing parameters -->
+        <PostProcessing>
+            <!-- Option to compress the generated product -->
+            <ZipFiles>false</ZipFiles>
+            <!-- Option to remove the product IF the ZipFiles option is activated -->
+            <CleanFiles>false</CleanFiles>
+        </PostProcessing>
+    </Processing>
+</Config>

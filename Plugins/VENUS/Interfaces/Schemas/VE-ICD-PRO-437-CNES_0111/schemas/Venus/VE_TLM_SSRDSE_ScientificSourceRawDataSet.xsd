@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:ccsds="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="SSRDSE_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:SSRDSE_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:SSRDSE_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="SSRDSE_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:SSRDSE_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:SSRDSE_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSRDSE_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_ScientificSourceRawDataSet_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="ScientificSourceRawDataSet"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="TLM_SSRDSE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSRDSE_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:SSRDSE_Instance_Id_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SSRDSE_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Station_Code" type="ee:VE_X_Band_Station_Code_Type">
+				<xs:annotation>
+					<xs:documentation>Receiving station 3-letters code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Download_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_Or_Nil_Reason_NA_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Absolute download orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="SSRDSE_Body_Type">
+		<xs:sequence>
+			<xs:element name="List_of_SourceRawData_Ids">
+				<xs:annotation>
+					<xs:documentation>List of the ids of the ImageSourceRawData and/or AuxiliarySourceRawData included in this set</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SourceRawData_Id" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="ee:VE_SourceRawData_Id_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

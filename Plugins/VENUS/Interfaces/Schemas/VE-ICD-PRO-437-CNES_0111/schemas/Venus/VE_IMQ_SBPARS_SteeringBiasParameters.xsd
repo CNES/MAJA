@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  HISTORIQUE
+  
+  VERSION : 1.7 : DM : VE-FT-1109 : 17/03/2017 : SBPARS angle unit change (radians -> degrees)
+ 
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.7">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="SBPARS_File_Type">
+    <xs:annotation>
+      <xs:documentation>The SteeringBiasParameters represents biases of pitch, roll and yaw used on board by the system of control of attitude and orbit (AOCS). 
+These biases are initially measured on ground and are provided by the satellite project prime contractor to the GCS for remote upload on the satellite in order to improve the a priori localization of the images. 
+In phase of In Orbit Test (IOT) the VIQ can be brought to revalue these biases according to measurements of performances carried out. Consequently it transmits to the GCS these biases for upload. GCS shall perform re-plan after this update</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:SBPARS_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:SBPARS_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="1.7"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="SBPARS_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:SBPARS_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:SBPARS_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SBPARS_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_SteeringBiasParameters_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="SteeringBiasParameters"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="IMQ_SBPARS"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SBPARS_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:SBPARS_Instance_Id_Type"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SBPARS_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Emission_Date" type="ee:UTC_Date_Time_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="SBPARS_Body_Type">
+    <xs:sequence>
+      <xs:element name="Pitch_Bias" type="ee:VE_Degree_Angle_Type">
+        <xs:annotation>
+          <xs:documentation>Pitch bias value expressed in degree</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Roll_Bias" type="ee:VE_Degree_Angle_Type">
+        <xs:annotation>
+          <xs:documentation>Roll bias value expressed in degree</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Yaw_Bias" type="ee:VE_Degree_Angle_Type">
+        <xs:annotation>
+          <xs:documentation>Yaw bias value expressed in degree</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

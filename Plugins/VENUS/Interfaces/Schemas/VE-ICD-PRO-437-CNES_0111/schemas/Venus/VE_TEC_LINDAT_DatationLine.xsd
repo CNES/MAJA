@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.42">
+	<xs:include schemaLocation="VE_DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="LINDAT_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:LINDAT_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:LINDAT_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="LINDAT_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:LINDAT_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:LINDAT_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LINDAT_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_DatationLine_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="DatationLine"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="TEC_LINDAT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LINDAT_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:LINDAT_Instance_Id_Type"/>
+						<xs:element name="Reference_Product_Header_Id">
+							<xs:simpleType>
+								<xs:union memberTypes="ee:VE_Id_Type"/>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LINDAT_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Reference_Product_Semantic" type="ee:VE_Product_File_Semantic_Code_Type">
+				<xs:annotation>
+					<xs:documentation>File semantic of the referenced product</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Product_Instance" type="ee:VE_Instance_Id_Type"/>
+			<xs:element name="Band_Code" type="ee:VE_Band_Code_Type">
+				<xs:annotation>
+					<xs:documentation>Band code=bbb : B01 to B12</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="LINDAT_Body_Type">
+		<xs:sequence>
+			<xs:element name="List_of_Time_Tags">
+				<xs:annotation>
+					<xs:documentation>One datation line per image line</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Time_Tag" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="ee:VE_MJD_MicroSec_Time_Type">
+										<xs:attribute name="sk" use="required">
+											<xs:annotation>
+												<xs:documentation>sk is the line number, the first line is 0.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type"/>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>nb_lines</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

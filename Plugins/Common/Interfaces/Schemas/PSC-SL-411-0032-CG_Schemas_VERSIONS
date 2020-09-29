@@ -1,0 +1,11 @@
+--------------------------------------
+MUSCATE Interface : PSC-SL-411-0032-CG
+-------------------------------------- 
+HISTORY:
+
+PSC-SL-411-0032-CG_Schemas_V1.16            : 07/04/2015
+PSC-SL-411-0032-CG_01_09_Draft              : 04/11/2016    <-    PSC-SL-411-0032-CG_Schemas
+PSC-SL-411-0032-CG_01_17                    : 20/03/2018    <-    Format utilisateur unifie
+PSC-SL-411-0032-CG_01_18                    : 20/04/2018    <-    Format utilisateur unifie (Image_List no longer mandatory)
+PSC-SL-411-0032-CG_01_18_Draft              : 16/07/2018    <-    MAJ pour VENUS_MUSCATE
+PSC-SL-411-0032-CG_01_18_DraftV2            : 06/08/2018    <-    MAJ pour VENUS_MUSCATE pour fichier UII.xml

@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  HISTORIQUE
+  VERSION : 1.11 : DM : VE-FT-1504 : 07/05/2018 : New parameters for refining
+  VERSION : 1.9 : DM : VE-FT-1375 : 14/11/2017 : New optional parameter Attitude_Filtering_Parameters
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.11">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="GEOVEN_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:GEOVEN_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:GEOVEN_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="1.11"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="GEOVEN_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:GEOVEN_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:GEOVEN_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GEOVEN_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_GIPP_GeoVProcess_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GeoVProcess"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIP_GEOVEN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GEOVEN_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:GEOVEN_Instance_Id_Type"/>
+						<xs:element name="List_of_Applicable_SiteDefinition_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GEOVEN_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+				<xs:annotation>
+					<xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+				<xs:annotation>
+					<xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="GEOVEN_Body_Type">
+		<xs:sequence>
+			<xs:element name="Default_Command_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Use_Flat_Earth" type="ee:Bool_Type">
+							<xs:annotation>
+								<xs:documentation>if value is true, "flat earth" is used (i.e. no DEM)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Refining_Scenario">
+							<xs:annotation>
+								<xs:documentation>Defines the refining options (i.e the use of module 1 and/or module 2, or none)</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="NONE"/>
+									<xs:enumeration value="MODULE1"/>
+									<xs:enumeration value="MODULE2"/>
+									<xs:enumeration value="MODULE1_MODULE2"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Refinement_Module_1">
+							<xs:annotation>
+								<xs:documentation>Module 1 processes the refinement of the satellite attitudes and positions.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Reference_Band_Code" type="ee:VE_Band_Code_Type"/>
+									<xs:element name="Additional_Reference_Band_Code" type="ee:VE_Band_Code_Type" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Refinement_Module_2">
+							<xs:annotation>
+								<xs:documentation>Module 2 processes the refinement between the tri-detectors geometries, for each tridetector the reference band of the tridetector is specified along with the reference band used for correlation (other reference band). Also, it is possible to specify if this (other) reference band must be resampled in the tridetector reference band geometry before correlation. Resampling is done using a colocation grid, and the step of this grid can be specified. Furthermore, each EIM component (rotation X,Y,Z and homothety Z) can be enabled/disabled before refining.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="List_of_Tridetector_Reference_Band_Codes">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Tridetector_Reference_Band_Code" minOccurs="1" maxOccurs="3">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Tridetector_Code" type="ee:VE_Tridetector_Code_Type"/>
+															<xs:element name="Tridetector_Reference_Band_Code" type="ee:VE_Band_Code_Type"/>
+															<xs:element name="Other_Reference_Band_Code" type="ee:VE_Band_Code_Type"/>
+															<xs:element name="Resampling">
+																<xs:simpleType>
+																	<xs:restriction base="ee:String_Type">
+																		<xs:enumeration value="YES"/>
+																		<xs:enumeration value="NO"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="Resampling_Spacing" type="ee:Double_Type"/>
+															<xs:element name="EIM_Rotation_X">
+																<xs:simpleType>
+																	<xs:restriction base="ee:String_Type">
+																		<xs:enumeration value="FIGEE"/>
+																		<xs:enumeration value="NON_FIGEE"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="EIM_Rotation_Y">
+																<xs:simpleType>
+																	<xs:restriction base="ee:String_Type">
+																		<xs:enumeration value="FIGEE"/>
+																		<xs:enumeration value="NON_FIGEE"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="EIM_Rotation_Z">
+																<xs:simpleType>
+																	<xs:restriction base="ee:String_Type">
+																		<xs:enumeration value="FIGEE"/>
+																		<xs:enumeration value="NON_FIGEE"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="EIM_Homothety_Z">
+																<xs:simpleType>
+																	<xs:restriction base="ee:String_Type">
+																		<xs:enumeration value="FIGEE"/>
+																		<xs:enumeration value="NON_FIGEE"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+														</xs:sequence>
+														<xs:attribute name="sn" use="required">
+															<xs:simpleType>
+																<xs:restriction base="ee:Integer_Type">
+																	<xs:minInclusive value="1"/>
+																	<xs:maxInclusive value="3"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:attribute>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="count" use="required">
+												<xs:simpleType>
+													<xs:restriction base="ee:Integer_Type">
+														<xs:minInclusive value="1"/>
+														<xs:maxInclusive value="3"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="General_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DEM_Preparation_Margin" type="ee:Distance_Type">
+							<xs:annotation>
+								<xs:documentation>This margin is only used in the case of an extra site acquisition where a specific DEM must be built from globe DEM tiles.
+
+This margin is the distance (expressed in meters). It is used to determine the DEM footprint from lthe Level 1 product footprint.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Mario_Tile_Size" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>Expressed in pixels in the source image
+
+</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Temperature_Conversion_Parameters">
+				<xs:annotation>
+					<xs:documentation>parameters to convert AOCS TM values into °C temperatures for the 4 tridetectors</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AD_REF">
+							<xs:annotation>
+								<xs:documentation>In Volts : Vt = ADREF * TDT_X / 1024, with TDT_[5..8] coming from AOCS TM (obsolete since FT-1547)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="ee:Double_Type">
+										<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="V"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Rpull_up">
+							<xs:annotation>
+								<xs:documentation>In Ohm : Rt = ( Vt * Rpull-up ) / (12.5Vm – Vt) and 12.5Vm=20*VRef / 1024, with VRef coming from AOCS TM (obsolete since FT-1547)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="ee:Double_Type">
+										<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="ohm"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Thermistance_coefs" type="ee:Double_List_Type">
+							<xs:annotation>
+								<xs:documentation>a,b,c : T(°C) = 1 / ( a + b * ln( Rt ) + c * ln( Rt ) 3 ) – 273.15 </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="First_Correlation_Parameters">
+				<xs:annotation>
+					<xs:documentation>First correlation is the process used to determine if the acquisition have the same geometrical characteristics than the reference acquisition and if it can be processed by Pollux without a resampling process.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Correlation_Step" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>Sampling Step used to to build the fisrt correlation grid.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Residual_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>The residual threshold is a distance expressed in pixels.
+
+If the residuals mean is above this thershold, a resampling will be processed. </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cloud_Percentage_Threshold" type="ee:Float_Type">
+							<xs:annotation>
+								<xs:documentation>If Pollux process does not work and if cloud coverage ratio is over this threshold, 
+then the level1 process is interrrupted, and no image is producted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Colocation_Resampling_Parameters_module_1">
+				<xs:annotation>
+					<xs:documentation>Resampling process is needed if the residuals mean computed during the first correlation process is above the residual threshold.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Resampling_Step" type="ee:NonNegativeDouble_Type">
+							<xs:annotation>
+								<xs:documentation>Expressed in pixels</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Pollux_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Registration_Model_Polynom_Degree" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>This degree must be the same as the one used by Pollux.
+
+The first correlation process uses it to compute (with the least square method) a polynom modelizing the deviation between the two acquisitions. 
+
+The resulting polynom is used to simulate the residual values expected from the Pollux process.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Grid_Parameters">
+				<xs:annotation>
+					<xs:documentation>Grids are computed by the module 3 process.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Bitmap_Binarization_Threshold" type="ee:NonNegativeDouble_Type"/>
+						<xs:element name="Viewing_Direction_Grids">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Resampling_Step" type="ee:NonNegativeDouble_Type">
+										<xs:annotation>
+											<xs:documentation>Expressed in pixels</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Grid_Computation_Altitude_Values">
+										<xs:annotation>
+											<xs:documentation>List of space separated altitudes (expressed in meters).
+
+A specific viewing direction grid will be computed for each altitude in the list.
+
+(= Delta H)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:Double_List_Type">
+													<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="m"/>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="List_of_Viewing_Direction_Bands">
+										<xs:annotation>
+											<xs:documentation>List of the bands for which the Viewing Direction Grid has to be generated - At least one band per tri-detector</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Viewing_Direction_Band" minOccurs="4" maxOccurs="12">
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="ee:VE_Band_Code_Type">
+																<xs:attribute name="sn" use="required">
+																	<xs:annotation>
+																		<xs:documentation>serial number of the band in the set</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="ee:Integer_Type">
+																			<xs:minInclusive value="1"/>
+																			<xs:maxInclusive value="12"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="count" use="required">
+												<xs:simpleType>
+													<xs:restriction base="ee:Integer_Type">
+														<xs:minInclusive value="4"/>
+														<xs:maxInclusive value="12"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Solar_Direction_Grids">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Resampling_Step" type="ee:NonNegativeDouble_Type">
+										<xs:annotation>
+											<xs:documentation>Expressed in pixels</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Grid_Computation_Altitude_Values">
+										<xs:annotation>
+											<xs:documentation>List of space separated altitudes (expressed in meters).
+
+A specific solar direction grid will be computed for each altitude in the list.
+
+(= Delta H)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:Double_List_Type">
+													<xs:attribute name="unit" type="ee:String_Type" fixed="m"/>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Ref_Img_Corr_Rate_Alarm_Threshold">
+				<xs:annotation>
+					<xs:documentation>Correlation threshold below which an information message is sent to the VIQ, because it is a sign that the landscape has changed</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:Double_Type">
+						<xs:minInclusive value="0.0"/>
+						<xs:maxInclusive value="1.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Ref_Img_Corr_Valid_Points_Percent_Threshold">
+				<xs:annotation>
+					<xs:documentation>Percentage of valid points during the correlation with the reference image, below which the L1 Product will be invalid (because the geometrical model would be unsafe).</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:Double_Type">
+						<xs:minInclusive value="0.0"/>
+						<xs:maxInclusive value="100.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Attitude_Filtering_Parameters" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Attitude filtering parameters</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Attitude_Filter">
+							<xs:annotation>
+								<xs:documentation>Choice of method used to filter attitudes : INIT (without filtering), POLY (filtering with fit of polynomial), PB (Low-pass filter and polynomial)</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="INIT"/>
+									<xs:enumeration value="POLY"/>
+									<xs:enumeration value="PB"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Residues_Thresholds">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Image_Residues_Threshold_mod1" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>'Validity threshold on image residues after refining with module 1, if this parameter is set to 0, the images residues of module 1 won't be taken into account to determine the validity of the product'</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Ground_Residues_Threshold_mod1" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>'Validity threshold on ground residues after refining with module 1, if this parameter is set to 0, the ground residues of module 1 won't be taken into account to determine the validity of the product'</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Image_Residues_Threshold_mod2" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>'Validity threshold on image residues after refining with module 2, if this parameter is set to 0, the images residues of module 2 won't be taken into account to determine the validity of the product'</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Ground_Residues_Threshold_mod2" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>'Validity threshold on ground residues after refining with module 2, if this parameter is set to 0, the ground residues of module 2 won't be taken into account to determine the validity of the product'</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

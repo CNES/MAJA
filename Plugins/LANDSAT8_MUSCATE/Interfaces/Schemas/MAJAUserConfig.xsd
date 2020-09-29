@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo         *
+ *                             o                                                                            *
+ *                          o                                                                               *
+ *                        o                                                                                 *
+ *                      o                                                                                   *
+ *                     o       ooooooo       ooooooo    o         o      oo                                 *
+ *    o              o       o        o     o       o   o         o     o   o                               *
+ *      o           o       o          o   o         o  o         o    o      o                             *
+ *        o        o       o           o   o         o  o         o    o        o                           *
+ *         o      o        o      oooo     o         o  o         o   o           o                         *
+ *          o    o          o              o         o  o         o   o           o                         *
+ *           o  o            o             o         o  o o      o   o          o                           *
+ *            oo              oooooooo    o         o   o  oooooo   o      oooo                             *
+ *                                                     o                                                    *
+ *                                                     o                                                    *
+ *                                                    o                            o                        *
+ *                                                    o            o      oooo     o   o      oooo          *
+ *                                                   o             o         o    o    o         o          *
+ *                                                   o            o       ooo     o   o       ooo           *
+ *                                                               o       o       o   o          o           *
+ *                                                               ooooo   oooo    o   ooooo  oooo            *
+ *                                                                              o                           *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 1-0-0-3 : DM : 251 : 2 septembre 2011 : Modif. pour prise en compte DM 251 Checktools dans SMIGS *
+ * VERSION : 1-0-0-1 : DM : 238 : 6 mai 2011 : Fichier de configuration et produit HDR. Web_Site_URL et Notes   *
+ * VERSION : 1-0-0-1 : FA : 240 : 6 mai 2011 : Le nom du Processing est utilise pour remplir le champ "Creator" *
+ * VERSION : 1-0-0-1 : FA : 213 : 3 mai 2011 : Les schémas XML en entrée ne sont pas controlés                  *
+ * VERSION : 1-0-0 : <TypeFT> : <NumFT> : 28 juillet 2010 : Creation
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://maja.fr" xmlns:maja="http://maja.fr" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:include schemaLocation="../Maja/MAJAConfigCommon.xsd"/>
+    <!-- ================= -->
+    <!-- Root -->
+    <!-- ================= -->
+        <xs:element name="Config" type="maja:ConfigType"/>
+        <xs:complexType name="ConfigType">
+            <xs:sequence>
+                <xs:element name="Business">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ImageDivision" type="maja:ImageDivision_Type"/>
+                            <xs:element name="L2CoarseResolution" type="maja:NonNegativeInteger_Type"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Algorithms">
+                    <xs:complexType>
+                        <xs:sequence>
+                        <xs:element name="GRID_Reference_Altitudes">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="SOLH1" type="maja:NonNegativeInteger_Type"/>
+                                    <xs:element name="SOLHRef" type="maja:NonNegativeInteger_Type"/>
+                                    <xs:element name="VIEHRef" type="maja:NonNegativeInteger_Type"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+			            <xs:element name="Atmospheric_Absorption_Correction">
+			                <xs:complexType>
+			                    <xs:sequence>
+                                    <xs:element name="Use_Default_Constant_Ozone_Amount" type="maja:Bool_Type"/>
+			                    </xs:sequence>
+			                </xs:complexType>
+			            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    <xs:complexType name="ImageDivision_Type">
+        <xs:sequence>
+                <xs:element name="NbStrips">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="L2InitProcessing" type="xs:positiveInteger"/>
+                            <xs:element name="L2NominalProcessing" type="xs:positiveInteger"/>
+                            <xs:element name="L2BackwardProcessing" type="xs:positiveInteger"/>
+                            <xs:element name="L3Processing" type="xs:positiveInteger"/>
+                            <xs:element name="ChecktoolProcessing" type="xs:positiveInteger"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+        </xs:sequence>
+        <xs:attribute name="method" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="strips"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>        

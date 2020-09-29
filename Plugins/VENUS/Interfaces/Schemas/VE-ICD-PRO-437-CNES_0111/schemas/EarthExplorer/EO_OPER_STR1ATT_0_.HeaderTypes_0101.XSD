@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="OrbitTypes_0101.XSD"></xsd:include>
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:include schemaLocation="HeaderTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Star Tracker Header Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:46 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Star_Tracker_SPH_Type">
+		<xsd:sequence>
+			<xsd:element name="SPH_Descriptor" type="String_Type"></xsd:element>
+			<xsd:element name="Orbit_Information" type="Orbit_Information_Type"></xsd:element>
+			<xsd:element name="Product_Location" type="Product_Location_Type"></xsd:element>
+			<xsd:element name="Product_Confidence_Data" type="Product_Confidence_Data_Type"></xsd:element>
+			<xsd:element name="DSDs" type="DSD_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Star_Tracker_Variable_Header_Type">
+		<xsd:sequence>
+			<xsd:element name="MPH" type="MPH_Type"></xsd:element>
+			<xsd:element name="SPH" type="Star_Tracker_SPH_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Star_Tracker_Header_Type">
+		<xsd:sequence>
+			<xsd:element name="Fixed_Header" type="Fixed_Header_Type"></xsd:element>
+			<xsd:element name="Variable_Header" type="Star_Tracker_Variable_Header_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Earth_Explorer_Header" type="Star_Tracker_Header_Type"></xsd:element>
+	<xsd:complexType name="List_of_DSDs_Type">
+		<xsd:sequence>
+			<xsd:element name="Data_Set_Descriptor" type="Data_Set_Descriptor_Type"
+				maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="Integer_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="DSD_Type">
+		<xsd:sequence>
+			<xsd:element name="List_of_DSDs" type="List_of_DSDs_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="Data_Set_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:length value="1"></xsd:length>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Data_Set_Offset_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Integer_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="bytes"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Data_Set_Size_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Integer_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="bytes"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Record_Size_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Integer_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="bytes"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Data_Set_Descriptor_Type">
+		<xsd:sequence>
+			<xsd:element name="Data_Set_Name" type="String_Type"></xsd:element>
+			<xsd:element name="Data_Set_Type" type="Data_Set_Type"></xsd:element>
+			<xsd:element name="File_Name" type="String_Type"></xsd:element>
+			<xsd:element name="Data_Set_Offset" type="Data_Set_Offset_Type"></xsd:element>
+			<xsd:element name="Data_Set_Size" type="Data_Set_Size_Type"></xsd:element>
+			<xsd:element name="Num_of_Records" type="Integer_Type"></xsd:element>
+			<xsd:element name="Record_Size" type="Record_Size_Type"></xsd:element>
+			<xsd:element name="Byte_Order" type="Integer_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

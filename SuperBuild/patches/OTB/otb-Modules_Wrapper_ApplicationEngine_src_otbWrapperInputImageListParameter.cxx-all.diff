@@ -1,0 +1,26 @@
+--- OTB-7.0.0.orig/Modules/Wrappers/ApplicationEngine/src/otbWrapperInputImageListParameter.cxx	2019-10-29 10:11:39.000000000 +0100
++++ OTB-7.0.0/Modules/Wrappers/ApplicationEngine/src/otbWrapperInputImageListParameter.cxx	2020-04-04 10:53:38.000000000 +0200
+@@ -110,6 +110,23 @@
+ }
+ 
+ /*****************************************************************************/
++const ImageBaseType* InputImageListParameter::GetNthImageBase(std::size_t i) const
++{
++  return const_cast<InputImageListParameter*>(this)->GetNthImageBase(i);
++}
++
++/*****************************************************************************/
++ImageBaseType* InputImageListParameter::GetNthImageBase(std::size_t i)
++{
++  assert(i < Size());
++  assert(!m_Parameters[i].IsNull());
++  assert(m_Parameters[i]->GetImage<ImageBaseType>() != nullptr);
++
++  return m_Parameters[i]->GetImage<ImageBaseType>();
++}
++
++
++/*****************************************************************************/
+ void InputImageListParameter::SetImageList(FloatVectorImageListType* imList)
+ {
+   assert(imList != nullptr);

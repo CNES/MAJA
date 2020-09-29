@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_PRODUCT_LIST">
+		<xs:sequence>
+			<xs:element name="PRODUCT" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:group ref="A_PRODUCT_IDENTIFICATION"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_PARAMETER_LIST">
+		<xs:sequence>
+			<xs:element name="Parameter" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="PARAMETER_FILE" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Pointeur sur le fichier de paramètre 
+								dans le cas général il s'agit cette information est obtenu à partir du path du ficher de paramètre fourni par le fichier de commande
+								et corredond au "basename(dirname(path))/basename(path)".
+								</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="NATURE" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Nature du paramètre.
+Enuméré.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_PRODUCTION_FACILITY">
+		<xs:sequence>
+			<xs:element name="SOFTWARE_NAME" type="xs:string"/>
+			<xs:element name="SOFTWARE_VERSION" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_AUXILIARY_DATA">
+		<xs:sequence>
+			<xs:element name="DATA" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>pointeur sur la donnée de référence
+					dans le cas général il s'agit cette information est obtenu à partir du path de la donnée de référence fourni par le fichier de commande
+					et correspond au "basename(dirname(path))/basename(path)".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CREATION_DATE" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="NATURE" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type de donnée de référence utilisée par le traitement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Resolution" minOccurs="0" maxOccurs="2">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="X_RESOLUTION" type="A_LENGTH_VALUE"/>
+						<xs:element name="Y_RESOLUTION" type="A_LENGTH_VALUE"/>
+					</xs:sequence>
+					<xs:attribute name="group_id" type="A_BAND_ID" use="optional">
+						<xs:annotation>
+							<xs:documentation>utilise dans le cas des MNT_N2 pour differencier la haute et la basse resoltuion (R1 et R2)</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Elevation" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ALTITUDE_REFERENTIAL" type="xs:string" minOccurs="0"/>
+						<xs:element name="MIN" type="A_LENGTH_VALUE"/>
+						<xs:element name="MAX" type="A_LENGTH_VALUE"/>
+						<xs:element name="MEAN" type="A_LENGTH_VALUE"/>
+						<xs:element name="STD" type="A_LENGTH_VALUE"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_AUXILIARY_DATA_LIST">
+		<xs:sequence>
+			<xs:element name="Auxiliary_Data" type="AN_AUXILIARY_DATA" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_PROCESSING_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="Processing_Information" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="NAME" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Exemple : ORTHO : REGISTRATION_SCENARIO. N2 : PROCESSING_MODE, Adjacency_Effects_And_Slope_Correction</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="VALUE" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_JOB">
+		<xs:sequence>
+			<xs:element name="WORKPLAN_ID" type="xs:string"/>
+			<xs:element name="STEP_ID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identifiant de l'étape.
+Enuméré : INGESTION_MUSCATE, ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="JOB_ID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identifiant du job de traitement</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PRODUCER_NAME" type="A_PRODUCER_NAME">
+				<xs:annotation>
+					<xs:documentation>Nom du producteur</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="START_PRODUCTION_DATE" type="xs:dateTime"/>
+			<xs:element name="END_PRODUCTION_DATE" type="xs:dateTime"/>
+			<xs:element name="Production_Facility" type="A_PRODUCTION_FACILITY" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Informations sur le(s) logiciel(s) (nom et version) ayant effectué l'étape </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Products_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Inputs_List" type="A_PRODUCT_LIST"/>
+						<xs:element name="References_List" type="A_PRODUCT_LIST" minOccurs="0"/>
+						<xs:element name="Outputs_List" type="A_PRODUCT_LIST" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Auxiliary_Data_List" type="AN_AUXILIARY_DATA_LIST" minOccurs="0"/>
+			<xs:element name="Parameter_List" type="A_PARAMETER_LIST" minOccurs="0"/>
+			<xs:element name="Processing_Informations" type="A_PROCESSING_INFORMATIONS" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_PRODUCTION_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="Processing_Jobs_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Job" type="A_JOB" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

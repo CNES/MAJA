@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+  <xsd:include schemaLocation="EarthExplorer_BasicTypes_0101.XSD"></xsd:include>
+  <xsd:annotation>
+    <xsd:documentation>Time data types</xsd:documentation>
+  </xsd:annotation>
+  <xsd:annotation>
+    <xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:48 $</xsd:documentation>
+  </xsd:annotation>
+  <xsd:simpleType name="Mission_Date_Time_Type">
+    <xsd:restriction base="String_Type">
+      <xsd:pattern value="[A-Z0-9]{3}=(\d{4}-(((01|03|05|07|08|10|12)-(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)-(0[1-9]|[1,2][0-9]|30))|(02-(0[1-9]|[1,2][0-9])))T([0,1][0-9]|2[0-3])(:[0-5][0-9]){2}|0000-00-00T00:00:00|9999-99-99T99:99:99)(.\d*)?"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="TAI_Date_Time_Type">
+    <xsd:restriction base="Mission_Date_Time_Type">
+      <xsd:pattern value="TAI=.*"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UTC_Date_Time_Type">
+    <xsd:restriction base="Mission_Date_Time_Type">
+      <xsd:pattern value="UTC=.*"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UT1_Date_Time_Type">
+    <xsd:restriction base="Mission_Date_Time_Type">
+      <xsd:pattern value="UT1=.*"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="Seconds_Time_Type">
+    <xsd:simpleContent>
+      <xsd:extension base="Decimal_Type">
+        <xsd:attribute name="unit" type="String_Type" use="required" fixed="s"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="Seconds_Duration_Type">
+    <xsd:simpleContent>
+      <xsd:restriction base="Seconds_Time_Type">
+        <xsd:minInclusive value="0"/>
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:simpleType name="UTC_EOM_Date_Type">
+    <xsd:restriction base="UTC_Date_Time_Type">
+      <xsd:pattern value="UTC=9999-99-99T99:99:99"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UTC_BOM_Date_Type">
+    <xsd:restriction base="UTC_Date_Time_Type">
+      <xsd:pattern value="UTC=0000-00-00T00:00:00"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="Time_Reference_Type">
+    <xsd:restriction base="String_Type">
+      <xsd:enumeration value="UTC"></xsd:enumeration>
+      <xsd:enumeration value="UT1"></xsd:enumeration>
+      <xsd:enumeration value="TAI"></xsd:enumeration>
+      <xsd:enumeration value="GPS"></xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

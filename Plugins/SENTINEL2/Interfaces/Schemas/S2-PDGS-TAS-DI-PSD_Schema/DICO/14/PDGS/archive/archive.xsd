@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xs:schema xmlns:archive="http://gs2.esa.int/DICO/1.0/PDGS/archive/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:center="http://gs2.esa.int/DICO/1.0/PDGS/center/" xmlns:image="http://gs2.esa.int/DICO/1.0/SY/image/" xmlns:item="http://gs2.esa.int/DICO/1.0/DataAccess/item/" xmlns:userProduct="http://gs2.esa.int/DICO/1.0/DataAccess/userProduct/" xmlns:ns1="http://gs2.esa.int/DICO/1.0/PDGS/header/" targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/archive/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<!-- IMPORT and INCLUDE -->
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/SY/image/" schemaLocation="../../SY/image/image.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/center/" schemaLocation="../../PDGS/center/center.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/DataAccess/userProduct/" schemaLocation="../../DataAccess/userProduct/userProduct.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/DataAccess/item/" schemaLocation="../../DataAccess/item/item.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/header/" schemaLocation="..\header\EOF_Header.xsd"/>
+	<!-- GLOBAL ELEMENT DEFINITIONS -->
+	<xs:element name="Pdi-id" type="item:PDI_ID">
+		<xs:annotation>
+			<xs:documentation>Product data item identifier</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ParentPdi-id" type="item:PDI_ID">
+		<xs:annotation>
+			<xs:documentation>Parent PDI-id (referenced datastrip id)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Datatake-id" type="image:A_DATA_TAKE_ID">
+		<xs:annotation>
+			<xs:documentation>The datatake id (aka GID, group id)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="FileType" type="item:File_Type">
+		<xs:annotation>
+			<xs:documentation>The FileType of the Item. Cf. [DI-PSD]</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Latency" type="item:Latency">
+		<xs:annotation>
+			<xs:documentation>On-line / Off-line</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- COMPLEX TYPE DEFINITIONS -->
+	<xs:complexType name="S2EarthObservationType">
+		<xs:annotation>
+			<xs:documentation>S2 Earth Observation Specialization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="S2EarthObservation">
+				<xs:annotation>
+					<xs:documentation>S2 Earth Observation Specialization.
+Cf. [NGEO-EICD-S2], opt:EarthObservation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemMetadataType">
+		<xs:annotation>
+			<xs:documentation>PDIs metadata to set Central Index and Catalogue</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="CentralIndex">
+				<xs:annotation>
+					<xs:documentation>Metadata for Central index purpose</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:all>
+						<xs:element ref="archive:Pdi-id"/>
+						<xs:element ref="archive:ParentPdi-id"/>
+						<xs:element ref="archive:Datatake-id"/>
+						<xs:element name="PDIPhysicalUrl" type="userProduct:PDIphysicalUrl">
+							<xs:annotation>
+								<xs:documentation>https://-dag server url-/
+get?
+PdiID=-PDIid-
+dsPdiID=-DatastripPDIid-</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="LogicalItemName" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>A substring of the Pdi-id (acq station stripped), useful to detect redounded or complementary PDIs.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="archive:FileType"/>
+						<xs:element name="ItemQuality" type="xs:positiveInteger">
+							<xs:annotation>
+								<xs:documentation>Aggregated quality score for the Item.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="archive:Latency"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Catalogues" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Metadata for cataloguing purpose. Mandatory for PDI at granule level</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S2CatalogueReport">
+							<xs:annotation>
+								<xs:documentation>S2 Earth Observation Specialization.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="archive:S2EarthObservationType"/>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="ItemMetadataUpdateType">
+		<xs:annotation>
+			<xs:documentation>Metadata to update PDIs status at the Central Index</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element ref="archive:Pdi-id"/>
+			<xs:element name="Operation">
+				<xs:annotation>
+					<xs:documentation>Type of performed operation (delete, latency update)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Update"/>
+						<xs:enumeration value="Delete"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element ref="archive:Latency" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+	<!-- Abstract ReportType -->
+	<xs:complexType name="ReportType" abstract="true">
+		<xs:sequence>
+			<xs:element name="Centre" type="center:A_S2_CENTER"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Element group to be used for the Derived ReportType definitions -->
+	<xs:group name="ArchiveUnavailabilityReportBody">
+		<xs:sequence>
+			<xs:element name="IsUnavailable" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the Archive is unavailable</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="PDISetArchiveReportBody">
+		<xs:sequence>
+			<xs:element name="List_of_ItemMetadata">
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="ItemMetadata" type="archive:ItemMetadataType">
+							<xs:annotation>
+								<xs:documentation>Archived and Intoried Item to be Indexed and Catalogued</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="PDISetUpdateReportBody">
+		<xs:sequence>
+			<xs:element name="List_of_ItemsMetadataUpdate">
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="ItemMetadataUpdate" type="archive:ItemMetadataUpdateType">
+							<xs:annotation>
+								<xs:documentation>Metadata to notify PDIs status change</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:image="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/image/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/image/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:simpleType name="A_10M_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Spectral band identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="07"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_20M_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Spectral band identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="08"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_60M_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Spectral band identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="00"/>
+			<xs:enumeration value="09"/>
+			<xs:enumeration value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_SPACECRAFT_NAME">
+		<xs:annotation>
+			<xs:documentation>Spacecraft name (Sentinel-2A/B/…)</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>Spacecraft name (Sentinel-2A/B/…)</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SENTINEL-2A"/>
+			<xs:enumeration value="SENTINEL-2B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PHYSICAL_BAND_NAME">
+		<xs:annotation>
+			<xs:documentation>Spectral band physical name</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="B1"/>
+			<xs:enumeration value="B2"/>
+			<xs:enumeration value="B3"/>
+			<xs:enumeration value="B4"/>
+			<xs:enumeration value="B5"/>
+			<xs:enumeration value="B6"/>
+			<xs:enumeration value="B7"/>
+			<xs:enumeration value="B8"/>
+			<xs:enumeration value="B8A"/>
+			<xs:enumeration value="B9"/>
+			<xs:enumeration value="B10"/>
+			<xs:enumeration value="B11"/>
+			<xs:enumeration value="B12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_METADATA_LEVEL">
+		<xs:annotation>
+			<xs:documentation>Metadata level Brief/Standard/Expertise</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Brief"/>
+			<xs:enumeration value="Standard"/>
+			<xs:enumeration value="Expertise"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Spectral band index</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_NUMBER_WITH_TDI">
+		<xs:annotation>
+			<xs:documentation>Spectral band index with TDI (B3, B4, B11 and B12)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_RESOLUTION">
+		<xs:annotation>
+			<xs:documentation>List of the resolution of the bands</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_FOCAL_PLANE_ID">
+		<xs:annotation>
+			<xs:documentation>Focal plane identifier : VNIR or SWIR</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SWIR"/>
+			<xs:enumeration value="VNIR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_VNIR_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>VNIR spectral band identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DATA_STRIP_ID">
+		<xs:annotation>
+			<xs:documentation>Datastrip identification string</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION><![CDATA[The datastrip identification is a character string that identify in a unique way an Sentinel2 acquired datastrip. It is defined bellow  <br/>
+GS[SS]_[YYYYMMDDTHHMMSS]_[RRR]_[TTTTT], where :<br/>
+<ul>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[YYYYMMDDTHHMMSS]	: identifies the datastrip start date (example 20121001T09575020) in UTC time </li>
+	<li>[RRR]	: Processing center, for GPP the value is “GPP”</li>
+	<li>[TTTTT] 	: Number of sources packets level 0, B2 band</li>
+</ul>]]></gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="GS(2A|2B)_\d\d\d\d\d\d\d\dT\d\d\d\d\d\d_\c\c\c_\d\d\d\d\d"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_SWIR_BAND_NUMBER">
+		<xs:annotation>
+			<xs:documentation>SWIR spectral band identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="10"/>
+			<xs:maxInclusive value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GRANULE_ID">
+		<xs:annotation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION><![CDATA[The Granule Identifier is a character string that identify in a unique way an Sentinel2 acquired granule. It is defined as observation-id_rec-id <br/>
+observation-id: L[pp]_S[SS]_[YYYYMMDDTHHMMSS]_[dd], rec-id: [RRR], where:  <br/>
+<ul>
+	<li>[pp] : identifies the processing level : “0_”, “1A”, “1B”, “1C” .</li>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[YYYYMMDDTHHMMSS]	: identifies the first line date on the MSI-Scene (ex. 20121001T09575020) in UTC time </li>
+	<li>[dd]	: 2 digits identifying the detector (from 01 to 12)</li>
+	<li>[RRR]	: reception centre : “CGS1”, “CGS2”, “CGS3”, “PAC1”, “PAC2”</li>
+</ul>]]></gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+			<xs:documentation>Granule identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_L1A_L1B_GRANULE_ID">
+		<xs:annotation>
+			<xs:documentation>Granule identification (L1A and L1B)</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION><![CDATA[The datastrip identification is a character string that identify in a unique way an Sentinel2 acquired datastrip. It is defined bellow  <br/>
+GS[SS]_[YYYYMMDDTHHMMSS]_[RRR]_[TTTTT], where :<br/>
+<ul>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[YYYYMMDDTHHMMSS]	: identifies the datastrip start date (example 20121001T09575020) in UTC time </li>
+	<li>[RRR]	: Processing center, for GPP the value is “GPP”</li>
+	<li>[TTTTT] 	: Number of sources packets level 0, B2 band</li>
+</ul>]]></gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_DETECTOR_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Detector identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="07"/>
+			<xs:enumeration value="08"/>
+			<xs:enumeration value="09"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_GSP_ID">
+		<xs:annotation>
+			<xs:documentation>Group of Source Packets identification string (without .bin extension)</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION><![CDATA[The datastrip identification is a character string that identify in a unique way an Sentinel2 acquired datastrip. It is defined bellow  <br/>
+GS[SS]_[YYYYMMDDTHHMMSS]_[RRR]_[TTTTT], where :<br/>
+<ul>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[YYYYMMDDTHHMMSS]	: identifies the datastrip start date (example 20121001T09575020) in UTC time </li>
+	<li>[RRR]	: Processing center, for GPP the value is “GPP”</li>
+	<li>[TTTTT] 	: Number of sources packets level 0, B2 band</li>
+</ul>]]></gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="DATA_B\d\d_\d\d_\d\d\d\d\d\d\d\dT\d\d\d\d\d\d"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_SOURCE_PACKET_DEGRADATION_TYPE">
+		<xs:annotation>
+			<xs:documentation>Type of degradation of the source packet</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOST"/>
+			<xs:enumeration value="DEGRADED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AN_IMAGE_SIZE">
+		<xs:annotation>
+			<xs:documentation>The size (row and column) of an image</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NCOLS">
+				<xs:annotation>
+					<xs:documentation>Number of columns</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="NROWS">
+				<xs:annotation>
+					<xs:documentation>Number of rows</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_IMAGE_RESOLUTION_SIZE">
+		<xs:annotation>
+			<xs:documentation>The size (row and column) of each resolution band of an image</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NROWS">
+				<xs:annotation>
+					<xs:documentation>Number of rows</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="NCOLS">
+				<xs:annotation>
+					<xs:documentation>Number of columns</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="XDIM" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Horizontal pixel dimension </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YDIM" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Vertical pixel dimension</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_COMPRESSION_RATE">
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_GIPP_IDENTIFICATION">
+		<xs:annotation>
+			<xs:documentation>GIPP identifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="S2A_BAND_NUMBER_0_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_VIEWING_DIRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_SPACECRAFT_MODEL_FILE"/>
+			<xs:enumeration value="S2B_SPACECRAFT_MODEL_FILE"/>
+			<xs:enumeration value="EARTH_MODEL_FILE"/>
+			<xs:enumeration value="S2A_EUCLIDIUM_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_EUCLIDIUM_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_INTER_DETECTOR_FILE"/>
+			<xs:enumeration value="S2B_INTER_DETECTOR_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_DECONVOLUTION_FILTER_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_DECONVOLUTION_THRESHOLD_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_WAVELET_FILTERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_WAVELET_BASE_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_L2_NORM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_MAXIMUM_COEFFICIENTS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_DENOISING_THRESHOLDS_FILE"/>
+			<xs:enumeration value="S2A_NOISE_MODEL_FILE"/>
+			<xs:enumeration value="S2B_NOISE_MODEL_FILE"/>
+			<xs:enumeration value="S2A_SWIR_REARRANGEMENT_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_SWIR_REARRANGEMENT_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_EQUALIZATION_ONGROUND_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_EQUALIZATION_ONBOARD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_0_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_1_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_2_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_3_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_4_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_5_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_6_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_7_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_8_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_9_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_10_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_11_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_BAND_NUMBER_12_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_0_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_1_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_2_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_3_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_4_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_5_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_6_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_7_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_8_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_9_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_10_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_11_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BAND_NUMBER_12_DECOMPOSITION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_DEFECTIVE_PIXELS_FILE"/>
+			<xs:enumeration value="S2B_DEFECTIVE_PIXELS_FILE"/>
+			<xs:enumeration value="S2A_BLIND_PIXELS_FILE"/>
+			<xs:enumeration value="S2B_BLIND_PIXELS_FILE"/>
+			<xs:enumeration value="S2A_BINNING_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_BINNING_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_ABSOLUTE_CALIBRATION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_ABSOLUTE_CALIBRATION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_CROSSTALK_CORRECTIONS_FILE"/>
+			<xs:enumeration value="S2B_CROSSTALK_CORRECTIONS_FILE"/>
+			<xs:enumeration value="S2A_ANA_TM_SAD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_ANA_TM_SAD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_ANA_TM_IMAGE_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_ANA_TM_IMAGE_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_DATATION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_DATATION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_LR_EXTRACTION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_LR_EXTRACTION_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_INIT_LOC_INV_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_INIT_LOC_INV_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_CLOUD_INV_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_CLOUD_INV_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_INIT_LOC_PROD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_INIT_LOC_PROD_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_RADIO_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_RADIO_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_SIGMA_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_SIGMA_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_GEO_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_GEO_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_PARAMETERS_TO_BE_REFINED_FILE"/>
+			<xs:enumeration value="S2B_PARAMETERS_TO_BE_REFINED_FILE"/>
+			<xs:enumeration value="S2A_TILING_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_TILING_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_RESAMPLE_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_RESAMPLE_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2A_MASK_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="S2B_MASK_S2_PARAMETERS_FILE"/>
+			<xs:enumeration value="GENERAL_PARAMETERS_FILE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_IMAGE_COMPRESSION_TYPE">
+		<xs:annotation>
+			<xs:documentation>JPEG_2000 compression type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LOSSY"/>
+			<xs:enumeration value="LOSSLESS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_IMAGE_GEOMETRY">
+		<xs:annotation>
+			<xs:documentation>QL geometry (inventory process) or full resolution geometry (production process)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="QL"/>
+			<xs:enumeration value="FULL_RESOLUTION"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DETECTOR_SIDE">
+		<xs:annotation>
+			<xs:documentation>Left or Right side of a detector</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LEFT"/>
+			<xs:enumeration value="RIGHT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DATATAKE_TYPE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INS-NOBS"/>
+			<xs:enumeration value="INS-EOBS"/>
+			<xs:enumeration value="INS-DASC"/>
+			<xs:enumeration value="INS-ABSR"/>
+			<xs:enumeration value="INS-VIC"/>
+			<xs:enumeration value="INS-RAW"/>
+			<xs:enumeration value="INS-TST"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DATA_TAKE_ID">
+		<xs:annotation>
+			<xs:documentation>Datatake identification string</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION><![CDATA[The datatake identification is a character string that identify in a unique way an Sentinel2 acquired datatake It is defined bellow  <br/>
+GS[SS]_[YYYYMMDDTHHMMSS]_[RRRRRR], where :<br/>
+<ul>
+	<li>[SS] : identifies the Sentinel2 satellite : “2A” or “2B”.</li>
+	<li>[YYYYMMDDTHHMMSS]	: identifies the datatake start date (Fourteen digits, date and time separated by the character T) </li>
+	<li>[RRRRRR] : identifies the sensing Absolute Orbit Number: 000001-999999 </li>
+</ul>]]></gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="GS(2A|2B)_\d\d\d\d\d\d\d\dT\d\d\d\d\d\d_\d\d\d\d\d\d"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PIXEL_MANAGEMENT">
+		<xs:annotation>
+			<xs:documentation>Pixel managment : true (corrected), false (not detected and not corrected), detection (detected but not corrected)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+			<xs:enumeration value="detection"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_REFINING_TYPE">
+		<xs:annotation>
+			<xs:documentation>Type of refining</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="REFINING"/>
+			<xs:enumeration value="REGISTRATION"/>
+			<xs:enumeration value="REFINING_REGISTRATION"/>
+			<xs:enumeration value="NONE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_RESTORATION_SCENARIO">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="F_CONVOLUTION"/>
+			<xs:enumeration value="W_DENOISING"/>
+			<xs:enumeration value="F_CONVOLUTION_W_DENOISING"/>
+			<xs:enumeration value="NONE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PROCESSING_LEVEL">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Level-0"/>
+			<xs:enumeration value="Level-1A"/>
+			<xs:enumeration value="Level-1B"/>
+			<xs:enumeration value="Level-1C"/>
+			<xs:enumeration value="Level-2Ap"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PRODUCT_S2_FORMAT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SAFE"/>
+			<xs:enumeration value="DIMAP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PRODUCT_TYPE">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="S2MSI0"/>
+			<xs:enumeration value="S2MSI1A"/>
+			<xs:enumeration value="S2MSI1B"/>
+			<xs:enumeration value="S2MSI1C"/>
+			<xs:enumeration value="S2MSI2Ap"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_RGMF_USE_CASE">
+		<xs:annotation>
+			<xs:documentation>Flag to identify if the Refined Geometric Model File is computed or obtained from a existing RGMF (reused)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COMPUTED"/>
+			<xs:enumeration value="REUSED"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by USER USER (CNES) -->
+<xs:schema xmlns:ccsds="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="RFORBT_File_Type">
+    <xs:annotation>
+      <xs:documentation>The ReferenceOrbit represents the VENµS satellite orbit as specified and calculated before the launch in order to configure and initialize the processes. It’s mainly used for simulation purposes and is not exchanged between the various ground centres using a specific protocol.
+
+However, during the early drifting phase, the reference orbit might be exchanged between the GCS and the SMIGS in order to be able to acquire images, and cover 150 revolutions (corresponding to 5 pseudo-cycles of two days).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:RFORBT_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:RFORBT_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.30"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="RFORBT_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:RFORBT_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:RFORBT_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RFORBT_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_ReferenceOrbit_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="ReferenceOrbit"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="MPL_RFORBT"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RFORBT_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:RFORBT_Instance_Id_Type"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RFORBT_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>unique Serial key in the RFORBT series</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Orbit_Number_Validity_Range" type="ee:VE_Absolute_Orbit_Number_Range_Type">
+        <xs:annotation>
+          <xs:documentation>First and last validity orbits (i.e. covered by corresponding satellite command file).
+
+Both orbits are expressed as absolute orbit numbers.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Orbital_Elements_Definition_Mode" type="ee:VE_Orbit_Definition_Mode_Type">
+        <xs:annotation>
+          <xs:documentation>Mode of definition of the ccsds content of the Orbital_Elements block. Below are allowed values (first letter, preceding the underscore, is the corresponding letter code used in ids and file names)
+
+- A_ABSOLUTE for an absolute definition
+- R_RELATIVE for a relative definition</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="RFORBT_Body_Type">
+    <xs:sequence>
+      <xs:element name="Orbital_Elements">
+        <xs:annotation>
+          <xs:documentation>the orbital elements corresponding to this orbit</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ccsds:oem"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Ascending_Node_Latitude" type="ee:Latitude_Type">
+        <xs:annotation>
+          <xs:documentation>Latitude of the begining ascending node of the orbit</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="First_Orbit_Date_Time" type="ee:UTC_Date_Time_Type">
+        <xs:annotation>
+          <xs:documentation>Date and time of the first orbit start</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

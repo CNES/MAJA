@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://eop-cfi.esa.int/CFI" version="0.40" xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+<!-- ================= -->
+<!-- Root -->
+<!-- ================= -->
+	<xs:complexType name="GPSDTA_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:GPSDTA_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:GPSDTA_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+<!-- ================= -->
+<!-- Header -->
+<!-- ================= -->
+	<xs:complexType name="GPSDTA_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:GPSDTA_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:GPSDTA_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GPSDTA_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_AuxGPSData_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GPSData"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="AUX_GPSDTA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GPSDTA_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:GPSDTA_Instance_Id_Type"/>
+						<xs:element name="Related_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+							<xs:annotation>
+								<xs:documentation>if Auxiliary_Data_Type = O_ORBIT, site definition id should have the special nickname value of &apos;ONEORBIT&apos;.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GPSDTA_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Site_Type" type="ee:VE_Site_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>NickName of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Auxiliary_Data_Type" type="ee:VE_Auxiliary_Data_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the auxiliary data (O_ORBIT or S_SITE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Element" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data ElementId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+<!-- ================= -->
+<!-- body -->
+<!-- ================= -->
+	<xs:complexType name="GPSDTA_Body_Type">
+		<xs:annotation>
+			<xs:documentation>GPS data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element default="ECEF" name="GPS_Coordinate_System">
+				<xs:annotation>
+					<xs:documentation>ECEF</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element default="m" name="Position_Unit" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Unit of the position coordinates (m)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element default="m/s" name="Velocity_Unit" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Unit of the velocity (m/s)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element default="m/s" name="Clock_Drift_Unit" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Unit of the velocity (m/s)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element default="s" name="GPS_Time_Unit" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Default is &apos;s&apos; for seconds</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element default="s" name="UTC_Offset_Unit" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Default is &apos;s&apos; for seconds</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_GPS_Data">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" name="GPS_Data">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="PositionXYZ">
+										<xs:annotation>
+											<xs:documentation>position expressed in meters in &quot;GPS_Coordinate System&quot; - extrapolated from TOA(Time of Applicability) to the 1pps time - values are X Y Z</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:Double_List_Type">
+												<xs:length value="3"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="VelocityXYZ">
+										<xs:annotation>
+											<xs:documentation>velocity in &quot;GPS_Coordinate System&quot;, extrapolated from TOA(Time of Applicability) to the 1pps time  - values are DX DY DZ</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:Double_List_Type">
+												<xs:length value="3"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Clock_Drift" type="ee:Float_Type">
+										<xs:annotation>
+											<xs:documentation>The clock drift is a time measurement that was converted to velocity term using speed of light constant C=299,792,458 m/sec.
+The source is  the GPS oscillator (deviation from 1575 MHz).</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="GPS_Time" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>GPS time tag from the start of the week (Whole round second).</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="GPS_Week" type="ee:UnsignedShort_Type">
+										<xs:annotation>
+											<xs:documentation>Number of weeks since GPS Epoch : 6.1.1981 00:00:00</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Position_Combined_Src">
+										<xs:annotation>
+											<xs:documentation>Position combined source. The patrameter is valid only for the GPS combined data 
+0 - position in combined output was taken from GPSR (PVT) 
+1 - position in combined output was taken from OF.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:UnsignedInt_Type">
+													<xs:attribute name="mask" use="required">
+														<xs:annotation>
+															<xs:documentation>mask=&quot;0xNN&quot; where NN is the bit to read</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:GPSDTA_Int4_Mask_Type"/>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Velocity_Combined_Src">
+										<xs:annotation>
+											<xs:documentation>Velocity combined source. The patrameter is valid only for the GPS combined data.
+0 - velocity in combined output was taken from GPSR (PVT) 
+1 - velocity in combined output was taken from OF.
+Tag is only in the second bit of the value.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:UnsignedInt_Type">
+													<xs:attribute name="mask" use="required">
+														<xs:annotation>
+															<xs:documentation>mask=&quot;0xNN&quot; where NN is the bit to read</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:GPSDTA_Int4_Mask_Type"/>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Sv_Map" type="ee:UnsignedInt_Type">
+										<xs:annotation>
+											<xs:documentation>Satellites used in this navigation. If n’th bit is ‘1’ then the (n+1)’th satellite was incorporated in this navigation solution (up to 32 satellites).</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Position_Quality" type="ee:Float_Type">
+										<xs:annotation>
+											<xs:documentation>PFOM_GPS
+Position Figure of Merit [m] it’s the quality of the GPS position measurement.
+ (in Position_Unit)</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Velocity_Quality" type="ee:Float_Type">
+										<xs:annotation>
+											<xs:documentation>VFOM_GPS
+Velocity Figure of Merit [m/s] it’s the quality of the GPS velocity      measurement.
+(in Velocity_Unit)</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Clock_Drift_Quality">
+										<xs:annotation>
+											<xs:documentation>TFOM
+Time Figure Of Merit [s] it’s the quality of the GPS time measurement (clock drift quality measurement).
+(in Clock_Drift_Unit)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:Float_Type"/>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="UTC_Offset">
+										<xs:annotation>
+											<xs:documentation>UTC Offset
+The difference between UTC time and GPS time (due to UTC leap second, &gt;0). 
+(in UTC_Offset_Unit)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:UnsignedByte_Type"/>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="PDOP">
+										<xs:annotation>
+											<xs:documentation>PDOP : Position Dilution of Precision.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:Float_Type"/>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="GPS_Hardware_Status" type="ee:UnsignedByte_Type">
+										<xs:annotation>
+											<xs:documentation>GPSR_BIT:  GPS Hardware status.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="GPSDTA_Int4_Mask_Type">
+		<xs:annotation>
+			<xs:documentation>Hexadecimal mask to determine where a bit value is coded in an int4.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="0x[0-9A-F]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,65 @@
+diff -burN zlib-1.2.8.orig/CMakeLists.txt zlib-1.2.8/CMakeLists.txt
+--- zlib-1.2.8.orig/CMakeLists.txt	2018-01-09 13:13:12.131058869 +0100
++++ zlib-1.2.8/CMakeLists.txt	2018-01-09 13:17:29.323072266 +0100
+@@ -183,12 +183,17 @@
+     set(ZLIB_DLL_SRCS ${CMAKE_CURRENT_BINARY_DIR}/zlib1rc.obj)
+ endif(MINGW)
+ 
+-add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+-add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+-set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
+-set_target_properties(zlib PROPERTIES SOVERSION 1)
++if(BUILD_SHARED_LIBS)
++  add_library(zlib SHARED ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_DLL_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
++else()
++  add_library(zlibstatic STATIC ${ZLIB_SRCS} ${ZLIB_ASMS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
++endif()
++if(BUILD_SHARED_LIBS)
++  set_target_properties(zlib PROPERTIES DEFINE_SYMBOL ZLIB_DLL)
++  set_target_properties(zlib PROPERTIES SOVERSION 1)
++endif()
+ 
+-if(NOT CYGWIN)
++if(NOT CYGWIN AND BUILD_SHARED_LIBS)
+     # This property causes shared libraries on Linux to have the full version
+     # encoded into their final filename.  We disable this on Cygwin because
+     # it causes cygz-${ZLIB_FULL_VERSION}.dll to be created when cygz.dll
+@@ -199,22 +204,34 @@
+     set_target_properties(zlib PROPERTIES VERSION ${ZLIB_FULL_VERSION})
+ endif()
+ 
+-if(UNIX)
++if(BUILD_SHARED_LIBS)
++  if(UNIX)
+     # On unix-like platforms the library is almost always called libz
+-   set_target_properties(zlib zlibstatic PROPERTIES OUTPUT_NAME z)
++    set_target_properties(zlib PROPERTIES OUTPUT_NAME z)
+    if(NOT APPLE)
+      set_target_properties(zlib PROPERTIES LINK_FLAGS "-Wl,--version-script,\"${CMAKE_CURRENT_SOURCE_DIR}/zlib.map\"")
+    endif()
+-elseif(BUILD_SHARED_LIBS AND WIN32)
++  elseif(WIN32)
+     # Creates zlib1.dll when building shared library version
+     set_target_properties(zlib PROPERTIES SUFFIX "1.dll")
++  endif()
++endif() #BUILD_SHARED_LIBS
++if(UNIX AND NOT BUILD_SHARED_LIBS)
++  set_target_properties(zlibstatic PROPERTIES OUTPUT_NAME z)
+ endif()
+ 
+ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
+-    install(TARGETS zlib zlibstatic
++  if(BUILD_SHARED_LIBS)
++    install(TARGETS zlib
+         RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
+         ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
+         LIBRARY DESTINATION "${INSTALL_LIB_DIR}" )
++      else()
++    install(TARGETS zlibstatic
++        RUNTIME DESTINATION "${INSTALL_BIN_DIR}"
++        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
++        LIBRARY DESTINATION "${INSTALL_LIB_DIR}" )
++      endif()
+ endif()
+ if(NOT SKIP_INSTALL_HEADERS AND NOT SKIP_INSTALL_ALL )
+     install(FILES ${ZLIB_PUBLIC_HDRS} DESTINATION "${INSTALL_INC_DIR}")

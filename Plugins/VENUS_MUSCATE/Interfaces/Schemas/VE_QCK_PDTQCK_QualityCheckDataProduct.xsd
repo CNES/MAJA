@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<!DOCTYPE xs:schema [
+    <!-- File_Name element patterns -->
+    <!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[1-3]|DROB)">
+    <!-- Instance_Id sub-element patterns -->
+    <!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+    <!ENTITY NickNameElt "([0-9A-Za-z_]*|THE_MOON|ONEORBIT)">
+    <!ENTITY PubProductLevelElt "(L1|L2|L3)">
+    <!ENTITY PubValidityCodeElt "(VALD|NOTV)">
+    <!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+    <!ENTITY FreenameElt "([0-9A-Z_]{4,10}|THE_MOON|ONEORBIT)">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.41">
+	<xs:include schemaLocation="VE_L2L3_DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="QCK_PDTQCK_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:QCK_PDTQCK_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:QCK_PDTQCK_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.41"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="QCK_PDTQCK_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:annotation>
+					<xs:documentation>
+</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:QCK_PDTQCK_Instance_Id_Type"/>
+						<xs:element name="Reference_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+							<xs:annotation>
+								<xs:documentation>Corresponding site Id</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Related_PublishedProduct_Id" type="ee:VE_GenericPublishedProduct_Id_Type">
+							<xs:annotation>
+								<xs:documentation>Corresponding product Id</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Product_Organization">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Common_GIPP" type="ee:VE_Product_Item_Reference_Type">
+										<xs:annotation>
+											<xs:documentation>Common GIP_L2COMM file</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="List_of_Quicklook_Files">
+										<xs:annotation>
+											<xs:documentation>List of Quicklook files</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Quicklook_File" minOccurs="0" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:complexContent>
+															<xs:extension base="ee:QCK_Product_Item_Reference_Type">
+																<xs:attribute name="sn" use="required">
+																	<xs:simpleType>
+																		<xs:restriction base="ee:Integer_Type">
+																			<xs:minInclusive value="1"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:extension>
+														</xs:complexContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="count" use="required">
+												<xs:simpleType>
+													<xs:restriction base="ee:Integer_Type">
+														<xs:minInclusive value="0"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Quicklook_Files_GIPP" type="ee:VE_Product_Item_Reference_Type">
+										<xs:annotation>
+											<xs:documentation>GIP_CKQLTL GIPP file used for all quicklook files</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="List_of_Point_Files">
+										<xs:annotation>
+											<xs:documentation>List of Point files</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Point_File" minOccurs="0" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:complexContent>
+															<xs:extension base="ee:QCK_Product_Item_Reference_Type">
+																<xs:attribute name="sn" use="required">
+																	<xs:simpleType>
+																		<xs:restriction base="ee:Integer_Type">
+																			<xs:minInclusive value="1"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:extension>
+														</xs:complexContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="count" use="required">
+												<xs:simpleType>
+													<xs:restriction base="ee:Integer_Type">
+														<xs:minInclusive value="0"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Point_Files_GIPP" type="ee:VE_Product_Item_Reference_Type">
+										<xs:annotation>
+											<xs:documentation>GIP_CKEXTL GIPP file used for all point files</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QCK_PDTQCK_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>Corresponding site nickname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Date" type="ee:VE_Special_Date_Type">
+				<xs:annotation>
+					<xs:documentation>Corresponding product acquisition date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    <xs:complexType name="QCK_Product_Item_Reference_Type">
+        <xs:annotation>
+            <xs:documentation>Reference to a file (a part of the current product or an external file)</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="File_Location">
+                <xs:annotation>
+                    <xs:documentation>relative location of the file in the current product
+OR
+Nil=OTHER:EXTERNAL = referenced file is not a part of the current product.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="ee:VE_Nil_Reason_External_Type ee:String_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Logical_Name">
+                <xs:annotation>
+                    <xs:documentation>Logical name of the referenced product</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="ee:QCK_Id_Type"/>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ================= -->
+    <!-- Identifiers -->
+    <!-- ================= -->
+    <xs:simpleType name="QCK_Id_Type">
+        <xs:annotation>
+            <xs:documentation>A generic identifier</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="ee:String_Type">
+            <xs:pattern value="&PubProductLevelElt;&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;_&FreenameElt;"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

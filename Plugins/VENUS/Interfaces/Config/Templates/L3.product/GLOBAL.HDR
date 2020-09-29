@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="DISPLAY/display.xsl"?>
+<Earth_Explorer_Header xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schema_version="0.42" xsi:schemaLocation="http://eop-cfi.esa.int/CFI ./VE_VSC_PDT_L3_L3PublishedProduct.xsd" xsi:type="PDT_L3_Header_Type">
+    <Fixed_Header>
+      <File_Name>NOT_INITIALIZED VE_TEST_VSC_L3VALD_CAMARGUE_20120103</File_Name>
+      <File_Description>L3PublishedProduct</File_Description>
+      <Notes>NOT_INITIALIZED L3 note</Notes>
+      <Mission>NOT_INITIALIZED VENuS</Mission>
+      <File_Class>NOT_INITIALIZED TEST</File_Class>
+      <File_Type>NOT_INITIALIZED VSC_L3VALD</File_Type>
+      <Validity_Period>
+        <Validity_Start>NOT_INITIALIZED UTC=2012-01-01T00:00:00</Validity_Start>
+        <Validity_Stop>NOT_INITIALIZED UTC=2012-01-03T00:00:00</Validity_Stop>
+      </Validity_Period>
+      <File_Version>NOT_INITIALIZED 0001</File_Version>
+      <Source>
+        <System>NOT_INITIALIZED VIP</System>
+        <Creator>MAJA_L3_CHAIN</Creator>
+        <Creator_Version>NOT_INITIALIZED 00.00</Creator_Version>
+        <Creation_Date>NOT_INITIALIZED UTC=2013-05-16T10:42:06</Creation_Date>
+      </Source>
+    </Fixed_Header>
+    <Variable_Header>
+      <Main_Product_Header>
+        <List_of_Consumers count="0"/>
+        <List_of_Extensions count="0"/>
+      </Main_Product_Header>
+      <Specific_Product_Header>
+        <Instance_Id>
+          <Nick_Name>NOT_INITIALIZED CAMARGUE</Nick_Name>
+          <Central_Date>NOT_INITIALIZED 20120103</Central_Date>
+        </Instance_Id>
+        <Product_Information>
+          <Product_Level>L3</Product_Level>
+          <Acquisition_Date_Time>UTC=2012-01-03T10:51:48</Acquisition_Date_Time>
+          <Acquisition_Orbit_Number unit="abs">NOT_INITIALIZED 5295</Acquisition_Orbit_Number>
+          <Processing_Information>
+            <Date_Time>NOT_INITIALIZED UTC=2013-05-16T10:42:06</Date_Time>
+            <List_of_GIPP_Files count="0"/>
+          </Processing_Information>
+          <Web_Site_URL/>
+          <List_of_Quality_Indexes count="0"/>
+          <Useful_Image_Geo_Coverage/>
+          <List_of_Band_Central_Wavelength count="12">
+            <Band_Central_Wavelength sk="B01" unit="nanometer">415</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B02" unit="nanometer">865</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B03" unit="nanometer">910</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B04" unit="nanometer">443</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B05" unit="nanometer">490</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B06" unit="nanometer">555</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B07" unit="nanometer">638</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B08" unit="nanometer">638</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B09" unit="nanometer">672</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B10" unit="nanometer">702</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B11" unit="nanometer">742</Band_Central_Wavelength>
+            <Band_Central_Wavelength sk="B12" unit="nanometer">782</Band_Central_Wavelength>
+          </List_of_Band_Central_Wavelength>
+          <Solar_Angles/>
+          <List_of_Viewing_Angles count="0"/>
+          <Product_Sampling>
+            <By_Line unit="m">10</By_Line>
+            <By_Column unit="m">10</By_Column>
+          </Product_Sampling>
+          <Viewing_Angles_In_Satellite_Frame unit="deg"/>
+          <Reference_SiteDefinition_Id>NOT_INITIALIZED VE_VM01_MPL_SITDEF_S_CAMARGUE</Reference_SiteDefinition_Id>
+          <Cloud_Percentage>NOT_INITIALIZED 0</Cloud_Percentage>
+          <Reflectance_Quantification_Value>NOT_INITIALIZED 0.001</Reflectance_Quantification_Value>
+        </Product_Information>
+        <Image_Information>
+          <Format>GEOTIFF</Format>
+          <Binary_Encoding>LITTLE_ENDIAN</Binary_Encoding>
+          <Data_Type>UNSIGNED_SHORT</Data_Type>
+          <Number_of_Significant_Bits>16</Number_of_Significant_Bits>
+          <Nodata_Value>NOT_INITIALIZED -10000</Nodata_Value>
+          <Size>
+            <Lines>NOT_INITIALIZED 5890</Lines>
+            <Columns>NOT_INITIALIZED 4438</Columns>
+            <Bands>12</Bands>
+          </Size>
+          <Image_Compacting_Tool>NO</Image_Compacting_Tool>
+          <List_of_Bands count="12">
+            <Band sn="1">B01</Band>
+            <Band sn="2">B02</Band>
+            <Band sn="3">B03</Band>
+            <Band sn="4">B04</Band>
+            <Band sn="5">B05</Band>
+            <Band sn="6">B06</Band>
+            <Band sn="7">B07</Band>
+            <Band sn="8">B08</Band>
+            <Band sn="9">B09</Band>
+            <Band sn="10">B10</Band>
+            <Band sn="11">B11</Band>
+            <Band sn="12">B12</Band>
+          </List_of_Bands>
+        </Image_Information>
+        <Geo_Referencing_Information/>
+        <Product_Organization>
+            <Image_File>
+                <Nature/>
+                <File_Location/>
+                <Logical_Name/>
+            </Image_File>
+            <Quicklook_File>
+                <Nature/>
+                <File_Location/>
+                <Logical_Name/>
+            </Quicklook_File>
+            <List_of_Annex_Files/>
+      </Product_Organization>
+        <L2_Products_Information>
+          <Input_L2_Product_Information_Central_Date>
+            <Product_Level>L2</Product_Level>
+            <Nick_Name>NOT_INITIALIZED CAMARGUE</Nick_Name>
+            <Processing_Information>
+              <Date_Time>NOT_INITIALIZED UTC=2012-01-03T10:51:48</Date_Time>
+              <List_of_GIPP_Files count="0"/>
+            </Processing_Information>
+            <Web_Site_URL/>
+            <Useful_Image_Geo_Coverage/>
+            <Viewing_Angles_In_Satellite_Frame/>
+            <List_of_Band_Central_Wavelength count="12">
+              <Band_Central_Wavelength sk="B01" unit="nanometer">415</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B02" unit="nanometer">865</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B03" unit="nanometer">910</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B04" unit="nanometer">443</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B05" unit="nanometer">490</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B06" unit="nanometer">555</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B07" unit="nanometer">638</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B08" unit="nanometer">638</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B09" unit="nanometer">672</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B10" unit="nanometer">702</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B11" unit="nanometer">742</Band_Central_Wavelength>
+              <Band_Central_Wavelength sk="B12" unit="nanometer">782</Band_Central_Wavelength>
+            </List_of_Band_Central_Wavelength>
+            <Product_Sampling>
+              <By_Line unit="m">NOT_INITIALIZED 10</By_Line>
+              <By_Column unit="m">NOT_INITIALIZED 10</By_Column>
+            </Product_Sampling>
+            <Used_DEM>
+              <DEM_Reference>NOT_INITIALIZED LOCAL=VE_TEST_AUX_REFDE2_CAMARGUE_0001</DEM_Reference>
+              <Statistics>
+                <Min unit="m">NOT_INITIALIZED -6</Min>
+                <Max unit="m">NOT_INITIALIZED 392</Max>
+                <Average unit="m">NOT_INITIALIZED 22.09282489</Average>
+                <Standard_Deviation unit="m">NOT_INITIALIZED 40.93417625</Standard_Deviation>
+              </Statistics>
+            </Used_DEM>
+            <List_of_Aks count="0"/>
+            <Processing_Flags_And_Modes>
+              <Processing_Mode>STANDARD_MODE</Processing_Mode>
+              <Adjacency_Effects_And_Slope_Correction>NOT_INITIALIZED true</Adjacency_Effects_And_Slope_Correction>
+            </Processing_Flags_And_Modes>
+            <Image_Information>
+              <Format>GEOTIFF</Format>
+              <Binary_Encoding>LITTLE_ENDIAN</Binary_Encoding>
+              <Data_Type>UNSIGNED_SHORT</Data_Type>
+              <Number_of_Significant_Bits>16</Number_of_Significant_Bits>
+              <Nodata_Value>NOT_INITIALIZED -10000</Nodata_Value>
+              <Size>
+                <Lines>NOT_INITIALIZED 5890</Lines>
+                <Columns>NOT_INITIALIZED 4438</Columns>
+                <Bands>12</Bands>
+              </Size>
+              <Image_Compacting_Tool>NO</Image_Compacting_Tool>
+              <List_of_Bands count="12">
+                <Band sn="1">B01</Band>
+                <Band sn="2">B02</Band>
+                <Band sn="3">B03</Band>
+                <Band sn="4">B04</Band>
+                <Band sn="5">B05</Band>
+                <Band sn="6">B06</Band>
+                <Band sn="7">B07</Band>
+                <Band sn="8">B08</Band>
+                <Band sn="9">B09</Band>
+                <Band sn="10">B10</Band>
+                <Band sn="11">B11</Band>
+                <Band sn="12">B12</Band>
+              </List_of_Bands>
+            </Image_Information>
+          </Input_L2_Product_Information_Central_Date>
+          <Input_L2_Product_Information_All_Dates count="0">
+            <Input_L2_Product_Information sn="1">
+              <Acquisition_Date>NOT_INITIALIZED 20120101</Acquisition_Date>
+              <Acquisition_Date_Time>NOT_INITIALIZED UTC=2012-01-01T10:51:48</Acquisition_Date_Time>
+              <Acquisition_Orbit_Number unit="abs">NOT_INITIALIZED 5295</Acquisition_Orbit_Number>
+              <Solar_Angle>
+                <Useful_Image>
+                  <Image_Center/>
+                </Useful_Image>
+              </Solar_Angle>
+              <Viewing_Angle>
+                <Useful_Image>
+                  <Image_Center/>
+                </Useful_Image>
+              </Viewing_Angle>
+              <Cloud_Percentage>NOT_INITIALIZED 0</Cloud_Percentage>
+              <List_of_Used_Product_Ids count="1"/>
+            </Input_L2_Product_Information>
+          </Input_L2_Product_Information_All_Dates>
+        </L2_Products_Information>
+      </Specific_Product_Header>
+    </Variable_Header>
+  </Earth_Explorer_Header>

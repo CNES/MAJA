@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>DEM Configuration Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:33 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="DEM_Configuration_Data_Block_Type" mixed="false">
+		<xsd:choice>
+			<xsd:element name="ACE_Model" type="ACE_Model_Type"></xsd:element>
+		</xsd:choice>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="DEM_Configuration_Data_Block_Type"></xsd:element>
+	<xsd:simpleType name="Units_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:enumeration value="deg"></xsd:enumeration>
+			<xsd:enumeration value="min"></xsd:enumeration>
+			<xsd:enumeration value="secs"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Interval_Component_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="Units_Type" use="required"></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="Data_Type_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:enumeration value="int"></xsd:enumeration>
+			<xsd:enumeration value="long"></xsd:enumeration>
+			<xsd:enumeration value="float"></xsd:enumeration>
+			<xsd:enumeration value="double"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ACE_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="Directory" type="String_Type"></xsd:element>
+			<xsd:element name="Interval_X" type="Interval_Component_Type"></xsd:element>
+			<xsd:element name="Interval_Y" type="Interval_Component_Type"></xsd:element>
+			<xsd:element name="Num_Points_X" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_Points_Y" type="Integer_Type"></xsd:element>
+			<xsd:element name="Data_Type" type="Data_Type_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

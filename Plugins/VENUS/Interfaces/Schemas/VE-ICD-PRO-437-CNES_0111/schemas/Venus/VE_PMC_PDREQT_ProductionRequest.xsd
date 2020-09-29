@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.41">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!--*** 0.40 patched version ***-->
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="PDREQT_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:PDREQT_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:PDREQT_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.41"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="PDREQT_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:PDREQT_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:PDREQT_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name">
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_ProductionRequest_Id_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="ProductionRequest"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_ProductionRequest_File_Type_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:annotation>
+					<xs:documentation>
+</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:PDREQT_Instance_Id_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Request_Date_Time" type="ee:Validity_Time_Type">
+				<xs:annotation>
+					<xs:documentation>Date and Time of the request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Request_Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>Nickname of the request</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="PDREQT_Body_Type">
+		<xs:sequence>
+			<xs:element name="List_Of_Requests">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Request" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Request_Coverage">
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="Time_Coverage">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Time_Interval">
+																<xs:annotation>
+																	<xs:documentation>Time coverage of the requested production</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Start" type="ee:Validity_Time_Type"/>
+																		<xs:element name="Stop" type="ee:Validity_Time_Type"/>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="Site_ID" type="ee:VE_SiteDefinition_Id_Type"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="Product_Coverage">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="List_of_Products">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Product" maxOccurs="unbounded">
+																			<xs:complexType>
+																				<xs:sequence>
+																					<xs:element name="File_Name">
+																						<xs:simpleType>
+																							<xs:union memberTypes="ee:VE_InventoriedRawProduct_Id_Type ee:VE_SystemProduct_Id_Type ee:VE_GenericPublishedProduct_Id_Type"/>
+																						</xs:simpleType>
+																					</xs:element>
+																					<xs:element name="File_Version" type="ee:File_Version_Type"/>
+																				</xs:sequence>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="count" use="required">
+																		<xs:simpleType>
+																			<xs:restriction base="ee:Integer_Type">
+																				<xs:minInclusive value="1"/>
+																			</xs:restriction>
+																		</xs:simpleType>
+																	</xs:attribute>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="PDREQT_Request_Processor" type="ee:PDREQT_Request_Processor"/>
+									<xs:element name="PDREQT_Request_Processing_Parameters" type="ee:PDREQT_Request_Processing_Parameters"/>
+									<xs:element name="PDREQT_Request_Distribution" type="ee:PDREQT_Request_Distribution"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Request_Processor">
+		<xs:annotation>
+			<xs:documentation>The processor identifies the requested production level and the inputs to use</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Name of the processor to be executed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Version">
+				<xs:annotation>
+					<xs:documentation>Version of the processor to be executed.
+Maybe empty (see Version_Type)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="[0-9]?[0-9]\.[0-9][0-9]"/>
+						<xs:pattern value=""/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Version_Type">
+				<xs:annotation>
+					<xs:documentation>Type of processor version to be used :
+- SPECIFIED : use the processor version as specified by Version tag
+- LATEST : use the latest processor version available (Version blank)
+- USED : for a reprocessing only, use the same processor version as for last processing of the same product(s) (Version blank)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="SPECIFIED"/>
+						<xs:enumeration value="USED"/>
+						<xs:enumeration value="LATEST"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Mode">
+				<xs:annotation>
+					<xs:documentation>The mode is used to ask for Nominal, Init, Backward production</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="OFFL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Request_Type">
+				<xs:annotation>
+					<xs:documentation>Type of processing : 
+- ONDEMAND
+- REPROCESSING</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ONDEMAND"/>
+						<xs:enumeration value="REPROCESSING"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Troubleshooting" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Set TEST mode on/off</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Extended" type="xs:boolean"/>
+			<xs:element name="MNT_Option" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>DEM to be used for processing</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Request_Distribution">
+		<xs:sequence>
+			<xs:element name="List_of_Destinations">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Destination" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The definition of the PDS users that has to receive the product of the processing</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDREQT_Request_Processing_Parameters">
+		<xs:sequence>
+			<xs:element name="PDREQT_Request_XSLT_Transformation" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

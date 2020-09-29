@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLNotepad by USER (TMC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.07">
+	<xs:include schemaLocation="VE_TMC_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="TSFREP_File_Type">
+		<xs:annotation>
+			<xs:documentation>The TechnologicalScenarioFeasibilityReport is sent back by the SCC to the TMC after a corresponding TSD has been checked by the SCC</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:TSFREP_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:TSFREP_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.07"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="TSFREP_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:TSFREP_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:TSFREP_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TSFREP_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_TechnologicalScenarioFeasibilityReport_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="TechnologicalScenarioFeasibilityReport"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="MPL_TSFREP"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TSFREP_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:TSFREP_Instance_Id_Type"/>
+						<xs:element name="Related_TechnologicalScenarioDefinition_Id" type="ee:VE_TechnologicalScenarioDefinition_Id_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TSFREP_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="TMC_Serial_Key" type="ee:TMC_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>Unique ID of TSD
+min - 00001
+max - 99999
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cycle_Number" type="ee:TMC_CycleNumber_Type">
+				<xs:annotation>
+					<xs:documentation>cycle number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TSD_Nickname" type="ee:TMC_Nickname_Type">
+				<xs:annotation>
+					<xs:documentation>Nickname of the file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TSD_Type" type="ee:TMC_TSDType_Type">
+				<xs:annotation>
+					<xs:documentation>TSD type (A_AUTO) (D_DIRECT)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Scenario_Feasibility_Status">
+				<xs:annotation>
+					<xs:documentation>Scenario Feasibility Status
+O-OK
+F_FAILED
+</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="O_OK"/>
+						<xs:enumeration value="F_FAILED"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ============================================================================== -->
+	<!-- body -->
+	<!-- ============================================================================= -->
+	<xs:complexType name="TSFREP_Body_Type">
+		<xs:annotation>
+			<xs:documentation>the Technological Scenario Feasibility Report (TSFREP) Body Type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<!--======================================================-->
+			<!--TMM WAIVE EVENTS-->
+			<!--======================================================-->
+			<xs:element name="List_of_TMM_Waive_Events">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TMM_Waive_Event" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description of each TMM waive event</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:REP_TMM_Waive_Event_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the TMM waive event within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>Number of event</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<!--======================================================-->
+			<!--REJECTED EVENTS ....-->
+			<!--======================================================-->
+			<!--======================================================-->
+			<!--TMM REJECTED EVENTS-->
+			<!--======================================================-->
+			<xs:element name="List_of_TMM_Rejected_Events">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TMM_Rejected_Event" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description of each TMM rejected event</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:REP_TMM_Event_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the TMM rejected event within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>Number of event</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<!--======================================================-->
+			<!--DHC REJECTED EVENTS-->
+			<!--======================================================-->
+			<xs:element name="List_of_DHC_Rejected_Events">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DHC_Rejected_Event" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description of each DHC rejected event</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:REP_DHC_Event_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the DHC rejected event within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>Number of event</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<!--======================================================-->
+			<!--======================================================-->
+			<!--CNC REJECTED EVENTS-->
+			<!--======================================================-->
+			<xs:element name="List_of_CNC_Rejected_Events">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CNC_Rejected_Event" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description of each CNC ejected event</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:REP_CNC_Event_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the CNC rejected event within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>Number of event</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<!-- ===================================================== -->
+			<!--DETAILED REASON FOR REJECTION-->
+			<!--======================================================-->
+			<xs:element name="Detailed_Reason_For_Rejection" type="ee:String_Type" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

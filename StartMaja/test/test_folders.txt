@@ -1,0 +1,11 @@
+[Maja_Inputs]
+repWork=None
+repGipp=None
+repL1  =None
+repL2  =None
+repMNT =None
+exeMaja=None
+
+[DTM_Creation]
+repRAW =None
+repGSW =None

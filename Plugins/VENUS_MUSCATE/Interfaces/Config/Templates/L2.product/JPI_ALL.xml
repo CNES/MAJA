@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JobProcessingInformations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="JobProcessingInformations.xsd">
+	<MNT_Statistics>
+		<Min unit="m">NOT_INITIALIZED -9</Min>
+		<Max unit="m">NOT_INITIALIZED 2901</Max>
+		<Average unit="m">NOT_INITIALIZED 761.3285042</Average>
+		<Standard_Deviation unit="m">NOT_INITIALIZED 641.3953638</Standard_Deviation>
+	</MNT_Statistics>
+	<Processing_Flags_And_Modes_List>
+        <Processing_Flags_And_Modes>
+            <Key>Validity_Flag</Key>
+            <Value>NOT_INITIALIZED L2NOTV</Value>        
+        </Processing_Flags_And_Modes>
+		<Processing_Flags_And_Modes>
+			<Key>Processing_Mode</Key>
+			<Value>NOT_INITIALIZED INIT_MODE</Value>
+		</Processing_Flags_And_Modes>
+		<Processing_Flags_And_Modes>
+			<Key>Adjacency_Effects_And_Slope_Correction</Key>
+			<Value>NOT_INITIALIZED true</Value>
+		</Processing_Flags_And_Modes>	
+		<Processing_Flags_And_Modes>
+			<Key>Quality_check</Key>
+			<Value>false</Value>		
+		</Processing_Flags_And_Modes>		
+		<Processing_Flags_And_Modes>
+			<Key>CAMS_Processing</Key>
+			<Value>NOT_INITIALIZED Desactivateddd</Value>		
+		</Processing_Flags_And_Modes>
+	</Processing_Flags_And_Modes_List>	
+</JobProcessingInformations>

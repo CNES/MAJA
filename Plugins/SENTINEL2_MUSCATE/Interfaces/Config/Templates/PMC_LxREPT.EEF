@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <?xml-stylesheet type="text/xsl" href="DISPLAY/display.xsl"?>
+  <Earth_Explorer_File schema_version="1.00" xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://eop-cfi.esa.int/CFI ./PMC_PDREPT_ProductionReport.xsd" xsi:type="PDREPT_File_Type">
+    <Earth_Explorer_Header>
+      <Fixed_Header>
+        <File_Name>NOT_INITIALIZED  L5_TEST_LSC_L2VALD_EU930662NOT_INITIALIZED 0.0.0B_20100118</File_Name>
+        <File_Description>SystemProductTechnicalData</File_Description>
+        <Notes>NOT_INITIALIZED  une note L2</Notes>
+        <Mission>NOT_INITIALIZED  SEN2_MUSCATE_</Mission>
+        <File_Class>NOT_INITIALIZED  TEST</File_Class>
+        <File_Type>NOT_INITIALIZED PMC_L2REPT</File_Type>
+        <Validity_Period>
+          <Validity_Start>NOT_INITIALIZED  UTC=2012-01-01T10:51:44</Validity_Start>
+          <Validity_Stop>NOT_INITIALIZED  UTC=2012-01-01T10:51:51</Validity_Stop>
+        </Validity_Period>
+        <File_Version>0001</File_Version>
+        <Source>
+          <System>NOT_INITIALIZED  MACCS</System>
+          <Creator>NOT_INITIALIZED  MAJA_L2_INIT_CHAIN</Creator>
+          <Creator_Version>NOT_INITIALIZED 0.0.0</Creator_Version>
+          <Creation_Date>NOT_INITIALIZED  UTC=2011-09-20T19:05:33</Creation_Date>
+        </Source>
+      </Fixed_Header>
+      <Variable_Header>
+        <Main_Product_Header>
+          <List_of_Consumers count="0"/>
+          <List_of_Extensions count="0"/>
+        </Main_Product_Header>
+        <Specific_Product_Header>
+          <Instance_Id>
+            <Nick_Name>NOT_INITIALIZED  EU930662NOT_INITIALIZED 0.0.0B</Nick_Name>
+            <Acquisition_Date>NOT_INITIALIZED  20100118</Acquisition_Date>
+          </Instance_Id>
+          <Related_ProductionRequest_Id>NIL=N/A</Related_ProductionRequest_Id>
+          <List_of_Input_Identifiers/>
+          <List_of_Production_Parameters/>
+          <Global_Status>SUCCESS</Global_Status>
+          <List_of_Output_Identifiers/>
+        </Specific_Product_Header>
+      </Variable_Header>
+    </Earth_Explorer_Header>
+    <Data_Block>
+      <VE_Production_Report_List_of_Messages_Type/>
+    </Data_Block>
+  </Earth_Explorer_File>

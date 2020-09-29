@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:simpleType name="A_OHM_UNIT">
+		<xs:annotation>
+			<xs:documentation>Ohm unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Ohm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_INT_WITH_OHM_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>int value expresssed in Ohm ('Ohm' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:int">
+				<xs:attribute name="unit" type="misc:A_OHM_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="AN_EMAIL_ADDRESS">
+		<xs:annotation>
+			<xs:documentation>Email address.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9._%\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_FTP_ADDRESS">
+		<xs:annotation>
+			<xs:documentation>Adresse Ftp.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_FLOAT">
+		<xs:annotation>
+			<xs:documentation>List of floating point numbers</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:float"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_2_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 2 double values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_DOUBLE">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_3_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_DOUBLE">
+			<xs:length value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_6_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 6 double values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_DOUBLE">
+			<xs:length value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_8_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 8 double values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_DOUBLE">
+			<xs:length value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_13_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 13 double values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_DOUBLE">
+			<xs:length value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of doubles</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_INT">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of int values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_2_INT">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 2 int values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_INT">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_8_INT">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 8 int values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_INT">
+			<xs:length value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DEG_UNIT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="deg"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ARCSEC_UNIT">
+		<xs:annotation>
+			<xs:documentation>arcsec unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="arcsec"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_M_UNIT">
+		<xs:annotation>
+			<xs:documentation>meter unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="m"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MM_UNIT">
+		<xs:annotation>
+			<xs:documentation>milli meter unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MMS_UNIT">
+		<xs:annotation>
+			<xs:documentation>milli meter per second unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mm/s"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MRAD_UNIT">
+		<xs:annotation>
+			<xs:documentation>milli radian unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mrad"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_RAD_UNIT">
+		<xs:annotation>
+			<xs:documentation>radian unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="rad"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_S_UNIT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="s"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MS_UNIT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ms"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_NS_UNIT">
+		<xs:annotation>
+			<xs:documentation>nanosecond unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ns"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_NM_UNIT">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="nm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DEGS_UNIT">
+		<xs:annotation>
+			<xs:documentation>degree per second unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="deg/s"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_CELSIUS_DEGREE_UNIT">
+		<xs:annotation>
+			<xs:documentation>degree celsius unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="°C"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PIXEL_UNIT">
+		<xs:annotation>
+			<xs:documentation>pixel unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="pixel"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_0_TO_4095_INT">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="4095"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_POSITIVE_INT">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_LIST_OF_3_DOUBLE_WITH_MM_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values expressed in millimeters ('mm' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_DOUBLE">
+				<xs:attribute name="unit" type="misc:A_MM_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_LIST_OF_3_DOUBLE_WITH_MMS_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values expressed in millimeters per seconds ('mm/s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_DOUBLE">
+				<xs:attribute name="unit" type="misc:A_MMS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_LIST_OF_3_DOUBLE_WITH_DEGS_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values expressed in degree per seconds ('mm/s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_DOUBLE">
+				<xs:attribute name="unit" type="misc:A_DEGS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_UNIT_ATTR">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_INT_WITH_S_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>int value expressed in seconds ('s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:int">
+				<xs:attribute name="unit" type="misc:A_S_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_POSITIVE_INT_WITH_M_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>int value expressed in meters ('m' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_POSITIVE_INT">
+				<xs:attribute name="unit" type="misc:A_M_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_POSITIVE_INT_WITH_PIXEL_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>int value expressed in pixels ('pixel' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_POSITIVE_INT">
+				<xs:attribute name="unit" type="misc:A_PIXEL_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_S_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in seconds ('s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_S_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_MS_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in milliseconds ('ms' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_MS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_NS_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in seconds ('ns' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_NS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_DEG_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in degree ('deg' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_DEG_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_M_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in meters ('m' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_M_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_M_MRAD_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in milliradians ('m/rad' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" use="required">
+					<xs:simpleType>
+						<xs:restriction base="misc:A_MRAD_UNIT"/>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_RAD_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in radians ('rad' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_RAD_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_DEGREE_CELSIUS_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in degree Celsius unit ('°C' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_CELSIUS_DEGREE_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_NM_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in nm</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_NM_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_DOUBLE_WITH_ARCSEC_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in meters ('arcsec' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:AN_ARCSEC_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_POLYNOMIAL_MODEL">
+		<xs:annotation>
+			<xs:documentation>a 1 variable polynomial model ( z = P(x))</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>A 1variable polynome must have (DEGREE+1) coefficients. &lt;br>
+								The coefficients are written in the list by ascending order of their degree. &lt;br>
+								For each degree the coefficients are ordered by the greatest degree of the first variable. &lt;br>
+								Example of degree 3 polynome : &lt;br>
+									P(x,y) = a + bx + cy + dx2 + exy + fy2 + gx3 + hx2y + ixy2 + jy3 &lt;br>
+									coefficients list : [a,b,c,d,e,f,g,h,i,j]</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DEGREE">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="COEFFICIENTS" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>The length of the list must be DEGREE+1, first is constant coefficient</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_STRING_WITH_VERSION_ATTR">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="version" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="A_VALIDITY_FLAG">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:complexType name="A_POSITION_IN_ARRAY">
+		<xs:annotation>
+			<xs:documentation>Describes a position in an array (raw_index, column_index)</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>The position in an array must be coherent with the origin of the array (count element start)</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ROW_INDEX">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="COL_INDEX">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_PERCENTAGE">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_3X3_MATRIX">
+		<xs:annotation>
+			<xs:documentation>A 3*3 matrix (e.g. a rotation matrix).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LINE1" type="misc:A_LIST_OF_3_DOUBLE"/>
+			<xs:element name="LINE2" type="misc:A_LIST_OF_3_DOUBLE"/>
+			<xs:element name="LINE3" type="misc:A_LIST_OF_3_DOUBLE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_3xN_MATRIX">
+		<xs:annotation>
+			<xs:documentation>A 3*N matrix (double values)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LINE1" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE2" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE3" type="misc:A_LIST_OF_DOUBLE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_6xN_MATRIX">
+		<xs:annotation>
+			<xs:documentation>A 6*N matrix (double values)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LINE1" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE2" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE3" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE4" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE5" type="misc:A_LIST_OF_DOUBLE"/>
+			<xs:element name="LINE6" type="misc:A_LIST_OF_DOUBLE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_ROTATION_AROUND_AN_AXIS">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="axis" type="xs:string" use="required"/>
+				<xs:attribute name="unit" type="misc:A_MRAD_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_ROTATION_AROUND_THREE_AXIS">
+		<xs:sequence>
+			<xs:element name="R1" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>First rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="R2" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>Second rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="R3" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>Third rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_ROTATION_AROUND_THREE_AXIS_AND_SCALE">
+		<xs:sequence>
+			<xs:element name="R1" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>First rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="R2" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>Second rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="R3" type="misc:A_ROTATION_AROUND_AN_AXIS">
+				<xs:annotation>
+					<xs:documentation>Third rotation (angles around an axis)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SCALE_FACTOR" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>A scale factor on Z axis (in order to model the focal length deformation)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="COMBINATION_ORDER">
+				<xs:annotation>
+					<xs:documentation>The combination order between rotation and scale factor transformations</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="SCALE_THEN_ROTATION"/>
+						<xs:enumeration value="ROTATION_THEN_SCALE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_UNCERTAINTIES_XYZ_TYPE">
+		<xs:annotation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>A 1variable polynome must have (DEGREE+1) coefficients. &lt;br>
+								The coefficients are written in the list by ascending order of their degree. &lt;br>
+								For each degree the coefficients are ordered by the greatest degree of the first variable. &lt;br>
+								Example of degree 3 polynome : &lt;br>
+									P(x,y) = a + bx + cy + dx2 + exy + fy2 + gx3 + hx2y + ixy2 + jy3 &lt;br>
+									coefficients list : [a,b,c,d,e,f,g,h,i,j]</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+			<xs:documentation>X,Y,Z uncertainties </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="X" type="misc:A_POLYNOMIAL_MODEL" minOccurs="0"/>
+			<xs:element name="Y" type="misc:A_POLYNOMIAL_MODEL" minOccurs="0"/>
+			<xs:element name="Z" type="misc:A_POLYNOMIAL_MODEL" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_ROTATION_TRANSLATION_HOMOTHETY_UNCERTAINTIES_TYPE">
+		<xs:annotation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>A 1variable polynome must have (DEGREE+1) coefficients. &lt;br>
+								The coefficients are written in the list by ascending order of their degree. &lt;br>
+								For each degree the coefficients are ordered by the greatest degree of the first variable. &lt;br>
+								Example of degree 3 polynome : &lt;br>
+									P(x,y) = a + bx + cy + dx2 + exy + fy2 + gx3 + hx2y + ixy2 + jy3 &lt;br>
+									coefficients list : [a,b,c,d,e,f,g,h,i,j]</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+			<xs:documentation>Rotation, translation and homothety transformation uncertainties (X,Y,Z uncertainties)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ROTATION" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0"/>
+			<xs:element name="TRANSLATION" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0"/>
+			<xs:element name="HOMOTHETY" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_ROTATION_TRANSLATION_HOMOTHETY_UNCERTAINTIES_TYPE_LOWER_CASE">
+		<xs:annotation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION>A 1variable polynome must have (DEGREE+1) coefficients. &lt;br>
+								The coefficients are written in the list by ascending order of their degree. &lt;br>
+								For each degree the coefficients are ordered by the greatest degree of the first variable. &lt;br>
+								Example of degree 3 polynome : &lt;br>
+									P(x,y) = a + bx + cy + dx2 + exy + fy2 + gx3 + hx2y + ixy2 + jy3 &lt;br>
+									coefficients list : [a,b,c,d,e,f,g,h,i,j]</gs2:DEFINITION>
+				</gs2:DOC>
+			</xs:appinfo>
+			<xs:documentation>Rotation, translation and homothety transformation uncertainties (X,Y,Z uncertainties) in lower case</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Rotation" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0"/>
+			<xs:element name="Translation" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0"/>
+			<xs:element name="Homothety" type="misc:AN_UNCERTAINTIES_XYZ_TYPE" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation> </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_RELATIVE_POSITION">
+		<xs:annotation>
+			<xs:documentation>A relative position (-1, 0 or 1)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="-1"/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_RELATIVE_POSITION">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of doubles relative position (-1, 0 or 1)</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="misc:A_RELATIVE_POSITION"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_NSM">
+		<xs:annotation>
+			<xs:documentation>Navigation Solution Method</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PROPAGATED"/>
+			<xs:enumeration value="FIRST_FIX"/>
+			<xs:enumeration value="COLD_FIRST_FIX"/>
+			<xs:enumeration value="LEAST_SQUARE"/>
+			<xs:enumeration value="KALMAN_FILTER"/>
+			<xs:enumeration value="INVALID"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MVOLT_UNIT">
+		<xs:annotation>
+			<xs:documentation>milli volt unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mV"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_DOUBLE_WITH_MVOLT_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>double value expressed in milli Volt unit ("mV"' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="misc:A_MVOLT_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="A_LIST_OF_BOOLEAN">
+		<xs:annotation>
+			<xs:documentation>List of boolean values corresponding in flags values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_11_BOOLEAN">
+		<xs:annotation>
+			<xs:documentation>List of 11 boolean values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_BOOLEAN">
+			<xs:length value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>Basic data types </xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="String_Type">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="Integer_Type">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="PositiveInteger_Type">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="NonNegativeInteger_Type">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="Decimal_Type">
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+	<xs:simpleType name="Time_Type">
+		<xs:restriction base="xs:time"/>
+	</xs:simpleType>
+	<xs:complexType name="AnyType_Type">
+		<xs:complexContent>
+			<xs:restriction base="xs:anyType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="Null_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Non_Null_String_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Boolean_Type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRUE"/>
+			<xs:enumeration value="FALSE"/>
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Angle_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="Decimal_Type">
+				<xs:attribute name="unit" type="String_Type" use="required" fixed="deg"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Distance_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="Decimal_Type">
+				<xs:attribute name="unit" type="String_Type" use="required" fixed="m"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Height_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="Distance_Type"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_INT_WITH_NS_UNIT_ATTR">
+		<xs:annotation>
+			<xs:documentation>integer value expressed in seconds ('ns' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:int">
+				<xs:attribute name="unit" type="misc:A_NS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_LIST_OF_3_LONG_WITH_MM_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 integer values expressed in millimeters ('mm' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_LONG">
+				<xs:attribute name="unit" type="misc:A_MM_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="A_LIST_OF_3_LONG">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 long values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="misc:A_LIST_OF_LONG">
+			<xs:length value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_LONG">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of long values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:long"/>
+	</xs:simpleType>
+	<xs:complexType name="A_LIST_OF_3_LONG_WITH_MMS_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 integer values expressed in millimeters per seconds ('mm/s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_LONG">
+				<xs:attribute name="unit" type="misc:A_MMS_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_LIST_OF_3_DOUBLE_WITH_M_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values expressed in meters ('m' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_DOUBLE">
+				<xs:attribute name="unit" type="misc:A_M_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_LIST_OF_3_DOUBLE_WITH_M_S_ATTR">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 3 double values expressed in meters per seconds ('m/s' unit attribute)</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="misc:A_LIST_OF_3_DOUBLE">
+				<xs:attribute name="unit" type="misc:A_M_S_UNIT" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="A_M_S_UNIT">
+		<xs:annotation>
+			<xs:documentation>meter per second unit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="m/s"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_POSITIVE_LONG">
+		<xs:restriction base="xs:unsignedLong"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_SIGNED_LONG">
+		<xs:restriction base="xs:long">
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

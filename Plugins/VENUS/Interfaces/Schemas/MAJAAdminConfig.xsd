@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo         *
+ *                             o                                                                            *
+ *                          o                                                                               *
+ *                        o                                                                                 *
+ *                      o                                                                                   *
+ *                     o       ooooooo       ooooooo    o         o      oo                                 *
+ *    o              o       o        o     o       o   o         o     o   o                               *
+ *      o           o       o          o   o         o  o         o    o      o                             *
+ *        o        o       o           o   o         o  o         o    o        o                           *
+ *         o      o        o      oooo     o         o  o         o   o           o                         *
+ *          o    o          o              o         o  o         o   o           o                         *
+ *           o  o            o             o         o  o o      o   o          o                           *
+ *            oo              oooooooo    o         o   o  oooooo   o      oooo                             *
+ *                                                     o                                                    *
+ *                                                     o                                                    *
+ *                                                    o                            o                        *
+ *                                                    o            o      oooo     o   o      oooo          *
+ *                                                   o             o         o    o    o         o          *
+ *                                                   o            o       ooo     o   o       ooo           *
+ *                                                               o       o       o   o          o           *
+ *                                                               ooooo   oooo    o   ooooo  oooo            *
+ *                                                                              o                           *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 30 novembre 2011 : Creation                                     *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<!DOCTYPE xs:schema [
+<!ENTITY BandCodeElt "(B((0[1-9])|(1[0-2])))">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="../Maja/MAJAConfigCommonCamera.xsd"/>
+    <!-- ================= -->
+    <!-- Root -->
+    <!-- ================= -->
+    <xs:element name="Config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Composite">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="List_of_Band_Theoretical_Wavelength" type="List_of_Band_Theoretical_Wavelengths_Type"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="Band_Code_Type">
+        <xs:annotation>
+            <xs:documentation>A 3-letters code identifing a band. Valid values are 'B01' to 'B4' .</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="&BandCodeElt;"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

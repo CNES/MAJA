@@ -1,0 +1,39 @@
+diff -burN boost_1_69_0.orig/CMakeLists.txt boost_1_69_0/CMakeLists.txt
+--- boost_1_69_0.orig/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
++++ boost_1_69_0/CMakeLists.txt	2017-11-24 13:17:41.000000000 +0100
+@@ -0,0 +1,35 @@
++cmake_minimum_required(VERSION 2.8)
++project(CMAKE-BOOST)
++
++set(BOOST_SB_CONFIG "address-model=64" CACHE STRING "doc")
++
++message(CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX})
++message(BOOST_SB_CONFIG=${BOOST_SB_CONFIG})
++
++install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/boost DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
++# execute_process(
++#   COMMAND ./bootstrap.sh --prefix=${CMAKE_INSTALL_PREFIX}
++#   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++#   )
++
++# install(CODE "
++# execute_process(
++#   COMMAND ./b2
++#    ${BOOST_SB_CONFIG}
++#     variant=release
++#     link=shared
++#     threading=multi
++#     runtime-link=shared
++#     --prefix=${CMAKE_INSTALL_PREFIX}
++#     --includedir=${CMAKE_INSTALL_PREFIX}/include
++#     --libdir=${CMAKE_INSTALL_PREFIX}/lib
++#     --with-system
++#     --with-serialization
++#     --with-filesystem
++#     --with-test
++#     --with-date_time
++#     --with-program_options
++#     --with-thread
++#     install
++#   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
++#   )")

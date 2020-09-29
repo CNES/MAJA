@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:simpleType name="A_SPECIAL_VALUE_NAME">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>Noms des valeurs spéciales</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="nodata"/>
+			<xs:enumeration value="saturated"/>
+			<xs:enumeration value="water_vapor_content_nodata"/>
+			<xs:enumeration value="aerosol_optical_thickness_nodata"/>
+			<xs:enumeration value="snow_identification"/>
+			<xs:enumeration value="no_identification"/>
+			<xs:enumeration value="unknown_identification"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_QUANTIFICATION_VALUE">
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_PHYSICAL_CALIBRATION_DATE">
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="A_SPECIAL_VALUE">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="name" type="A_SPECIAL_VALUE_NAME" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_SPECIAL_VALUES_LIST">
+		<xs:sequence>
+			<xs:element name="SPECIAL_VALUE" type="A_SPECIAL_VALUE" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_SOLAR_IRRADIANCE">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" use="required">
+					<xs:annotation>
+						<xs:documentation>unité : uniquement en m</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="W/m²/µm"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_SPATIAL_RESOLUTION">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" use="required">
+					<xs:annotation>
+						<xs:documentation>unité : uniquement en m</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="m"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="A_COEFFICIENT_NAME">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Ak"/>
+			<xs:enumeration value="PhysicalGain"/>
+			<xs:enumeration value="PhysicalBias"/>
+			<xs:enumeration value="GainAnalogValue"/>
+			<xs:enumeration value="GainNumber"/>
+			<xs:enumeration value="LuminanceMin"/>
+			<xs:enumeration value="LuminanceMax"/>
+			<xs:enumeration value="RadianceMult"/>
+			<xs:enumeration value="RadianceAdd"/>
+			<xs:enumeration value="QuantizeCalMin"/>
+			<xs:enumeration value="QuantizeCalMax"/>
+			<xs:enumeration value="ReflectanceMult"/>
+			<xs:enumeration value="ReflectanceAdd"/>
+			<xs:enumeration value="K1Constant"/>
+			<xs:enumeration value="K2Constant"/>
+			<xs:enumeration value="AbsoluteCalibration"/>
+			<xs:enumeration value="PolarizationCoefficient"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_COEFFICIENT">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="A_COEFFICIENT_NAME" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_COEFFICIENT_LIST">
+		<xs:sequence>
+			<xs:element name="COEFFICIENT" type="A_COEFFICIENT" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_CALIBRATION_COEFFICIENTS_LISTS">
+		<xs:sequence>
+			<xs:element name="Native_Coefficients_List" type="A_COEFFICIENT_LIST"/>
+			<xs:element name="Applied_Coefficients_List" type="A_COEFFICIENT_LIST" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_WAVELENGTH">
+		<xs:sequence>
+			<xs:element name="MIN" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MAX" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CENTRAL" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_SPECTRAL_RESPONSE">
+		<xs:sequence>
+			<xs:element name="STEP">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VALUES" type="A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>Liste de mesures séparées par des espaces</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_SPECTRAL_BAND_INFORMATIONS_LIST">
+		<xs:sequence>
+			<xs:element name="Spectral_Band_Informations" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Calibration_Coefficients_Lists" type="A_CALIBRATION_COEFFICIENTS_LISTS" minOccurs="0"/>
+						<xs:element name="SOLAR_IRRADIANCE" type="A_SOLAR_IRRADIANCE" minOccurs="0"/>
+						<xs:element name="SPATIAL_RESOLUTION" type="A_SPATIAL_RESOLUTION"/>
+						<xs:element name="Wavelength" type="A_WAVELENGTH" minOccurs="0"/>
+						<xs:element name="Spectral_Response" type="A_SPECTRAL_RESPONSE" minOccurs="0"/>
+					</xs:sequence>
+					<xs:attribute name="band_id" type="A_BAND_ID"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_RADIOMETRIC_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="REFLECTANCE_QUANTIFICATION_VALUE" type="A_QUANTIFICATION_VALUE" minOccurs="0"/>
+			<xs:element name="TEMPERATURE_QUANTIFICATION_VALUE" type="A_QUANTIFICATION_VALUE" minOccurs="0"/>
+			<xs:element name="WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE" type="A_QUANTIFICATION_VALUE" minOccurs="0"/>
+			<xs:element name="AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE" type="A_QUANTIFICATION_VALUE" minOccurs="0"/>
+			<xs:element name="CONCENTRATION_QUANTIFICATION_VALUE" type="A_QUANTIFICATION_VALUE" minOccurs="0"/>
+			<xs:element name="PHYSICAL_CALIBRATION_DATE" type="A_PHYSICAL_CALIBRATION_DATE" minOccurs="0"/>
+			<xs:element name="Special_Values_List" type="A_SPECIAL_VALUES_LIST" minOccurs="0"/>
+			<xs:element name="Spectral_Band_Informations_List" type="A_SPECTRAL_BAND_INFORMATIONS_LIST"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

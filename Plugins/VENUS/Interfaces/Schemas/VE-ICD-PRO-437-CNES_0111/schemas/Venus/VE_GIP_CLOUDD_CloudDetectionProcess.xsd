@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  HISTORIQUE
+  VERSION : 1.11 : DM : VE-FT-1586 : 19/07/2018 : Ajout de paramètres pour les fausses détections de nuages
+  VERSION : 1.10 : DM : VE-FT-667 : 12/04/2018 : Introduction d'un paramètre de marge pour l'estimation de l'altitude des nuages
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.11">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="CLOUDD_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:CLOUDD_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:CLOUDD_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="1.11"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="CLOUDD_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:CLOUDD_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:CLOUDD_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CLOUDD_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_GIPP_CloudDetectionProcess_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="CloudDetectionProcess"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIP_CLOUDD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CLOUDD_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:CLOUDD_Instance_Id_Type"/>
+						<xs:element name="List_of_Applicable_SiteDefinition_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CLOUDD_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+				<xs:annotation>
+					<xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+				<xs:annotation>
+					<xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="CLOUDD_Body_Type">
+		<xs:sequence>
+			<xs:element name="Correlation_Parameters">
+				<xs:annotation>
+					<xs:documentation>MEDICIS / QPEC input parameters</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Grid_Line_Sampling_Step" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter  GRID_LINE_INTERVAL</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Grid_Column_Sampling_Step" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter  GRID_COLUMN_INTERVAL</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Reference_Window_Nb_Of_Lines" type="ee:Integer_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter REF_WINDOW_NB_LI</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Reference_Window_Nb_Of_Columns" type="ee:Integer_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter REF_WINDOW_NB_CO</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Initial_Resemblance_Threshold" type="ee:NonNegativeDouble_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter INITIAL_THRESHOLD</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Final_Resemblance_Threshold" type="ee:NonNegativeDouble_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter FINAL_THRESHOLD </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Exploration_Line_Number" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter  NB_LI_EXPLORATION</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Exploration_Column_Number" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>= MEDICIS parameter  NB_CO_EXPLORATION</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Spline_Order" type="ee:Integer_Type">
+							<xs:annotation>
+								<xs:documentation>Order of the spline used for interpolation</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Correlation_Filtering" type="ee:Bool_Type">
+							<xs:annotation>
+								<xs:documentation>Set to true if correlation filtering has to be done</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cloud_Detection_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Stereo_Reference_Band_Code" type="ee:VE_Band_Code_Type">
+							<xs:annotation>
+								<xs:documentation>Reference band in the stereoscopic detection process.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Stereo_Secondary_Band_Code" type="ee:VE_Band_Code_Type">
+							<xs:annotation>
+								<xs:documentation>Secondary band in the stereoscopic detection process.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Reflectance_Reference_Band_Code" type="ee:VE_Band_Code_Type">
+							<xs:annotation>
+								<xs:documentation>Band used to process the reflectance threshold</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Disparity_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Threshold used to detect clouds after the stereoscopic correlation.
+
+(= Seuil_h_nuages  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Minimum_Reflectance_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Parameter used as threshold to spot erroneous cloud detection. Under this threshold, a pixel is consider cloudless.
+
+(= seuil_p_non_nuages_443  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Maximum_Reflectance_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Threshold used to detect clouds in the reflectance reference band .
+
+Can be replaced by a computed value - see Reflectance_Threshold_Adjustment_Factor below.
+
+(= Seuil_p_nuages  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Reflectance_Threshold_Adjustment_Factor" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Adjustment factor applicated to the mediane reflectance value of all pixels detected as cloud by the stereoscopic method. 
+
+The resulting value is used in place of Maximum_Reflectance_Threshold if inferior.
+
+(= K_p  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cloud_Detection_Maximum_Altitude" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Maximum altitude for cloud detection. Over this threshold, detection by stereoscopy is not valid.
+								
+(= Seuil_h_nuages_max  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="K_Filter" type="ee:Integer_Type">
+							<xs:annotation>
+								<xs:documentation>set coefficient k_filter for altitude filtering with the standard deviation. A negativ value disable the filtering.
+								
+(= k_filtre  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cloud_MNT_Margin" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>MNT height Margin. Parameter used as threshold to spot erroneous cloud detection. 
+								
+(= margeMNT_Nuages  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Periodic_Landscape_Detection_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Parameter used as threshold to spot erroneous cloud detection. If the difference between the correlation rate from MEDICIS (Tx1) and the ZNCC correlation rate (Tx0) is under this threshold, then the landscape is periodic.
+								
+(= seuil_delta_taux  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cloud_Mask_Filtering">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Eroding_Filter_Size" type="ee:CLOUDD_Filter_Size">
+							<xs:annotation>
+								<xs:documentation>Size of the eroding filter used on the cloud masks.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Dilating_Filter_Size" type="ee:CLOUDD_Filter_Size">
+							<xs:annotation>
+								<xs:documentation>Size of the dilating filter used on the cloud masks.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Final_L1_Dilatation">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Process_Choice">
+							<xs:annotation>
+								<xs:documentation>Choice of the dilation process : possible values are : 
+- AUTOMATIC
+- FIXED</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="AUTOMATIC"/>
+									<xs:enumeration value="FIXED"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Final_Dilating_Filter_Size" type="ee:CLOUDD_Filter_Size">
+							<xs:annotation>
+								<xs:documentation>This field is used if Process_Choice=FIXED.
+
+Size of the dilating filter used on the final L1 cloud masks in order to cover the clouds in all bands.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Maximum_Disparity_Eliminated_Percent" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>This field is used if Process_Choice=AUTOMATIC.
+
+This percent represents the part of the disparity values that are eliminated before computing the maximum disparity of the correlation process. 
+
+The values eliminated are always the highest.
+
+(= Seuil_alt_max  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cloud_Mask_Resampling">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Binarization_Threshold" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>After the resampling process, the cloud mask computed by MARIO has values in the range [0,1] (as opposed to binary values).
+
+This threshold is used to "rebinarize" the mask : every value below the threshold will be changed to 0, every value above will be affected to 1.
+
+(= Seuil_masque_nuages_N1  in VE-ST-GSSM-46)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CLOUDD_Filter_Size">
+		<xs:sequence>
+			<xs:element name="Row_Size" type="ee:NonNegativeInteger_Type"/>
+			<xs:element name="Col_Size" type="ee:NonNegativeInteger_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

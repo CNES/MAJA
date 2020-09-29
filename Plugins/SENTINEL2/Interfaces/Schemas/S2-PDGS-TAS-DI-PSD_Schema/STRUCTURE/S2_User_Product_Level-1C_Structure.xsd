@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://psd-13.sentinel2.eo.esa.int/PSD/user_product_Level-1C.xsd" targetNamespace="https://psd-13.sentinel2.eo.esa.int/PSD/user_product_Level-1C.xsd" elementFormDefault="qualified" version="13">
+	<xs:element name="Level-1C_User_Product" type="Level-1C_User_Product"/>
+	<xs:complexType name="Level-1C_User_Product">
+		<xs:sequence>
+			<xs:element name="Product_Metadata_File">
+				<xs:annotation>
+					<xs:documentation>XML Main Metadata File </xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="GRANULE">
+				<xs:annotation>
+					<xs:documentation>Folder containing the Tiles composing the product</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Tiles" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Level-1C_Tile_Metadata_File"/>
+									<xs:element name="IMG_DATA"/>
+									<xs:element name="QI_DATA"/>
+									<xs:element name="AUX_DATA">
+										<xs:annotation>
+											<xs:documentation>Folder containing ECMWF data resampled in UTM projection</xs:documentation>
+										</xs:annotation>
+										<xs:complexType/>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DATASTRIP">
+				<xs:annotation>
+					<xs:documentation>Folder containing the DataStrip composing the product</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="AUX_DATA">
+				<xs:annotation>
+					<xs:documentation>Folder containing (if requested by the user, download option) all Auxiliary Data used for the processing</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="Browse_Image" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Browse Image File (PNG)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="manifest.safe" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>XML manifest file (SAFE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rep_info" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Folder (SAFE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INSPIRE">
+				<xs:annotation>
+					<xs:documentation>XML INSPIRE metadata file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HTML">
+				<xs:annotation>
+					<xs:documentation>Folder containing a product presentation file</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:simpleType name="A_PLATFORM_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant de plateforme</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="LANDSAT5"/>
+			<xs:enumeration value="LANDSAT7"/>
+			<xs:enumeration value="LANDSAT8"/>
+			<xs:enumeration value="SENTINEL2A"/>
+			<xs:enumeration value="SENTINEL2B"/>
+			<xs:enumeration value="SPOT1"/>
+			<xs:enumeration value="SPOT2"/>
+			<xs:enumeration value="SPOT3"/>
+			<xs:enumeration value="SPOT4"/>
+			<xs:enumeration value="SPOT5"/>
+			<xs:enumeration value="SENTINEL2X"/>
+			<xs:enumeration value="S2AS2BL8"/>
+			<xs:enumeration value="VENUS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_INSTRUMENT_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant d'instrument</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="TM"/>
+			<xs:enumeration value="ETM+"/>
+			<xs:enumeration value="OLI"/>
+			<xs:enumeration value="OLITIRS"/>
+			<xs:enumeration value="HRV1"/>
+			<xs:enumeration value="HRV2"/>
+			<xs:enumeration value="HRVIR1"/>
+			<xs:enumeration value="HRVIR2"/>
+			<xs:enumeration value="HRG1"/>
+			<xs:enumeration value="HRG2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_SPECTRALCONTENT_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant de mode spectral</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="XS"/>
+			<xs:enumeration value="TH"/>
+			<xs:enumeration value="PAN"/>
+			<xs:enumeration value="XS+TH"/>
+			<xs:enumeration value="XS+PAN"/>
+			<xs:enumeration value="XS+TH+PAN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant de bande</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="B1"/>
+			<xs:enumeration value="B10"/>
+			<xs:enumeration value="B11"/>
+			<xs:enumeration value="B12"/>
+			<xs:enumeration value="B2"/>
+			<xs:enumeration value="B3"/>
+			<xs:enumeration value="B4"/>
+			<xs:enumeration value="B5"/>
+			<xs:enumeration value="B6"/>
+			<xs:enumeration value="B6VCID1"/>
+			<xs:enumeration value="B6VCID2"/>
+			<xs:enumeration value="B7"/>
+			<xs:enumeration value="B8"/>
+			<xs:enumeration value="B8A"/>
+			<xs:enumeration value="B9"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="SWIR"/>
+			<xs:enumeration value="XS1"/>
+			<xs:enumeration value="XS2"/>
+			<xs:enumeration value="XS3"/>
+			<xs:enumeration value="CON1"/>
+			<xs:enumeration value="CON2"/>
+			<xs:enumeration value="CON3"/>
+			<xs:enumeration value="SNW"/>
+			<xs:enumeration value="UND"/>
+			<xs:enumeration value="DEF"/>
+			<xs:enumeration value="RGB"/>
+			<xs:enumeration value="RED"/>
+			<xs:enumeration value="GRE"/>
+			<xs:enumeration value="BLU"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_GROUP_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant des groupes de bandes possibles</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="PAN"/>
+			<xs:enumeration value="XS"/>
+			<xs:enumeration value="TH"/>
+			<xs:enumeration value="R1"/>
+			<xs:enumeration value="R2"/>
+			<xs:enumeration value="R3"/>
+			<xs:enumeration value="ALL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BAND_NUMBER">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant des numeros de bandes possibles</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_BIT_NUMBER">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>identifiant des numeros de bits possibles</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DETECTOR_ID">
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation>Liste des détecteurs possibles</xs:documentation>
+			</xs:annotation>
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="07"/>
+			<xs:enumeration value="08"/>
+			<xs:enumeration value="09"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DATA_BAND_ID">
+		<xs:union memberTypes="A_BAND_ID A_BAND_GROUP_ID"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_PRODUCT_LEVEL">
+		<xs:annotation>
+			<xs:documentation>niveau de produit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="L1A"/>
+			<xs:enumeration value="L1A-PLUS"/>
+			<xs:enumeration value="L1ORTHO"/>
+			<xs:enumeration value="L1C"/>
+			<xs:enumeration value="L2A"/>
+			<xs:enumeration value="L2B"/>
+			<xs:enumeration value="L2B-SNOW"/>
+			<xs:enumeration value="L2B-WATER"/>
+			<xs:enumeration value="L3A"/>
+			<xs:enumeration value="L3B"/>
+			<xs:enumeration value="L3B-OSO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ORBIT_TYPE">
+		<xs:annotation>
+			<xs:documentation>type de d'orbite</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Orbit"/>
+			<xs:enumeration value="Path"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_GEOGRAPHICAL_ZONE_TYPE">
+		<xs:annotation>
+			<xs:documentation>type de d'orbite</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Path-Row"/>
+			<xs:enumeration value="K-J/Sat"/>
+			<xs:enumeration value="Tile"/>
+			<xs:enumeration value="Site"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_IMAGE_NATURE">
+		<xs:annotation>
+			<xs:documentation>type de donnée image</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Digital_Number"/>
+			<xs:enumeration value="Reflectance"/>
+			<xs:enumeration value="Surface_Reflectance"/>
+			<xs:enumeration value="Flat_Reflectance"/>
+			<xs:enumeration value="Water_Vapor_Content"/>
+			<xs:enumeration value="Aerosol_Optical_Thickness"/>
+			<xs:enumeration value="Composite"/>
+			<xs:enumeration value="Soil_Occupation"/>
+			<xs:enumeration value="Quality_Map"/>
+			<xs:enumeration value="Temporal_Synthesis"/>
+			<xs:enumeration value="Snow"/>
+			<xs:enumeration value="Visualisation"/>
+			<xs:enumeration value="Other"/>
+			<xs:enumeration value="Composite_Surface_Reflectance_Image"/>
+			<xs:enumeration value="SPM_Concentration"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_MASK_NATURE">
+		<xs:annotation>
+			<xs:documentation>type de masque</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Cloud"/>
+			<xs:enumeration value="Detailed_Cloud"/>
+			<xs:enumeration value="Nodata"/>
+			<xs:enumeration value="Snow"/>
+			<xs:enumeration value="Snow_Detection"/>
+			<xs:enumeration value="Cirrus"/>
+			<xs:enumeration value="Saturation"/>
+			<xs:enumeration value="Detector_Footprint"/>
+			<xs:enumeration value="Occlusion"/>
+			<xs:enumeration value="AOT_Interpolation"/>
+			<xs:enumeration value="WVC_Interpolation"/>
+			<xs:enumeration value="Edge"/>
+			<xs:enumeration value="Tangent_Sun"/>
+			<xs:enumeration value="Sun_Too_Low"/>
+			<xs:enumeration value="Topography_Shadow"/>
+			<xs:enumeration value="Hidden_Surface"/>
+			<xs:enumeration value="Technical_Quality"/>
+			<xs:enumeration value="Defective_Pixel"/>
+			<xs:enumeration value="Useful_Pixel"/>
+			<xs:enumeration value="Water"/>
+			<xs:enumeration value="Land_Water"/>
+			<xs:enumeration value="Designated_Fill"/>
+			<xs:enumeration value="Dropped_Frames"/>
+			<xs:enumeration value="Gap_Slc_Off"/>
+			<xs:enumeration value="Cloud_Shadow"/>
+			<xs:enumeration value="Geophysics"/>
+			<xs:enumeration value="Pixel_Weight"/>
+			<xs:enumeration value="Pixel_Status_Flag"/>
+			<xs:enumeration value="Weighted_Average_Dates"/>
+			<xs:enumeration value="Aberrant_Pixels"/>
+			<xs:enumeration value="Useful_Image"/>
+			<xs:enumeration value="Polygon_Mask"/>
+			<xs:enumeration value="Cloud_Disturbance"/>
+			<xs:enumeration value="Negative_Pixels"/>
+			<xs:enumeration value="MNDWI_Mask"/>
+			<xs:enumeration value="Water_Cluster_Mask"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_DATA_NATURE">
+		<xs:annotation>
+			<xs:documentation>type de donnée annexe (exemple : le private directory des produits 2A)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Private_Directory"/>
+			<xs:enumeration value="Job_Processing_Informations_File"/>
+			<xs:enumeration value="Quality_Directory"/>
+			<xs:enumeration value="Histogram"/>
+			<xs:enumeration value="Ground_Image_Processing_Parameters"/>
+			<xs:enumeration value="Useful_Image_Informations_File"/>
+			<xs:enumeration value="Cloud_Altitude_Grid"/>
+			<xs:enumeration value="Solar_Angles_Grid"/>
+			<xs:enumeration value="Viewing_Angles_Grid"/>
+			<xs:enumeration value="Water_Statistics"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="A_PRODUCT_IDENTIFICATION">
+		<xs:sequence>
+			<xs:element name="PRODUCT_ID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identifiant du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ACQUISITION_DATE" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>date d'acquisition du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PRODUCTION_DATE" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>date de production du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="A_VALIDITY_PERIOD">
+		<xs:sequence>
+			<xs:element name="VALIDITY_START_DATE" type="xs:dateTime"/>
+			<xs:element name="VALIDITY_STOP_DATE" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_LENGTH_VALUE">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="A_LENGTH_UNIT"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="AN_ANGLE_VALUE">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="AN_ANGLE_UNIT" use="required">
+					<xs:annotation>
+						<xs:documentation>Unité : seule valeur possible : deg</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="AN_ANGLE_UNIT">
+		<xs:annotation>
+			<xs:documentation>Unité pour exprimer les angles : deg</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="deg"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_ANGLE_GRID_AXIS">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DX"/>
+			<xs:enumeration value="DY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_ANGLE_GRID_ALTITUDE">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="3000m"/>
+			<xs:enumeration value="8000m"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LENGTH_UNIT">
+		<xs:annotation>
+			<xs:documentation>Unité pour exprimer les longueurs : deg (si référentiel géo) / m (si référentiel carto)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="deg"/>
+			<xs:enumeration value="m"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_EPSG_CODE">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Za-z]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_POINT_NAME">
+		<xs:annotation>
+			<xs:documentation>nom des points de géopositionnement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="upperLeft"/>
+			<xs:enumeration value="lowerLeft"/>
+			<xs:enumeration value="upperRight"/>
+			<xs:enumeration value="lowerRight"/>
+			<xs:enumeration value="center"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LIST_OF_DOUBLE">
+		<xs:annotation>
+			<xs:documentation>Une liste de valeurs double</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_PRODUCER_NAME">
+		<xs:annotation>
+			<xs:documentation>Liste des producteurs. Actuellement uniquement MUSCATE</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MUSCATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

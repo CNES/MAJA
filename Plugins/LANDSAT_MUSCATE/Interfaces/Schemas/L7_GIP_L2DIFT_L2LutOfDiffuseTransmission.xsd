@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xs:schema [
+    <!ENTITY SatelliteClass "(L7)">
+	<!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE)">
+	<!ENTITY NickNameElt "([0-9A-Z_]{8}|THE_MOON|ONEORBIT)">
+	<!ENTITY NickNameTypeElt "(S|L)">
+	<!ENTITY ListNickNameElt "(&NickNameElt;|NOTNAMED|ALLSITES)">
+	<!ENTITY SerialKeyElt "([0-9]{5})">
+	<!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+	<!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+	<!ENTITY GIP_L2DIFT_Id "&SatelliteClass;_&FileClass;_GIP_L2DIFT_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;">
+	<!ENTITY File_Id "([0-9A-Za-z_.]*)">
+]>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="./L2L3_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="RFLDIFT_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:L2DIFT_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:L2DIFT_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- 		================= -->
+	<!-- 		Fixed Header -->
+	<!-- 		================= -->
+	<xs:complexType name="L2DIFT_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_GIPP_L2DIFT_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="L2LutOfDiffuseTransmission"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIP_L2DIFT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- 		================= -->
+	<!-- 		Variable Header -->
+	<!-- 		================= -->
+	<xs:complexType name="L2DIFT_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:L2DIFT_Instance_Id_Type"/>
+						<xs:element name="DBL_Organization">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="List_of_Packaged_DBL_Files">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Packaged_DBL_File" type="ee:Packaged_DBL_File_Type" maxOccurs="unbounded"/>
+											</xs:sequence>
+											<xs:attribute name="count" type="ee:Integer_Type"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+
+						<xs:element name="List_of_Applicable_SiteDefinition_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the sites this GIPP is applicable to.
+						
+								The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="LUT_Indexes" type="ee:L2DIFT_LUT_Indexes_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Packaged_DBL_File_Type">
+		<xs:sequence>
+			<xs:element name="Relative_File_Path">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:pattern value="&GIP_L2DIFT_Id;.DBL.DIR/&File_Id;"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="File_Definition">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:pattern value="lut_inv"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="sn" type="ee:Integer_Type"/>
+	</xs:complexType>
+	<xs:complexType name="L2DIFT_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+				<xs:annotation>
+					<xs:documentation>Defines the type of the applicability nick name.
+                        
+                        - if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+                        - if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+                        
+                        In case of a site nick name : 
+                        - this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+                        
+                        In case of a list nick name : 
+                        - if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+                        - if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+                        - otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+				<xs:annotation>
+					<xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="L2DIFT_LUT_Indexes_Type">
+		<xs:sequence>
+			<xs:element name="Zenithal_Angle_Indexes" type="ee:List_of_Decimal_6_Type"/>
+			<xs:element name="Altitude_Indexes" type="ee:List_of_Decimal_6_Type"/>
+			<xs:element name="AOT_Indexes" type="ee:List_of_Decimal_6_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

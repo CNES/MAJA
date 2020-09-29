@@ -1,0 +1,117 @@
+
+# Comment out the following to disable BSB support.
+BSB_SUPPORTED = 1
+
+# Comment out the following to disable ODBC support.
+ODBC_SUPPORTED = 1
+
+# Comment out the following to disable JPEG support.
+JPEG_SUPPORTED = 1
+
+# This will enable 12bit libjpeg - use only with internal jpeg builds.
+#JPEG12_SUPPORTED = 1
+
+GDAL_HOME="@SB_INSTALL_PREFIX_NATIVE@"
+
+#if using an external jpeg library uncomment the follwing lines
+JPEG_EXTERNAL_LIB = 1
+JPEGDIR = @SB_INSTALL_PREFIX_NATIVE@\include
+JPEG_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\jpeg.lib
+
+#if using an external png library uncomment the follwing lines
+PNG_EXTERNAL_LIB = 1
+PNGDIR = @SB_INSTALL_PREFIX_NATIVE@\include
+PNG_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\libpng.lib
+
+# if using an external libtiff library
+TIFF_INC = -I@SB_INSTALL_PREFIX_NATIVE@\include
+TIFF_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\tiff.lib
+# uncomment following line, if you have libtiff version >= 4.0 to enable BigTIFF support
+TIFF_OPTS= -DBIGTIFF_SUPPORT
+
+# if using an external l
+ibgeotiff library
+GEOTIFF_INC = -I@SB_INSTALL_PREFIX_NATIVE@\include
+GEOTIFF_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\geotiff_i.lib
+
+EXPAT_DIR = @SB_INSTALL_PREFIX_NATIVE@
+EXPAT_INCLUDE = -I$(EXPAT_DIR)\include
+EXPAT_LIB = $(EXPAT_DIR)\lib\expat.lib
+
+# SQLite Libraries
+SQLITE_INC=-I@SB_INSTALL_PREFIX_NATIVE@\include
+SQLITE_LIB=@SB_INSTALL_PREFIX_NATIVE@\lib\sqlite3.lib
+# Uncomment following line if libsqlite3 has been compiled with SQLITE_HAS_COLUMN_METADATA=yes
+SQLITE_HAS_COLUMN_METADATA=yes
+
+# PROJ.4 stuff
+PROJ_FLAGS = -DPROJ_STATIC -DPROJ_VERSION=4
+PROJ_INCLUDE = -I@SB_INSTALL_PREFIX_NATIVE@\include
+PROJ_LIBRARY = @SB_INSTALL_PREFIX_NATIVE@\lib\proj.lib
+
+# Uncomment to use libcurl (DLL by default)
+# The cURL library is used for WCS, WMS, GeoJSON, SRS call importFromUrl(), WFS, GFT, CouchDB, /vsicurl/ etc.
+CURL_DIR=@SB_INSTALL_PREFIX_NATIVE@
+CURL_INC = -I$(CURL_DIR)\include
+# Uncoment following line to use libcurl as dynamic library
+CURL_LIB = $(CURL_DIR)\lib\libcurl_imp.lib wsock32.lib wldap32.lib winmm.lib
+
+# Uncomment for GEOS support (GEOS >= 3.1.0 required)
+GEOS_DIR=@SB_INSTALL_PREFIX_NATIVE@
+GEOS_CFLAGS = -I$(GEOS_DIR)\include -I$(GEOS_DIR)\include\geos -DHAVE_GEOS
+GEOS_LIB     = $(GEOS_DIR)\lib\geos.lib $(GEOS_DIR)\lib\geos_c.lib
+
+# Uncomment for OpenJpeg support
+OPENJPEG_ENABLED = YES
+OPENJPEG_VERSION = 20200
+OPENJPEG_CFLAGS = -I@SB_INSTALL_PREFIX_NATIVE@\include\openjpeg-2.2
+OPENJPEG_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\openjp2.lib
+
+
+##################################################################
+################# TO be enabled for OTB ##########################
+
+# Uncomment out the following lines to enable LibKML support.
+#LIBKML_DIR = C:/Dev/libkml
+#LIBKML_INCLUDE = -I$(LIBKML_DIR)/src -I$(LIBKML_DIR)/third_party/boost_1_34_1
+#LIBKML_LIBRARY = $(LIBKML_DIR)/msvc/Release
+#LIBKML_LIBS =	$(LIBKML_LIBRARY)/libkmlbase.lib \
+#		$(LIBKML_LIBRARY)/libkmlconvenience.lib \
+#		$(LIBKML_LIBRARY)/libkmldom.lib \
+#		$(LIBKML_LIBRARY)/libkmlengine.lib \
+#		$(LIBKML_LIBRARY)/libkmlregionator.lib \
+#		$(LIBKML_LIBRARY)/libkmlxsd.lib \
+#		$(LIBKML_LIBRARY)/minizip_static.lib \
+#		$(LIBKML_DIR)/third_party\expat.win32/libexpat.lib \
+#		$(LIBKML_DIR)/third_party\uriparser-0.7.5.win32/release/uriparser.lib \
+#		$(LIBKML_DIR)/third_party\zlib-1.2.3.win32/lib/minizip.lib \
+#		$(LIBKML_DIR)/third_party\zlib-1.2.3.win32/lib/zlib.lib
+
+#we use external zlib on windows
+ZLIB_EXTERNAL_LIB = 1
+ZLIB_INC = -I@SB_INSTALL_PREFIX_NATIVE@\include
+ZLIB_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\zlib.lib
+
+# Uncomment the following and update to enable NCSA HDF Release 4 support.
+HDF4_PLUGIN = NO
+HDF4_DIR =	@SB_INSTALL_PREFIX_NATIVE@
+#HDF4_LIB =	/LIBPATH:$(HDF4_DIR)\lib Ws2_32.lib
+HDF4_LIB =	$(HDF4_DIR)\lib\@HDF4_SB_DF_LIB@.lib $(HDF4_DIR)\lib\@HDF4_SB_MF_LIB@.lib $(JPEG_LIB) $(ZLIB_LIB)
+HDF4_INCLUDE = $(HDF4_DIR)\include
+HDF4_HAS_MAXOPENFILES = YES
+
+# Uncomment the following and update to enable NCSA HDF Release 5 support.
+HDF5_PLUGIN = NO
+HDF5_DIR =	@SB_INSTALL_PREFIX_NATIVE@
+HDF5_LIB =	$(HDF5_DIR)\lib\hdf5.lib $(ZLIB_LIB)
+
+NETCDF_PLUGIN = NO
+NETCDF_SETTING = YES
+NETCDF_LIB = @SB_INSTALL_PREFIX_NATIVE@\lib\netcdf.lib
+NETCDF_INC_DIR = @SB_INSTALL_PREFIX_NATIVE@\include
+NETCDF_HAS_NC4 = YES
+NETCDF_HAS_HDF4 = YES
+
+# Binding list. One or several in the following list
+# csharp, java, python
+BINDINGS=python

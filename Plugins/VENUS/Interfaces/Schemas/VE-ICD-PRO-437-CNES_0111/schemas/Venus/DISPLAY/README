@@ -1,0 +1,12 @@
+###############################################################################
+# HISTORIQUE
+#
+# VERSION : 1.3 : DM : VE-FT-847 : 26/08/2015 : Changement des icônes pour avoir des icônes libres de droits
+#
+# FIN-HISTORIQUE
+###############################################################################
+Icons:
+------
+source:  downloaded from http://tango.freedesktop.org
+package: tango-icon-theme-0.8.90.tar.gz
+license: The Tango base icon theme is released to the Public Domain. The palette is in public domain. Developers, feel free to ship it along with your application. The icon naming utilities are licensed under the GPL. See http://tango.freedesktop.org/Tango_Desktop_Project

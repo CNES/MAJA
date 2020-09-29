@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="BasicTypes_0101.XSD"></xsd:include>
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Earth Explorer Header data types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:47 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Earth_Explorer_Header_Type">
+		<xsd:sequence>
+			<xsd:element name="Fixed_Header" type="Fixed_Header_Type"></xsd:element>
+			<xsd:element name="Variable_Header" type="AnyType_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fixed_Header_Type">
+		<xsd:sequence>
+			<xsd:element name="File_Name" type="File_Name_Type"></xsd:element>
+			<xsd:element name="File_Description" type="String_Type"></xsd:element>
+			<xsd:element name="Notes" type="String_Type"></xsd:element>
+			<xsd:element name="Mission" type="String_Type"></xsd:element>
+			<xsd:element name="File_Class" type="File_Class_Type"></xsd:element>
+			<xsd:element name="File_Type" type="File_Type_Type"></xsd:element>
+			<xsd:element name="Validity_Period" type="Validity_Period_Type"></xsd:element>
+			<xsd:element name="File_Version" type="File_Version_Type"></xsd:element>
+			<xsd:element name="Source" type="Source_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Source_Type">
+		<xsd:sequence>
+			<xsd:element name="System" type="String_Type"></xsd:element>
+			<xsd:element name="Creator" type="String_Type"></xsd:element>
+			<xsd:element name="Creator_Version" type="String_Type"></xsd:element>
+			<xsd:element name="Creation_Date" type="Creation_Date_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="Creation_Date_Type">
+		<xsd:restriction base="UTC_Date_Time_Type">
+			<xsd:length value="23"></xsd:length>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Validity_Time_Type">
+		<xsd:restriction base="UTC_Date_Time_Type">
+			<xsd:length value="23"></xsd:length>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Validity_Period_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Validity_Start" type="Validity_Time_Type"></xsd:element>
+			<xsd:element name="Validity_Stop" type="Validity_Time_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Validity_Period_EOM_Type">
+		<xsd:sequence>
+			<xsd:element name="Validity_Start" type="Validity_Time_Type"></xsd:element>
+			<xsd:element name="Validity_Stop" type="UTC_EOM_Date_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Validity_Period_BOM_EOM_Type">
+		<xsd:sequence>
+			<xsd:element name="Validity_Start" type="UTC_BOM_Date_Type"></xsd:element>
+			<xsd:element name="Validity_Stop" type="UTC_EOM_Date_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fixed_Header_EOM_Type">
+		<xsd:sequence>
+			<xsd:element name="File_Name" type="String_Type"></xsd:element>
+			<xsd:element name="File_Description" type="String_Type"></xsd:element>
+			<xsd:element name="Notes" type="String_Type"></xsd:element>
+			<xsd:element name="Mission" type="String_Type"></xsd:element>
+			<xsd:element name="File_Class" type="File_Class_Type"></xsd:element>
+			<xsd:element name="File_Type" type="File_Type_Type"></xsd:element>
+			<xsd:element name="Validity_Period" type="Validity_Period_EOM_Type"></xsd:element>
+			<xsd:element name="File_Version" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Source" type="Source_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Fixed_Header_BOM_EOM_Type">
+		<xsd:sequence>
+			<xsd:element name="File_Name" type="String_Type"></xsd:element>
+			<xsd:element name="File_Description" type="String_Type"></xsd:element>
+			<xsd:element name="Notes" type="String_Type"></xsd:element>
+			<xsd:element name="Mission" type="String_Type"></xsd:element>
+			<xsd:element name="File_Class" type="File_Class_Type"></xsd:element>
+			<xsd:element name="File_Type" type="File_Type_Type"></xsd:element>
+			<xsd:element name="Validity_Period" type="Validity_Period_BOM_EOM_Type"></xsd:element>
+			<xsd:element name="File_Version" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Source" type="Source_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Product_Confidence_Data_Type">
+		<xsd:sequence>
+			<xsd:element name="Num_ISPs" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_Missing_ISPs" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_Error_ISPs" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_Discarded_ISPs" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_RS_ISPs" type="Integer_Type"></xsd:element>
+			<xsd:element name="Num_RS_Corrections" type="Integer_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Lat_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Integer_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="10-6deg"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Long_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Integer_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="10-6deg"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Product_Location_Type">
+		<xsd:sequence>
+			<xsd:element name="Start_Lat" type="Lat_Type"></xsd:element>
+			<xsd:element name="Start_Long" type="Long_Type"></xsd:element>
+			<xsd:element name="Stop_Lat" type="Lat_Type"></xsd:element>
+			<xsd:element name="Stop_Long" type="Long_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Rel_Time_ASC_Node_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="String_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="s"
+					></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Equator_Cross_Long_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="optional"
+					fixed="10-6deg"></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="Ascending_Flag_Type">
+			<xsd:restriction base="String_Type">
+				<xsd:length value="1"></xsd:length>
+			</xsd:restriction>
+		</xsd:simpleType>
+	<xsd:complexType name="Orbit_Information_Type">
+		<xsd:sequence>
+			<xsd:element name="Sensing_Start" type="TAI_Date_Time_Type"></xsd:element>
+			<xsd:element name="Abs_Orbit_Start" type="Integer_Type"></xsd:element>
+			<xsd:element name="Rel_Time_ASC_Node_Start" type="Rel_Time_ASC_Node_Type"></xsd:element>
+			<xsd:element name="Sensing_Stop" type="TAI_Date_Time_Type"></xsd:element>
+			<xsd:element name="Abs_Orbit_Stop" type="Integer_Type"></xsd:element>
+			<xsd:element name="Rel_Time_ASC_Node_Stop" type="Rel_Time_ASC_Node_Type"></xsd:element>
+			<xsd:element name="Equator_Cross_Time" type="String_Type"></xsd:element>
+			<xsd:element name="Equator_Cross_Long" type="Equator_Cross_Long_Type"></xsd:element>
+			<xsd:element name="Ascending_Flag" type="Ascending_Flag_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SPH_Type">
+		<xsd:sequence>
+			<xsd:element name="SPH_Descriptor" type="String_Type"></xsd:element>
+			<xsd:element name="Orbit_Information" type="Orbit_Information_Type"></xsd:element>
+			<xsd:element name="Product_Location" type="Product_Location_Type"></xsd:element>
+			<xsd:element name="Product_Confidence_Data" type="Product_Confidence_Data_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="Software_Version_Type">
+			<xsd:restriction base="String_Type"></xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Delta_UT1_Type">
+			<xsd:simpleContent>
+				<xsd:extension base="Decimal_Type">
+					<xsd:attribute name="unit" type="String_Type" use="required" fixed="s"
+						></xsd:attribute>
+				</xsd:extension>
+			</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Position_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m"
+					></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Velocity_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m/s"
+					></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="State_Vector_Source_Type">
+			<xsd:restriction base="String_Type">
+				<xsd:pattern value=".."></xsd:pattern>
+			</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Product_Err_Type">
+			<xsd:restriction base="Integer_Type"></xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Tot_Size_Type">
+			<xsd:simpleContent>
+				<xsd:extension base="Integer_Type">
+					<xsd:attribute name="unit" type="String_Type" use="required"
+						fixed="bytes"></xsd:attribute>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	<xsd:complexType name="MPH_Type">
+		<xsd:sequence>
+			<xsd:element name="Product" type="String_Type"></xsd:element>
+			<xsd:element name="Proc_Stage_Code" type="String_Type"></xsd:element>
+			<xsd:element name="Ref_Doc" type="String_Type"></xsd:element>
+			<xsd:element name="Proc_Time" type="String_Type"></xsd:element>
+			<xsd:element name="Software_Version" type="Software_Version_Type"></xsd:element>
+			<xsd:element name="Phase" type="String_Type"></xsd:element>
+			<xsd:element name="Cycle" type="Integer_Type"></xsd:element>
+			<xsd:element name="Rel_Orbit" type="Integer_Type"></xsd:element>
+			<xsd:element name="Abs_Orbit" type="Integer_Type"></xsd:element>
+			<xsd:element name="State_Vector_Time" type="UTC_Date_Time_Type"></xsd:element>
+			<xsd:element name="Delta_UT1" type="Delta_UT1_Type"></xsd:element>
+			<xsd:element name="X_Position" type="Position_Type"></xsd:element>
+			<xsd:element name="Y_Position" type="Position_Type"></xsd:element>
+			<xsd:element name="Z_Position" type="Position_Type"></xsd:element>
+			<xsd:element name="X_Velocity" type="Velocity_Type"></xsd:element>
+			<xsd:element name="Y_Velocity" type="Velocity_Type"></xsd:element>
+			<xsd:element name="Z_Velocity" type="Velocity_Type"></xsd:element>
+			<xsd:element name="State_Vector_Source" type="State_Vector_Source_Type"></xsd:element>
+			<xsd:element name="Product_Err" type="Product_Err_Type"></xsd:element>
+			<xsd:element name="Tot_Size" type="Tot_Size_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

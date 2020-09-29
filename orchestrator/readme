@@ -1,0 +1,54 @@
+#
+# Copyright (C) 2020 Centre National d'Etudes Spatiales (CNES)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+Readme MAJA-NG:
+
+
+Compilation des Applications:
+Le plus simple est d'utilisé un SuperBuild d'OTB compilé avec Python 2.7 afin d'avoir directement tout ce qu'il faut.
+Pour cela il faut ajouter l'option : GDAL_SB_EXTRA_OPTIONS = --with-python 
+
+Il faut ensuite configurer un projet MAJA-NG en pointant vers les binaires de GDAL, OTB ...
+
+
+Lancement Python:
+Il est necessaire d'avoir un OTB ayant été compilé avec les bindings python ainsi qu'un gdal ayant également les binding python.
+Un venv possédant un python 2.7, pyqtis, otbApplication (même version que pour la compilation précedente) est nécessaire.
+
+Il faut placer les variable:
+PYTHON_PATH en incluant le chemin vers le répértoire "orchestrator"
+LD_LIBRARY_PATH en incluant le chemin vers le superbuild.
+PATH en incluant le chemin vers le superbuild pour lancer gdal_rasterize par exemple.
+MAJA_INSTALL_DIR doit pointer vers une installation de MAJA récente afin d'aller chercher les fichiers de configurations.
+OTB_APPLICATION_PATH doit contenir les application OTB du superbuild en plus des application maja-ng.
+
+Ligne de commande:
+La ligne de commande est quasi identique à celle de MAJA.
+Pour voir les options il suffit de lancer:
+python launcher/maja.py -h
+La ligne de commande classique est:
+ python launcher/maja.py  --output ./OUTPUT --loglevel DEBUG --NbThreads 8 -i ./INPUT/ -w /tmp_dir/ -m L2BACKWARD --stylesheet styleSheet_Overloading_GIPPs_Values.xs
+
+
+Mode sans caching sur le L2Coarse:
+L'option de caching est situé dans le fichier de configuration utilisateur dans 
+EnableCachingConvertReflectanceData.
+Attention pour pouvoir l'utiliser il faut un otbApplication.py supportant le passage des images en SwigPyObject.
+
+
+
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="OrbitTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Orbit Scenario Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:41 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Orbit_Scenario_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="List_of_Orbit_Changes" type="List_of_Orbit_Changes_Type"
+			></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Orbit_Scenario_Data_Block_Type"></xsd:element>
+</xsd:schema>

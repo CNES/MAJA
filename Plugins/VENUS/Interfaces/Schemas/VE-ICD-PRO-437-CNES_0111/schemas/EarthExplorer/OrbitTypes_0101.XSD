@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="GeoLocationTypes_0101.XSD"></xsd:include>
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Orbit Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:48 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Repeat_Cycle_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="PositiveInteger_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="day"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Cycle_Length_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="PositiveInteger_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="orbit"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="MLST_Drift_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="s/day"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Position_Component_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Velocity_Component_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m/s"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="Quality_Type">
+		<xsd:restriction base="String_Type"></xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Orbit_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Absolute_Orbit" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Relative_Orbit" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Cycle_Number" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Phase_Number" type="PositiveInteger_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Cycle_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Repeat_Cycle" type="Repeat_Cycle_Type"></xsd:element>
+			<xsd:element name="Cycle_Length" type="Cycle_Length_Type"></xsd:element>
+			<xsd:element name="ANX_Longitude" type="Longitude_Type"></xsd:element>
+			<xsd:element name="MLST" type="Time_Type"></xsd:element>
+			<xsd:element name="MLST_Drift" type="MLST_Drift_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Time_of_ANX_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="TAI" type="TAI_Date_Time_Type"></xsd:element>
+			<xsd:element name="UTC" type="UTC_Date_Time_Type"></xsd:element>
+			<xsd:element name="UT1" type="UT1_Date_Time_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Orbit_Change_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Orbit" type="Orbit_Type"></xsd:element>
+			<xsd:element name="Cycle" type="Cycle_Type"></xsd:element>
+			<xsd:element name="Time_of_ANX" type="Time_of_ANX_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Orbit_Changes_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Orbit_Change" type="Orbit_Change_Type" minOccurs="1"
+				maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="PositiveInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="OSV_Type">
+		<xsd:sequence>
+			<xsd:element name="TAI" type="TAI_Date_Time_Type"></xsd:element>
+			<xsd:element name="UTC" type="UTC_Date_Time_Type"></xsd:element>
+			<xsd:element name="UT1" type="UT1_Date_Time_Type"></xsd:element>
+			<xsd:element name="Absolute_Orbit" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="X" type="Position_Component_Type"></xsd:element>
+			<xsd:element name="Y" type="Position_Component_Type"></xsd:element>
+			<xsd:element name="Z" type="Position_Component_Type"></xsd:element>
+			<xsd:element name="VX" type="Velocity_Component_Type"></xsd:element>
+			<xsd:element name="VY" type="Velocity_Component_Type"></xsd:element>
+			<xsd:element name="VZ" type="Velocity_Component_Type"></xsd:element>
+			<xsd:element name="Quality" type="Quality_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_OSVs_Type">
+		<xsd:sequence>
+			<xsd:element name="OSV" type="OSV_Type" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="NonNegativeInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

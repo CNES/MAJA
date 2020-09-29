@@ -1,0 +1,44 @@
+diff -burN OTB-6.0.1.orig/Modules/Core/Transform/include/otbStreamingWarpImageFilter.h OTB-6.0.1/Modules/Core/Transform/include/otbStreamingWarpImageFilter.h
+--- OTB-6.0.1.orig/Modules/Core/Transform/include/otbStreamingWarpImageFilter.h	2017-12-19 12:19:57.000000000 +0100
++++ OTB-6.0.1/Modules/Core/Transform/include/otbStreamingWarpImageFilter.h	2017-12-19 12:27:53.000000000 +0100
+@@ -21,14 +21,14 @@
+ #ifndef otbStreamingWarpImageFilter_h
+ #define otbStreamingWarpImageFilter_h
+ 
+-#include "itkWarpImageFilter.h"
++#include "otbWarpImageFilter.h"
+ #include "otbStreamingTraits.h"
+ 
+ namespace otb
+ {
+ 
+ /** \class StreamingWarpImageFilter
+- * \brief This class acts like the itk::WarpImageFilter, but it does not request the largest possible region of the image to warp.
++ * \brief This class acts like the otb::WarpImageFilter, but it does not request the largest possible region of the image to warp.
+  *
+  * Instead, the user should assess the maximum displacement in the displacement field and set it via the SetMaximumDisplacement() method.
+  *
+@@ -50,12 +50,12 @@
+ 
+ template <class TInputImage, class TOutputImage, class TDisplacementField>
+ class ITK_EXPORT StreamingWarpImageFilter
+-  :  public itk::WarpImageFilter<TInputImage, TOutputImage, TDisplacementField>
++  :  public otb::WarpImageFilter<TInputImage, TOutputImage, TDisplacementField>
+ {
+ public:
+   /** Standard class typedefs. */
+   typedef StreamingWarpImageFilter                                            Self;
+-  typedef itk::WarpImageFilter<TInputImage, TOutputImage, TDisplacementField> Superclass;
++  typedef otb::WarpImageFilter<TInputImage, TOutputImage, TDisplacementField> Superclass;
+   typedef itk::SmartPointer<Self>                                             Pointer;
+   typedef itk::SmartPointer<const Self>                                       ConstPointer;
+ 
+@@ -96,8 +96,6 @@
+    */
+   void GenerateInputRequestedRegion() ITK_OVERRIDE;
+ 
+-  void GenerateOutputInformation() ITK_OVERRIDE;
+-
+   /**
+    * Re-implement the method ThreadedGenerateData to mask area outside the deformation grid
+    */

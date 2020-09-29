@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<!-- 
+  HISTORIQUE
+  
+  VERSION : 1.3 : DM : VE-FT-550 : 03/06/2015 : Add stray light and polarisation
+  
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.3">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="RADIOV_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:RADIOV_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:RADIOV_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="1.3"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="RADIOV_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:RADIOV_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:RADIOV_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RADIOV_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_GIPP_RadioVProcess_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="RadioVProcess"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIP_RADIOV"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RADIOV_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:RADIOV_Instance_Id_Type"/>
+						<xs:element name="List_of_Applicable_SiteDefinition_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the sites this GIPP is applicable to.
+                                    
+                                    The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RADIOV_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+				<xs:annotation>
+					<xs:documentation>Defines the type of the applicability nick name.
+                        
+                        - if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+                        - if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+                        
+                        In case of a site nick name : 
+                        - this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+                        
+                        In case of a list nick name : 
+                        - if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+                        - if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+                        - otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+				<xs:annotation>
+					<xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="RADIOV_Body_Type">
+		<xs:sequence>
+			<xs:element name="Out_Of_Order_Detectors_Interpolation">
+				<xs:annotation>
+					<xs:documentation>Out-of-order detector process configuration </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Interpolation_Threshold" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>Defines the maximum number of adjacent out-of-order cells beeing interpolated</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Remanence_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Minimum_Radiometric_Value" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>CN_Min</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Maximum_Radiometric_Value" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>CN_Max</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+      <xs:element name="Straylight_Correction_Parameters">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Correction_Scenario">
+							<xs:annotation>
+								<xs:documentation>Defines the scenario with the 2 types of correction :
+"TYPE1" means only Type 1
+"TYPE2" means only Type 2
+"TYPE1_TYPE2" means Type 1 then Type2
+"TYPE2_TYPE1" means Type 2 then Type 1</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="TYPE1"/>
+									<xs:enumeration value="TYPE2"/>
+									<xs:enumeration value="TYPE1_TYPE2"/>
+									<xs:enumeration value="TYPE2_TYPE1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Restoration_Parameters">
+				<xs:annotation>
+					<xs:documentation>Astrid library parameters</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Restoration_Scenario">
+							<xs:annotation>
+								<xs:documentation>Astrid scenario</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="F_CONVOLUTION"/>
+									<xs:enumeration value="W_CONVOLUTION"/>
+									<xs:enumeration value="F_CONVOLUTION_W_DENOISING"/>
+									<xs:enumeration value="W_CONVOLUTION_W_DENOISING"/>
+									<xs:enumeration value="W_DENOISING"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="F_Zoom_Factor" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Use for frequential zero padding zoom algorithm</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="F_Convolution_Parameters">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Block_Size_X" type="ee:Integer_Type">
+										<xs:annotation>
+											<xs:documentation>Block size along the lines </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Block_Size_Y" type="ee:Integer_Type">
+										<xs:annotation>
+											<xs:documentation>Block size along the columns</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Normalization_Const">
+										<xs:annotation>
+											<xs:documentation>Energetic normalization constant</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:minInclusive value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="W_Convolution_Denoising_Parameters">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Segment_Size" type="ee:Integer_Type">
+										<xs:annotation>
+											<xs:documentation>Segment size</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="L2_Norm_Amplification_Coefficient" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>Amplification coefficient (L2 norm).</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Segment_Overlap_Size" type="ee:Integer_Type">
+										<xs:annotation>
+											<xs:documentation>Overlap size (expressed as a number of lines and columns) betwwen two neighbour voisins. This size must be lesser than the size defined in Segment_Size.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Objective_Noise_Sigma" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>Noise Sigma value taken as the goal.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Radiometric_Maximal_Value" type="ee:Integer_Type">
+										<xs:annotation>
+											<xs:documentation>Radiometric maximal value for computing the instrumental noise.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Maximal_Denoising_Threshold" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>Maximum denoising threshold for the learning step.</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Noise_Amplification_Coefficient" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>Coefficient d'amplification du bruit</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Nodata_Deconvolution_Margin" type="ee:NonNegativeInteger_Type">
+							<xs:annotation>
+								<xs:documentation>Margin, expressed as a number of pixel, used to extend the Nodata mask by dilatation</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cloud_Detection">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Spectral_Band_Code" type="ee:VE_Band_Code_Type">
+							<xs:annotation>
+								<xs:documentation>Band used to process the cloud detection</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cloud_Reflectance_Threshold" type="ee:NonNegativeDouble_Type">
+							<xs:annotation>
+								<xs:documentation>Pixel whose reflectance is above this threshold will be considered as a cloud pixel.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Final_Output_Clipping">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Minimum_Radiometric_Value" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Xmin</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Maximum_Radiometric_Value" type="ee:Double_Type">
+							<xs:annotation>
+								<xs:documentation>Xmax</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

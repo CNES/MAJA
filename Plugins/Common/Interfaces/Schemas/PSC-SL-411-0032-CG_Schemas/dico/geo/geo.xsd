@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_SOLAR_ANGLES">
+		<xs:sequence>
+			<xs:element name="ZENITH_ANGLE" type="AN_ANGLE_VALUE">
+				<xs:annotation>
+					<xs:documentation>zenith(ang) = 90 - elevation(ang)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AZIMUTH_ANGLE" type="AN_ANGLE_VALUE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_INCIDENCE_ANGLES">
+		<xs:annotation>
+			<xs:documentation> Dans le cas LANDSAT, ces champs ne sont pas renseignés dans les données natives,
+			mais les satellites LANDSAT étant en visée nadir, ces champs sont renseignés à 0.0 dans les données MUSCATE </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ZENITH_ANGLE" type="AN_ANGLE_VALUE"/>
+			<xs:element name="AZIMUTH_ANGLE" type="AN_ANGLE_VALUE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_ANGLE_GRID">
+		<xs:sequence>
+			<xs:element name="COL_STEP" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Pas à appliquer en colonne (c'est à dire entre 2 valeurs dans le même élément VALUES)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ROW_STEP" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Pas à appliquer en ligne (c'est à dire entre 2 éléments VALUES)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Values_List">
+				<xs:annotation>
+					<xs:documentation>Grille d'angles</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="VALUES" type="A_LIST_OF_DOUBLE" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Liste de valeurs double séparées par des espaces correspondant à une ligne de la grille</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="step_unit" type="A_LENGTH_UNIT" use="required">
+			<xs:annotation>
+				<xs:documentation>Unité pour exprimer les longueurs de COL_STEP et ROW_STEP : deg (si référentiel géo) / m (si référentiel carto)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="values_unit" type="AN_ANGLE_UNIT" use="required">
+			<xs:annotation>
+				<xs:documentation>Unité pour exprimer les angles contenus dans la grille</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="A_POINTING_ANGLES">
+		<xs:sequence>
+			<xs:element name="ROLL" type="AN_ANGLE_VALUE" minOccurs="0"/>
+			<xs:element name="PITCH" type="AN_ANGLE_VALUE" minOccurs="0"/>
+			<xs:element name="YAW" type="AN_ANGLE_VALUE" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_MEAN_VALUE_LIST">
+		<xs:sequence>
+			<xs:element name="SCENE_ORIENTATION" type="AN_ANGLE_VALUE" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Présent uniquement pour SPOT : reprend le contenu de la balise SCENE_ORIENTATION des  fichiers METADATA.DIM.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sun_Angles" type="A_SOLAR_ANGLES"/>
+			<xs:choice>
+				<xs:element name="Incidence_Angles" type="AN_INCIDENCE_ANGLES"/>
+				<xs:element name="Mean_Viewing_Incidence_Angle_List" type="A_MEAN_VIEWING_INCIDENCE_ANGLE_LIST"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_MEAN_VIEWING_INCIDENCE_ANGLE_LIST">
+		<xs:sequence>
+			<xs:element name="Mean_Viewing_Incidence_Angle" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AN_INCIDENCE_ANGLES">
+							<xs:attribute name="band_id" type="A_BAND_ID"/>
+							<xs:attribute name="detector_id" type="A_DETECTOR_ID"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_SUN_ANGLES_GRIDS">
+		<xs:sequence>
+			<xs:element name="Zenith" type="AN_ANGLE_GRID"/>
+			<xs:element name="Azimuth" type="AN_ANGLE_GRID"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_VIEWING_INCIDENCE_ANGLES_GRIDS_LIST">
+		<xs:sequence>
+			<xs:element name="Band_Viewing_Incidence_Angles_Grids_List" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Viewing_Incidence_Angles_Grids" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Zenith" type="AN_ANGLE_GRID"/>
+									<xs:element name="Azimuth" type="AN_ANGLE_GRID"/>
+								</xs:sequence>
+								<xs:attribute name="detector_id" type="xs:int"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="band_id" type="A_BAND_ID"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_GEOMETRIC_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="Mean_Value_List" type="A_MEAN_VALUE_LIST" minOccurs="0"/>
+			<xs:element name="Angles_Grids_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Sun_Angles_Grids" type="A_SUN_ANGLES_GRIDS"/>
+						<xs:element name="Viewing_Incidence_Angles_Grids_List" type="A_VIEWING_INCIDENCE_ANGLES_GRIDS_LIST"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

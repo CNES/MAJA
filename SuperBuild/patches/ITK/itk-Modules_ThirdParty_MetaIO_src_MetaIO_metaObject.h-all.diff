@@ -1,0 +1,11 @@
+diff -burN InsightToolkit-4.13.1.orig/Modules/ThirdParty/MetaIO/src/MetaIO/src/metaObject.h InsightToolkit-4.13.1/Modules/ThirdParty/MetaIO/src/MetaIO/src/metaObject.h
+--- InsightToolkit-4.13.1.orig/Modules/ThirdParty/MetaIO/src/MetaIO/src/metaObject.h	2020-02-17 16:38:43.010358577 +0100
++++ InsightToolkit-4.13.1/Modules/ThirdParty/MetaIO/src/MetaIO/src/metaObject.h	2020-02-17 16:54:00.678349826 +0100
+@@ -45,7 +45,7 @@
+       FieldsContainerType m_UserDefinedReadFields;
+       FieldsContainerType m_AdditionalReadFields;
+
+-      char  m_FileName[255];
++      char  m_FileName[1024];
+
+       char  m_Comment[255];            // "Comment = "       ""

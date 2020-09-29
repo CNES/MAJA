@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:base="https://psd-12.sentinel2.eo.esa.int/DICO/12/PDGS/base/" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/PDGS/base/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:simpleType name="CENTER">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="CONSTELLATION">
+		<xs:restriction base="base:SATELLITE"/>
+	</xs:simpleType>
+	<xs:simpleType name="GROUND_SEGMENT">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="SATELLITE">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="SATELLITE_INDEPENDANT">
+		<xs:annotation>
+			<xs:documentation>Data interface is independant from any satellite.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:SATELLITE">
+			<xs:enumeration value="None"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UNIT">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="AN_EMAIL_ADDRESS">
+		<xs:annotation>
+			<xs:documentation>Email address.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9._%\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_FIRM_ADDRESS">
+		<xs:sequence>
+			<xs:element name="NAME" type="xs:string" minOccurs="0"/>
+			<xs:element name="FIRM_NAME" type="xs:string" minOccurs="0"/>
+			<xs:element name="ADDRESS" type="xs:string" minOccurs="0"/>
+			<xs:element name="ADDRESS2" type="xs:string" minOccurs="0"/>
+			<xs:element name="PHONE" type="xs:string" minOccurs="0"/>
+			<xs:element name="EMAIL" type="xs:string" minOccurs="0"/>
+			<xs:element name="CITY" type="xs:string" minOccurs="0"/>
+			<xs:element name="COUNTRY" type="xs:string" minOccurs="0"/>
+			<xs:element name="POSTAL_CODE" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_FTP_ADDRESS">
+		<xs:annotation>
+			<xs:documentation>Address Ftp.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_LANGUAGE">
+		<xs:annotation>
+			<xs:documentation>Language</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FRENCH"/>
+			<xs:enumeration value="ENGLISH"/>
+			<xs:enumeration value="NOT_DEFINED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_NB_OF_SAT">
+		<xs:annotation>
+			<xs:documentation>Number of satellites</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_PATH">
+		<xs:annotation>
+			<xs:documentation>Acces path of a data</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z0-9\._:/\\\-]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_PLATFORM_NAME">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_PLATFORM_SERIAL_NUMBER">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_SATELLITE_ID">
+		<xs:restriction base="base:SATELLITE"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_STATUS">
+		<xs:annotation>
+			<xs:documentation>State : ON/OFF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OFF"/>
+			<xs:enumeration value="ON"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_OK_KO_STATE">
+		<xs:annotation>
+			<xs:documentation> OK / KO</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="KO"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TBD">
+		<xs:annotation>
+			<xs:documentation>To be Defined</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_SATELLITE_IDENTIFIER">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="S2A"/>
+			<xs:enumeration value="S2B"/>
+			<xs:enumeration value="S2_"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

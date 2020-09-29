@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://gs2.esa.int/DICO/PDGS/station" targetNamespace="http://gs2.esa.int/DICO/PDGS/station" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="StationUnavailability" type="StationUnavailabilityType">
+		<xs:annotation>
+			<xs:documentation>Details of unavailability</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Type">
+		<xs:annotation>
+			<xs:documentation>Enum type of unavailability : PLANNED or UNPLANNED</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="PLANNED"/>
+				<xs:enumeration value="UNPLANNED"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:complexType name="StationUnavailabilityType">
+		<xs:annotation>
+			<xs:documentation>Type for Details of unavailability</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StartTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Date/Time of unavailability start</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Date/Time of unavailability end</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reason" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Commented Reason for unavailability</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Type"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

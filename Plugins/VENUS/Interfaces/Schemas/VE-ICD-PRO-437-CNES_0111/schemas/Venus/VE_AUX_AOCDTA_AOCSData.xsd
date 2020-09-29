@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.3 : FA : VE-FT-849 : 15/07/2015 : Correction du FT-651
+ 
+  FIN-HISTORIQUE
+ -->
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.3">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="AOCDTA_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:AOCDTA_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:AOCDTA_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="AOCDTA_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:AOCDTA_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:AOCDTA_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AOCDTA_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_AuxAOCSData_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="AOCSData"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="AUX_AOCDTA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AOCDTA_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:AOCDTA_Instance_Id_Type"/>
+						<xs:element name="Related_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+							<xs:annotation>
+								<xs:documentation>if Auxiliary_Data_Type = O_ORBIT, site definition id should have the special nickname value of 'ONEORBIT'.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AOCDTA_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Site_Type" type="ee:VE_Site_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>NickName of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Auxiliary_Data_Type" type="ee:VE_Auxiliary_Data_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the auxiliary data (O_ORBIT or S_SITE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Element" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data ElementId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="AOCDTA_Body_Type">
+		<xs:annotation>
+			<xs:documentation>AOCS data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MJD_Time_Unit" type="ee:String_Type" default="days">
+				<xs:annotation>
+					<xs:documentation>Unit of AOCS MJD time (days)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Str_Attitude_Variance_Unit" type="ee:String_Type" default="10-8rad">
+				<xs:annotation>
+					<xs:documentation>Unit of variance of STR attitude (10-8rad)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Velocity_Unit" type="ee:String_Type" default="rad/s">
+				<xs:annotation>
+					<xs:documentation>Unit of velocity (rad/s)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_AOCS_Data">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AOCS_Data" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="MJD_Time" type="ee:Double_Type">
+										<xs:annotation>
+											<xs:documentation>MJD time (number of days in real value) of the beginning of the current AOCS 10Hz cycle. </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Str_Attitude_Variance">
+										<xs:annotation>
+											<xs:documentation>Variance of the STR attitude in rad^2 * 100 000 000</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:Float_Type"/>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Str_Valid_Flag" type="ee:UnsignedByte_Type">
+										<xs:annotation>
+											<xs:documentation>STR that is operated: STR1 or STR2 or both.
+0: NO_STR_VALID
+1: ONLY_STR_1_VALID
+2: ONLY_STR_2_VALID
+3: BOTH_STR_VALID</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Str_Measured_Attitudes">
+										<xs:annotation>
+											<xs:documentation>Satellite Body Frame (BF) attitude with respect to MOD inertial frame as measured by the operated Star Trackers (see Str_Valid_Flag). The attitude is represented as quaternion and refers to time AOCS_MJD_Time. It includes a delay compensation using angular velocity knowledge.
+List of 4 real values : q1, q2, q3 and q0 in this order (q1,q2,q3,q0 correspond à i,j,k,1).</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:Float_List_Type">
+												<xs:length value="4"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Estimated_Attitudes">
+										<xs:annotation>
+											<xs:documentation>Satellite Body Frame (BF) attitude with respect to MOD inertial frame as estimated by AOCS combining the Star Trackers as well as reaction wheels measurements. The attitude is represented as quaternion and refers to time AOCS_MJD_Time.
+List of 4 real values : q1, q2, q3 and q0 in this order (q1,q2,q3,q0 correspond à i,j,k,1).</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:Float_List_Type">
+												<xs:length value="4"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Estimated_Velocity_XYZ">
+										<xs:annotation>
+											<xs:documentation>Satellite Body Frame (BF) estimated mean angular velocity (rad/sec) with respect to MOD inertial frame over 100mSec interval that ends at time AOCS_MJD_Time. Values are expressed in satellite Body Frame.
+List of 3 real values : X Y Z</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:Float_List_Type">
+												<xs:length value="3"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Thermistor_Values">
+										<xs:annotation>
+											<xs:documentation>one value by tri_detector</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="ee:UnsignedShort_List_Type">
+												<xs:length value="4"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Reference_Voltage" type="ee:UnsignedShort_Type">
+										<xs:annotation>
+											<xs:documentation>Reference voltage, well known as Vref</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

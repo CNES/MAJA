@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:platform="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/platform/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/platform/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:simpleType name="A_LIST_OF_Q_VALUES">
+		<xs:annotation>
+			<xs:documentation>A list of quaternion values.</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="platform:A_QUATERNION_VALUE"/>
+	</xs:simpleType>
+	<xs:simpleType name="A_QUATERNION">
+		<xs:annotation>
+			<xs:documentation>Space separated list of 4 quaternion values ordered as Q0 Q1 Q2 Q3</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="platform:A_LIST_OF_Q_VALUES">
+			<xs:length value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_QUATERNION_STATUS">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NOMINAL"/>
+			<xs:enumeration value="OUT_OF_RANGE"/>
+			<xs:enumeration value="LOST"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_QUATERNION_VALUE">
+		<xs:annotation>
+			<xs:documentation>A double value between -1 and 1.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="-1"/>
+			<xs:maxInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_TDI_CONFIG">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="APPLIED"/>
+			<xs:enumeration value="LINE_A"/>
+			<xs:enumeration value="LINE_B"/>
+			<xs:enumeration value="NO_TDI"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

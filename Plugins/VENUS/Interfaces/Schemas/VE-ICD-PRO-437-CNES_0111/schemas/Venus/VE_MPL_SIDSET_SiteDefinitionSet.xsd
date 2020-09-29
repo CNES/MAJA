@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.41">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="SIDSET_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:SIDSET_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:SIDSET_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="SIDSET_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:SIDSET_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:SIDSET_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIDSET_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_SiteDefinitionSet_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="SiteDefinitionSet"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="MPL_SIDSET"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIDSET_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:SIDSET_Instance_Id_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIDSET_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Nick_Name">
+				<xs:annotation>
+					<xs:documentation>NickName of the corresponding AcquisitionSetDefinition</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Nick_Name_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="File_Version" type="ee:File_Version_Type">
+				<xs:annotation>
+					<xs:documentation>Version number of the file : content of this element must be identical to the File_Version element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="SIDSET_Body_Type">
+		<xs:sequence>
+			<xs:element name="List_of_Site_Descriptions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Site_Description" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+										<xs:annotation>
+											<xs:documentation>unique identifier of the site
+the nickname of the site should not have the special value "ONEORBIT"</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Site_Definition">
+										<xs:annotation>
+											<xs:documentation>general definition of the site</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="ee:SIDSET_Site_Definition_Type">
+													<xs:sequence>
+														<xs:element name="List_of_Included_Site_Descriptions" minOccurs="0">
+															<xs:annotation>
+																<xs:documentation>This list exists only for composite sites (i.e if Site_Type =  "O_COMPOSITE")</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="Included_Site_Description" minOccurs="0" maxOccurs="unbounded">
+																		<xs:complexType>
+																			<xs:sequence>
+																				<xs:element name="SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+																					<xs:annotation>
+																						<xs:documentation>unique identifier of the site</xs:documentation>
+																					</xs:annotation>
+																				</xs:element>
+																				<xs:element name="Site_Definition" type="ee:SIDSET_Site_Definition_Type">
+																					<xs:annotation>
+																						<xs:documentation>general definition of the site</xs:documentation>
+																					</xs:annotation>
+																				</xs:element>
+																			</xs:sequence>
+																			<xs:attribute name="sn" use="required">
+																				<xs:annotation>
+																					<xs:documentation>serial number of the site in the set</xs:documentation>
+																				</xs:annotation>
+																				<xs:simpleType>
+																					<xs:restriction base="ee:Integer_Type">
+																						<xs:minInclusive value="1"/>
+																					</xs:restriction>
+																				</xs:simpleType>
+																			</xs:attribute>
+																		</xs:complexType>
+																	</xs:element>
+																</xs:sequence>
+																<xs:attribute name="count" use="required">
+																	<xs:simpleType>
+																		<xs:restriction base="ee:NonNegativeInteger_Type">
+																			<xs:minInclusive value="0"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:extension>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:annotation>
+										<xs:documentation>serial number of the site in the set</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:NonNegativeInteger_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SIDSET_Site_Definition_Type">
+		<xs:annotation>
+			<xs:documentation>a site geographical definition type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Site_Type">
+				<xs:annotation>
+					<xs:documentation>type of the site</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Site_Type_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Flag" type="ee:Bool_Type">
+				<xs:annotation>
+					<xs:documentation>validity of the site for processing : true if valid</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Inputs">
+				<xs:annotation>
+					<xs:documentation>Input data for simulation process and/or VIQ reference data preparation.
+
+In the case the site is part of one, at least, validated AquisitionSetDefinition, the requested pitch and orbit are mandatory and should be filled with the output values of the previous simulation.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="WGS84_Site_Location">
+							<xs:annotation>
+								<xs:documentation>geographical location of the site, expressed in the WGS 84 2D CRS (EPSG:4326)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Center" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>geographical location of the site center</xs:documentation>
+										</xs:annotation>
+										<!--type="ee:VE_Location_Type"-->
+									</xs:element>
+									<xs:element name="Upper_Left_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the upper left corner of the site</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Upper_Right_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the upper right corner of the site</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Lower_Left_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the lower left corner of the site</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Lower_Right_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the lower right corner of the site</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Site_Altitude" type="ee:VE_Altitude_With_Unit_Type">
+										<xs:annotation>
+											<xs:documentation>altitude of the site</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Requested_Pitch_At_Center" type="ee:Angle_Type" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>pitch angle (in degree) applied for this site (at the center of the acquisition)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Requested_Acquisition_Orbit_Number" type="ee:VE_Relative_Orbit_Number_With_Unit_Type" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Relative orbit number used to acquire this site.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Requested_Coordinate_Reference_System" type="ee:VE_Coordinate_Reference_System_Type" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Coordinate Reference System to be used for future products (if requested by the scientists)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+                                                <xs:element name="Acquisition_Mode" type="ee:SIDSET_Acquisition_Mode_Type" minOccurs="0">
+                                                        <xs:annotation>
+                                                                <xs:documentation>Either day acquisition ("DAY_ACQUISITION") or night acquisition ("NIGHT_ACQUISITION"). Default value is "DAY_ACQUISITION" if this element is missing.</xs:documentation>
+                                                        </xs:annotation>
+                                                </xs:element>
+						<xs:element name="Line_Time" type="ee:VE_Line_Time_Type">
+							<xs:annotation>
+								<xs:documentation>the line time in µs</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Simulation_Outputs" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>OUtput data computed  by VESTAL</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Pitch_At_Center" type="ee:Angle_Type">
+							<xs:annotation>
+								<xs:documentation>pitch angle (in degree) applied for this site (at the center of the acquisition)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Relative_Orbit_Number_With_Unit_Type">
+							<xs:annotation>
+								<xs:documentation>Relative orbit number used to acquire this site.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Site_Length" type="ee:VE_Size_With_Unit_Type">
+							<xs:annotation>
+								<xs:documentation>length of the size along the scanning direction in km</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="WGS84_Theoretical_Image_Center" type="ee:VE_Geo_Location_2D_Type">
+							<xs:annotation>
+								<xs:documentation>Can be slightly different from the requested  Inputs/WGS84_Site_Location/Center
+
+Center of the theoretical image in the focal plane.</xs:documentation>
+							</xs:annotation>
+							<!--type="ee:VE_Location_Type"-->
+						</xs:element>
+						<xs:element name="WGS84_Theoretical_Image_Footprint">
+							<xs:annotation>
+								<xs:documentation>Theoretical location of the four corners of the future products, based on the reference orbit.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Upper_Left_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the upper left corner of the future products</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Upper_Right_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the upper right corner of the future products</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Lower_Left_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the lower left corner of the future products</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Lower_Right_Corner" type="ee:VE_Geo_Location_2D_Type">
+										<xs:annotation>
+											<xs:documentation>Geographical location of the lower right corner of the future products</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VIQ_Output" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This section is created by the VIQ in all cases except moon and composite sites.
+
+Geo or Carto product coverage. 
+
+The Coordinate Reference System will be the same as the Requested_Coordinate_Reference_Syste, if provided above.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Geo_Ground_Coverage" type="ee:VE_Geo_Ground_Coverage_Type">
+							<xs:annotation>
+								<xs:documentation>ground coverage of the site (if a geographic coordinate system has been choosen)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Carto_Ground_Coverage" type="ee:VE_Carto_Ground_Coverage_Type">
+							<xs:annotation>
+								<xs:documentation>ground coverage of the site (if a cartographic coordinate system has been choosen)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+        
+        <xs:simpleType name="SIDSET_Acquisition_Mode_Type">
+                <xs:annotation>
+                        <xs:documentation>Acquisition mode type : either day acquisition ("DAY_ACQUISITION") or night acquisition ("NIGHT_ACQUISITION").</xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="DAY_ACQUISITION"/>
+                        <xs:enumeration value="NIGHT_ACQUISITION"/>
+                </xs:restriction>
+        </xs:simpleType>
+        
+</xs:schema>

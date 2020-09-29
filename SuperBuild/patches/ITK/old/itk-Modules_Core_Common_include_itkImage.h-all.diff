@@ -1,0 +1,36 @@
+diff -burN InsightToolkit-4.7.2.orig/Modules/Core/Common/include/itkImage.h InsightToolkit-4.7.2/Modules/Core/Common/include/itkImage.h
+--- InsightToolkit-4.7.2.orig/Modules/Core/Common/include/itkImage.h	2015-05-01 00:43:19.000000000 +0200
++++ InsightToolkit-4.7.2/Modules/Core/Common/include/itkImage.h	2017-12-13 15:07:28.000000000 +0100
+@@ -186,7 +186,9 @@
+    * allocated yet. */
+   void SetPixel(const IndexType & index, const TPixel & value)
+   {
+-    OffsetValueType offset = this->ComputeOffset(index);
++// MACCS 4.3 - optimization
++//      OffsetValueType offset = this->ComputeOffset(index);
++    OffsetValueType offset = this->DoComputeOffset(index);
+     ( *m_Buffer )[offset] = value;
+   }
+ 
+@@ -196,7 +198,9 @@
+    * image has actually been allocated yet. */
+   const TPixel & GetPixel(const IndexType & index) const
+   {
+-    OffsetValueType offset = this->ComputeOffset(index);
++// MACCS 4.3 - optimization
++//    OffsetValueType offset = this->ComputeOffset(index);
++    OffsetValueType offset = this->DoComputeOffset(index);
+     return ( ( *m_Buffer )[offset] );
+   }
+ 
+@@ -206,7 +210,9 @@
+    * image has actually been allocated yet. */
+   TPixel & GetPixel(const IndexType & index)
+   {
+-    OffsetValueType offset = this->ComputeOffset(index);
++// MACCS 4.3 - optimization
++//    OffsetValueType offset = this->ComputeOffset(index);
++    OffsetValueType offset = this->DoComputeOffset(index);
+     return ( ( *m_Buffer )[offset] );
+   }
+ 

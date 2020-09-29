@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by USER USER (CNES) -->
+<xs:schema xmlns:ccsds="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="DLPLAN_File_Type">
+		<xs:annotation>
+			<xs:documentation>The DownlinkPlan identifies the passes characteristics, the start and latest end times of transmission and related orbital data needed to tilt the antenna as to receive correctly the downloaded Payload Telemetry. The end time does not reflect the effective end of the download but the maximum possible download duration for the current pass.
+The DownlinkPlan is built by the GCS, covering a given period of time, and is transmitted to the VRS through the VIP
+</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:DLPLAN_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:DLPLAN_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="DLPLAN_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:DLPLAN_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:DLPLAN_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLPLAN_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_DownlinkPlan_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="DownlinkPlan"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="RCV_DLPLAN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLPLAN_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:DLPLAN_Instance_Id_Type"/>
+						<xs:element name="List_of_Related_AcquisitionSetRequest_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the related AcquisitionSetRequests.
+
+The list is empty if no AcquisitionSetRequests are related to this DownlinkPlan.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Related_AcquisitionSetRequest_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_AcquisitionSetRequest_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:annotation>
+															<xs:documentation>Serial number of the id within the list</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:annotation>
+										<xs:documentation>Number of AcquisitionSetRequest</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="List_of_Related_TechnologicalSetRequest_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the related TechnologicalSetRequests.
+
+The list is empty if no TechnologicalSetRequests are related to this DownlinkPlan.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Related_TechnologicalSetRequest_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_TechnologicalSetRequest_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:annotation>
+															<xs:documentation>Serial number of the id within the list</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:annotation>
+										<xs:documentation>Number of TechnologicalSetRequest</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLPLAN_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Station_Code" type="ee:VE_X_Band_Station_Code_Type">
+				<xs:annotation>
+					<xs:documentation>Receiving station 3-letters code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in the DLPLAN series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Orbit_Number_Validity_Range" type="ee:VE_Absolute_Orbit_Number_Range_Type">
+				<xs:annotation>
+					<xs:documentation>First and last validity orbits (i.e. covered by corresponding satellite command file).
+
+Both orbits are expressed as absolute orbit numbers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="DLPLAN_Body_Type">
+		<xs:annotation>
+			<xs:documentation>the Downlink Plan (DLPL) Body Type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="List_of_Downloads">
+				<xs:annotation>
+					<xs:documentation>Description of the different downloads</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Download" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>the description of each download</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:DLPLAN_Download_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the download within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>the number of downloads contained in this downlink plan</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLPLAN_Download_Type">
+		<xs:annotation>
+			<xs:documentation>a download description type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Download_Id" type="ee:VE_Download_Id_Type">
+				<xs:annotation>
+					<xs:documentation>the unique identifier of this download</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Download_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>the absolute orbit number of this download</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tracking_Channel">
+				<xs:annotation>
+					<xs:documentation>Tracking channel to be used : 
+- DLT2
+- DLT4 
+- DLT2_AND_DLT4 (= both : baseline)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="DLT2"/>
+						<xs:enumeration value="DLT4"/>
+						<xs:enumeration value="DLT2_AND_DLT4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Predicted_AOS" type="ee:UTC_Date_Time_Type">
+				<xs:annotation>
+					<xs:documentation>the predicted date  time of the acquisition of signal for this download</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Predicted_LOS" type="ee:UTC_Date_Time_Type">
+				<xs:annotation>
+					<xs:documentation>the predicted date  time of the loss of signal for this download</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_OBR_Downloads">
+				<xs:annotation>
+					<xs:documentation>List of predicted start date-time of download for each OBR</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OBR_Download" maxOccurs="2">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="OBR_Code" type="ee:VE_OBR_Code_Type"/>
+									<xs:element name="Predicted_Download_Start" type="ee:UTC_Date_Time_Type">
+										<xs:annotation>
+											<xs:documentation>the predicted start date-time of download for this OBR</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Predicted_Download_End" type="ee:UTC_Date_Time_Type">
+										<xs:annotation>
+											<xs:documentation>the predicted end date-time of download for this OBR</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="1"/>
+											<xs:maxInclusive value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="1"/>
+								<xs:maxInclusive value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Orbital_Elements">
+				<xs:annotation>
+					<xs:documentation>the orbital elements corresponding to this download CCSDS OEM</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ccsds:oem"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Data_Elements">
+				<xs:annotation>
+					<xs:documentation>list of data elements to be downloaded. The list is ordered (it reflects the download order).</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Data_Element" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>the description of each data element</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:DLPLAN_Data_Element_Downlink_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>the number of data elements contained in this download</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLPLAN_Data_Element_Downlink_Type">
+		<xs:annotation>
+			<xs:documentation>a downloaded data element type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Data_Element_Id" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data_Element_Id (yyy_sss_ddddd_ccccc_m)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>the absolute orbit number corresponding to the acquisition of this element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Multiple_Download_Index">
+				<xs:annotation>
+					<xs:documentation>index of download in case of multiple downloads of the same data element. In case of a single download, value is set to 1.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:Integer_Type">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="9"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="App_Id">
+				<xs:annotation>
+					<xs:documentation>the app id corresponding to this data element as it will appear in the a2 format (5 digits : eg "00123")</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:pattern value="[0-9]{5}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Data_Type_Tag">
+				<xs:annotation>
+					<xs:documentation>the data type, either scientific (SR1-SR4) or auxiliary data (SR0) or both sci. and aux data (SR0-SR4)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="SCIENTIFIC_DATA"/>
+						<xs:enumeration value="AUXILIARY_DATA"/>
+						<xs:enumeration value="SCI_AND_AUX_DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Network_Delivery_Tag">
+				<xs:annotation>
+					<xs:documentation>a tag indicating if the data element has to be delivrered by network.
+
+This tag is used by VIP to flag, before resending the DownlinkPlan to VRK, the data elements that need to be delivered additionnally by network.
+
+This tag should be filled with the special "not applicable" value ('NIL=N/A') in all the other cases.
+</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:union memberTypes="ee:Bool_Type ee:VE_Nil_Reason_NA_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SiteDefinition_Id">
+				<xs:annotation>
+					<xs:documentation>the unique site identifier corresponding to this data element.
+					
+This tag should be filled with the special "not applicable" value ('NIL=N/A') when the element is auxilliary data related to the whole rev.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:union memberTypes="ee:VE_SiteDefinition_Id_Type ee:VE_Nil_Reason_NA_Type"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

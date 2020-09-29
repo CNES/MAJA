@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <?xml-stylesheet type="text/xsl" href="DISPLAY/display.xsl"?>
+  <Earth_Explorer_Header schema_version="0.42" xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://eop-cfi.esa.int/CFI ./VE_VSC_PDTIMG_ImageProduct.xsd" xsi:type="PDTIMG_Header_Type">
+    <Fixed_Header>
+      <File_Name>NOT_INITIALIZED VE_TEST_VSC_PDTIMG_L3VALD_CAMARGUE_20120103_FRE</File_Name>
+      <File_Description>ImageProduct</File_Description>
+      <Notes>NOT_INITIALIZED L3 note</Notes>
+      <Mission>VENuS</Mission>
+      <File_Class>NOT_INITIALIZED TEST</File_Class>
+      <File_Type>VSC_PDTIMG</File_Type>
+      <Validity_Period>
+        <Validity_Start>NOT_INITIALIZED UTC=2012-01-01T00:00:00</Validity_Start>
+        <Validity_Stop>NOT_INITIALIZED UTC=2012-01-03T00:00:00</Validity_Stop>
+      </Validity_Period>
+      <File_Version>NOT_INITIALIZED 0001</File_Version>
+      <Source>
+        <System>VIP</System>
+        <Creator>MAJA_L3_CHAIN</Creator>
+        <Creator_Version>NOT_INITIALIZED 00.00</Creator_Version>
+        <Creation_Date>NOT_INITIALIZED UTC=2013-05-16T10:42:05</Creation_Date>
+      </Source>
+    </Fixed_Header>
+    <Variable_Header>
+      <Main_Product_Header>
+        <List_of_Consumers count="0"/>
+        <List_of_Extensions count="0"/>
+      </Main_Product_Header>
+      <Specific_Product_Header>
+        <Instance_Id>
+          <Reference_Product_Semantic>L3VALD</Reference_Product_Semantic>
+          <Reference_Product_Instance>NOT_INITIALIZED CAMARGUE_20120103</Reference_Product_Instance>
+        </Instance_Id>
+        <Reference_Product_Header_Id>NOT_INITIALIZED VE_TEST_VSC_L3VALD_CAMARGUE_20120103</Reference_Product_Header_Id>
+        <Image_Information>
+          <Format>GEOTIFF</Format>
+          <Binary_Encoding>LITTLE_ENDIAN</Binary_Encoding>
+          <Data_Type>SIGNED_SHORT</Data_Type>
+          <Number_of_Significant_Bits>16</Number_of_Significant_Bits>
+          <Nodata_Value>NOT_INITIALIZED -10000</Nodata_Value>
+          <Size>
+            <Lines>NOT_INITIALIZED 5890</Lines>
+            <Columns>NOT_INITIALIZED 4438</Columns>
+            <Bands>NOT_INITIALIZED 12</Bands>
+          </Size>
+          <Image_Compacting_Tool>NO</Image_Compacting_Tool>
+          <List_of_Bands count="0"/>
+        </Image_Information>
+      </Specific_Product_Header>
+    </Variable_Header>
+  </Earth_Explorer_Header>

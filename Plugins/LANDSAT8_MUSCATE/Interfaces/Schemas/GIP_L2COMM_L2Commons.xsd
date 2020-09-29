@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="./L2L3_Dictionary.xsd"/>
+    <!-- ================= -->
+    <!-- Root -->
+    <!-- ================= -->
+    <xs:complexType name="L2COMM_File_Type">
+        <xs:complexContent>
+            <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+                <xs:sequence>
+                    <xs:element name="Earth_Explorer_Header" type="ee:L2COMM_Header_Type"/>
+                    <xs:element name="Data_Block" type="ee:L2COMM_Body_Type"/>
+                </xs:sequence>
+                <xs:attribute name="schema_version" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="ee:Decimal_Type">
+                            <xs:minInclusive value="0.40"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!-- ================= -->
+    <!-- Header -->
+    <!-- ================= -->
+    <xs:complexType name="L2COMM_Header_Type">
+        <xs:sequence>
+            <xs:element name="Fixed_Header" type="ee:L2COMM_Fixed_Header_Type"/>
+            <xs:element name="Variable_Header" type="ee:L2COMM_Variable_Header_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!--         ================= -->
+    <!--         Fixed Header -->
+    <!--         ================= -->
+    <xs:complexType name="L2COMM_Fixed_Header_Type">
+        <xs:sequence>
+            <xs:element name="File_Name" type="ee:VE_GIPP_L2COMM_Id_Type"/>
+            <xs:element name="File_Description">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="L2CommonParameters"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Notes" type="ee:String_Type"/>
+            <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+            <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+            <xs:element name="File_Type">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="GIP_L2COMM"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+            <xs:element name="File_Version" type="ee:File_Version_Type"/>
+            <xs:element name="Source" type="ee:VE_Source_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!--         ================= -->
+    <!--         Variable Header -->
+    <!--         ================= -->
+    <xs:complexType name="L2COMM_Variable_Header_Type">
+        <xs:sequence>
+            <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+            <xs:element name="Specific_Product_Header">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Instance_Id" type="ee:L2COMM_Instance_Id_Type"/>
+                        <xs:element name="List_of_Applicable_SiteDefinition_Ids">
+                            <xs:annotation>
+                                <xs:documentation>List of the ids of the sites this GIPP is applicable to.
+                                    
+                                    The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="ee:VE_SiteDefinition_Id_Type">
+                                                    <xs:attribute name="sn" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="ee:Integer_Type">
+                                                                <xs:minInclusive value="1"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="count" use="required">
+                                    <xs:simpleType>
+                                        <xs:restriction base="ee:Integer_Type">
+                                            <xs:minInclusive value="0"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="L2COMM_Instance_Id_Type">
+        <xs:sequence>
+            <xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+                <xs:annotation>
+                    <xs:documentation>Defines the type of the applicability nick name.
+                        
+                        - if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+                        - if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+                <xs:annotation>
+                    <xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+                        
+                        In case of a site nick name : 
+                        - this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+                        
+                        In case of a list nick name : 
+                        - if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+                        - if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+                        - otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+                <xs:annotation>
+                    <xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+                <xs:annotation>
+                    <xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ================= -->
+    <!-- Data Block -->
+    <!-- ================= -->
+    <xs:complexType name="L2COMM_Body_Type">
+        <xs:sequence>
+            <xs:element name="Common_Parameters">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="No_Data" type="ee:VE_L2_No_Data_Type">
+                            <xs:annotation>
+                                <xs:documentation>L2_No_Data must be "-9999"</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Max_No_Data_Percentage" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="Max_Cloud_Percentage" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="LUT_Interpolation" type="ee:Interpolation_Type"/>
+                        <xs:element name="Slope_Min_Cos_I" type="ee:Decimal_2_Type"/>
+                        <xs:element name="VAP_Configuration_Values">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="VAP_Quantification_Value"  type="ee:Decimal_3_Type"/>
+                                    <xs:element name="VAP_No_Data_Value">
+                                        <xs:simpleType>
+                                            <xs:annotation>
+                                                <xs:documentation>VAP No data value</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:restriction base="ee:UnsignedByte_Type">
+                                                <xs:minInclusive value="0"/>
+                                                <xs:maxInclusive value="255"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="AOT_Configuration_Values">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="AOT_Quantification_Value"  type="ee:Decimal_3_Type"/>
+                                    <xs:element name="AOT_No_Data_Value">
+                                        <xs:simpleType>
+	                                        <xs:annotation>
+	                                            <xs:documentation>AOT No data value</xs:documentation>
+	                                        </xs:annotation>
+	                                        <xs:restriction base="ee:UnsignedByte_Type">
+	                                            <xs:minInclusive value="0"/>
+	                                            <xs:maxInclusive value="255"/>
+	                                        </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Cal_Adjust_Option" type="ee:Bool_Type"/>
+            	    	<xs:element name="Cal_Adjust_Factor" type="ee:List_of_Decimal_3_Type" />
+            	    	<xs:element name="Constant_Model" type="xs:string"/>
+                    </xs:sequence>                    
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Bands_Definition">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Thematic_Definition">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Blue_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Green_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Red_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="NIR_Band_Code" type="ee:VE_Band_Code_Type"/>                                   
+                                    <xs:element name="SWIR_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Band_2200_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Quicklook_Red_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Quicklook_Green_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Quicklook_Blue_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>                        
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Quicklook_Refl_Variation">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Min_Ref_Red_Band" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Max_Ref_Red_Band" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Min_Ref_Green_Band" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Max_Ref_Green_Band" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Min_Ref_Blue_Band" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Max_Ref_Blue_Band" type="ee:Decimal_3_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Subsampling">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Saturation_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Saturation_Threshold_Sub" type="ee:Decimal_3_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CAMS_Data_Preparation">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Use_Cams_Data" type="ee:Bool_Type"/>
+                        <xs:element name="List_Of_Models">
+                            <xs:simpleType>
+                                <xs:list itemType="xs:string"/>
+                            </xs:simpleType>
+                        </xs:element>                        
+                        <xs:element name="RH_Sampling" type="ee:VE_List_of_Int"/>
+                        <xs:element name="limAOT" type="ee:Decimal_2_Type"/>
+                        <xs:element name="Time_Windows_CAMS" type="xs:positiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="DTM_Processing">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="DTM_Viewing_Direction_Band_Code" type="ee:VE_Band_Code_List_Type"/>
+                        <xs:element name="Distance_Threshold" type="ee:Decimal_2_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Atmospheric_Absorption_Correction">
+                <xs:complexType>
+                    <xs:sequence>
+                          <xs:element name="Ozone_Amount_Default_Value" type="ee:Decimal_3_Type"/>
+                          <xs:element name="Water_Amount_Default_Value" type="ee:Decimal_3_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Rayleigh_Correction">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Rayleigh_Correction_Default_AOT" type="ee:Decimal_2_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Geometric_Flags">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Sun_Glint_Threshold" type="ee:Angle_Type"/>
+                        <xs:element name="Hot_Spot_Threshold" type="ee:Angle_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Cirrus_Mask">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Cirrus_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="Min_Percent_Mask_Cirrus" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="Cirrus_Mask_Threshold_Offset" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Cirrus_Mask_Threshold_Gain" type="ee:Decimal_6_Type"/>
+                        <xs:element name="Cirrus_Alt_Ref" type="ee:PositiveInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Snow_Masking">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="SE_Snow_Radius" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="NDSI_Threshold" type="ee:Decimal_2_Type"/>
+                        <xs:element name="Red_Reflectance_Threshold" type="ee:Decimal_2_Type"/>
+                        <xs:element name="SWIR1_Reflectance_Threshold" type="ee:Decimal_2_Type"/>
+                        <xs:element name="Use_Water_Mask" type="ee:Bool_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Cloud_Masking">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Refinement_Option" type="ee:Bool_Type"/>
+                        <xs:element name="Discarded_Pixels_Ratio_Min" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Reflectance_Water_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="Correl_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="Shadow_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="Cloud_Blue_Reflectance_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Cloud_Red_Reflectance_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Nir_Red_Ratio_Max_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Nir_Red_Ratio_Min_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Nir_Swir_Ratio_Min_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Correl_Threshold" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="SE_Input_Masks_Radius" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="Water_Reflectance_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Water_Sunglint_Reflectance_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Min_Threshold_Var_Blue" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Max_Threshold_Var_Blue" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Delta_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Cloud_Forgetting_Duration" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Default_Altitude" type="ee:Integer_Type"/>
+                        <xs:element name="Max_Cloud_Altitude" type="ee:Integer_Type"/>
+                        <xs:element name="Number_Of_Stack_Images" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="K_NIR_Blue" type="ee:Decimal_2_Type"/>
+                        <xs:element name="K_Red_Blue" type="ee:Decimal_2_Type"/>
+                        <xs:element name="N_Correl" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Min_Pixel_Correl" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Delta_H_Min" type="ee:Integer_Type"/>
+                        <xs:element name="Delta_H_Max" type="ee:Integer_Type"/>
+                        <xs:element name="Delta_H_Step" type="ee:Integer_Type"/>
+                        <xs:element name="Shadow_Cloud_Ratio_Max" type="xs:decimal"/>
+                        <xs:element name="Shadow_Cloud_Ratio_Min" type="xs:decimal"/>
+                        <xs:element name="Shadow_Cloud_Ratio_Pix_Nb" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Proj_Shad_Darkening_Max" type="xs:decimal"/>
+                        <xs:element name="Darkening_Min_Percentile" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Cloud_Cover_Mult_Factor" type="xs:decimal"/>
+                        <xs:element name="Shad_Var_Darkening_Max" type="xs:decimal"/>
+                        <xs:element name="Shad_Var_Percentile" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Shad_Var_Composite_Label_Ratio" type="xs:decimal"/>
+                        <xs:element name="SE_Cloud_Radius" type="ee:NonNegativeInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Water_Masking">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Water_Mask_Number" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="Water_NDVI_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Water_Red_Reflectance_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Water_Slope_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Water_Reflectance_Variation_Threshold" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Maximum_Sunglint_Reflectance" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Min_Percent_Possible_Water" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="SRTM_Sigma_Smoothing" type="ee:NonNegativeInteger_Type"/>
+                        <xs:element name="SRTM_Percent" type="ee:NonNegativeInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Rain_Flag">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Water_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="Reflectance_Decrease_Threshold" type="ee:Decimal_3_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AOT_Estimation">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="AOT_Method" type="ee:VE_AOT_Method_Type"/>
+                        <xs:element name="AOT_KPondCAMS" type="ee:Decimal_3_Type"/>
+                        <xs:element name="AOT_HeightScale" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Multi_Spectral_Method">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="MS_AOT_Band_Code" type="ee:VE_Band_Code_List_Type"/>
+                                    <xs:element name="MS_AOT_Red_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="NDVI_AOT_Band1_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="NDVI_AOT_Band2_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="NDVI_Threshold" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="Red_TOA_Threshold" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="MS_Slope" type="xs:decimal">
+						                <xs:annotation>
+						                    <xs:documentation>Slope of the MS linear relationship between the red and the blue reflectance.</xs:documentation>
+						                </xs:annotation>
+			                        </xs:element>
+			                        <xs:element name="MS_YIntercept" type="xs:decimal">
+			                            <xs:annotation>
+			                                <xs:documentation>Y intercept of the MS linear relationship between the red and the blue reflectance.</xs:documentation>
+			                            </xs:annotation>
+                        			</xs:element>
+                                    <xs:element name="NDVI_Slope" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="NDVI_YIntercept" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="W_MS" type="ee:Decimal_3_Type"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Multi_Temporal_Method">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="MT_AOT_Band_Code" type="ee:VE_Band_Code_List_Type"/>
+                                    <xs:element name="Var_Band_Code" type="ee:VE_Band_Code_Type"/>
+                                    <xs:element name="Relative_Var_Max" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="W_MT_equation2" type="ee:Decimal_3_Type"/>
+                                    <xs:element name="Stdev_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        			<xs:element name="Stdev_Min" type="ee:Decimal_3_Type"/>
+                        			<xs:element name="Std_Noise" type="ee:Decimal_3_Type"/>
+                        			<xs:element name="AOT_initial_Dm1" type="ee:Decimal_1_Type"/>
+                        			<xs:element name="First_AOT" type="ee:Decimal_1_Type"/>
+                        			<xs:element name="Second_AOT" type="ee:Decimal_1_Type"/>
+                        			<xs:element name="TOA_Reflectance_Min" type="ee:Decimal_3_Type"/>
+                        			<xs:element name="TOA_Reflectance_Max" type="ee:Decimal_3_Type"/>
+                        			<xs:element name="TOA_Reflectance_Step" type="ee:Decimal_3_Type"/>
+                        			<xs:element name="Min_Difference_Thresholds_Calculation" type="ee:Decimal_3_Type"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Spectro_Temporal_Method">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="A_Coefficient" type="ee:NonNegativeInteger_Type"/>
+                                    <xs:element name="B_Coefficient" type="ee:NonNegativeInteger_Type"/>
+                                    <xs:element name="MT_Weight_Threshold" type="ee:NonNegativeInteger_Type"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="AOT_Max_Age" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Default_AOT" type="ee:Decimal_2_Type"/>
+                        <xs:element name="Step_AOT" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Sampling_Interval_Min" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Sampling_Interval_Max" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="N_Pix_Min" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Increment_N_Distance" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Dark_Band_Code" type="ee:VE_Band_Code_Type"/>
+                        <xs:element name="SE_Valid_AOT_Radius" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="SE_Mask_Dilatation_Radius" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Half_Window_Size" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="W_dark" type="ee:Decimal_3_Type"/>
+                        <xs:element name="W_bounds" type="ee:Decimal_3_Type"/>
+                        <xs:element name="AOT_min" type="ee:Decimal_3_Type"/>
+                        <xs:element name="F_Tolerance" type="ee:Decimal_6_Type"/>
+                        <xs:element name="G_Tolerance" type="ee:Decimal_6_Type"/>
+                        <xs:element name="X_Tolerance" type="ee:Decimal_6_Type"/>
+                        <xs:element name="Epsilon_Function" type="ee:Decimal_6_Type"/>
+                        <xs:element name="Max_Iterations" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="AOT_initial_D" type="ee:Decimal_1_Type"/>
+                        <xs:element name="Init_Window_Radius" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Max_Window_Radius" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Sigma_Smoothing_AOT" type="ee:PositiveInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Cirrus_Correction">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Cirrus_Correction_Option" type="ee:Bool_Type" />
+						<xs:element name="Cirrus_Gamma_Band_Codes" type="ee:VE_Band_Code_List_Type" />
+						<xs:element name="Cirrus_SWIR_Band_Codes" type="ee:VE_Band_Code_List_Type" />
+						<xs:element name="Cirrus_Min_Pix_In_List" type="ee:PositiveInteger_Type" />
+						<xs:element name="Cirrus_Max_Distance" type="ee:PositiveInteger_Type" />
+						<xs:element name="Cirrus_Min_Gamma_Value" type="ee:Decimal_3_Type" />
+						<xs:element name="Cirrus_Max_Gamma_Value" type="ee:Decimal_3_Type" />
+						<xs:element name="Cirrus_SWIR_Gamma_Factor" type="ee:Decimal_3_Type" />
+						<xs:element name="Cirrus_Threshold_Factor" type="ee:Decimal_3_Type" />
+                        <xs:element name="Cirrus_Max_Reflectance" type="ee:Decimal_3_Type" />
+
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+            <xs:element name="Composite">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Max_AOT" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Minimum_High_AOT_Std" type="ee:Decimal_3_Type"/>
+                        <xs:element name="Max_Age" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="SE_AOT_Radius" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Coef_Sigma_AOT" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="All_Clouds_Band" type="ee:PositiveInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Environment_Correction">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Env_Corr_Option" type="ee:Bool_Type"/>
+                        <xs:element name="Env_Corr_Radius" type="ee:PositiveInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Slope_Correction">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Min_Cos_E" type="ee:Decimal_2_Type"/>
+                        <xs:element name="Min_Cos_Ratio" type="ee:Decimal_2_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

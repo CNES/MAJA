@@ -1,0 +1,11 @@
+diff -burN gdal-1.10.1.orig/swig/python/GNUmakefile gdal-1.10.1/swig/python/GNUmakefile
+--- gdal-2.2.1.orig/swig/python/GNUmakefile	(revision 30563)
++++ gdal-2.2.1/swig/python/GNUmakefile	(revision 30564)
+@@ -5,4 +5,8 @@
+ ifndef PYTHON
+         PYTHON=python
++endif
++
++ifndef DESTDIR
++    DESTDIR=/
+ endif 

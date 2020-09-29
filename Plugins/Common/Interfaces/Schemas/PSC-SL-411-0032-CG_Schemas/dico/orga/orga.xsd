@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by fbetegnie (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_QUICKLOOK">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="bands_id" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Lorsque le quicklook est généré par MUSCATE, on indique quelles bandes du produit ont été utilisées</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:group name="A_COMMON_PROPERTIES">
+		<xs:sequence>
+			<xs:element name="FORMAT">
+				<xs:annotation>
+					<xs:documentation>Format de la donnée 
+Enuméré utilisant les types MIME. Exemples : 
+JPeg200 : image/jp2
+GeoTIFF : image/tiff
+GML : application/gml+xml
+ZIP : application/zip
+
+Private directory : application/vnd+muscate (application/vnd est utilisé pour des cas 'vendor specific')
+</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="text/csv"/>
+						<xs:enumeration value="image/jp2"/>
+						<xs:enumeration value="image/jpeg"/>
+						<xs:enumeration value="image/png"/>
+						<xs:enumeration value="image/tiff"/>
+						<xs:enumeration value="application/x-hdf"/>
+						<xs:enumeration value="application/gml+xml"/>
+						<xs:enumeration value="application/x-tar"/>
+						<xs:enumeration value="application/xml"/>
+						<xs:enumeration value="application/zip"/>
+						<xs:enumeration value="application/pdf"/>
+						<xs:enumeration value="application/vnd+muscate"/>
+						<xs:enumeration value="application/octet-stream"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ENCODING" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Encodage</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="byte"/>
+						<xs:enumeration value="int16"/>
+						<xs:enumeration value="uint16"/>
+						<xs:enumeration value="int32"/>
+						<xs:enumeration value="uint32"/>
+						<xs:enumeration value="float32"/>
+						<xs:enumeration value="float64"/>
+						<xs:enumeration value="cint16"/>
+						<xs:enumeration value="cint32"/>
+						<xs:enumeration value="cfloat32"/>
+						<xs:enumeration value="cfloat64"/>
+						<!-- Byte, UInt16, Int16, UInt32, Int32, Float32, Float64, CInt16, CInt32, CFloat32 and CFloat64 -->
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ENDIANNESS" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Endianness dans le cas d'un raster a l'encoding sur plusieurs bytes
+Enuméré : LittleEndian / BigEndian</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="LittleEndian"/>
+						<xs:enumeration value="BigEndian"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="COMPRESSION" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>information de compression le cas échéant
+					Par exemple, dans le cas d'un fichier zip la compression peut être :
+					- STORED : pour les fichiers non compressés
+					- DEFLATE : pour les fichirs compressés
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="AN_IMAGE_PROPERTIES">
+		<xs:sequence>
+			<xs:element name="NATURE" type="AN_IMAGE_NATURE">
+				<xs:annotation>
+					<xs:documentation>Nature de l'image.
+Enuméré (Digital_Number, ...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="A_COMMON_PROPERTIES"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_MASK_PROPERTIES">
+		<xs:sequence>
+			<xs:element name="NATURE" type="A_MASK_NATURE">
+				<xs:annotation>
+					<xs:documentation>Nature du masque.
+Enuméré (Cloud, ...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="A_COMMON_PROPERTIES"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_DATA_PROPERTIES">
+		<xs:sequence>
+			<xs:element name="NATURE" type="A_DATA_NATURE">
+				<xs:annotation>
+					<xs:documentation>Nature de la donnée.
+Enuméré</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="A_COMMON_PROPERTIES"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_MUSCATE_PRODUCT">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Dans le cas d'un produit au format MUSCATE complet, on décrit l'ensemble des données le constituant</xs:documentation>
+			</xs:annotation>
+			<xs:element name="QUICKLOOK" type="A_QUICKLOOK">
+				<xs:annotation>
+					<xs:documentation>Emplacement du quicklook du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Image_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Image" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description de chaque "image" ou jeu de donnée contenu dans le produit (dans certain cas, par exemple produit de niveau 2, le produit est constitué de plusieurs données différentes (réflectance avec et sans correction de pente, donnée de référence pour le traitement du produit suivant, ...), chacun de ces jeux de données pouvant être constitué de plusieurs fichiers (un par bande)
+
+Le champ Image_Properties/NATURE indique la nature de l'image.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Image_Properties" type="AN_IMAGE_PROPERTIES">
+										<xs:annotation>
+											<xs:documentation>Propriétés de l'image</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Image_File_List">
+										<xs:annotation>
+											<xs:documentation>Liste des fichiers composant l'image (un par bande)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="IMAGE_FILE" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Chemin relatif du fichier</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="xs:string">
+																<xs:attribute name="band_id" type="A_BAND_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="group_id" type="A_BAND_GROUP_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du groupe de bandes (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="band_number" type="A_BAND_NUMBER">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant l'emplacement du numero de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="bit_number" type="A_BIT_NUMBER">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant l'emplacement du numero du bit (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Mask_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Mask" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Description d'un masque contenu dans le produit.
+
+Le champ Mask_Properties/NATURE indique la nature du masque.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mask_Properties" type="A_MASK_PROPERTIES">
+										<xs:annotation>
+											<xs:documentation>Propriétés du masque</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Mask_File_List">
+										<xs:annotation>
+											<xs:documentation>Liste des fichiers composant le masque.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="MASK_FILE" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Chemin relatif du fichier</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="xs:string">
+																<xs:attribute name="group_id" type="A_BAND_GROUP_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du groupe de bandes (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="band_id" type="A_BAND_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="band_number" type="A_BAND_NUMBER">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant l'emplacement du numero de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="bit_number" type="A_BIT_NUMBER">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant l'emplacement du numero du bit (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="detector_id" type="A_DETECTOR_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du détecteur (si applicable)
+</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Data_List" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Data" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Autre donnée faisant parti du produit (exemple : répertoire privé).
+
+Le champ Data_Properties/NATURE indique la nature de la donnée.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Data_Properties" type="A_DATA_PROPERTIES">
+										<xs:annotation>
+											<xs:documentation>Propriétés de la donnée</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Data_File_List">
+										<xs:annotation>
+											<xs:documentation>Liste de fichiers composant la donnée</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="DATA_FILE" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Chemin relatif du fichier</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:simpleContent>
+															<xs:extension base="xs:string">
+																<xs:attribute name="group_id" type="A_BAND_GROUP_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du groupe de bandes (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="band_id" type="A_BAND_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="band_number" type="A_BAND_NUMBER">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant l'emplacement du numero de la bande (si applicable)</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="detector_id" type="A_DETECTOR_ID">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du détecteur (si applicable)
+</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="axis" type="A_ANGLE_GRID_AXIS">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du détecteur (si applicable)
+</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+																<xs:attribute name="altitude" type="A_ANGLE_GRID_ALTITUDE">
+																	<xs:annotation>
+																		<xs:documentation>Identifiant du détecteur (si applicable)
+</xs:documentation>
+																	</xs:annotation>
+																</xs:attribute>
+															</xs:extension>
+														</xs:simpleContent>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_NATIVE_PRODUCT">
+		<xs:sequence>
+			<xs:element name="QUICKLOOK" type="A_QUICKLOOK">
+				<xs:annotation>
+					<xs:documentation>Emplacement du quicklook du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PRODUCT_DIRECTORY" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Chemin relatif du répertoire constituant le produit Natif</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_DISTRIBUTED_PRODUCT">
+		<xs:sequence>
+			<xs:element name="QUICKLOOK" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif du quicklook du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="THUMBNAIL" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif du thumbnail du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PYRAMID" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif de la pyramide de visualisation utilisé par le WMS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ARCHIVE" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif de l'archive du produit à distribuer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EXPERTISE" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif du répertoire dédié à l'expertise</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PUBLIC_METADATA" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>chemin relatif de la métadonnée publique correspondant au produit tel que contenu dans l'archive</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AN_ARCHIVE_CONTENT">
+		<xs:complexContent>
+			<xs:extension base="A_MUSCATE_PRODUCT">
+				<xs:sequence>
+					<xs:element name="METADATA" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>chemin relatif de la métadonnée contenue dans l'archive</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="A_PRODUCT_ORGANISATION">
+		<xs:annotation>
+			<xs:documentation>Permet de décrire des Structures de produits différentes suivant les types de produit
+			- Muscate_Product : Produit Muscate dans le format Muscate Complet
+			- Native_Product : Produit Muscate hybride, permettant de conserver le format natif des produits pour l'archivage des produits en entrée et les traitements métiers nécessitant le format natif
+			- Distributed_Product : Produit Muscate distribué, permettant de conserver les metadonnées expertise avec les produits préparés à la distribution.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Muscate_Product" type="A_MUSCATE_PRODUCT">
+				<xs:annotation>
+					<xs:documentation>Cas d'un produit au format MUSCATE complet : le contenu du produit est totalement décrit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Native_Product" type="A_NATIVE_PRODUCT">
+				<xs:annotation>
+					<xs:documentation>Cas d'un produit MUSCATE hybride, on indique uniquement l'emplacement du produit au format natif </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Distributed_Product" type="A_DISTRIBUTED_PRODUCT">
+				<xs:annotation>
+					<xs:documentation>Cas d'un produit MUSCATE préparé pour la distribution </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

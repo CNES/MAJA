@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_BAND_LIST">
+		<xs:sequence>
+			<xs:element name="BAND_ID" type="A_BAND_ID" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Identifiant d'une bande.
+Enuméré</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="count" type="xs:int" use="required">
+			<xs:annotation>
+				<xs:documentation>Nombre d'éléments BAND_ID dans la liste</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="AN_UTC_ACQUISITION_RANGE">
+		<xs:sequence>
+			<xs:element name="START" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date de début d'acquisition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MEAN" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>date moyenne d'acquisition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="END" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>date de fin d'acquisition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DATE_PRECISION">
+				<xs:annotation>
+					<xs:documentation>précision des dates d'acquisition</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" use="required">
+								<xs:annotation>
+									<xs:documentation>Précise l'unité dans laquelle est donnée la valeur de DATE_PRECISION.
+Enuméré : d = day, h = hour, m = minute, s = second
+
+Exemples: 
+- précision à la journée : valeur = 1, unit = d
+- précision à 2 milli-secondes près : valeur = 0.002, unit = s</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="d"/>
+										<xs:enumeration value="h"/>
+										<xs:enumeration value="m"/>
+										<xs:enumeration value="s"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_PRODUCT_CHARACTERISTICS">
+		<xs:sequence>
+			<xs:group ref="A_PRODUCT_IDENTIFICATION"/>
+			<xs:element name="PRODUCT_VERSION" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Version du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PRODUCT_LEVEL" type="A_PRODUCT_LEVEL">
+				<xs:annotation>
+					<xs:documentation>Niveau de produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PLATFORM" type="A_PLATFORM_ID">
+				<xs:annotation>
+					<xs:documentation>identifiant du satellite (correspond à MISSION + MISSION_INDEX des DIMAP SPOT, et au champ MISSION de MACCS)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INSTRUMENT" type="AN_INSTRUMENT_ID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>identifiant de l'instrument (facultatif pour Sentinel-2)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SPECTRAL_CONTENT" type="A_SPECTRALCONTENT_ID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Contenu spectral du produit (XS,PA,TH,XS+PA,XS+TH,XS+TH+PA) (facultatif pour Sentinel-2)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ORBIT_NUMBER">
+				<xs:annotation>
+					<xs:documentation>numéro d'orbite</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:int">
+							<xs:attribute name="type" type="AN_ORBIT_TYPE" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="UTC_Acquisition_Range" type="AN_UTC_ACQUISITION_RANGE">
+				<xs:annotation>
+					<xs:documentation>information sur la date d'acquisition du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="A_VALIDITY_PERIOD" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Période de validité des produits 3A, n'est pas présente dans les autres produits</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Band_Global_List" type="A_BAND_LIST">
+				<xs:annotation>
+					<xs:documentation>liste globale des bandes constituant le produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Band_Group_List">
+				<xs:annotation>
+					<xs:documentation>liste des groupes de bandes de même résolution et géopositionnement similaire (un groupe peut contenir une seule bande, exemple : PAN)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Group" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Band_List" type="A_BAND_LIST"/>
+								</xs:sequence>
+								<xs:attribute name="group_id" type="A_BAND_GROUP_ID" use="required">
+									<xs:annotation>
+										<xs:documentation>Identifiant du groupe de bandes.
+Enuméré</xs:documentation>
+									</xs:annotation>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
