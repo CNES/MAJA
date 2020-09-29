@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/orbital/" xmlns:orbital="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/orbital/" xmlns:date_time="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/date_time/" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" xmlns:geographical="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/geographical/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/orbital/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" schemaLocation="../misc/misc.xsd"/>
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/geographical/" schemaLocation="../geographical/geographical.xsd"/>
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/date_time/" schemaLocation="../date_time/date_time.xsd"/>
+	<xs:complexType name="A_VIEWING_DIRECTIONS">
+		<xs:sequence>
+			<xs:element name="Nb_Of_Pixels">
+				<xs:annotation>
+					<xs:documentation>Number of pixels</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Tan_Psi_X_List" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>List of Tangent Psi X in the image order (there is one data by pixel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tan_Psi_Y_List" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>List of Tangent Psi Y in the image order (there is one data by pixel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_VIEWING_DIRECTIONS_UPPER_CASE">
+		<xs:sequence>
+			<xs:element name="NB_OF_PIXELS">
+				<xs:annotation>
+					<xs:documentation>Number of pixels</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TAN_PSI_X_LIST" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>List of Tangent Psi X in the image order (there is one data by pixel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TAN_PSI_Y_LIST" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>List of Tangent Psi Y in the image order (there is one data by pixel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AN_ORBIT_DIRECTION">
+		<xs:annotation>
+			<xs:documentation>orbit (ascending / descending) direction</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASCENDING"/>
+			<xs:enumeration value="DESCENDING"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ORBIT_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Orbit number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ORBIT_CYCLIC_NUMBER">
+		<xs:annotation>
+			<xs:documentation>Cyclic orbit number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="343"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ORBIT_TYPE">
+		<xs:annotation>
+			<xs:documentation>orbit type (predicted, restituted)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="predicted"/>
+			<xs:enumeration value="restituted"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:annotation>
+		<xs:documentation>Orbit Data Types used in Orbit definitions</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>$Revision: 1.3 $ $Date: 2016/07/14 12:47:01 $</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="Repeat_Cycle_Type">
+		<xs:simpleContent>
+			<xs:extension base="misc:PositiveInteger_Type">
+				<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="day"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Cycle_Length_Type">
+		<xs:simpleContent>
+			<xs:extension base="misc:PositiveInteger_Type">
+				<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="orbit"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Harmonic_Term_Type">
+		<xs:sequence>
+			<xs:element name="Reference_Time">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="date_time:No_Ref_Date_Time_Type">
+							<xs:attribute name="time_ref" type="misc:String_Type" use="required" fixed="UT1"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Period">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="misc:Decimal_Type">
+							<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="day"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Amplitude_Sin">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="misc:Decimal_Type">
+							<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="s"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Amplitude_Cos">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="misc:Decimal_Type">
+							<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="s"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="seq" type="misc:NonNegativeInteger_Type" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="MLST_Nonlinear_Drift_Type">
+		<xs:sequence>
+			<xs:element name="Linear_Approx_Validity">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:integer">
+							<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="orbit"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Quadratic_Term">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="misc:Decimal_Type">
+							<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="s/day^2"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Harmonics_Terms">
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="2">
+						<xs:element name="Harmonic_Term" type="Harmonic_Term_Type"/>
+					</xs:sequence>
+					<xs:attribute name="num" type="misc:NonNegativeInteger_Type" use="required" fixed="2"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MLST_Drift_Type">
+		<xs:simpleContent>
+			<xs:extension base="misc:Decimal_Type">
+				<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="s/day"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Position_Component_Type">
+		<xs:simpleContent>
+			<xs:extension base="misc:Decimal_Type">
+				<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="m"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Velocity_Component_Type">
+		<xs:simpleContent>
+			<xs:extension base="misc:Decimal_Type">
+				<xs:attribute name="unit" type="misc:String_Type" use="required" fixed="m/s"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="Quality_Type">
+		<xs:restriction base="misc:String_Type"/>
+	</xs:simpleType>
+	<xs:complexType name="Orbit_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="Absolute_Orbit" type="misc:PositiveInteger_Type"/>
+			<xs:element name="Relative_Orbit" type="misc:PositiveInteger_Type"/>
+			<xs:element name="Cycle_Number" type="misc:PositiveInteger_Type"/>
+			<xs:element name="Phase_Number" type="misc:PositiveInteger_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Cycle_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="Repeat_Cycle" type="Repeat_Cycle_Type"/>
+			<xs:element name="Cycle_Length" type="Cycle_Length_Type"/>
+			<xs:element name="ANX_Longitude" type="geographical:Longitude_Type"/>
+			<xs:element name="MLST" type="misc:Time_Type"/>
+			<xs:element name="MLST_Drift" type="MLST_Drift_Type"/>
+			<xs:element name="MLST_Nonlinear_Drift" type="MLST_Nonlinear_Drift_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Time_of_ANX_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="TAI" type="date_time:TAI_Date_Time_Type"/>
+			<xs:element name="UTC" type="date_time:UTC_Date_Time_Type"/>
+			<xs:element name="UT1" type="date_time:UT1_Date_Time_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Orbit_Change_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="Orbit" type="Orbit_Type"/>
+			<xs:element name="Cycle" type="Cycle_Type"/>
+			<xs:element name="Time_of_ANX" type="Time_of_ANX_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="List_of_Orbit_Changes_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="Orbit_Change" type="Orbit_Change_Type" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="count" type="misc:PositiveInteger_Type" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="OSV_Type">
+		<xs:sequence>
+			<xs:element name="TAI" type="date_time:TAI_Date_Time_Type"/>
+			<xs:element name="UTC" type="date_time:UTC_Date_Time_Type"/>
+			<xs:element name="UT1" type="date_time:UT1_Date_Time_Type"/>
+			<xs:element name="Absolute_Orbit" type="misc:PositiveInteger_Type"/>
+			<xs:element name="X" type="Position_Component_Type"/>
+			<xs:element name="Y" type="Position_Component_Type"/>
+			<xs:element name="Z" type="Position_Component_Type"/>
+			<xs:element name="VX" type="Velocity_Component_Type"/>
+			<xs:element name="VY" type="Velocity_Component_Type"/>
+			<xs:element name="VZ" type="Velocity_Component_Type"/>
+			<xs:element name="Quality" type="Quality_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="List_of_OSVs_Type">
+		<xs:sequence>
+			<xs:element name="OSV" type="OSV_Type" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="count" type="misc:NonNegativeInteger_Type" use="required"/>
+	</xs:complexType>
+</xs:schema>

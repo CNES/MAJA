@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                         __  __    __    ___  ___  ___                                    *
+ *                                        (  \/  )  /__\  / __)/ __)/ __)                                   *
+ *                                         )    (  /(__)\( (__( (__ \__ \                                   *
+ *                                        (_/\/\_)(__)(__)\___)\___)(___/                                   *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 2.0.0 : DM : LAIG-DM-MAJA-153436-CS : 29 mars 2017 : Refactoring pour ameliorer la qualite     *
+ * VERSION : 5-0-0 : DM : LAIG-DM-MAC-143544-CS : 5 avril 2016 : Performance : ajout d'informations         *
+ * VERSION : 4-4-1 : FA : LAIG-FA-MAC-135450-CS : 8 juillet 2015 : Creation pour mecanisme mesures perfos   *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Perfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maja.fr">
+    <!-- Times: running times of process -->
+    <Time unit=""/>
+    <Time_As_String/>
+    <!-- Exit Code: exit code of process -->
+    <ExitCode/>
+    <!-- Memory used by the process -->
+    <Memory unit=""/>
+    <!-- Ram: peak of the RAM (read from the status file) -->
+    <Ram_VmPeak unit=""/>
+    <!-- Ram: peak of the RAM in MB (read from the status file) -->
+    <Ram_VmPeak_In_MB/>
+    <!-- Space disc Temporary/Caching -->
+    <Space_Disc_Of_Temporary_Directory>
+        <Caching_Directory/> 
+        <Total_Temporary_Directory/> 
+    </Space_Disc_Of_Temporary_Directory>
+    <!-- MACCS number of threads acitvated -->
+    <NbOfThreads/>
+    <!-- ====================================================================================================== -->
+    <!-- Others information (info of the system, ...) -->
+    <SystemInformation/>
+    <!-- ====================================================================================================== -->
+    <AllsProbes/>
+    <!-- ====================================================================================================== -->
+    <!-- "proc" extracted information -->
+    <Procs>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/stat" extracted information -->
+        <Proc name="stat"></Proc>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/status" extracted information -->
+        <Proc name="status"></Proc>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/limits" extracted information -->
+        <Proc name="limits"></Proc>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/io" extracted information -->
+        <Proc name="io"></Proc>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/schedstat" extracted information -->
+        <Proc name="schedstat"></Proc>
+        <!-- ====================================================================================================== -->
+        <!-- "/proc/self/sched" extracted information -->
+        <Proc name="sched"></Proc>
+    </Procs>    
+</Perfos>

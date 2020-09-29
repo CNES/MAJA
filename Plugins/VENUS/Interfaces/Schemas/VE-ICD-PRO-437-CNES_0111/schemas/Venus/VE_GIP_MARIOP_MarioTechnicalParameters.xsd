@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="MARIOP_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:MARIOP_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:MARIOP_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="MARIOP_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:MARIOP_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:MARIOP_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MARIOP_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_GIPP_MarioParameters_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIPMarioParameters"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="GIP_RMARIO"/>
+						<xs:enumeration value="GIP_CMARIO"/>
+						<xs:enumeration value="GIP_GMARIO"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MARIOP_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:MARIOP_Instance_Id_Type"/>
+						<xs:element name="List_of_Applicable_SiteDefinition_Ids">
+							<xs:annotation>
+								<xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MARIOP_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+				<xs:annotation>
+					<xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+				<xs:annotation>
+					<xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="MARIOP_Body_Type">
+		<xs:annotation>
+			<xs:documentation>Fichier de parametres techniques de l'outil MARIO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Target_Roi" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition de la zone d'interet cible a  produire - Defaut = Image entiere generee </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Row_Origin" type="xs:nonNegativeInteger">
+							<xs:annotation>
+								<xs:documentation>Coordonnee ligne du coin haut gauche</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Col_Origin" type="xs:nonNegativeInteger">
+							<xs:annotation>
+								<xs:documentation>Coordonnee Colonne du coin haut gauche</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Nb_Of_Rows" type="xs:positiveInteger">
+							<xs:annotation>
+								<xs:documentation>Nombre de lignes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Nb_Of_Cols" type="xs:positiveInteger">
+							<xs:annotation>
+								<xs:documentation>Nombre de Colonnes</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Resampling_Geometry">
+				<xs:annotation>
+					<xs:documentation>Definition de la geometrie</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="Zoom">
+							<xs:annotation>
+								<xs:documentation>Geometrie Zoom ou deZoom propre</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Row_Factor">
+										<xs:annotation>
+											<xs:documentation>Facteur de Zoom a  appliquer le long des lignes</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="ZX" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Le facteur de Zoom est un reel</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Ratio">
+													<xs:annotation>
+														<xs:documentation>Le facteur de Zoom est fractionnaire (P/Q)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="PX" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Numerateur</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="QX" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Denominateur</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Col_Factor">
+										<xs:annotation>
+											<xs:documentation>Facteur de Zoom a  appliquer le long des Colonnes</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="ZY" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Le facteur de Zoom est un reel</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Ratio">
+													<xs:annotation>
+														<xs:documentation>Le facteur de Zoom est fractionnaire (P/Q)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="PY" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Numerateur</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="QY" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Denominateur</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Translate" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Translation a  appliquer dans la zone Source - Defaut = pas de translation</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Row_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en ligne de l'Origine de la translation</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Col_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en Colonnede l'Origine de la translation</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Source_Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode de gestion de l'Image Source - Defaut = Image</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Mode">
+													<xs:annotation>
+														<xs:documentation>Mode de gestion de l'Image Source - Defaut = Image</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:enumeration value="Image"/>
+															<xs:enumeration value="Bandeau"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="Nb_Of_Rows" type="xs:positiveInteger" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Optionnel - Seulement si Mode Bandeau - Nombre de lignes d'un Bandeau Source</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Decimation">
+							<xs:annotation>
+								<xs:documentation>Geometrie sousechantillonnage</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Row_Factor" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Facteur de sousechantillonnage a  appliquer le long des lignes</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Col_Factor" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Facteur de sousechantillonnage a  appliquer le long des Colonnes</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Translate" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Translation a  appliquer dans la zone Source - Defaut = pas de translation</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Row_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en ligne de l'Origine de la translation</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Col_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en Colonnede l'Origine de la translation</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Source_Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode de gestion de l'Image Source - Defaut = Image</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Mode">
+													<xs:annotation>
+														<xs:documentation>Mode de gestion de l'Image Source - Defaut = Image</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:string">
+															<xs:enumeration value="Image"/>
+															<xs:enumeration value="Bandeau"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="Nb_Of_Rows" type="xs:positiveInteger" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Optionnel - Seulement si Mode Bandeau - Nombre de lignes d'un Bandeau Source</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Grid">
+							<xs:annotation>
+								<xs:documentation>Geometrie definie par grilles</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Grid_Description" maxOccurs="5">
+										<xs:annotation>
+											<xs:documentation>Parametres de grilles - Il y a autant d'elements Grid_Description que d'Images Sources Source</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Row_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en ligne de l'Origine de la grille dans l'Image cible</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Col_Origin" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Coordonnees en Colonne de l'Origine de la grille dans l'Image cible</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Row_Surech" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Surechantillonnage le long des lignes</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Col_Surech" type="xs:double">
+													<xs:annotation>
+														<xs:documentation>Surechantillonnage le long des Colonnes</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Source_Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Mode de gestion de l'Image Source - Defaut = Tuile</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Image"/>
+												<xs:enumeration value="Bandeau"/>
+												<xs:enumeration value="Tuile"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Resampling_Filter" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition du filtre d'interpolation - Element non present an cas de Decimation</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="PPV">
+							<xs:annotation>
+								<xs:documentation>Filtre Plus Proche Voisin - Utilise en Mode Exact et Bidimensionnel</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="BLN">
+							<xs:annotation>
+								<xs:documentation>Filtre bilineaire - Utilise en Mode Exact, Separable pour Zoom, Bidimensionnel pour Grid</xs:documentation>
+							</xs:annotation>
+							<xs:complexType/>
+						</xs:element>
+						<xs:element name="BCO">
+							<xs:annotation>
+								<xs:documentation>Filtre BiCubique Optimise - Utilise en Mode  Separable pour Zoom, Bidimensionnel pour Grid</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode d'application du filtre - Defaut = Exact</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Exact"/>
+												<xs:enumeration value="Precalcule"/>
+												<xs:enumeration value="Tabule"/>
+												<xs:enumeration value=""/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Precision" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Precision du calcul si le Mode d'application est Precalcule</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Spline3">
+							<xs:annotation>
+								<xs:documentation>Filtre Spline d'Ordre 3 - Utilise en Mode  Separable pour Zoom, Bidimensionnel pour Grid</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode d'application du filtre - Defaut = Exact</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Exact"/>
+												<xs:enumeration value="Precalcule"/>
+												<xs:enumeration value="Tabule"/>
+												<xs:enumeration value=""/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Precision" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Precision du calcul si le Mode d'application est Precalcule</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Marge" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Marge a prendre en compte dans les Bandeaux ou Tuiles Sources - Defaut = 20</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Spline5">
+							<xs:annotation>
+								<xs:documentation>Filtre Spline d'Ordre 5 - Utilise en Mode  Separable pour Zoom, Bidimensionnel pour Grid</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode d'application du filtre - Defaut = Exact</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Exact"/>
+												<xs:enumeration value="Precalcule"/>
+												<xs:enumeration value="Tabule"/>
+												<xs:enumeration value=""/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Precision" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Precision du calcul si le Mode d'application est Precalcule</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Marge" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Marge a prendre en compte dans les Bandeaux ou Tuiles Sources - Defaut = 20</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Spline7">
+							<xs:annotation>
+								<xs:documentation>Filtre Spline d'Ordre 7 - Utilise en Mode  Separable pour Zoom, Bidimensionnel pour Grid</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Mode" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Mode d'application du filtre - Defaut = Exact</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Exact"/>
+												<xs:enumeration value="Precalcule"/>
+												<xs:enumeration value="Tabule"/>
+												<xs:enumeration value=""/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Precision" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Precision du calcul si le Mode d'application est Precalcule</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Marge" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Optionnel - Marge a prendre en compte dans les Bandeaux ou Tuiles Sources - Defaut = 20</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="External_File">
+							<xs:annotation>
+								<xs:documentation>Filtre externe Bidimensionnel ou Separable</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice>
+									<xs:element name="Orion_Format">
+										<xs:annotation>
+											<xs:documentation>Filtre externe au Format Orion (pseudo-lum)</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:choice>
+												<xs:element name="Bidim">
+													<xs:annotation>
+														<xs:documentation>Definition d'un filtre Bidimensionnel</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Path" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Chemin d'acces au fichier filtre</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Ordre" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Optionnel - Ordre de la Spline si le filtre represente une Spline</xs:documentation>
+																</xs:annotation>
+																<xs:simpleType>
+																	<xs:restriction base="xs:positiveInteger">
+																		<xs:enumeration value="2"/>
+																		<xs:enumeration value="3"/>
+																		<xs:enumeration value="4"/>
+																		<xs:enumeration value="5"/>
+																		<xs:enumeration value="6"/>
+																		<xs:enumeration value="7"/>
+																		<xs:enumeration value="8"/>
+																		<xs:enumeration value="9"/>
+																		<xs:enumeration value="10"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="Marge" type="xs:positiveInteger" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Optionnel - Marge a prendre en compte dans les Bandeaux ou Tuiles Sources si le filtre represente une Spline - Defaut = 20</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="Separable">
+													<xs:annotation>
+														<xs:documentation>Definition d'un filtre Separable</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Row_Path" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Chemin d'acces au fichier filtre le long des lignes</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Col_Path" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Chemin d'acces au fichier filtre le long des Colonnes</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Ordre" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Optionnel - Ordre de la Spline si le filtre represente une Spline</xs:documentation>
+																</xs:annotation>
+																<xs:simpleType>
+																	<xs:restriction base="xs:positiveInteger">
+																		<xs:enumeration value="2"/>
+																		<xs:enumeration value="3"/>
+																		<xs:enumeration value="4"/>
+																		<xs:enumeration value="5"/>
+																		<xs:enumeration value="6"/>
+																		<xs:enumeration value="7"/>
+																		<xs:enumeration value="8"/>
+																		<xs:enumeration value="9"/>
+																		<xs:enumeration value="10"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:element>
+															<xs:element name="Marge" type="xs:positiveInteger" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Optionnel - Marge a prendre en compte dans les Bandeaux ou Tuiles Sources si le filtre represente une Spline - Defaut = 20</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Venus_Format">
+										<xs:annotation>
+											<xs:documentation>Filtre externe au Format Pleiades</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Filter_Center">
+													<xs:annotation>
+														<xs:documentation>Definition du point chaud du filtre</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Row_Index" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Coordonnee ligne du point chaud</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Col_Index" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Coordonnee Colonne du point chaud</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="Filter_Oversampling">
+													<xs:annotation>
+														<xs:documentation>Surechantillonnage du filtre</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Row_Wise" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Surechantillonnage en ligne</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Col_Wise" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Surechantillonnage en Colonne</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="Filter_Data">
+													<xs:annotation>
+														<xs:documentation>Liste des coefficients</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:choice>
+															<xs:element name="Separable_Filter_Data">
+																<xs:annotation>
+																	<xs:documentation>Coefficients pour un filtre Separable</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Nb_Of_Rows" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Nombre de lignes</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Nb_Of_Cols" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Nombre de Colonnes</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Origin" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Convention d'Origine des coordonnees (toujours 0 pour MARIO)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Row_Coefs">
+																			<xs:annotation>
+																				<xs:documentation>Coefficients du filtre ligne</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:list itemType="xs:double"/>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="Col_Coefs">
+																			<xs:annotation>
+																				<xs:documentation>Coefficients du filtre Colonne</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:list itemType="xs:double"/>
+																			</xs:simpleType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="Bidim_Filter_Data">
+																<xs:annotation>
+																	<xs:documentation>Coefficients pour un filtre Bidimensionnel</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Nb_Of_Rows" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Nombre de lignes</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Nb_Of_Cols" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Nombre de Colonnes</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Origin" type="xs:positiveInteger">
+																			<xs:annotation>
+																				<xs:documentation>Convention d'Origine des coordonnees (toujours 0 pour MARIO)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																		<xs:element name="Array">
+																			<xs:annotation>
+																				<xs:documentation>Coefficients du filtre ligne par ligne</xs:documentation>
+																			</xs:annotation>
+																			<xs:complexType>
+																				<xs:sequence>
+																					<xs:element name="Rows" maxOccurs="unbounded">
+																						<xs:annotation>
+																							<xs:documentation>Coefficients d'une  ligne du filtre</xs:documentation>
+																						</xs:annotation>
+																						<xs:simpleType>
+																							<xs:list itemType="xs:double"/>
+																						</xs:simpleType>
+																					</xs:element>
+																				</xs:sequence>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:choice>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Resampling_Side_Management" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Mode de gestion des bords - Defaut = Mirror</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Mirror"/>
+						<xs:enumeration value="Exact"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="No_Data" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Definition de la valeur de pixel invalide - Defaut = 0.0</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dynamic_Stretching" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Parametres d'adaptation de la dynamique</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Slope" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Gain - Defaut = 1.0</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Bias" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Offset - Defaut = 0.0</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Direct_Grid_T_List" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Optionnel - Seulement si la geometrie est definie par grilles et en Mode Tuile - Definition des grilles de localisation des Tuiles Sources</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Grid" maxOccurs="5">
+							<xs:annotation>
+								<xs:documentation>Definition des parametres d'une grille de localisation des Tuiles Sources - Il y a autant d'elements Grid que d'Images Sources Source</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Row_Origin" type="xs:nonNegativeInteger">
+										<xs:annotation>
+											<xs:documentation>Coordonnee en ligne de l'Origine des 2 grilles de localisation dans l'Image Source </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Col_Origin" type="xs:nonNegativeInteger">
+										<xs:annotation>
+											<xs:documentation>Coordonnee en Colonne de l'Origine des 2 grilles de localisation dans l'Image Source </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Row_Wise" type="xs:double">
+										<xs:annotation>
+											<xs:documentation>Pas le long des lignes de la grille le long des lignes </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Col_Wise" type="xs:double">
+										<xs:annotation>
+											<xs:documentation>Pas le long des Colonnes de la grille le long des Colonnes</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Row_Dim" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Taille des Tuiles en nombre de lignes</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Col_Dim" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Taille des Tuiles en nombre de Colonnes</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="No_Data_Grid_Tiles" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Valeurs invalides dans les 2 grilles de localisation</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Value" type="xs:int">
+													<xs:annotation>
+														<xs:documentation>Valeur des points invalides dans les 2 grilles de localisation</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Flag_Activation" type="xs:boolean">
+													<xs:annotation>
+														<xs:documentation>Flag qui indique s'il faut detecter les points invalides dans les 2 grilles de localisation </xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Security_Margin" type="xs:positiveInteger" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Definition de la Marge de securite a  ajouter aux Tuiles Sources pour gerer les eventuelles erreurs entre les aller-retours grilles de localisation / grilles de reechantillonnage - Defaut = 2</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

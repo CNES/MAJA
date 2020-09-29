@@ -1,0 +1,70 @@
+#
+# Copyright (C) 2005-2017 Centre National d'Etudes Spatiales (CNES)
+#
+# This file is part of Orfeo Toolbox
+#
+#     https://www.orfeo-toolbox.org/
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+############################################################################################################
+#                                                                                                          #
+#                                        __  __    __     ____   __                                        #
+#                                       (  \/  )  /__\   (_  _) /__\                                       #
+#                                        )    (  /(__)\ .-_)(  /(__)\                                      #
+#                                       (_/\/\_)(__)(__)\____)(__)(__)                                     #
+#                                                                                                          #
+#                                                                                                          #
+############################################################################################################
+# HISTORIQUE                                                                                               #
+#                                                                                                          #
+# VERSION : 3.1.0 : DM : LAIG-DM-MAJA-2526-CNES : 9 avril 2018 : Montée de version de d'OTB 6.0            #
+#                                                                                                          #
+# FIN-HISTORIQUE                                                                                           #
+#                                                                                                          #
+# $Id$                                                                                                     #
+#                                                                                                          #
+############################################################################################################
+
+set(CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE 1000000)
+set(CTEST_CUSTOM_MAXIMUM_NUMBER_OF_WARNINGS 300)
+set(CTEST_CUSTOM_MAXIMUM_NUMBER_OF_ERRORS 50)
+
+set(CTEST_CUSTOM_WARNING_EXCEPTION
+  ${CTEST_CUSTOM_WARNING_EXCEPTION}
+  ".*SuperBuild.GEOS.*"
+  ".*SuperBuild.JPEG.*warning"
+  ".*SuperBuild.TIFF.*warning.*"
+  ".*SuperBuild.GEOTIFF.*warning.*"
+  "ranlib:.*file:.*has no symbols"
+  "libtool:.*file:.*has no symbols"
+  "libtool:.install:.warning:.relinking.*"
+  "make.*jobserver.unavailable.*"
+  "configure:.WARNING:.*"
+  ".*SuperBuild.OSSIM.src.OSSIM.*"
+  ".*SuperBuild.LIBKML.src.LIBKML.*"
+  ".bin.bash:.*config.rpath:.*directory.*"
+  ".*the.curl.cmake.build.system.is.poorly.maintained.*"
+  ".*config.status:.WARNING:.*GDALmake.opt.in.*"
+  "SuperBuild.OPENCV.src.OPENCV.modules"
+  ".*gdal_priv.h.*[Ww]arning.*"
+  ".*cpl_string.h.*[Ww]arning.*"
+  ".*ogr_feature.h.*[Ww]arning.*"
+  ".*cpl_serv.h.*[Ww]arning.*"
+  )
+
+# We disable all compiler warnings on superbuild. They are too numerous and pretty much useless
+# when they show up on the dashboard. If you want to track them do, just run the build
+# manually.
+set (CTEST_CUSTOM_MAXIMUM_NUMBER_OF_WARNINGS 0)

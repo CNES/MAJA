@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.1 : DM : VE-FT-612 : 14/08/2014 : Ajout de l'heure d'acquisition, date et heure de la production et liste des GIPPs
+ 
+  FIN-HISTORIQUE
+ -->
+<!DOCTYPE xs:schema [
+	<!-- File_Name element patterns -->
+	<!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[1-3]|DROB)">
+	<!ENTITY FileCategory "(MPL_|TLM_|AUX_|VSC_|EXO_|PRM_|RCV_|PMC_|CAT_|IMQ_|TEC_|GIP_|AUX_)">
+	<!ENTITY FileType "(&FileCategory;[0-9A-Z_]{6})">
+	<!ENTITY InstanceId "([0-9A-Z_]{1,45})">
+	<!-- Instance_Id sub-element patterns -->
+	<!ENTITY AbsOrbitElt "([0-9]{5})">
+	<!ENTITY AbsOrbitRangeElt "(&AbsOrbitElt;_&AbsOrbitElt;)">
+	<!ENTITY AnnexElt "(ATB|GPH|QLT|WAT|PXD|RTA|RTC|CLA|SOL|VIE)">
+	<!ENTITY AuxiliaryDataTypeElt "(O|S)">
+	<!ENTITY BandCodeElt "(B((0[1-9])|(1[0-2])))">
+	<!ENTITY ChannelCodeElt "(&BandCodeElt;|&AnnexElt;|VAP|AER|LAI|FAPAR|FCOVER|CHLLAI|CLD|SNW|HID|SHD|SAT|PIX)">
+	<!ENTITY DataElementElt "VEN_&StationElt;_&AbsOrbitElt;_&SerialKeyElt;_[0-9]">
+	<!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+	<!ENTITY DateTimeElt "&DateElt;T&TimeElt;">
+	<!ENTITY FileSemanticProductElt "(PDTINV|&SysProductLevelElt;&SysValidityCodeElt;|&PubProductLevelElt;&PubValidityCodeElt;)">
+	<!ENTITY GeographicalPointElt "((E|W)((0[0-9][0-9])|(1[0-7][0-9])|(180))([0-9]{2})(N|S)(([0-8][0-9])|(90))([0-9]{2}))">
+	<!ENTITY ListNickNameElt "(&NickNameElt;|NOTNAMED|ALLSITES)">
+	<!ENTITY ModeElt "(NMNL|OBR1|OBR2|RW01|RW02|RW03|RW04|1DLT)">
+	<!ENTITY NickNameElt "([0-9A-Z_]{8}|THE_MOON|ONEORBIT)">
+	<!ENTITY NickNameTypeElt "(S|L)">
+	<!ENTITY OrbitDefModeElt "(A|R)">
+	<!ENTITY PdtImgSubCodeElt "(PIX|SAT|SLP|NSL)">
+	<!ENTITY PubProductLevelElt "(L1|L2|L3)">
+	<!ENTITY PubValidityCodeElt "(VALD|NOTV)">
+	<!ENTITY RelOrbitElt "([0-9]{2})">
+	<!ENTITY SerialKeyElt "([0-9]{5})">
+	<!ENTITY SiteTypeElt "(S|C|T|M|O|P|A)">
+	<!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+	<!ENTITY SpecialDateTimeElt "(&DateTimeElt;|00000000T000000|99999999T999999)">
+	<!ENTITY StationElt "(KRN|SBD)">
+	<!ENTITY StatusElt "(O|F|P)">
+	<!ENTITY SysProductLevelElt "(L0|0E|1A)">
+	<!ENTITY SysValidityCodeElt "(VALD)">
+	<!ENTITY TDIConfElt "([0-1]{4}0[0-1])">
+	<!ENTITY TimeElt "(([0,1][0-9]|2[0-3])([0-5][0-9]){2})">
+	<!ENTITY TriDetectorCodeElt "(1|2|3|4)">
+	<!ENTITY Version4Elt "([0-9]{4})">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="RFGEOM_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:RFGEOM_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:RFGEOM_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="RFGEOM_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:RFGEOM_VSSCData_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="RefinedGeometricalModel"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="IMQ_RFGEOM"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RFGEOM_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:RFGEOM_Instance_Id_Type"/>
+						<xs:element name="Processing_Information" type="ee:RFGEOM_Processing_Information_Type"/>
+						<xs:element name="DBL_Organization" type="ee:VE_DBL_Organization_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RFGEOM_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type"/>
+			<xs:element name="Acquisition_Date_Time" type="ee:UTC_Date_Time_Type"/>
+			<xs:element name="Production_Date_Time" type="ee:UTC_Date_Time_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RFGEOM_Processing_Information_Type">
+		<xs:sequence>
+			<xs:element name="List_of_GIPP_Files" type="ee:VE_List_of_GIPP_Files_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="RFGEOM_VSSCData_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A Refined Geometrical Model identifier following 'VE_cccc_IMQ_RFGEOM_nnnnnnnn__yyyymmdd_yyyymmdd : valid File_Class value
+-  nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : acquisition date
+- yyyymmdd : production date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_IMQ_RFGEOM_&NickNameElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

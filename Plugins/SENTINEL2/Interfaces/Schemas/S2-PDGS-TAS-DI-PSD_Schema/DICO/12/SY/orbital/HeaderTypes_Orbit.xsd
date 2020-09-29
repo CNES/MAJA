@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:orbital="http://gs2.esa.int/DICO/1.0/SY/orbital/"  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://gs2.esa.int/DICO/1.0/SY/orbital/" targetNamespace="http://gs2.esa.int/DICO/1.0/SY/orbital/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+		<xsd:annotation>
+		<xsd:documentation>Orbit Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.3 $ $Date: 2016/07/14 12:47:01 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Orbit_Scenario_Variable_Header">
+		<xsd:sequence>
+			<xsd:element name="Time_Reference">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="UT1"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Orbit_File_Variable_Header">
+		<xsd:sequence>
+			<xsd:element name="Ref_Frame">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="BAR_MEAN_2000"/>
+						<xsd:enumeration value="HEL_MEAN_2000"/>
+						<xsd:enumeration value="GEO_MEAN_2000"/>
+						<xsd:enumeration value="MEAN_DATE"/>
+						<xsd:enumeration value="TRUE_DATE"/>
+						<xsd:enumeration value="EARTH_FIXED"/>
+						<xsd:enumeration value="BAR_MEAN_1950"/>
+						<xsd:enumeration value="QUASI_MEAN_DATE"/>
+						<xsd:enumeration value="PSE_TRUE_DATE"/>
+						<xsd:enumeration value="PSEUDO_EARTH_FIXED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Time_Reference">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="TAI"/>
+						<xsd:enumeration value="UTC"/>
+						<xsd:enumeration value="UT1"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

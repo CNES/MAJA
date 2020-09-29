@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by USER USER (CNES) -->
+<xs:schema xmlns:ccsds="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="LTPPLN_File_Type">
+    <xs:annotation>
+      <xs:documentation>The LongTermPassPlan is an indicative coarse pass plan that is sent to the VRS by the VIP through the HUB. The effective pass plan will be sent as a regular DownlinkPlan.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:LTPPLN_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:LTPPLN_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.20"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="LTPPLN_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:LTPPLN_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:LTPPLN_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LTPPLN_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_LongTermPassPlan_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="LongTermPassPlan"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class">
+        <xs:simpleType>
+          <xs:restriction base="ee:VE_File_Class_Type"/>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="RCV_LTPPLN"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LTPPLN_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:LTPPLN_Instance_Id_Type"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LTPPLN_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Station_Code" type="ee:VE_X_Band_Station_Code_Type">
+        <xs:annotation>
+          <xs:documentation>Receiving station 3-letters code</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>unique Serial key in the LTPPLN series</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Orbit_Number_Validity_Range" type="ee:VE_Absolute_Orbit_Number_Range_Type">
+        <xs:annotation>
+          <xs:documentation>First and last validity orbits
+Both orbits are expressed as absolute orbit numbers.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="LTPPLN_Body_Type">
+    <xs:annotation>
+      <xs:documentation>the LongTermPassPlan (LTPPLN) Body Type</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="List_of_Downloads">
+        <xs:annotation>
+          <xs:documentation>Description of the different downloads</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Download" minOccurs="0" maxOccurs="100">
+              <xs:annotation>
+                <xs:documentation>the description of each download</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="ee:LTPPLN_Download_Type">
+                    <xs:attribute name="sn" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Serial number of the download within the list</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="ee:Integer_Type">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="100"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:annotation>
+              <xs:documentation>the number of downloads contained in this downlink plan</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="100"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LTPPLN_Download_Type">
+    <xs:annotation>
+      <xs:documentation>a download description type</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Download_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+        <xs:annotation>
+          <xs:documentation>the absolute orbit number of this download</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Predicted_AOS" type="ee:UTC_Date_Time_Type">
+        <xs:annotation>
+          <xs:documentation>the predicted date  time of the acquisition of signal for this download</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Predicted_LOS" type="ee:UTC_Date_Time_Type">
+        <xs:annotation>
+          <xs:documentation>the predicted date  time of the loss of signal for this download</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Orbital_Elements">
+        <xs:annotation>
+          <xs:documentation>the orbital elements corresponding to this download CCSDS OEM</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ccsds:oem"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

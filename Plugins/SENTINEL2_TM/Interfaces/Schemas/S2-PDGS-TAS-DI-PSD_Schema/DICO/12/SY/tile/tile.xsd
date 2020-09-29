@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tile="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/tile/" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" xmlns:image="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/image/" xmlns:representation="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/representation/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/tile/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" schemaLocation="../misc/misc.xsd"/>
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/representation/" schemaLocation="../representation/representation.xsd"/>
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/image/" schemaLocation="../image/image.xsd"/>
+	<xs:complexType name="A_TILE_DESCRIPTION_S2">
+		<xs:annotation>
+			<xs:documentation>Description of a tile in a given representation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HORIZONTAL_CS_NAME" type="xs:string"/>
+			<xs:element name="HORIZONTAL_CS_CODE" type="representation:AN_EPSG_CODE">
+				<xs:annotation>
+					<xs:documentation>EPSG code. It should follow the 'EPSG:xxxx' pattern where xxxx is the unique identification code in the EPSG tables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Size" minOccurs="3" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>Tile dimensions for each resolution band</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="NROWS">
+							<xs:annotation>
+								<xs:documentation>Number of rows</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="NCOLS">
+							<xs:annotation>
+								<xs:documentation>Number of columns</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="resolution" type="image:A_BAND_RESOLUTION" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Geoposition" minOccurs="3" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>XDIM and YDIM for each resolution band </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ULX" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Upper-left coordinate (X value) of the tile</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ULY" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Upper-left coordinate (Y value) of the tile</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="XDIM" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Horizontal pixel dimension </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="YDIM" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Vertical pixel dimension</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="resolution" type="image:A_BAND_RESOLUTION" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_TILE_DESCRIPTION_GIPP">
+		<xs:annotation>
+			<xs:documentation>Description of a tile with its bounding box in a given representation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TILE_IDENTIFIER" type="tile:A_TILE_IDENTIFIER"/>
+			<xs:element name="HORIZONTAL_CS_CODE" type="representation:AN_EPSG_CODE">
+				<xs:annotation>
+					<xs:documentation>EPSG code. It should follow the 'EPSG:xxxx' pattern where xxxx is the unique identification code in the EPSG tables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UNIT">
+				<xs:annotation>
+					<xs:documentation>Measure unit of the upper-left coordinates of the tile. The measure unit corresponds with the final representation.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="m"/>
+						<xs:enumeration value="deg"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ULX" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Upper-left coordinate (X value) of the tile (in UNIT measure unit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ULY" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Upper-left coordinate (Y value) of the tile (in UNIT measure unit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TILE_SIZE_LIST">
+				<xs:annotation>
+					<xs:documentation>Dimensions for 10, 20 and 60m bands</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TILE_SIZE" minOccurs="3" maxOccurs="3">
+							<xs:annotation>
+								<xs:documentation>Tile dimensions for each resolution band  XDIM and YDIM (in UNIT measure unit)</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="NROWS">
+										<xs:annotation>
+											<xs:documentation>Number of rows</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:minInclusive value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="NCOLS">
+										<xs:annotation>
+											<xs:documentation>Number of columns</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:int">
+												<xs:minInclusive value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="XDIM" type="xs:double">
+										<xs:annotation>
+											<xs:documentation>Horizontal pixel dimension </xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="YDIM" type="xs:double">
+										<xs:annotation>
+											<xs:documentation>Vertical pixel dimension</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="resolution" type="image:A_BAND_RESOLUTION" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="B_BOX" type="misc:A_LIST_OF_8_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>Bounding box coordinates of a tile. This bounding box lists the 4 corner points in lat/lon, clockwise defined, starting from upper left corner. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_TILE_IDENTIFIER">
+		<xs:annotation>
+			<xs:documentation>Unique identification of a tile</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="A_TILE_DESCRIPTION_DIMAP">
+		<xs:annotation>
+			<xs:documentation>Description of a tile in a given representation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HORIZONTAL_CS_NAME" type="xs:string"/>
+			<xs:element name="HORIZONTAL_CS_CODE" type="representation:AN_EPSG_CODE">
+				<xs:annotation>
+					<xs:documentation>EPSG code. It should follow the 'EPSG:xxxx' pattern where xxxx is the unique identification code in the EPSG tables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Size" minOccurs="3" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>Tile dimensions for each resolution band</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="NROWS">
+							<xs:annotation>
+								<xs:documentation>Number of rows</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="NCOLS">
+							<xs:annotation>
+								<xs:documentation>Number of columns</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:int">
+									<xs:minInclusive value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="resolution" type="image:A_BAND_RESOLUTION" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Geoposition" minOccurs="3" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation>XDIM and YDIM for each resolution band </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ULX" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Upper-left coordinate (X value) of the tile</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ULY" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Upper-left coordinate (Y value) of the tile</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="XDIM" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Horizontal pixel dimension </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="YDIM" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Vertical pixel dimension</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="resolution" type="image:A_BAND_RESOLUTION" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

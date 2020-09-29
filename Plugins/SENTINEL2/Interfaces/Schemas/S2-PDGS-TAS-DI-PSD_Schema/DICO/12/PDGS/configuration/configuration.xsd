@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 U (http://www.altova.com) by user (EMBRACE) -->
+<xs:schema xmlns:configuration="http://gs2.esa.int/DICO/1.0/PDGS/configuration/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:date_time="http://gs2.esa.int/DICO/1.0/SY/date_time/" xmlns:base="http://gs2.esa.int/DICO/1.0/PDGS/base/" targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/configuration/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/SY/date_time/" schemaLocation="../../SY/date_time/date_time.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/base/" schemaLocation="../../PDGS/base/base.xsd"/>
+	<xs:complexType name="TimePlan">
+		<xs:annotation>
+			<xs:documentation>A Scheduled Time Plan</xs:documentation>
+		</xs:annotation>
+			<xs:sequence>
+				<xs:element name="FrequencyInDay" type="xs:float">
+					<xs:annotation>
+						<xs:documentation>How many times within the day (same time interval between two consecutive scheduling action)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="List_Of_MRFs">
+		<xs:annotation>
+			<xs:documentation>The list of MRFs used by a component.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="MRF">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Id" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>The MRF filename</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ValidityStart" type="date_time:AN_UTC_DATE_TIME">
+							<xs:annotation>
+								<xs:documentation>The MRF Validity start time</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ValidityStop" type="date_time:AN_UTC_DATE_TIME">
+							<xs:annotation>
+								<xs:documentation>The MRF Validity stop time</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="HOST_NAME">
+		<xs:annotation>
+			<xs:documentation>Identifier of the Host</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="TRANSFER_METHOD">
+		<xs:annotation>
+			<xs:documentation>Allowed Transfer Methods: FTP, SFTP, FTPS or FS (for local filesystem)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FTP"/>
+			<xs:enumeration value="SFTP"/>
+			<xs:enumeration value="FTPS"/>
+			<xs:enumeration value="FS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PASSWORD">
+		<xs:annotation>
+			<xs:documentation>User password</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="USER_NAME">
+		<xs:annotation>
+			<xs:documentation>User Name</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="TmpFilenameType">
+		<xs:annotation>
+			<xs:documentation>Temporary filename convention.
+PREFIX_DOT : prefixed with “.”. This is the default in case 
+SUFFIX_LOCK : suffixed with “.lock”
+TMP_DIR : use of a temporary directory (valid only for transfer of files and not for products with a directory structure).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PREFIX_DOT"/>
+			<xs:enumeration value="SUFFIX_LOCK"/>
+			<xs:enumeration value="TMP_DIR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="IORepositoryType">
+		<xs:all>
+			<xs:element name="Name" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Repository name (unique identifier)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransferMethod" type="configuration:TRANSFER_METHOD">
+				<xs:annotation>
+					<xs:documentation>Type of transfer protocol to be used: FTP, SFTP, FTPS or FS (for local filesystem)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Host" type="configuration:HOST_NAME">
+				<xs:annotation>
+					<xs:documentation>The identifier of the host.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Path" type="base:A_PATH">
+				<xs:annotation>
+					<xs:documentation>Path where the data will be made available</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="User" type="configuration:USER_NAME">
+				<xs:annotation>
+					<xs:documentation>Account on data consumer host</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Password" type="configuration:PASSWORD" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Encrypted Password of Account on data provider host.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TmpFilename" type="configuration:TmpFilenameType" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

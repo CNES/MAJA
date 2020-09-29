@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" xmlns:spatio="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/spatio/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/spatio/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_SPATIO_RESULT">
+		<xs:annotation>
+			<xs:appinfo/>
+			<xs:documentation>Sigma quality report for spatiotriangulation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ground_Residual">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="HISTOGRAM" type="spatio:A_LOCAL_HISTOGRAM_DEFINITION" minOccurs="3" maxOccurs="3">
+							<xs:annotation>
+								<xs:documentation>Histogram for X, Y and Z</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="ALTI_ACCURACY" type="xs:float">
+							<xs:annotation>
+								<xs:documentation>Value in meters</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PLANI_ACCURACY" type="xs:float">
+							<xs:annotation>
+								<xs:documentation>Value in meters</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Image_Residual">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="HISTOGRAM" type="spatio:A_LOCAL_HISTOGRAM_DEFINITION" minOccurs="2" maxOccurs="2">
+							<xs:annotation>
+								<xs:documentation>Histogram in line and column</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PIX_ACCURACY" type="xs:float">
+							<xs:annotation>
+								<xs:documentation>Value in pixel</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_LOCAL_HISTOGRAM_DEFINITION">
+		<xs:annotation>
+			<xs:documentation>The histogram defines : a space-separated list of percent values, the first (MIN) and last (MAX) indexes for significant percent values (i.e. sup 0.0), the mean and standard deviation values</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DIRECTION">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="X"/>
+						<xs:enumeration value="Y"/>
+						<xs:enumeration value="Z"/>
+						<xs:enumeration value="COL"/>
+						<xs:enumeration value="ROW"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="VALUES" type="misc:A_LIST_OF_FLOAT">
+				<xs:annotation>
+					<xs:documentation>Percent values (number depending on the STEP)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="STEP" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Histogram step</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MIN" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>First index of significant percent value (i.e. > 0.0)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MAX" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Last index of significant percent value (i.e. > 0.0)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MEAN" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Histogram mean value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="STD_DEV" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Histogram standard deviation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

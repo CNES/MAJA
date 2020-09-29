@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+  VERSION : 1.9 : FA : VE-FT-1399 : 10/11/2017 : Mise a jour du schema POLLUX
+  FIN-HISTORIQUE
+ -->
+ <!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by CNES (CNES) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="TECHNICAL_PARAMETERS">
+		<xs:annotation>
+			<xs:documentation>root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FILE_INFORMATION"/>
+				<xs:element ref="VIEWING_PARAMETERS"/>
+				<xs:element ref="TIE_POINTS_DENSITY"/>
+				<xs:element ref="ZONES_DESCRIPTION"/>
+				<xs:element ref="GRID_CREATION_PARAMETERS"/>
+				<xs:element ref="CORRELATIONS_PARAMETERS"/>
+				<xs:element ref="MODELISATION_PARAMETERS"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FILE_INFORMATION">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="VALIDITY_DATE"/>
+				<xs:element ref="CREATION_DATE"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="VALIDITY_DATE" type="xs:dateTime"/>
+	<xs:element name="CREATION_DATE" type="xs:dateTime"/>
+	<xs:element name="VIEWING_PARAMETERS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="LOCATION_PRECISION"/>
+				<xs:element ref="RESOLUTION"/>
+				<xs:element ref="OFFSET_IMAGES" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="LOCATION_PRECISION" type="xs:double"/>
+	<xs:element name="RESOLUTION" type="xs:double"/>
+	<xs:element name="OFFSET_IMAGES">
+		<xs:annotation>
+			<xs:documentation>Offset de decalage entre l'image de reference et l'image secondaire</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="COL_OFFSET"/>
+				<xs:element ref="LIG_OFFSET"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="COL_OFFSET" type="xs:int"/>
+	<xs:annotation>
+		<xs:documentation>Offset de decalage entre l'image de reference et l'image secondaire: Offset en colonne</xs:documentation>
+	</xs:annotation>
+	<xs:element name="LIG_OFFSET" type="xs:int"/>
+	<xs:annotation>
+		<xs:documentation>Offset de decalage entre l'image de reference et l'image secondaire: Offset en ligne</xs:documentation>
+	</xs:annotation>
+	<xs:element name="GRID_CREATION_PARAMETERS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MIN_NUMBER_POINTS_LEVEL1"/>
+				<xs:element ref="MIN_NUMBER_POINTS_LEVEL2"/>
+				<xs:element ref="MIN_NUMBER_POINTS_LEVEL3"/>
+				<xs:element ref="REJECTED_POINTS_DENSITY"/>
+				<xs:element ref="CORREL_REJECTED_POINTS_DENSITY"/>
+				<xs:element ref="MINIMAL_GRID_STEP"/>
+				<xs:element name="MINIMAL_DENSIFICATION_GRID_LEVEL1">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MINIMAL_DENSIFICATION_GRID_LEVEL2">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="MINIMAL_DENSIFICATION_GRID_LEVEL3">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="EXPLORATION_NB_ROWS" type="xs:integer"/>
+	<xs:element name="EXPLORATION_NB_COLS" type="xs:integer"/>
+	<xs:element name="METHOD_TYPE">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="CORREL_LINEAIRE"/>
+				<xs:enumeration value="METHODE_DES_AMAS"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORREL_SIZE_NB_ROWS" type="xs:integer"/>
+	<xs:element name="CORREL_SIZE_NB_COLS" type="xs:integer"/>
+	<xs:element name="INITIAL_THRESHOLD" type="xs:double"/>
+	<xs:element name="FINAL_THRESHOLD" type="xs:double"/>
+	<xs:element name="MIN_FINAL_THRESHOLD" type="xs:double"/>
+	<xs:element name="CONTOUR_REDUCTION">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="SLOPE_THRESHOLD" type="xs:double"/>
+	<xs:element name="SIGMA_THRESHOLD" type="xs:double"/>
+	<xs:element name="CORREL_COMPUTING">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="CORRELATION_SPATIALE"/>
+				<xs:enumeration value="CORRELATION_FREQUENTIELLE"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORREL_METHOD">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="INTERPOLATION_DIRECTE_PIC"/>
+				<xs:enumeration value="RECHERCHE_ITERATIVE_PAR_REECHANT"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="INTERPOLATION_TYPE">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="INTERPOL_CNES"/>
+				<xs:enumeration value="INTERPOL_SHANNON"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="SEARCH_TYPE">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="DICHOTOMIE"/>
+				<xs:enumeration value="POWELL_FLETCHER"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="IMAGE_TO_RESAMPLE">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="IMAGE_RECHERCHE"/>
+				<xs:enumeration value="NAPPE_TAUX_CORRELATION"/>
+				<xs:enumeration value="NAPPE_INITIALE_NUM_ET_DENUM"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="LOC_PRECISION" type="xs:double"/>
+	<xs:element name="INTERPOL_TYPE">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="BICUBIQUE_CNES"/>
+				<xs:enumeration value="BICUBIQUE_OPTIMISEE"/>
+				<xs:enumeration value="BILINEAIRE"/>
+				<xs:enumeration value="SINUS_CARDINAL"/>
+				<xs:enumeration value="SPLINE"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="SINC_HALF_NB_ROW" type="xs:integer"/>
+	<xs:element name="SINC_HALF_NB_COL" type="xs:integer"/>
+	<xs:element name="GAUSSIAN">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="PAS_DE_GAUSSIENNE"/>
+				<xs:enumeration value="GAUSSIENNE_NORMALISEE"/>
+				<xs:enumeration value="GAUSSIENNE_LIBRE"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="SIGMA_COL" type="xs:double"/>
+	<xs:element name="SIGMA_ROW" type="xs:double"/>
+	<xs:element name="SPLINE_ORDER" type="xs:int"/>
+	<xs:element name="IMAGE_OUTPUT_FORMAT">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="DIMAP_RAW"/>
+				<xs:enumeration value="DIMAP_GEOTIFF"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="TIE_POINTS_DENSITY">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MIN_USABLE_POINTS_DENSITY"/>
+				<xs:element ref="MIN_USABLE_POINTS_BY_ZONE_DENSITY"/>
+				<xs:element name="MIN_SURFACE_RATIO" type="xs:double"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MIN_USABLE_POINTS_DENSITY">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+				<xs:maxInclusive value="1.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_USABLE_POINTS_BY_ZONE_DENSITY">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+				<xs:maxInclusive value="1.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="ZONES_DESCRIPTION">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="NUMBER_OF_ZONES"/>
+				<xs:element ref="MINIMAL_SCORE_FULL_MODEL"/>
+				<xs:element ref="MINIMAL_SURFACE_FULL_MODEL"/>
+				<xs:element ref="MINIMAL_SCORE_REDUCED_MODEL"/>
+				<xs:element ref="MINIMAL_SURFACE_REDUCED_MODEL"/>
+				<xs:element ref="ZONES_LOCATION"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NUMBER_OF_ZONES">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MINIMAL_SCORE_FULL_MODEL">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MINIMAL_SURFACE_FULL_MODEL" type="xs:double"/>
+	<xs:element name="MINIMAL_SCORE_REDUCED_MODEL">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MINIMAL_SURFACE_REDUCED_MODEL">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="ZONE_N">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ZONE_NUMBER"/>
+				<xs:element ref="COL_MIN"/>
+				<xs:element ref="COL_MAX"/>
+				<xs:element ref="LIG_MIN"/>
+				<xs:element ref="LIG_MAX"/>
+				<xs:element ref="PRIORITY"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ZONES_LOCATION">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ZONE_N" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ZONE_NUMBER" type="xs:integer"/>
+	<xs:element name="COL_MIN">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="COL_MAX">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="LIG_MIN">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="LIG_MAX">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="PRIORITY">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="-1"/>
+				<xs:maxInclusive value="10"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_NUMBER_POINTS_LEVEL1">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="4"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_NUMBER_POINTS_LEVEL2">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="20"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_NUMBER_POINTS_LEVEL3">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="20"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="REJECTED_POINTS_DENSITY">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORREL_REJECTED_POINTS_DENSITY">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MINIMAL_GRID_STEP">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="2"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORRELATIONS_PARAMETERS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="MASK_USE_FLAG"/>
+				<xs:element ref="INTER_SCALE_STEP_LEVEL1"/>
+				<xs:element ref="INTER_SCALE_STEP_LEVEL2"/>
+				<xs:element ref="IMAGE_CORRELATION_LEVEL1"/>
+				<xs:element ref="IMAGE_CORRELATION_LEVEL2"/>
+				<xs:element ref="IMAGE_CORRELATION_LEVEL3"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MASK_USE_FLAG">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="INTER_SCALE_STEP_LEVEL1">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:enumeration value="2"/>
+				<xs:enumeration value="4"/>
+				<xs:enumeration value="8"/>
+				<xs:enumeration value="16"/>
+				<xs:enumeration value="32"/>
+				<xs:enumeration value="64"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="INTER_SCALE_STEP_LEVEL2">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:enumeration value="2"/>
+				<xs:enumeration value="4"/>
+				<xs:enumeration value="8"/>
+				<xs:enumeration value="16"/>
+				<xs:enumeration value="32"/>
+				<xs:enumeration value="64"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="IMAGE_CORRELATION_LEVEL1">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="EXPLORATION_NB_ROWS"/>
+				<xs:element ref="EXPLORATION_NB_COLS"/>
+				<xs:element ref="METHOD_TYPE"/>
+				<xs:element ref="CORREL_SIZE_NB_ROWS"/>
+				<xs:element ref="CORREL_SIZE_NB_COLS"/>
+				<xs:element ref="INITIAL_THRESHOLD"/>
+				<xs:element ref="FINAL_THRESHOLD"/>
+				<xs:element ref="MIN_FINAL_THRESHOLD"/>
+				<xs:element ref="CONTOUR_REDUCTION"/>
+				<xs:element ref="SLOPE_THRESHOLD"/>
+				<xs:element ref="SIGMA_THRESHOLD"/>
+				<xs:element ref="CORREL_COMPUTING"/>
+				<xs:element ref="CORREL_METHOD"/>
+				<xs:element ref="INTERPOLATION_TYPE"/>
+				<xs:element ref="SEARCH_TYPE"/>
+				<xs:element ref="IMAGE_TO_RESAMPLE"/>
+				<xs:element ref="LOC_PRECISION"/>
+				<xs:element ref="INTERPOL_TYPE"/>
+				<xs:element ref="SINC_HALF_NB_ROW"/>
+				<xs:element ref="SINC_HALF_NB_COL"/>
+				<xs:element ref="GAUSSIAN"/>
+				<xs:element ref="SIGMA_COL"/>
+				<xs:element ref="SIGMA_ROW"/>
+				<xs:element ref="SPLINE_ORDER"/>
+				<xs:element ref="INFORMATION_MUTUELLE" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IMAGE_CORRELATION_LEVEL2">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="EXPLORATION_NB_ROWS"/>
+				<xs:element ref="EXPLORATION_NB_COLS"/>
+				<xs:element ref="METHOD_TYPE"/>
+				<xs:element ref="CORREL_SIZE_NB_ROWS"/>
+				<xs:element ref="CORREL_SIZE_NB_COLS"/>
+				<xs:element ref="INITIAL_THRESHOLD"/>
+				<xs:element ref="FINAL_THRESHOLD"/>
+				<xs:element ref="MIN_FINAL_THRESHOLD"/>
+				<xs:element ref="CONTOUR_REDUCTION"/>
+				<xs:element ref="SLOPE_THRESHOLD"/>
+				<xs:element ref="SIGMA_THRESHOLD"/>
+				<xs:element ref="CORREL_COMPUTING"/>
+				<xs:element ref="CORREL_METHOD"/>
+				<xs:element ref="INTERPOLATION_TYPE"/>
+				<xs:element ref="SEARCH_TYPE"/>
+				<xs:element ref="IMAGE_TO_RESAMPLE"/>
+				<xs:element ref="LOC_PRECISION"/>
+				<xs:element ref="INTERPOL_TYPE"/>
+				<xs:element ref="SINC_HALF_NB_ROW"/>
+				<xs:element ref="SINC_HALF_NB_COL"/>
+				<xs:element ref="GAUSSIAN"/>
+				<xs:element ref="SIGMA_COL"/>
+				<xs:element ref="SIGMA_ROW"/>
+				<xs:element ref="SPLINE_ORDER"/>
+				<xs:element ref="INFORMATION_MUTUELLE" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IMAGE_CORRELATION_LEVEL3">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="EXPLORATION_NB_ROWS"/>
+				<xs:element ref="EXPLORATION_NB_COLS"/>
+				<xs:element ref="METHOD_TYPE"/>
+				<xs:element ref="CORREL_SIZE_NB_ROWS"/>
+				<xs:element ref="CORREL_SIZE_NB_COLS"/>
+				<xs:element ref="INITIAL_THRESHOLD"/>
+				<xs:element ref="FINAL_THRESHOLD"/>
+				<xs:element ref="MIN_FINAL_THRESHOLD"/>
+				<xs:element ref="CONTOUR_REDUCTION"/>
+				<xs:element ref="SLOPE_THRESHOLD"/>
+				<xs:element ref="SIGMA_THRESHOLD"/>
+				<xs:element ref="CORREL_COMPUTING"/>
+				<xs:element ref="CORREL_METHOD"/>
+				<xs:element ref="INTERPOLATION_TYPE"/>
+				<xs:element ref="SEARCH_TYPE"/>
+				<xs:element ref="IMAGE_TO_RESAMPLE"/>
+				<xs:element ref="LOC_PRECISION"/>
+				<xs:element ref="INTERPOL_TYPE"/>
+				<xs:element ref="SINC_HALF_NB_ROW"/>
+				<xs:element ref="SINC_HALF_NB_COL"/>
+				<xs:element ref="GAUSSIAN"/>
+				<xs:element ref="SIGMA_COL"/>
+				<xs:element ref="SIGMA_ROW"/>
+				<xs:element ref="SPLINE_ORDER"/>
+				<xs:element ref="INFORMATION_MUTUELLE" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FACTOR_MIN_FOR_MODEL">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="1"/>
+				<xs:maxInclusive value="100"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="NB_CONTROL_POINTS_BY_ZONE">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORNERS_STEP">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minExclusive value="0"/>
+				<xs:maxExclusive value="4"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MINIMAL_VARIATION_ON_CORNERS" type="xs:double"/>
+	<xs:element name="MIN_DENSITY_BY_ZONE_LEVEL_1">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_DENSITY_BY_ZONE_LEVEL_2">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MIN_DENSITY_BY_ZONE_LEVEL_3">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MAX_DENSITY_BY_ZONE_LEVEL_1">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MAX_DENSITY_BY_ZONE_LEVEL_2">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MAX_DENSITY_BY_ZONE_LEVEL_3">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="DENSIFYING_ITERATION_MAX">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="2"/>
+				<xs:maxInclusive value="100"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="K_FILTERING_LEVEL_1">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="100.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="K_FILTERING_LEVEL_2">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+				<xs:maxInclusive value="100.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="K_FILTERING_LEVEL_3">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0.0"/>
+				<xs:maxInclusive value="100.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="CORRELATIONS_ITERATION_MAX">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="2"/>
+				<xs:maxInclusive value="100"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="REJECTED_POINTS_MAX_INCREASING">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1.0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="COEFFICIENT">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ROW_DEGREE"/>
+				<xs:element ref="COL_DEGREE"/>
+				<xs:element ref="WEIGHT"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ROW_DEGREE">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="COL_DEGREE">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="WEIGHT">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="REDUCED_ROW_POLYNOMIAL">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="COEFFICIENT" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="REDUCED_COL_POLYNOMIAL">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="COEFFICIENT" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="REDUCED_ROW_POLYNOMIAL_NB_MON">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="REDUCED_COL_POLYNOMIAL_NB_MON">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="FULL_ROW_POLYNOMIAL_NB_MON">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="FULL_COL_POLYNOMIAL_NB_MON">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="FULL_ROW_POLYNOMIAL">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="COEFFICIENT" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FULL_COL_POLYNOMIAL">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="COEFFICIENT" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MODEL_ERROR_WARNING">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MODELISE_WITH_FILTRED_POINTS">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MODELISED_OUTPUT_POINTS">
+		<xs:simpleType>
+			<xs:restriction base="xs:integer">
+				<xs:minInclusive value="0"/>
+				<xs:maxInclusive value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MODEL_ERROR_MAX">
+		<xs:simpleType>
+			<xs:restriction base="xs:double">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="MODELISATION_PARAMETERS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="FACTOR_MIN_FOR_MODEL"/>
+				<xs:element ref="NB_CONTROL_POINTS_BY_ZONE"/>
+				<xs:element ref="CORNERS_STEP"/>
+				<xs:element ref="MINIMAL_VARIATION_ON_CORNERS"/>
+				<xs:element ref="MIN_DENSITY_BY_ZONE_LEVEL_1"/>
+				<xs:element ref="MIN_DENSITY_BY_ZONE_LEVEL_2"/>
+				<xs:element ref="MIN_DENSITY_BY_ZONE_LEVEL_3"/>
+				<xs:element ref="MAX_DENSITY_BY_ZONE_LEVEL_1"/>
+				<xs:element ref="MAX_DENSITY_BY_ZONE_LEVEL_2"/>
+				<xs:element ref="MAX_DENSITY_BY_ZONE_LEVEL_3"/>
+				<xs:element ref="DENSIFYING_ITERATION_MAX"/>
+				<xs:element ref="K_FILTERING_LEVEL_1"/>
+				<xs:element ref="K_FILTERING_LEVEL_2"/>
+				<xs:element ref="K_FILTERING_LEVEL_3"/>
+				<xs:element ref="CORRELATIONS_ITERATION_MAX"/>
+				<xs:element ref="REJECTED_POINTS_MAX_INCREASING"/>
+				<xs:element ref="REDUCED_ROW_POLYNOMIAL_NB_MON"/>
+				<xs:element ref="REDUCED_ROW_POLYNOMIAL"/>
+				<xs:element ref="REDUCED_COL_POLYNOMIAL_NB_MON"/>
+				<xs:element ref="REDUCED_COL_POLYNOMIAL"/>
+				<xs:element ref="FULL_ROW_POLYNOMIAL_NB_MON"/>
+				<xs:element ref="FULL_ROW_POLYNOMIAL"/>
+				<xs:element ref="FULL_COL_POLYNOMIAL_NB_MON"/>
+				<xs:element ref="FULL_COL_POLYNOMIAL"/>
+				<xs:element ref="MODEL_ERROR_WARNING"/>
+				<xs:element ref="MODEL_ERROR_MAX"/>
+				<xs:element ref="MODELISE_WITH_FILTRED_POINTS"/>
+				<xs:element ref="MODELISED_OUTPUT_POINTS"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="INFORMATION_MUTUELLE" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>permet d'activer la correlation par information mutuelle dans QPEC</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

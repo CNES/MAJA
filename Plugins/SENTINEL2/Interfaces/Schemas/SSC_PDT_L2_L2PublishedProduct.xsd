@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="./L2L3_DictionaryProducts.xsd"/>
+    <!-- ================= -->
+    <!--Root (Header)-->
+    <!-- ================= -->
+    <xs:complexType name="VSC_PDT_L2_Header_Type">
+        <xs:complexContent>
+            <xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+                <xs:sequence>
+                    <xs:element name="Fixed_Header" type="ee:VSC_PDT_L2_Fixed_Header_Type"/>
+                    <xs:element name="Variable_Header" type="ee:VSC_PDT_L2_Variable_Header_Type"/>
+                </xs:sequence>
+                <xs:attribute name="schema_version" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="ee:Decimal_Type">
+                            <xs:minInclusive value="0.30"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!-- ================= -->
+    <!-- Header -->
+    <!-- ================= -->
+    <xs:complexType name="VSC_PDT_L2_Fixed_Header_Type">
+        <xs:sequence>
+            <xs:element name="File_Name">
+                <xs:simpleType>
+                    <xs:restriction base="ee:VE_L2PublishedProduct_Id_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="File_Description">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="L2PublishedProduct"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Notes" type="ee:String_Type"/>
+            <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+            <xs:element name="File_Class" type="ee:VE_Product_File_Class_Type"/>
+            <xs:element name="File_Type" type="ee:VE_L2_Published_Product_File_Type_Type"/>
+            <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+            <xs:element name="File_Version" type="ee:File_Version_Type"/>
+            <xs:element name="Source" type="ee:VE_Source_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VSC_PDT_L2_Variable_Header_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VSC_PDT_L2_Variable_Header_Type">
+        <xs:sequence>
+            <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+            <xs:element name="Specific_Product_Header">
+                <xs:annotation>
+                    <xs:documentation>
+</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Instance_Id" type="ee:VSC_PDT_L2_Instance_Id_Type"/>
+                        <xs:element name="Product_Information" type="ee:VE_L2_Product_Information_Sentinel2_Type"/>
+                        <xs:element name="Image_Information" type="ee:VE_L2_Image_Information_Sentinel2_Type"/>
+                        <xs:element name="Geo_Referencing_Information" type="ee:VE_Geo_Referencing_Sentinel2_Type"/>
+                        <xs:element name="Product_Organization" type="ee:VE_L2_Product_Organization_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- Definition Type -->
+    <!-- ========================================================================================== -->
+    <!-- ========================================================================================== -->
+    <!-- VSC_PDT_L2_Instance_Id_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VSC_PDT_L2_Instance_Id_Type">
+        <xs:sequence>
+            <xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type"/>
+            <xs:element name="Acquisition_Date" type="ee:VE_Special_Date_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Geo_Referencing_Sentinel2_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Geo_Referencing_Sentinel2_Type">
+        <xs:annotation>
+            <xs:documentation>public description of Image information node for a Sentinel 2 L2 product</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Product_Coverage">
+                <xs:annotation>
+                    <xs:documentation>Produc coverage</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                            <xs:sequence>
+                    <xs:element name="Geographic">
+                        <xs:annotation>
+                            <xs:documentation>Produc coverage</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Coordinate_Reference_System" type="ee:VE_Coordinate_Reference_System_Type"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                            </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_L2_Image_Information_Sentinel2_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_L2_Image_Information_Sentinel2_Type">
+        <xs:annotation>
+            <xs:documentation>public description of Image information node for a Sentinel 2 L2 product</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Format">
+                <xs:annotation>
+                    <xs:documentation>JPEG, TIFF, GEOTIFF, ... HDF</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="N/A"/>
+                        <xs:enumeration value="GEOTIFF"/>
+                        <xs:enumeration value="TIFF"/>
+                        <xs:enumeration value="JPEG"/>
+                        <xs:enumeration value="HDF"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Binary_Encoding" type="ee:VE_Binary_Encoding_Type">
+                <xs:annotation>
+                    <xs:documentation>LITTLE_ENDIAN</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Data_Type">
+                <xs:annotation>
+                    <xs:documentation>SIGNED_SHORT for products, UNSIGNED_SHORT for inventoriedRaw product,
+UNSIGNED_BYTE for quickLooks</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="ee:VE_Raster_Data_Type_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Number_of_Significant_Bits" type="ee:Integer_Type"/>
+            <xs:element name="Nodata_Value">
+                <xs:annotation>
+                    <xs:documentation>Filler value expressed in integer or NaN</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="ee:Integer_Type">
+                        <xs:simpleType>
+                            <xs:restriction base="ee:String_Type">
+                                <xs:pattern value="NaN"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:union>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="List_of_Resolutions" type="ee:VE_List_of_Resolutions_Type"/>
+            <xs:element name="Image_Compacting_Tool">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="NO"/>
+                        <xs:enumeration value="BZIP2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_L2_Product_Information_Sentinel2_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_L2_Product_Information_Sentinel2_Type">
+        <xs:annotation>
+            <xs:documentation>public description of a Sentinel 2 L2 product</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Product_Level">
+                <xs:annotation>
+                    <xs:documentation>Comprehensible product level : INVENTORIED, L0, L0-EXTENDED, L1A, L1, L2, L3</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="ee:VE_Product_Level_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Acquisition_Date_Time" type="ee:UTC_Date_Time_Type">
+                <xs:annotation>
+                    <xs:documentation>product data acquisition date-time. For L3 products is the first acquisition date/time.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_Or_Nil_Reason_NA_With_Unit_Type">
+                <xs:annotation>
+                    <xs:documentation>Acquisition absolute orbit. For  L3 products is the first orbit number.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Processing_Information" type="ee:VE_Processing_Type">
+                <xs:annotation>
+                    <xs:documentation>processing informations : date/time and GIPP files</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Web_Site_URL" type="ee:String_Type">
+                <xs:annotation>
+                    <xs:documentation>reference to the Internet site of the VPDS</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="List_of_Quality_Indexes">
+                <xs:annotation>
+                    <xs:documentation>Quality indexes
+Quality index = value with sk=the code of the quality index (more accessible with xml parser)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Quality_Index" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="ee:VE_Quality_Index_Type">
+                                        <xs:attribute name="sn" use="required">
+                                            <xs:simpleType>
+                                                <xs:restriction base="ee:Integer_Type">
+                                                    <xs:minInclusive value="1"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="count" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="0"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="List_of_Band_Central_Wavelength" type="ee:VE_List_of_Band_Central_Wavelengths_Type">
+                <xs:annotation>
+                    <xs:documentation>wave length of each band</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="List_of_Band_Resolution" type="ee:VE_List_of_Band_Resolution_Type">
+                <xs:annotation>
+                    <xs:documentation>Band resolution of each band</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Mean_Sun_Angle" type="ee:VE_Angle_Type">
+                <xs:annotation>
+                    <xs:documentation>Mean angle Sun</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Solar_Angles">
+                <xs:annotation>
+                    <xs:documentation>Solar angles</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Zenith" type="ee:VE_Grid_Angle_Type"/>
+                        <xs:element name="Azimuth" type="ee:VE_Grid_Angle_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Mean_Viewing_Incidence_Angle_List" type="ee:VE_Mean_Viewing_Incidence_Angle_List_Type">
+                <xs:annotation>
+                    <xs:documentation>Mean angle Sun</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="List_of_Viewing_Angles" type="ee:VE_List_of_Viewing_Angles_Type">
+                <xs:annotation>
+                    <xs:documentation>List_of_Viewing_Angles</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Reference_SiteDefinition_Id">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="UNKNOWN"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Cloud_Percentage">
+                <xs:annotation>
+                    <xs:documentation>Percentage of cloudy pixels</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="ee:Float_Type ee:VE_Nil_Reason_NA_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Snow_Percentage">
+                <xs:annotation>
+                    <xs:documentation>Percentage of snowy pixels</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="ee:Float_Type ee:VE_Nil_Reason_NA_Type"/>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Used_DEM" type="ee:VE_DEM_Information_Type"/>
+            <xs:element name="Reflectance_Quantification_Value" type="ee:Decimal_Type">
+                <xs:annotation>
+                    <xs:documentation>Reflectance corresponding to one bit of quantification (for example 1/1024). For system products the value is "NONE".</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Processing_Flags_And_Modes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Processing_Mode" type="ee:VE_Processing_Mode_Type">
+                            <xs:annotation>
+                                <xs:documentation>enumerated values : 
+INIT_MODE
+BACKWARD_MODE
+STANDARD_MODE</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Adjacency_Effects_And_Slope_Correction" type="ee:Bool_Type"/>
+                        <xs:element name="Cirrus_Correction" type="ee:Bool_Type" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="List_of_Used_Product_Ids">
+                <xs:annotation>
+                    <xs:documentation>Reference to each product used to generate the L2 product.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Used_Product_Id" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="ee:VE_GenericPublishedProduct_Id_Type">
+                                        <xs:attribute name="sn" type="ee:Integer_Type" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="count" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_List_of_Band_Resolution_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_List_of_Viewing_Angles_Type">
+        <xs:annotation>
+            <xs:documentation>band resolution of the bands</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Viewing_Incidence_Angles_Grids" minOccurs="13" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Zenith" type="ee:VE_Grid_Angle_Type"/>
+                        <xs:element name="Azimuth" type="ee:VE_Grid_Angle_Type"/>
+                    </xs:sequence>
+                    <xs:attribute name="bandId" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="0"/>
+                                <xs:maxInclusive value="12"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="detectorId" use="required">
+                        <xs:simpleType>
+                            <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                                <xs:maxInclusive value="12"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Angle_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Angle_Type">
+        <xs:annotation>
+            <xs:documentation>angle</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ZENITH_ANGLE">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="AZIMUTH_ANGLE">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:decimal">
+                            <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Grid_Angle_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Grid_Angle_Type">
+        <xs:annotation>
+            <xs:documentation>angle grid</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="COL_STEP">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="ee:PositiveInteger_Type">
+                            <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="m"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ROW_STEP">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="ee:PositiveInteger_Type">
+                            <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="m"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Values_List" type="ee:VE_Values_List_Type">
+                <xs:annotation>
+                    <xs:documentation>Values list</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Values_List_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Values_List_Type">
+        <xs:annotation>
+            <xs:documentation>Values list of angles</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="VALUES" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="ee:List_of_Sentinel2_ViewingAngle_Type"/>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_List_of_Band_Resolution_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_List_of_Band_Resolution_Type">
+        <xs:annotation>
+            <xs:documentation>band resolution of the bands</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Band_Central_Resolution" minOccurs="13" maxOccurs="13">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="ee:Integer_Type">
+                            <xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required"/>
+                            <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="meter"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="count" use="required">
+            <xs:annotation>
+                <xs:documentation>= number of bands</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="ee:Integer_Type">
+                    <xs:minInclusive value="13"/>
+                    <xs:maxInclusive value="13"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Resolution_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Resolution_Type">
+        <xs:annotation>
+            <xs:documentation>resolution per one band</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Size">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Lines" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Columns" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="Bands" type="ee:PositiveInteger_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Geoposition">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ULX" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="ULY" type="ee:PositiveInteger_Type"/>
+                        <xs:element name="XDIM" type="ee:Integer_Type"/>
+                        <xs:element name="YDIM" type="ee:Integer_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Product_Sampling">
+                <xs:annotation>
+                    <xs:documentation>Product sampling in meters.
+- For inv and sys products the product sampling is the along track (By_Line) and along detector (By_Column) resolutions.
+- For the published products the product_sampling is the Sampling_Interval (Geo_Referencing_Information)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="By_Line" type="ee:Distance_Type"/>
+                        <xs:element name="By_Column" type="ee:Distance_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="List_of_Bands">
+                <xs:annotation>
+                    <xs:documentation>Associated band (B01 to B12 for VENUS, B1 to B4 for FORMOSAT, etc..) or channel names (e.g. VAP, LAI, FAPAR,...).</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Band" minOccurs="4" maxOccurs="6">
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="ee:VE_Channel_Code_Type">
+                                        <xs:attribute name="sn" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>Band or channel code in image file</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:simpleType>
+                                                <xs:restriction base="ee:Integer_Type">
+                                                    <xs:minInclusive value="1"/>
+                                                    <xs:maxInclusive value="6"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:attribute>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="count" use="required">
+                        <xs:annotation>
+                            <xs:documentation>number of bands</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                                <xs:maxInclusive value="6"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="r" use="required">
+            <xs:annotation>
+                <xs:documentation>resolution id</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="ee:String_Type">
+                    <xs:enumeration value="10"/>
+                    <xs:enumeration value="20"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_List_of_Resolutions_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_List_of_Resolutions_Type">
+        <xs:annotation>
+            <xs:documentation>list of resolutions per bands</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Resolution" minOccurs="2" maxOccurs="2" type="ee:VE_Resolution_Type">
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="count" use="required">
+            <xs:annotation>
+                <xs:documentation>= number of resolutions</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="ee:Integer_Type">
+                    <xs:minInclusive value="2"/>
+                    <xs:maxInclusive value="2"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <!-- ========================================================================================== -->
+    <!-- VE_Mean_Viewing_Incidence_Angle_List_Type Definition Type -->
+    <!-- ========================================================================================== -->
+    <xs:complexType name="VE_Mean_Viewing_Incidence_Angle_List_Type">
+        <xs:annotation>
+            <xs:documentation>Mean viewing incidence angle of the bands</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Mean_Viewing_Incidence_Angle" minOccurs="13" maxOccurs="13">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="ee:VE_Angle_Type">
+                            <xs:attribute name="bandId" use="required">
+                                <xs:simpleType>
+                                    <xs:restriction base="ee:Integer_Type">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="12"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

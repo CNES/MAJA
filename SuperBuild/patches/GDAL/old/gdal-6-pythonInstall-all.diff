@@ -1,0 +1,34 @@
+diff -burN gdal-2.4.1.orig/swig/python/GNUmakefile gdal-2.4.1/swig/python/GNUmakefile 
+--- gdal-2.4.1.orig/swig/python/GNUmakefile	2020-03-10 15:36:13.462237064 +0100
++++ gdal-2.4.1/swig/python/GNUmakefile	2020-03-10 16:31:15.794318948 +0100
+@@ -6,6 +6,10 @@
+         PYTHON=python
+ endif
+
++ifndef DESTDIR
++    DESTDIR=/
++endif
++
+ all: build
+
+ BINDING = python
+@@ -88,18 +92,7 @@
+ ifdef PREFIX
+     setup_opts+=--prefix=$(PREFIX)
+ else ifdef prefix
+-    ifeq ($(shell uname),Darwin)
+-        STD_UNIX_LAYOUT=$(shell $(PYTHON) -c "from __future__ import print_function;import sys;print(\"FALSE\" if \"framework\" in sys.prefix.lower() else \"TRUE\")")
+-        ifeq ($(STD_UNIX_LAYOUT),"TRUE")
+-            setup_opts+=--prefix=$(prefix)
+-        else
+-            ifdef PYTHON_INSTALL_LIB
+-                setup_opts+=--install-lib=$(PYTHON_INSTALL_LIB)
+-            endif
+-        endif
+-    else
+-        setup_opts+=--prefix=$(prefix)
+-    endif
++    setup_opts+=--install-lib=$(site_package_dir)
+ endif
+ 
+ ifdef INSTALL_LAYOUT

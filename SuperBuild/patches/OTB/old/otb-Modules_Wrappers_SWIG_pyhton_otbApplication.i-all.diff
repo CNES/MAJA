@@ -1,0 +1,51 @@
+--- OTB-6.0.1.orig/Modules/Wrappers/SWIG/src/otbApplication.i	2017-10-31 09:49:06.000000000 +0100
++++ OTB-6.0.1/Modules/Wrappers/SWIG/src/otbApplication.i	2018-11-30 08:51:17.077171612 +0100
+@@ -510,6 +593,10 @@
+ 			s += self.GetDocLongDescription()
+ 			return s
+ 
++		def SetParameters(self, dict_params):
++			for param_key, param_value in dict_params.items():
++				self.SetParameterValue(param_key, param_value)
++
+ 		def SetParameterValue(self, paramKey, value):
+ 			paramType = self.GetParameterType(paramKey)
+ 			if paramType in [ParameterType_InputProcessXML, ParameterType_RAM,
+@@ -522,13 +609,13 @@
+ 			elif paramType in [ParameterType_InputImageList, ParameterType_InputVectorDataList,
+ 												 ParameterType_InputFilenameList, ParameterType_StringList,
+ 												 ParameterType_ListView]:
+-			  return self.setParameterStringList(paramKey, value)
++			  return self.SetParameterStringList(paramKey, value)
+ 			elif paramType in [ParameterType_Int, ParameterType_Radius]:
+ 			  return self.SetParameterInt(paramKey, value)
+ 			elif paramType in [ParameterType_Float]:
+ 			  return self.SetParameterFloat(paramKey, value)
+ 			elif paramType in [ParameterType_Empty]:
+ 			  return self.EnableParameter(paramKey)
+ 			elif paramType in [ParameterType_Group]:
+ 			  return ApplicationProxy(self, paramKey)
+ 			elif paramType in [ParameterType_Choice]:
+@@ -537,6 +626,13 @@
+ 			  print ("Unsupported parameter type '%s' with key '%s'" %(self.GetParameterTypeAsString(paramType) ,paramKey))
+ 			return
+ 
++		def GetParameters(self):
++			ret = {}
++			for key in self.GetParametersKeys():
++				if self.HasValue(key) and self.IsParameterEnabled(key) and self.GetParameterRole(key) == 0:
++					ret[key] = self.GetParameterValue(key)
++			return ret
++
+ 		def GetParameterValue(self, paramKey):
+ 			paramType = self.GetParameterType(paramKey)
+ 			if paramType in [ParameterType_InputProcessXML,
+
+@@ -755,6 +887,7 @@
+   static Application_Pointer CreateApplication(const std::string& name);
+   static void AddApplicationPath(std::string newpath);
+   static void SetApplicationPath(std::string newpath);
++  static void CleanRegistry();
+ 
+ protected:
+   Registry();

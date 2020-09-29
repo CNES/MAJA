@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by vgaudiss (C-S) -->
+<!DOCTYPE xs:schema [
+	<!ENTITY ChainCodeElt "(L1|L2|L3)">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="QCK_PDTANX_PublishedProductTechnicalData.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="QCK_PDT_L2_File_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:QCK_PDT_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:QCK_PDTANX_L2_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="QCK_PDTANX_L2_Body_Type">
+		<xs:sequence>
+			<xs:element name="Chain_Info" type="ee:Chain_InfoType"/>
+			<xs:element name="Extract">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:ExtractType">
+							<xs:sequence>
+								<xs:element name="Reflectances_Values">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Quantification_Value" type="xs:float"/>
+											<xs:element name="Useful_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Valids_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Radius"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="SRE_Mean">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="SRE_Standard_Deviation">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="FRE_Mean" minOccurs="0">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element minOccurs="0" name="FRE_Standard_Deviation">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Cloud_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Water_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Edge_Val"
+												type="ee:NonNegativeInteger_Type"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="VAP_Values">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Quantification_Value" type="xs:float"/>
+											<xs:element name="Useful_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Valids_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Radius"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Mean">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Standard_Deviation">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Cloud_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Water_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Edge_Val"
+												type="ee:NonNegativeInteger_Type"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="AOT_Values">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Quantification_Value" type="xs:float"/>
+											<xs:element name="Useful_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Valids_Pixels_Percentage"
+												type="xs:float"/>
+											<xs:element name="Radius"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Mean">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Standard_Deviation">
+												<xs:simpleType>
+													<xs:list itemType="xs:float"/>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Cloud_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Water_Val"
+												type="ee:NonNegativeInteger_Type"/>
+											<xs:element name="Edge_Val"
+												type="ee:NonNegativeInteger_Type"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+                            </xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

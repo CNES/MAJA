@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="BasicTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Satellite Configuration Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:34 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Tolerance_Parameters_Type">
+		<xsd:sequence>
+			<xsd:element name="Min_Semi_Major_Axis" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Semi_Major_Axis" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Min_Inclination" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Inclination" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Min_Eccentricity" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Eccentricity" type="Decimal_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Satellite_Configuration_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Satellite_Name" type="String_Type"></xsd:element>
+			<xsd:element name="Lib_Init" type="Lib_Init_Type"></xsd:element>
+			<xsd:element name="Orbit_Init" type="Orbit_Init_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Satellite_Configuration_Data_Block_Type"></xsd:element>
+	<xsd:complexType name="Lib_Init_Type">
+		<xsd:sequence>
+			<xsd:element name="Low_Tolerances" type="Tolerance_Parameters_Type"></xsd:element>
+			<xsd:element name="Tight_Tolerances" type="Tolerance_Parameters_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Orbit_Init_Type">
+		<xsd:sequence>
+			<xsd:element name="Min_Semi_Major_Axis" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Nom_Semi_Major_Axis" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Semi_Major_Axis" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Min_Inclination" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Nom_Inclination" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Inclination" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Nom_Eccentricity" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Nom_Arg_Perigee" type="Decimal_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

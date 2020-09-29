@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  HISTORIQUE
+  VERSION : 1.9 : DM : VE-FT-1449 : 24/01/2018 : Ajout de "List_of_Spike_Characterization" pour la gestion des pics radiométriques
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.9">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="DARKCU_File_Type">
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:DARKCU_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:DARKCU_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="1.9"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="DARKCU_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:DARKCU_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:DARKCU_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DARKCU_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_GIPP_DarkCurrents_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="DarkCurrents"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="GIP_DARKCU"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DARKCU_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:DARKCU_Instance_Id_Type"/>
+            <xs:element name="List_of_Applicable_SiteDefinition_Ids">
+              <xs:annotation>
+                <xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="ee:VE_SiteDefinition_Id_Type">
+                          <xs:attribute name="sn" use="required">
+                            <xs:simpleType>
+                              <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="count" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Integer_Type">
+                      <xs:minInclusive value="0"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DARKCU_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+        <xs:annotation>
+          <xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+        <xs:annotation>
+          <xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+        <xs:annotation>
+          <xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Band_Code" type="ee:VE_Band_Code_Type">
+        <xs:annotation>
+          <xs:documentation>Band code ('B01' to 'B12')</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TDI_Configuration_Values" type="ee:VE_TDI_Configuration_List_Type">
+        <xs:annotation>
+          <xs:documentation>Space-separated list of TDI configurations. Valid values are '01' '04' '08' '16' and '32'.
+
+This list is encoded in the file name with a six-letter pattern 'xxxx0x' following a binary paradigm :
+a/ Every TDI configuration is associated to an 'x' in the pattern. From left to right, associated TDI configurations are '32', '16', '08', '04' and '01'.
+b/ 'x' value can be :
+- '1' if this TDI configuration is present 
+- 0' in the other case
+c/ the fitfth character from the left is always '0' (corresponding '02' TDI configuration doesn't exists).
+
+The resulting six-letter code is easily readable by a human and can also be interpreted as a valid binary number whose value always equals the sum of TDI configurations.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="DARKCU_Body_Type">
+    <xs:sequence>
+      <xs:element name="List_of_Dark_Currents">
+        <xs:annotation>
+          <xs:documentation>List of dark currents</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Dark_Current" minOccurs="5200" maxOccurs="5200">
+              <xs:annotation>
+                <xs:documentation>Dark current (Cj).
+
+Value is a positive double</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:NonNegativeDouble_Type">
+                    <xs:attribute name="sn" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:Integer_Type">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="5200"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:annotation>
+              <xs:documentation>number of dark currents = 5200 </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="5200"/>
+                <xs:maxInclusive value="5200"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="List_of_Spike_Characterization">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Spike_Coefficients"  minOccurs="0" maxOccurs="5200">
+              <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Pixel_Position">
+                  <xs:annotation>
+                    <xs:documentation>Position of the spike in the image</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Integer_Type">
+                      <xs:minInclusive value="0"/>
+                      <xs:maxInclusive value="5200"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Pixel_Threshold">
+                  <xs:annotation>
+                    <xs:documentation>Pixel threshold</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Double_Type">
+                      <xs:minInclusive value="0.00"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Polynomial_Coefficients">
+                  <xs:annotation>
+                    <xs:documentation>Polyonmial coefficient</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                    <xs:restriction>
+                      <xs:simpleType>
+                        <xs:list>
+                          <xs:simpleType>
+                            <xs:restriction base="ee:Double_Type">
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:list>
+                      </xs:simpleType>
+                      <xs:length value="4"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+                <xs:element name="Linear_Coefficients">
+                  <xs:annotation>
+                    <xs:documentation>Linear coefficients</xs:documentation>
+                  </xs:annotation>
+                  <xs:simpleType>
+                    <xs:restriction>
+                      <xs:simpleType>
+                        <xs:list>
+                          <xs:simpleType>
+                            <xs:restriction base="ee:Double_Type">
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:list>
+                      </xs:simpleType>
+                      <xs:length value="2"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="sn" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="ee:Integer_Type">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="5200"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:annotation>
+              <xs:documentation>number of pixels in the band affected by spikes</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="5200"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

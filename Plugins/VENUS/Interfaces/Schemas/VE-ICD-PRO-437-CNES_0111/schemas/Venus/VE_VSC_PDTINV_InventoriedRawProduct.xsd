@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.42">
+	<xs:include schemaLocation="VE_DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="VSC_PDTINV_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:VSC_PDTINV_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:VSC_PDTINV_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="VSC_PDTINV_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_InventoriedRawProduct_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="InventoriedRawProduct"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="VSC_PDTINV"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VSC_PDTINV_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:VSC_PDTINV_Instance_Id_Type"/>
+						<xs:element name="Product_Information" type="ee:VE_Inventoried_Product_Information_Type">
+							<xs:annotation>
+								<xs:documentation>
+Quality indexes :
+They are computed if they are specific by bands. Specific indexes are describe in image header files.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Image_Information">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Generic_Image_Information_Type">
+										<xs:sequence>
+											<xs:element name="Pre_Post_Scan_Pixels" type="ee:VE_Pre_Post_Scan_Type"/>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Product_Organization" type="ee:VE_Inventoried_Product_Organization_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VSC_PDTINV_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Element" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data ElementId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

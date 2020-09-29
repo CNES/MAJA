@@ -1,0 +1,110 @@
+#
+# Copyright (C) 2020 Centre National d'Etudes Spatiales (CNES)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+############################################################################################################
+#                                                                                                          #
+#                                        __  __    __     ____   __                                        #
+#                                       (  \/  )  /__\   (_  _) /__\                                       #
+#                                        )    (  /(__)\ .-_)(  /(__)\                                      #
+#                                       (_/\/\_)(__)(__)\____)(__)(__)                                     #
+#                                                                                                          #
+#                                                                                                          #
+############################################################################################################
+#                                                                                                          #
+# Author: CS Systemes d'Information  (France)                                                              #
+#                                                                                                          #
+############################################################################################################
+# HISTORIQUE                                                                                               #
+#                                                                                                          #
+# VERSION : 5-0-0 : FA : LAIG-FA-MAC-143764-CS : 12 avril 2016 : Mise en forme du code (indentation, etc.) #
+# VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 14 octobre 2011 : Modification pour prise en compte        #
+#                                                            d'evolutions liees a MACCS                    #
+#                                                                                                          #
+# VERSION : 1-0-0 : <TypeFT> : <NumFT> : 1 avril 2010 : Creation                                                           
+#                                                                                                          #
+# FIN-HISTORIQUE                                                                                           #
+#                                                                                                          #
+# $Id$
+#                                                                                                          #
+############################################################################################################
+#
+# This file sets up include directories, link directories, and
+# compiler settings for a project to use MAJA.  It should not be
+# included directly, but rather through the MAJA_USE_FILE setting
+# obtained from MAJAConfig.cmake.
+#
+
+# Add compiler flags needed to use MAJA.
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MAJA_REQUIRED_C_FLAGS}")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAJA_REQUIRED_CXX_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${MAJA_REQUIRED_LINK_FLAGS}")
+SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${MAJA_REQUIRED_LINK_FLAGS}")
+SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${MAJA_REQUIRED_LINK_FLAGS}")
+
+# Add include directories needed to use MAJA.
+INCLUDE_DIRECTORIES(BEFORE ${MAJA_INCLUDE_DIRS})
+
+# Add link directories needed to use MAJA.
+LINK_DIRECTORIES(${MAJA_LIBRARY_DIRS})
+
+# Path to additional CMake modules
+#   save the current value
+set(BACKUP_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+#   add the MAJA specific CMake modules dir BEFORE the current CMAKE_MODULE_PATH
+set(CMAKE_MODULE_PATH
+    ${MAJA_CMAKEMODULE_DIRS}
+    ${CMAKE_MODULE_PATH})
+#   at the end of this file, CMAKE_MODULE_PATH will be set back to its original value
+#   this way, the OTb specific FindXXX.cmake are only used in this file
+#   and do not pollute the user space
+
+#-----------------------------------------------------------------------------
+# Find Expat
+find_package(Expat REQUIRED)
+include_directories(${EXPAT_INCLUDE_DIR})
+
+#-----------------------------------------------------------------------------
+# Find ITK
+find_package(ITK REQUIRED)
+#IF(OTB_FOUND)
+include(${ITK_USE_FILE})
+
+#-----------------------------------------------------------------------------
+# Find OTB
+find_package(OTB REQUIRED)
+#IF(OTB_FOUND)
+include(${OTB_USE_FILE})
+#ELSE(OTB_FOUND)
+#  MESSAGE(FATAL_ERROR
+#       "OTB not found. Please set OTB_DIR")
+#ENDIF(OTB_FOUND)
+
+# Find HDF4
+find_package(Hdf4 REQUIRED)
+include_directories(${HDF4_INCLUDE_DIR})
+
+
+# Import GDAL
+find_package(Gdal REQUIRED)
+include_directories(${GDAL_INCLUDE_DIR})
+
+# Import GD
+find_package(GD REQUIRED)
+include_directories(${GD_INCLUDE_DIR})
+
+# Import Pugixml
+find_package(Pugixml REQUIRED)
+include_directories(${PUGIXML_INCLUDE_DIRS)
+
+set(CMAKE_MODULE_PATH ${BACKUP_CMAKE_MODULE_PATH})

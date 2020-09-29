@@ -1,0 +1,20 @@
+diff -burN InsightToolkit-4.13.1.orig/Modules/Core/Common/include/itkProgressReporter.h InsightToolkit-4.13.1/Modules/Core/Common/include/itkProgressReporter.h
+--- InsightToolkit-4.13.1.orig/Modules/Core/Common/include/itkProgressReporter.h	2020-02-17 16:38:42.806358579 +0100
++++ InsightToolkit-4.13.1/Modules/Core/Common/include/itkProgressReporter.h	2020-02-17 16:47:16.038353685 +0100
+@@ -73,6 +73,8 @@
+   /** Called by a filter once per pixel.  */
+   void CompletedPixel()
+   {
++    // MACCS 4.3 - optimization
++    #if 0
+     // Inline implementation for efficiency.
+     if ( --m_PixelsBeforeUpdate == 0 )
+       {
+@@ -94,6 +96,7 @@
+         throw e;
+         }
+       }
++    #endif
+   }
+
+ protected:

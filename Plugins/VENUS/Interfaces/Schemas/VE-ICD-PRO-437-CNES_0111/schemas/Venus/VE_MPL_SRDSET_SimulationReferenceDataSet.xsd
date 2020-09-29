@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by USER USER (CNES) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.42">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="SRDSET_File_Type">
+		<xs:annotation>
+			<xs:documentation>At time of establishing any new AcquisitionSetDefinition, SMIGS will consider the so called SimulationReferenceDataSet , which will contain all necessary data to compute feasible AcquisitionSetDefinition.
+
+This set consists in the description of the satellite limitations, in the nominal case (when satellite is fully operational) and in a few main degraded cases.
+
+Only data which might be subject to change are defined in the interface. The other data (reference systems for examples) are defined in the ICDs.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:SRDSET_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:SRDSET_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="SRDSET_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:SRDSET_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:SRDSET_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SRDSET_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_SimulationReferenceDataSet_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="SimulationReferenceDataSet"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="MPL_SRDSET"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SRDSET_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:SRDSET_Instance_Id_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SRDSET_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+				<xs:annotation>
+					<xs:documentation>unique Serial key in the AcquisitionSetRequest series</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Orbit_Number_Validity_Range" type="ee:VE_Absolute_Orbit_Number_Range_Type">
+				<xs:annotation>
+					<xs:documentation>First and last validity orbits. Both orbits are expressed as absolute orbit numbers.
+
+This orbits are set accordingly with the Validity_Period</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="SRDSET_Body_Type">
+		<xs:sequence>
+			<xs:element name="List_of_Station_Elevation_Angles">
+				<xs:annotation>
+					<xs:documentation>Ground stations parameters allowing to compute the start/end of visibility </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Station_Elevation_Angle" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>AOS and LOS elevation angles</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Station_Code" type="ee:VE_Station_Code_Type">
+										<xs:annotation>
+											<xs:documentation>Use only X-Band codes
+CNES uses only KRN elevations for simulations</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="AOS_Elevation_Angle" type="ee:VE_Elevation_Type"/>
+									<xs:element name="LOS_Elevation_Angle" type="ee:VE_Elevation_Type"/>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="1"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_OBR_Availabilities">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OBR_Availability" minOccurs="2" maxOccurs="2">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="OBR_Code" type="ee:VE_OBR_Code_Type"/>
+									<xs:element name="Availability" type="ee:Bool_Type"/>
+									<xs:element name="OBR_Capacity">
+										<xs:annotation>
+											<xs:documentation>OBR effective capacity for imaging. Expressed in GBits.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:NonNegativeInteger_Type">
+													<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="Gbits"/>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="1"/>
+											<xs:maxInclusive value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="2"/>
+								<xs:maxInclusive value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Download_Switch_Time" type="ee:Seconds_Duration_Type">
+				<xs:annotation>
+					<xs:documentation>Time interval in seconds between Download of the 2 OBRs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_DLT_Availabilities">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DLT_Availability" minOccurs="2" maxOccurs="2">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="DLT_Code" type="ee:VE_DLT_Code_Type"/>
+									<xs:element name="Availability" type="ee:Bool_Type"/>
+									<xs:element name="Net_Transmission_Rate">
+										<xs:annotation>
+											<xs:documentation>Net Transmission rate (without transport frame overhead) expressed in MBits/s. Nominal value = 155.52 Mbits/s</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:extension base="ee:NonNegativeDecimal_Type">
+													<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="Mbits/s"/>
+												</xs:extension>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="1"/>
+											<xs:maxInclusive value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="2"/>
+								<xs:maxInclusive value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RW_Availability">
+				<xs:annotation>
+					<xs:documentation>Reaction wheels availability</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="NOMINAL"/>
+						<xs:enumeration value="RW1_FAILURE"/>
+						<xs:enumeration value="RW2_FAILURE"/>
+						<xs:enumeration value="RW3_FAILURE"/>
+						<xs:enumeration value="RW4_FAILURE"/>
+						<xs:enumeration value="DOUBLE_FAILURE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Camera">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Duration_Standby_To_Ready" type="ee:Seconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>Duration (in seconds) in hot mode before imaging (transcient from standby to ready)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Duration_Ready_To_Standby" type="ee:Seconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>Duration (in seconds) in hot mode after imaging (transcient from ready to standby)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Threshold_GCS_Come_Back_To_Standby" type="ee:Seconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>Minimum duration (GCS threshold - in seconds) between acquisitions which implies that camera is set to standby</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Threshold_GCS_Come_Back_To_Off" type="ee:Seconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>Minimum duration (GCS threshold - in seconds) between acquisitions which implies that camera is set to off</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Max_Hot_Mode_Duration_Per_Orbit" type="ee:Seconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>Maximum duration  (in seconds) per orbit in the camera hot mode (i.e. transitions to/from ready, ready state and imaging modes).</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Max_Images_Per_Day" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation>Maximum number of images per day</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Max_Images_Per_Cycle" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation>Maximum number of images per 2-day cycles</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Max_On_Off_Per_Year" type="xs:unsignedInt">
+							<xs:annotation>
+								<xs:documentation>Maximum number of camera ON/OFF cycles per year</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Max_Cone_Acq_Angle">
+							<xs:annotation>
+								<xs:documentation>Maximum "cone" angle (expressed in degrees) for image acquisition, defined as cos-1(cos(cross_track) * cos(along_track))
+
+Value is in range [0,90]</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:restriction base="ee:Angle_Type">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="90"/>
+									</xs:restriction>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Prog_First_Orbit" type="ee:VE_Relative_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Programming cycle first orbit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Tilting_Angles_Limits">
+				<xs:annotation>
+					<xs:documentation>Tilting angles limits (pitch and roll) over world/Israel</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Tilting_Angles_Limit" minOccurs="2" maxOccurs="2">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Area_Code" type="ee:VE_Area_Code_Type"/>
+									<xs:element name="Cross_Track">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:restriction base="ee:Angle_Type">
+													<xs:minInclusive value="0"/>
+													<xs:maxInclusive value="30"/>
+												</xs:restriction>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Along_Track">
+										<xs:complexType>
+											<xs:simpleContent>
+												<xs:restriction base="ee:Angle_Type">
+													<xs:minInclusive value="0"/>
+													<xs:maxInclusive value="30"/>
+												</xs:restriction>
+											</xs:simpleContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="sn" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="1"/>
+											<xs:maxInclusive value="2"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:unsignedInt">
+								<xs:minInclusive value="2"/>
+								<xs:maxInclusive value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Satellite_RW_Agility">
+				<xs:annotation>
+					<xs:documentation>Satellite agility in terms of maneuver duration (in seconds) depending on reaction wheels availability</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="List_of_RW_Agility_Configs">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="RW_Agility_Config" minOccurs="5" maxOccurs="5">
+										<xs:annotation>
+											<xs:documentation>The agility is provided for 5 reaction wheels configurations (nominal + 4 failures).
+
+It defines an 2-axis array of duration values :
+- along the track delta angles define the "horizontal axis"
+- across the track delta angles define the "vertical axis"</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="RW_Config">
+													<xs:annotation>
+														<xs:documentation>possible cases : nominal case, RW1 failure, RW2 failure, RW3 failure, RW4 failure</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="ee:String_Type">
+															<xs:enumeration value="NOMINAL"/>
+															<xs:enumeration value="RW1_FAILURE"/>
+															<xs:enumeration value="RW2_FAILURE"/>
+															<xs:enumeration value="RW3_FAILURE"/>
+															<xs:enumeration value="RW4_FAILURE"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="Along_Track_Delta_Values" type="ee:SRDSET_Angle_List_Type">
+													<xs:annotation>
+														<xs:documentation>This list of 13+ delta angles defines the "horizontal axis" of the Agility array. It can be used to decode the Durations value lists.
+
+This list of delta angles is given here for simplicity sake :  it MUST be compliant with the  Along_Track_Deltas_Definition formula below.</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="List_of_Along_Track_Deltas_Durations">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Along_Track_Deltas_Durations" minOccurs="13" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Durations values are given by "line".
+
+Every "line" defines the 13+ values for one particular Across the track delta angle.</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Across_Track_Delta_Value" type="ee:Angle_Type"/>
+																		<xs:element name="Duration_Values">
+																			<xs:annotation>
+																				<xs:documentation>Every value of this 13+ list correspond :
+- to the Across the track delta angle given by Across_Track_Delta_Value
+- to the Along the track delta angle given at the same position in the Along_Track_Delta_Values list</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:restriction base="ee:Float_List_Type">
+																					<xs:minLength value="13"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="sn" use="required">
+																		<xs:simpleType>
+																			<xs:restriction base="xs:unsignedInt">
+																				<xs:minInclusive value="1"/>
+																			</xs:restriction>
+																		</xs:simpleType>
+																	</xs:attribute>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:attribute name="count" use="required">
+															<xs:simpleType>
+																<xs:restriction base="xs:unsignedInt">
+																	<xs:minInclusive value="13"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:attribute>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+											<xs:attribute name="sn" use="required">
+												<xs:simpleType>
+													<xs:restriction base="xs:unsignedInt">
+														<xs:minInclusive value="1"/>
+														<xs:maxInclusive value="5"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="5"/>
+											<xs:maxInclusive value="5"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Across_Track_Deltas_Definition" type="ee:VE_Angle_List_Definition_Type">
+							<xs:annotation>
+								<xs:documentation>Definition of the list of Across the track deltas angles : 
+- first angle is given by First_Angle
+- next angles are computed adding Interval
+- last angle is computed as First_Angle + ((Nb_of_Angles -1) * Interval</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Along_Track_Deltas_Definition" type="ee:VE_Angle_List_Definition_Type">
+							<xs:annotation>
+								<xs:documentation>Definition of the list of Along the track deltas angles (see the Across the track definition above)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Localization_Error_Margins">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Before_Imaging" type="ee:Distance_Type">
+							<xs:annotation>
+								<xs:documentation>Localization error margin before imaging (expressed in meters)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="After_Imaging" type="ee:Distance_Type">
+							<xs:annotation>
+								<xs:documentation>Localization error margin after imaging (expressed in meters)</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Israeli_Sites_Definition">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Relative_Orbit_Number_With_Unit_Type">
+							<xs:annotation>
+								<xs:documentation>Relative acquisition orbit number for all Israeli sites</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Reserved_Latitude_Range">
+							<xs:annotation>
+								<xs:documentation>Latitude range on the orbit referenced by Acquisition_Orbit_Number allowing for the Israeli sites acquisition and possible downloads over Israel.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="First" type="ee:VE_Latitude_Type"/>
+									<xs:element name="Last" type="ee:VE_Latitude_Type"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="List_of_Israeli_Sites">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Israeli_Site" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="ee:SRDSET_Israeli_Site_Description_Type">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="ee:Integer_Type">
+											<xs:minInclusive value="0"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Download_Time_Offsets">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="List_of_VM1_Download_Time_Offsets">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Download_Time_Offset" minOccurs="0" maxOccurs="29">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="ee:SRDSET_Download_Time_Offset">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="xs:unsignedInt">
+																<xs:minInclusive value="0"/>
+																<xs:maxInclusive value="29"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="0"/>
+											<xs:maxInclusive value="29"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="List_of_VM3_Download_Time_Offsets">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Download_Time_Offset" minOccurs="0" maxOccurs="31">
+										<xs:complexType>
+											<xs:complexContent>
+												<xs:extension base="ee:SRDSET_Download_Time_Offset">
+													<xs:attribute name="sn" use="required">
+														<xs:simpleType>
+															<xs:restriction base="xs:unsignedInt">
+																<xs:minInclusive value="0"/>
+																<xs:maxInclusive value="31"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:extension>
+											</xs:complexContent>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="count" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:unsignedInt">
+											<xs:minInclusive value="0"/>
+											<xs:maxInclusive value="31"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SRDSET_Israeli_Site_Description_Type">
+		<xs:annotation>
+			<xs:documentation>an Israeli site description type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+				<xs:annotation>
+					<xs:documentation>unique identifier of the Israeli site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="In_OBR_Acquisition_Size">
+				<xs:annotation>
+					<xs:documentation>amount of data that has to be stored in the OBR (including the 500m localization margins) for each acquisition of the site (expressed in MBits)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ee:NonNegativeInteger_Type">
+							<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="Mbits"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Site_Definition">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Site_Center" type="ee:VE_Geo_Location_2D_Type">
+							<xs:annotation>
+								<xs:documentation>geographical location of the site center.
+</xs:documentation>
+							</xs:annotation>
+							<!--type="ee:VE_Location_Type"-->
+						</xs:element>
+						<xs:element name="Site_Length">
+							<xs:annotation>
+								<xs:documentation>length of the size along the scanning direction in km</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:restriction base="ee:VE_Size_With_Unit_Type">
+										<xs:minInclusive value="4"/>
+									</xs:restriction>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Site_Altitude" type="ee:VE_Altitude_With_Unit_Type">
+							<xs:annotation>
+								<xs:documentation>altitude of the site</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Site_Acq_Params">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Scan_Azimuth_Type">
+							<xs:annotation>
+								<xs:documentation>scan azimuth type : either relative to track or relative to the north</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="ee:String_Type">
+									<xs:enumeration value="RELATIVE_TO_NORTH"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Scan_Azimuth_Angle" type="ee:VE_Azimuth_Type">
+							<xs:annotation>
+								<xs:documentation>scan azimuth angle according to the scan azimuth type</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Along_Track_Angle" type="ee:VE_Venus_Angle_Type">
+							<xs:annotation>
+								<xs:documentation>along track angle at the center of the acquisition</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Line_Time" type="ee:Microseconds_Duration_Type">
+							<xs:annotation>
+								<xs:documentation>the line time in µs</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SRDSET_Min13_Decimal_List_Type">
+		<xs:restriction base="ee:Decimal_List_Type">
+			<xs:minLength value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SRDSET_Angle_List_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of angle values expressed in degrees</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="ee:SRDSET_Min13_Decimal_List_Type">
+				<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="SRDSET_Download_Time_Offset">
+		<xs:sequence>
+			<xs:element name="Relative_Orbit_Number" type="ee:VE_Relative_Orbit_Number_With_Unit_Type"/>
+			<xs:element name="Offset_After_AOS_X" type="ee:Seconds_Duration_Type"/>
+			<xs:element name="Offset_Before_LOS_X" type="ee:Seconds_Duration_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

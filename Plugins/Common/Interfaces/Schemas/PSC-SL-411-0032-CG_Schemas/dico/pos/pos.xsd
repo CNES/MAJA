@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_COORDINATE_REFERENCE_SYSTEM">
+		<xs:sequence>
+			<xs:element name="GEO_TABLES">
+				<xs:annotation>
+					<xs:documentation>Référentiel de description des systèmes de coordonnées, dans le cadre MUSCATE, on se base sur les code EPSG
+Seule valeur possible pour ce champ : EPSG</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EPSG"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Horizontal_Coordinate_System" type="A_HORIZONTAL_COORDINATE_SYSTEM">
+				<xs:annotation>
+					<xs:documentation>Définition du système de coordonnées horizontal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_POINT">
+		<xs:sequence>
+			<xs:sequence>
+				<xs:element name="LAT" type="xs:double">
+					<xs:annotation>
+						<xs:documentation>Latitude</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="LON" type="xs:double">
+					<xs:annotation>
+						<xs:documentation>Longitude</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:sequence minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>existe uniquement dans le cas d'un produit cartographique</xs:documentation>
+				</xs:annotation>
+				<xs:element name="X" type="xs:double">
+					<xs:annotation>
+						<xs:documentation>abcisse du point dans le référentiel cartographique</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Y" type="xs:double">
+					<xs:annotation>
+						<xs:documentation>ordonee du point dans le référentiel cartographique</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:sequence>
+		<xs:attribute name="name" type="A_POINT_NAME" use="required">
+			<xs:annotation>
+				<xs:documentation>nom du point.
+Enuméré : center, upperLeft ...</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="A_POINT_LIST">
+		<xs:sequence>
+			<xs:element name="Point" type="A_POINT" minOccurs="5" maxOccurs="5">
+				<xs:annotation>
+					<xs:documentation>Positionnement des 4 coins et du centre du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_GROUP_GEOPOSITIONING">
+		<xs:annotation>
+			<xs:documentation>Les produits MUSCATE complet et distribué utilise la convention de calage bord pixel
+			Dans le cas des produits hybride la convention utilisé est celle du produit natif.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ULX" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>positionnement du coin haut gauche en abcisse dans le référentiel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ULY" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>positionnement du coin haut gauche en ordonnée dans le référentiel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="XDIM" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>pas d'échantillonage en X</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="YDIM" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>pas d'échantillonage en Y</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NROWS" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>nombre de lignes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NCOLS" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>nombre de colonnes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="group_id" type="A_BAND_GROUP_ID" use="required">
+			<xs:annotation>
+				<xs:documentation>identifiant du groupe de bande concerné</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="A_GEOPOSITIONING">
+		<xs:sequence>
+			<xs:element name="Global_Geopositioning" type="A_POINT_LIST">
+				<xs:annotation>
+					<xs:documentation>Positionnement global du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Group_Geopositioning_List" type="A_GROUP_GEOPOSITIONING_LIST"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_GEOPOSITION_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="Coordinate_Reference_System" type="A_COORDINATE_REFERENCE_SYSTEM">
+				<xs:annotation>
+					<xs:documentation>Description du système de coordonnées</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Raster_CS">
+				<xs:annotation>
+					<xs:documentation>description des conventions de géo-référencement utilisées dans les rasters images</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RASTER_CS_TYPE">
+							<xs:annotation>
+								<xs:documentation>conventions de géo-référencement utilisée par les rasters : CELL ou POINT. 
+								- CELL : les informations de géoréférencement contenues dans les rasters décrivent le positionnement des coins haut-gauches des pixels
+								- POINT : les informations de géoréférencement contenues dans les rasters décrivent le positionnement des centres des pixels
+								Les conventions devant être utilisées par les rasters pour leur géopositionnement sont les suivantes :
+								Pour les images au format Jpeg2000, les rasters utilisent systématiquement une convention de centre pixel
+								Pour les images au format GeoTiff, les rasters utilisent :
+								- avant ortho-rectification, la convention centre pixel
+								- après ortho-rectification, la convention coin haut gauche.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="CELL"/>
+									<xs:enumeration value="POINT"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="PIXEL_ORIGIN">
+							<xs:annotation>
+								<xs:documentation> Indique la numérotation des pixels utilisée en coordonées relative raster. (valeur par défaut 0)
+								- Dans le cas d'un géo-référencement coin haut-gauche (CELL), PIXEL_ORIGIN vaut 0, ce qui signifie que la coordonnée (0.0;0.0) relative au raster correspond au coin haut gauche du raster. (le centre du premier pixel, correspaond à la coordonnée (0.5; 0.5) relative au raster)
+								- Dans le cas d'un géo-référencement centre-pixel (POINT), PIXEL_ORIGN vaut généralement 1, ce qui signifie que la coordonnée (1.0;1.0) relative au raster correspond au centre du premier pixel du raster. 
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:pattern value="[0-1]"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Metadata_CS">
+				<xs:annotation>
+					<xs:documentation>description des conventions de géo-référencement utilisées dans le fichier de métadonnées.
+					La convention de calage entre les images constituant le produit et la convention de géo-référencement utilisée dans la métadonnée sont liées l'une à l'autre.
+					- Lorsque l'on utilise une convention de calage centre-pixel entre les images produits, on utilise un géo-référencement centre pixel,
+					les coordonnées des centres des pixels des 4 coins de toutes les images constituant le produit étant les mêmes.
+					- Lorsque l'on utilise une convention de calage bord-pixel entre les images produits, on utilise alors un géo-référencement bord-pixel,
+					les emprises de toutes les images constituant le produit étant les mêmes.
+					Au sein de muscate, la convetion centre pixel est utilisée par les produits hybride SPOT et LANDSAT.
+					Tous les autres cas (produit hybride Sentienel-2 et produit MUSCATE complet) utilisent une convention bord pixel.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="METADATA_CS_TYPE">
+							<xs:annotation>
+								<xs:documentation> : convention de géo-référencement utilisée dans la métadonnée : CELL ou POINT. 
+								- CELL : les informations de géoréférencement contenues dans la métadonnée décrivent le positionnement des coins de l'emprise du produit
+								- POINT : les informations de géoréférencement contenues dans la métadonnée décrivent le positionnement des centres des pixels des 4 coins des images constituant le produit.								
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="CELL"/>
+									<xs:enumeration value="POINT"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="PIXEL_ORIGIN">
+							<xs:annotation>
+								<xs:documentation>Indique la numérotation des pixels utilisée en coordonées relative raster (valeur par défaut 0)
+								- Dans le cas d'un géo-référencement coin haut-gauche (CELL), PIXEL_ORIGIN vaut 0, ce qui signifie que la coordonnée (0.0;0.0) relative au raster correspond au coin haut gauche du raster. (le centre du premier pixel, correspaond à la coordonnée (0.5; 0.5) relative au raster)
+								- Dans le cas d'un géo-référencement centre-pixel (POINT), PIXEL_ORIGN vaut généralement 1, ce qui signifie que la coordonnée (1.0;1.0) relative au raster correspond au centre du premier pixel du raster. </xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:pattern value="[0-1]"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Geopositioning" type="A_GEOPOSITIONING">
+				<xs:annotation>
+					<xs:documentation>Positionnement du produit dans l'espace</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_HORIZONTAL_COORDINATE_SYSTEM">
+		<xs:sequence>
+			<xs:element name="HORIZONTAL_CS_TYPE">
+				<xs:annotation>
+					<xs:documentation>type de système de coordonnées : PROJECTED, GEOGRAPHIC ou OTHER. 
+- GEOGRAPHIC means that the Horizontal Coordinate System is unprojected (longitude/latitude used)  (ex : GEOGCS["NTF (Paris)")
+- PROJECTED means that the Horizontal Coordinate System is a cartographic projection (ex : PROJCS["NTF (Paris) / Lambert zone II")
+- OTHER means that some other type is used, for example a local coordinate system associated to paper coordinate axis for a sanned cadastral map. (ex : COMPD_CS["NTF (Paris) / Lambert zone II + NGF IGN69 height")</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="PROJECTED"/>
+						<xs:enumeration value="GEOGRAPHIC"/>
+						<xs:enumeration value="OTHER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="HORIZONTAL_CS_NAME" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Nom du système de coordonnées : exemple WGS_84, LAMBERT_93, ...</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HORIZONTAL_CS_CODE" type="AN_EPSG_CODE">
+				<xs:annotation>
+					<xs:documentation>Code associe au système de coordonnées dans le référentiel, exemple : 4326</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_GROUP_GEOPOSITIONING_LIST">
+		<xs:sequence>
+			<xs:element name="Group_Geopositioning" type="A_GROUP_GEOPOSITIONING" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Positionnement précis pour chaque groupe de bande du dataset</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

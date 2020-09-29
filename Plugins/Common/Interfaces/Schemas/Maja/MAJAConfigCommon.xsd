@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 30 novembre 2011 : Creation                                     *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.00">
+    <!--
+This schema adds convenient global elements and missing data types to the Earth Explorer namespace
+-->
+    <!-- ================= -->
+    <!-- Basic types Add-ons -->
+    <!-- ================= -->
+    <xs:simpleType name="String_Type">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnsignedByte_Type">
+        <xs:annotation>
+            <xs:documentation>An unsigned byte value [0-255]</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedByte"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnsignedShort_Type">
+        <xs:annotation>
+            <xs:documentation>An unsigned short (i.e. 2-bytes integer) value [0-65535]</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedShort"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnsignedShort_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of unsigned short values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="UnsignedShort_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnsignedInt_Type">
+        <xs:annotation>
+            <xs:documentation>An unsigned integer (i.e. 4-bytes integer) value [0-4294967295]</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedShort"/>
+    </xs:simpleType>
+    <xs:simpleType name="UnsignedByte_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of unsigned bytes values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="UnsignedByte_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Integer_Type">
+        <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+    <xs:simpleType name="PositiveInteger_Type">
+        <xs:restriction base="xs:positiveInteger"/>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeInteger_Type">
+        <xs:restriction base="xs:nonNegativeInteger"/>
+    </xs:simpleType>
+    <xs:simpleType name="Decimal_Type">
+        <xs:restriction base="xs:decimal"/>
+    </xs:simpleType>
+    <xs:simpleType name="Decimal_3_Type">
+        <xs:restriction base="xs:decimal">
+            <xs:fractionDigits value="3"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Bool_Type">
+        <xs:annotation>
+            <xs:documentation>A boolean value. Note : This type should be used instead of the native Earth Explorer Boolean_Type (values are not compatible with xs:boolean and allow an empty string)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:boolean">
+            <xs:pattern value="true|false"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Float_Type">
+        <xs:annotation>
+            <xs:documentation>A float (i.e. 32-bit floating point) value</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:float"/>
+    </xs:simpleType>
+    <xs:simpleType name="Float_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of float values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="Float_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Double_Type">
+        <xs:annotation>
+            <xs:documentation>A double value</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:double"/>
+    </xs:simpleType>
+    <xs:simpleType name="Double_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of double values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="Double_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Integer_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of integer values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="Integer_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Decimal_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of decimal values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="Decimal_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeDecimal_Type">
+        <xs:annotation>
+            <xs:documentation>A non-negative decimal value</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="Decimal_Type">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeDouble_Type">
+        <xs:annotation>
+            <xs:documentation>A non-negative double value</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="Double_Type">
+            <xs:minInclusive value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeDouble_List_Type">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of non-negative double values</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="NonNegativeDouble_Type"/>
+    </xs:simpleType>
+</xs:schema>

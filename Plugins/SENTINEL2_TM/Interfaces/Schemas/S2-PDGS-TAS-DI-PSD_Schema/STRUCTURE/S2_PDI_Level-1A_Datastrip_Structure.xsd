@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://psd-13.sentinel2.eo.esa.int/PSD/S2_PDI_Level-1A_Datastrip_Structure.xsd" targetNamespace="https://psd-13.sentinel2.eo.esa.int/PSD/S2_PDI_Level-1A_Datastrip_Structure.xsd" elementFormDefault="qualified" version="13">
+	<xs:element name="Level-1A_DataStrip" type="Level-1A_DataStrip">
+		<xs:annotation>
+			<xs:documentation>Instance of the Datastrip_ID</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Level-1A_DataStrip">
+		<xs:annotation>
+			<xs:documentation>Folder</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Inventory_Metadata">
+				<xs:annotation>
+					<xs:documentation>XML File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="DataStrip_Metadata_File">
+				<xs:annotation>
+					<xs:documentation>XML Metadata File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="General_Info">
+							<xs:complexType/>
+						</xs:element>
+						<xs:element name="Image_Data_Info">
+							<xs:complexType/>
+						</xs:element>
+						<xs:element name="Satellite_Ancillary_Data_Info"/>
+						<xs:element name="Quality_Indicators_Info">
+							<xs:complexType/>
+						</xs:element>
+						<xs:element name="Auxiliary_Data_Info">
+							<xs:complexType/>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QI_DATA">
+				<xs:annotation>
+					<xs:documentation>Folder</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OLQC_Report">
+							<xs:annotation>
+								<xs:documentation>OLQC reports XML formatted</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="manifest.safe">
+				<xs:annotation>
+					<xs:documentation>XML File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="rep_info">
+				<xs:annotation>
+					<xs:documentation>Folder</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="datastripIdentifier" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>

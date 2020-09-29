@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!--*** 0.32 patched version ***-->
+	<!-- ================= -->
+	<!-- Root -->
+	<!-- ================= -->
+	<xs:complexType name="DLREPT_File_Type">
+		<xs:annotation>
+			<xs:documentation>The DownlinkReport is elaborated after each satellite pass over the Receiving Station and when a download occurred.
+
+The DownlinkReport will be used for receiving loop control.
+</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+				<xs:sequence>
+					<xs:element name="Earth_Explorer_Header" type="ee:DLREPT_Header_Type"/>
+					<xs:element name="Data_Block" type="ee:DLREPT_Body_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="DLREPT_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="ee:DLREPT_Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="ee:DLREPT_Variable_Header_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLREPT_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_DownlinkReport_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="DownlinkReport"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="RCV_DLREPT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLREPT_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:DLREPT_Instance_Id_Type"/>
+						<xs:element name="Related_DownlinkPlan_Id" type="ee:VE_DownlinkPlan_Id_Type"/>
+						<xs:element name="Related_Download_Id" type="ee:VE_Download_Id_Type">
+							<xs:annotation>
+								<xs:documentation>the unique identifier of the download in the DownlinkPlan</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLREPT_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Station_Code" type="ee:VE_X_Band_Station_Code_Type">
+				<xs:annotation>
+					<xs:documentation>Receiving station 3-letters code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Download_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>download absolute orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Global_Status" type="ee:VE_Global_Status_Type">
+				<xs:annotation>
+					<xs:documentation>Global status of report. Below are allowed values (first letter, preceding the underscore, is the corresponding letter code used in ids and file names)
+
+- O_OK
+- F_FAILED
+- P_PARTIAL</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- body -->
+	<!-- ================= -->
+	<xs:complexType name="DLREPT_Body_Type">
+		<xs:sequence>
+			<xs:element name="Effective_AOS" type="ee:UTC_Date_Time_Type"/>
+			<xs:element name="Effective_LOS" type="ee:UTC_Date_Time_Type"/>
+			<xs:element name="Data_Amount" type="ee:VE_Data_Amount_Type">
+				<xs:annotation>
+					<xs:documentation>Total amount of data received (in KBytes)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Data_Elements">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Data_Element" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>the description of each data element</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:DLREPT_Data_Element_Report_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the data element within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>the number of data elements contained in this download</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Events">
+				<xs:annotation>
+					<xs:documentation>Events during the download</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Event" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:DLREPT_Event_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:annotation>
+												<xs:documentation>Serial number of the event within the list</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>number of events reported</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Antenna_Report">
+				<xs:annotation>
+					<xs:documentation>Antenna report.
+
+This element is filled with the antenna post pass information, received in a text file by the VRK. 
+
+The content of this file and the file name are governed by the document "Tracking Data Message Data Format" OMG00-E470 version 1A of the Swedish Space Corporation.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Original_Antenna_Report_File_Name" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Original name of the antenna report file.
+
+General syntax (taken from OMG00-470 version 1A)  is : 
+TYPE.YYYYDDDSSSSS.DESTINATION.VERSION
+</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Antenna_Report_File_Content" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Raw text content copied from the antenna report file.
+
+See OMG00-E470 version 1A for a detailled description.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLREPT_Data_Element_Report_Type">
+		<xs:annotation>
+			<xs:documentation>a downloaded data element type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Data_Element_Id" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data_Element_Id (yyy_sss_ddddd_ccccc_m)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>the absolute orbit number corresponding to the acquisition of this element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Type_Tag">
+				<xs:annotation>
+					<xs:documentation>the data type, either scientific (SR1-SR4) or auxiliary data (SR0) or both sci. and aux data (SR0-SR4)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="SCIENTIFIC_DATA"/>
+						<xs:enumeration value="AUXILIARY_DATA"/>
+						<xs:enumeration value="SCI_AND_AUX_DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Network_Delivery_Tag">
+				<xs:annotation>
+					<xs:documentation>a tag indicating if the data element has to be delivrered by network.
+
+This tag is used by VIP to flag, before resending the DownlinkPlan to VRK, the data elements that need to be delivered additionnally by network.
+
+This tag should be filled with the special "not applicable" value ('NIL=N/A') in all the other cases.
+</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:union memberTypes="ee:Bool_Type ee:VE_Nil_Reason_NA_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SiteDefinition_Id">
+				<xs:annotation>
+					<xs:documentation>the unique site identifier corresponding to this data element.
+					
+This tag should be filled with the special "not applicable" value ('NIL=N/A') when the element is auxilliary data related to the whole rev.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:union memberTypes="ee:VE_SiteDefinition_Id_Type ee:VE_Nil_Reason_NA_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Status" type="ee:VE_Global_Status_Type">
+				<xs:annotation>
+					<xs:documentation>download status (O_OK/F_FAILED/P_PARTIAL) for this data elementl</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Error_Code" type="ee:String_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>error code if status not OK</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Detail" type="ee:String_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>detailed textual description of the status</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DLREPT_Event_Type">
+		<xs:annotation>
+			<xs:documentation>an event Type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Date_Time" type="ee:UTC_Date_Time_Type">
+				<xs:annotation>
+					<xs:documentation>Date and time of the event</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Event_Code" type="ee:DLREPT_Event_Code_Type">
+				<xs:annotation>
+					<xs:documentation>Predefined type code of the event</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Detail" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>Textual detailed description of the event</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="DLREPT_Event_Code_Type">
+		<xs:annotation>
+			<xs:documentation>an event code type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type"/>
+	</xs:simpleType>
+</xs:schema>

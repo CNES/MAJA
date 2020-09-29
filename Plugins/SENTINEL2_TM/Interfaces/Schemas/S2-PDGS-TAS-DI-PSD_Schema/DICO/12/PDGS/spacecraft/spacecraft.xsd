@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:spacecraft="http://gs2.esa.int/DICO/1.0/PDGS/spacecraft/" xmlns:base="http://gs2.esa.int/DICO/1.0/PDGS/base/" targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/spacecraft/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/base/" schemaLocation="../base/base.xsd"/>
+	<xs:simpleType name="S2_CONSTELLATION">
+		<xs:annotation>
+			<xs:documentation>S2*.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:SATELLITE">
+			<xs:enumeration value="S2*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2_NB_OF_SAT">
+		<xs:annotation>
+			<xs:documentation>Number of satellites (between 1 and 2)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:A_NB_OF_SAT">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2_PLATFORM_NAME">
+		<xs:annotation>
+			<xs:documentation>S2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:A_PLATFORM_NAME">
+			<xs:enumeration value="S2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2_PLATFORM_SERIAL_NUMBER">
+		<xs:annotation>
+			<xs:documentation>A, B</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:A_PLATFORM_SERIAL_NUMBER">
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2_SATELLITE_ID">
+		<xs:annotation>
+			<xs:documentation>S2A-S2B</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="base:A_SATELLITE_ID">
+			<xs:enumeration value="S2A"/>
+			<xs:enumeration value="S2B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2_SATELLITE">
+		<xs:restriction base="base:SATELLITE">
+			<xs:enumeration value="S2A"/>
+			<xs:enumeration value="S2B"/>
+			<xs:enumeration value="S2*"/>
+			<xs:enumeration value="None"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

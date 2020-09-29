@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="dico/quality/quality.xsd"/>
+	<xs:include schemaLocation="dico/geo/geo.xsd"/>
+	<xs:include schemaLocation="dico/radio/radio.xsd"/>
+	<xs:include schemaLocation="dico/prod/prod.xsd"/>
+	<xs:include schemaLocation="dico/pos/pos.xsd"/>
+	<xs:include schemaLocation="dico/orga/orga.xsd"/>
+	<xs:include schemaLocation="dico/char/char.xsd"/>
+	<xs:include schemaLocation="dico/ident/ident.xsd"/>
+	<xs:element name="Muscate_Metadata_Document" type="Muscate_Metadata_Document">
+		<xs:annotation>
+			<xs:documentation>instanciation du format de Métadonnée Muscate</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Muscate_Metadata_Document">
+		<xs:annotation>
+			<xs:documentation>description du format de Metadata Muscate</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Metadata_Identification" type="A_METADATA_IDENTIFICATION">
+				<xs:annotation>
+					<xs:documentation>Informations sur le format de métadonnée lui même</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dataset_Identification" type="A_DATASET_IDENTIFICATION">
+				<xs:annotation>
+					<xs:documentation>Informations d'indentification du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Product_Characteristics" type="A_PRODUCT_CHARACTERISTICS">
+				<xs:annotation>
+					<xs:documentation>Caractéristiques principales du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Product_Organisation" type="A_PRODUCT_ORGANISATION">
+				<xs:annotation>
+					<xs:documentation>Description des fichiers constituant le produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geoposition_Informations" type="A_GEOPOSITION_INFORMATIONS">
+				<xs:annotation>
+					<xs:documentation>Informations sur le positionnement géographique du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geometric_Informations" type="A_GEOMETRIC_INFORMATIONS">
+				<xs:annotation>
+					<xs:documentation>Informations sur les caractéristiques géométriques du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Radiometric_Informations" type="A_RADIOMETRIC_INFORMATIONS">
+				<xs:annotation>
+					<xs:documentation>Informations sur les caractéristiques radiométriques du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Quality_Informations" type="A_QUALITY_INFORMATIONS">
+				<xs:annotation>
+					<xs:documentation>Informations de qualite du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Production_Informations" type="A_PRODUCTION_INFORMATIONS">
+				<xs:annotation>
+					<xs:documentation>Informations sur les traitements subis par le produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

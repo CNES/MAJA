@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="GeoLocationTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Zone Database Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:45 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Zone_Definition_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Zone_Id" type="Zone_Id_Type"></xsd:element>
+			<xsd:element name="Zone_Description" type="String_Type"></xsd:element>
+			<xsd:element name="Surface" type="String_Type"></xsd:element>
+			<xsd:element name="Projection" type="String_Type"></xsd:element>
+			<xsd:element name="Creator" type="String_Type"></xsd:element>
+			<xsd:element name="List_of_Polygon_Pts" type="Polygon_Type_Type"></xsd:element>
+			<xsd:element name="Diameter" type="Distance_Type"></xsd:element>
+			<xsd:any minOccurs="0" maxOccurs="unbounded"></xsd:any>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Zones_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Zone" type="Zone_Definition_Type" maxOccurs="unbounded"
+			></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="PositiveInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Zone_Database_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="List_of_Zones" type="List_of_Zones_Type">
+				<xsd:unique name="Zone_Id">
+					<xsd:selector xpath="./Zone"></xsd:selector>
+					<xsd:field xpath="Zone_Id"></xsd:field>
+				</xsd:unique>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Zone_Database_Data_Block_Type"></xsd:element>
+</xsd:schema>

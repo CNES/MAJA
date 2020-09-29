@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/geographical/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:geographical="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/geographical/" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/geographical/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_POINT_COORDINATES">
+		<xs:annotation>
+			<xs:documentation>A Lat/Lon coordinate</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LATITUDE" type="geographical:A_LATITUDE"/>
+			<xs:element name="LONGITUDE" type="geographical:A_LONGITUDE"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_LAT_LON_POLYGON">
+		<xs:annotation>
+			<xs:documentation>A polygon defined by n Lat/Lon points</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="POINT" type="geographical:A_POINT_COORDINATES" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_LONGITUDE">
+		<xs:annotation>
+			<xs:documentation>A -180/+180 degree longitude</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION/>
+					<gs2:UNIT>Degree</gs2:UNIT>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="-180"/>
+			<xs:maxInclusive value="180"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="A_LATITUDE">
+		<xs:annotation>
+			<xs:documentation>A -90/+90 degree latitude</xs:documentation>
+			<xs:appinfo>
+				<gs2:DOC>
+					<gs2:DEFINITION/>
+					<gs2:UNIT>Degree</gs2:UNIT>
+				</gs2:DOC>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="-90"/>
+			<xs:maxInclusive value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_ALTITUDE">
+		<xs:annotation>
+			<xs:documentation>Altitude (m)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:complexType name="A_GML_POLYGON_2D">
+		<xs:annotation>
+			<xs:documentation>List of 2D vertices counter-clockwise oriented (for WFS compatibility). The polygon must be closed (the first and last vertices are the same).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EXT_POS_LIST" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>Point list. The coordinates of the points are entered as pairs of latitude and longitude values, or X and Y, or other</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INT_POS_LIST" type="misc:A_LIST_OF_DOUBLE" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Point list. The coordinates of the points are entered as pairs of latitude and longitude values, or X and Y, or other</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_GML_POLYGON_3D">
+		<xs:annotation>
+			<xs:documentation>List of 3D vertices counter-clockwise oriented (for WFS compatibility). The polygon must be closed (the first and last vertices are the same).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="EXT_POS_LIST" type="misc:A_LIST_OF_DOUBLE">
+				<xs:annotation>
+					<xs:documentation>Point list. The coordinates of the points are entered as triplets of latitude, longitude and altitude values, or X, Y and Z, or other</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="INT_POS_LIST" type="misc:A_LIST_OF_DOUBLE" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Point list. The coordinates of the points are entered as triplets of latitude, longitude and altitude values, or X, Y and Z, or other</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:annotation>
+		<xs:documentation>Geodetic data types</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="Longitude_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:restriction base="misc:Angle_Type">
+				<xs:minInclusive value="-360"/>
+				<xs:maxInclusive value="360"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Latitude_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:restriction base="misc:Angle_Type">
+				<xs:minInclusive value="-90"/>
+				<xs:maxInclusive value="90"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Azimuth_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:restriction base="misc:Angle_Type">
+				<xs:minInclusive value="-360"/>
+				<xs:maxInclusive value="360"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Elevation_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:restriction base="misc:Angle_Type">
+				<xs:minInclusive value="-90"/>
+				<xs:maxInclusive value="90"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Geo_Location_2D_Type">
+		<xs:sequence>
+			<xs:element name="Long" type="Longitude_Type"/>
+			<xs:element name="Lat" type="Latitude_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Geo_Location_Type">
+		<xs:complexContent>
+			<xs:extension base="Geo_Location_2D_Type">
+				<xs:sequence>
+					<xs:element name="Alt" type="misc:Height_Type"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="Pointing_Direction_Type">
+		<xs:sequence>
+			<xs:element name="Az" type="Azimuth_Type"/>
+			<xs:element name="El" type="Elevation_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Polygon_Type_Type">
+		<xs:sequence>
+			<xs:element name="Polygon_Pt" type="Geo_Location_2D_Type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="count" type="misc:NonNegativeInteger_Type" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="Mispointing_Angles_Type">
+		<xs:sequence>
+			<xs:element name="Pitch" type="misc:Angle_Type"/>
+			<xs:element name="Roll" type="misc:Angle_Type"/>
+			<xs:element name="Yaw" type="misc:Angle_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

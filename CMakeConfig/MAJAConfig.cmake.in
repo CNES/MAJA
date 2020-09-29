@@ -1,0 +1,94 @@
+#
+# Copyright (C) 2020 Centre National d'Etudes Spatiales (CNES)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+############################################################################################################
+#                                                                                                          #
+#                                        __  __    __     ____   __                                        #
+#                                       (  \/  )  /__\   (_  _) /__\                                       #
+#                                        )    (  /(__)\ .-_)(  /(__)\                                      #
+#                                       (_/\/\_)(__)(__)\____)(__)(__)                                     #
+#                                                                                                          #
+#                                                                                                          #
+############################################################################################################
+#                                                                                                          #
+# Author: CS Systemes d'Information  (France)                                                              #
+#                                                                                                          #
+############################################################################################################
+# HISTORIQUE                                                                                               #
+#                                                                                                          #
+# VERSION : 4-0-0 : FA : LAIG-FA-MAC-117040-CS : 13 mars 2014 : Modifications mineures                     #
+# VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 14 octobre 2011 : Modification pour prise en compte        #
+#                                                            d'evolutions liees a MACCS                    #
+#                                                                                                          #
+# VERSION : 1-0-0 : <TypeFT> : <NumFT> : 1 avril 2010 : Creation                                                           
+#                                                                                                          #
+# FIN-HISTORIQUE                                                                                           #
+#                                                                                                          #
+# $Id$
+#                                                                                                          #
+############################################################################################################
+
+#-----------------------------------------------------------------------------
+#
+# MAJAConfig.cmake - MAJA CMake configuration file for external projects.
+#
+# This file is configured by MAJA and used by the UseMAJA.cmake module
+# to load MAJA's settings for an external project.
+@MAJA_CONFIG_CODE@
+
+# The MAJA source tree.
+SET(MAJA_SOURCE_DIR "@MAJA_SOURCE_DIR@")
+
+# The MAJA include file directories.
+SET(MAJA_INCLUDE_DIRS "@MAJA_INCLUDE_DIRS_CONFIG@")
+
+# The MAJA library directories.
+SET(MAJA_LIBRARY_DIRS "@MAJA_LIBRARY_DIRS_CONFIG@")
+
+# The MAJA executable directories.
+SET(MAJA_EXECUTABLE_DIRS "@MAJA_EXECUTABLE_DIRS_CONFIG@")
+
+# The MAJA cmake modules directories
+SET(MAJA_CMAKEMODULE_DIRS "@MAJA_CMAKEMODULE_DIRS_CONFIG@")
+
+# The MAJA list of modules library
+#SET(MAJA_MODULES_LIBRARIES "@LIST_MODULE_LIBRARIES@")
+
+# The C and C++ flags added by MAJA to the cmake-configured flags.
+SET(MAJA_REQUIRED_C_FLAGS "@MAJA_REQUIRED_C_FLAGS@")
+SET(MAJA_REQUIRED_CXX_FLAGS "@MAJA_REQUIRED_CXX_FLAGS@")
+SET(MAJA_REQUIRED_LINK_FLAGS "@MAJA_REQUIRED_LINK_FLAGS@")
+
+# The MAJA version number
+SET(MAJA_VERSION_MAJOR "@MAJA_VERSION_MAJOR@")
+SET(MAJA_VERSION_MINOR "@MAJA_VERSION_MINOR@")
+SET(MAJA_VERSION_PATCH "@MAJA_VERSION_PATCH@")
+SET(MAJA_VERSION "@MAJA_VERSION@")
+
+# The location of the UseMAJA.cmake file.
+SET(MAJA_USE_FILE "@MAJA_USE_FILE@")
+
+INCLUDE("@MAJA_LIBRARY_DEPENDS_FILE@")
+
+#Configuration file
+SET(MAJA_CONFIG "@MAJA_LIBRARY_DIRS_CONFIG@")
+
+#Prefix MAJA libraries name
+SET(MAJA_LIBRARY_PREFIXNAME "@MAJA_LIBRARY_PREFIXNAME@")
+
+# ITK Bin directory
+SET(ITK_DIR "@ITK_DIR@")
+
+# OTB Bin directory
+SET(OTB_DIR "@OTB_DIR@")

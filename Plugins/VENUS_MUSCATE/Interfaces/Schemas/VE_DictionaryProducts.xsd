@@ -1,0 +1,1857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.6 : DM : VE-FT-964 : 05/07/2016 : Add polarisation
+  VERSION : 1.3 : DM : VE-FT-848 : 07/08/2015 : Improve for VENUS L2L3: add Date in the Band code for STO PRIVATE product
+  VERSION : 1.3 : DM : VE-FT-847 : 05/08/2015 : Passage au format UNIX
+  VERSION : 1.3 : DM : VE-FT-550 : 03/06/2015 : Add stray light and polarisation
+ 
+  FIN-HISTORIQUE
+ -->
+<!DOCTYPE xs:schema [
+	<!-- File_Name element patterns -->
+	<!ENTITY SatelliteClass "(VENUS|VE)">
+	<!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[1-3]|DROB)">
+	<!ENTITY FileCategory "(MPL_|TLM_|AUX_|VSC_|EXO_|PRM_|RCV_|PMC_|CAT_|IMQ_|TEC_|GIP_|AUX_)">
+	<!ENTITY FileType "(&FileCategory;[0-9A-Z_]{6})">
+	<!ENTITY InstanceId "([0-9A-Z_]{1,45})">
+	<!-- Instance_Id sub-element patterns -->
+	<!ENTITY AbsOrbitElt "([0-9]{5})">
+	<!ENTITY AbsOrbitRangeElt "(&AbsOrbitElt;_&AbsOrbitElt;)">
+	<!-- Improve for VENUS L2L3 -->
+	<!-- <!ENTITY AnnexElt "(ATB|GPH|QLT|WAT|PXD|RTA|RTC|CLA|SOL|VIE)"> -->
+	<!ENTITY L1AnnexElt "(CLA|SOL|VIE)">
+	<!ENTITY L2AnnexElt "(SRE|FRE|ATB|MSK|QLT|SOL|VIE|RTA|RTC|RCR|STO|PXD|NDT|CLD|WAM|LTC)">
+	<!ENTITY L3AnnexElt "(SRE|FRE|MSK|QLT|BIO)">
+	<!ENTITY AnnexElt "(&L1AnnexElt;|&L2AnnexElt;|&L3AnnexElt;)">
+	<!ENTITY AuxiliaryDataTypeElt "(O|S)">
+	<!ENTITY BandCodeElt "(B(([1-9])|(1[0-2])))">
+	<!ENTITY L1ChannelCodeElt "(SAT|PIX|CLD)">
+	<!ENTITY L2ChannelCodeElt "(VAP|AOT|LAI|FAPAR|FCOVER|CHLLAI|CLD|OTH|WAT|HID|SHD|STL|TGS|SAT|PIX|EDG|TAO|WAS|PWA|TWA)">
+	<!ENTITY L3ChannelCodeElt "(CLD|CIR|WAT|RAI|SAT|PXD|LAI|FAPAR|FCOVER|CHLLAI)">
+	<!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+	<!-- Improve for VENUS L2L3: add Date in the Band code for STO PRIVATE product -->
+	<!ENTITY ChannelCodeElt "(&BandCodeElt;|&AnnexElt;|&L1ChannelCodeElt;|&L2ChannelCodeElt;|&L3ChannelCodeElt;|&DateElt;)">
+	<!ENTITY DataElementElt "VEN_&StationElt;_&AbsOrbitElt;_&SerialKeyElt;_[0-9]">
+	<!ENTITY DateTimeElt "&DateElt;T&TimeElt;">
+	<!ENTITY FileSemanticProductElt "(PDTINV|&SysProductLevelElt;&SysValidityCodeElt;|&PubProductLevelElt;&PubValidityCodeElt;)">
+	<!ENTITY GeographicalPointElt "((E|W)((0[0-9][0-9])|(1[0-7][0-9])|(180))([0-9]{2})(N|S)(([0-8][0-9])|(90))([0-9]{2}))">
+	<!ENTITY ListNickNameElt "(&NickNameElt;|NOTNAMED|ALLSITES)">
+	<!ENTITY ModeElt "(NMNL|OBR1|OBR2|RW01|RW02|RW03|RW04|1DLT)">
+	<!ENTITY NickNameElt "([0-9A-Z_]*|THE_MOON|ONEORBIT)">
+	<!ENTITY NickNameTypeElt "(S|L)">
+	<!ENTITY OrbitDefModeElt "(A|R)">
+	<!ENTITY PdtImgSubCodeElt "(PIX|SAT|SLP|NSL)">
+	<!ENTITY PubProductLevelElt "(L1|L2|L3)">
+	<!ENTITY PubValidityCodeElt "(VALD|NOTV|VVIQ|NVIQ)">
+	<!ENTITY RelOrbitElt "([0-9]{2})">
+	<!ENTITY SerialKeyElt "([0-9]{5})">
+	<!ENTITY SiteTypeElt "(S|C|T|M|O|P|A)">
+	<!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+	<!ENTITY SpecialDateTimeElt "(&DateTimeElt;|00000000T000000|99999999T999999)">
+	<!ENTITY StationElt "(KRN|SBD)">
+	<!ENTITY StatusElt "(O|F|P)">
+	<!ENTITY SysProductLevelElt "(L0|0E|1A)">
+	<!ENTITY SysValidityCodeElt "(VALD|SYNT)">
+	<!ENTITY TDIConfElt "([0-1]{4}0[0-1])">
+	<!ENTITY TimeElt "(([0,1][0-9]|2[0-3])([0-5][0-9]){2})">
+	<!ENTITY TriDetectorCodeElt "(1|2|3|4)">
+	<!ENTITY Version4Elt "([0-9]{4})">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.6">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<xs:complexType name="VE_List_of_Product_Viewing_Angles_Informations_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>All the viewing incidences informations (one for each tri-detector)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Viewing_Angles" minOccurs="4" maxOccurs="4">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Product_Viewing_Angle_Information">
+							<xs:attribute name="sn" use="required">
+								<xs:annotation>
+									<xs:documentation>tri-detector number</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="1"/>
+										<xs:maxInclusive value="4"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="count" use="required">
+			<xs:annotation>
+				<xs:documentation>one for each tri-detector original files (=4)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="ee:Integer_Type">
+					<xs:minInclusive value="4"/>
+					<xs:maxInclusive value="4"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="VE_Product_Viewing_Angle_Information">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="Useful_Image">
+					<xs:annotation>
+						<xs:documentation>Viewing Angle in useful image corners and center</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Upper_Left_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Upper_Right_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Lower_Left_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Lower_Right_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Image_Center" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Product" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Viewing Angle in product corners</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Upper_Left_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Upper_Right_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Lower_Left_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+							<xs:element name="Lower_Right_Corner" type="ee:VE_Decimal_Viewing_Angle_Type"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:element name="Nil" type="ee:VE_Nil_Reason_Type">
+				<xs:annotation>
+					<xs:documentation>When tri-detector data is MISSING for example</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_System_Product_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENUS specific File_Type for system products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VSC_&SysProductLevelElt;&SysValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_System_Product_Tec_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENUS specific File_Type for technical files of system products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="TEC_&SysProductLevelElt;&SysValidityCodeElt;"/>
+			<xs:pattern value="TEC_&SysProductLevelElt;&SysValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L1_Published_Product_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENUS specific File_Type for L1 published products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VSC_L1&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L1_Published_Product_Tec_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENUS specific File_Type for L1 technical files of published products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="TEC_L1&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_QCK_PDTQCK_Id_Type">
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_QCK_&PubProductLevelElt;&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- Identifiers -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_InventoriedRawProductTechnicalData_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An InventoriedRawProductTechnicalData identifier following 'VE_cccc_TEC_PDTINV_aaaaa_yyy_sss_ddddd_ccccc_m' pattern :
+- cccc : valid File_Class value
+- aaaaa : acquisition absolute orbit number
+- yyy_sss_ddddd_ccccc_m : Data_Element_Id
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_PDTINV_&AbsOrbitElt;_&DataElementElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_SystemProductTechnicalData_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An SystemProductTechnicalData identifier following 'VE_cccc_TEC_ppqqqq_nnnnnnnn_yyyymmdd' pattern : 
+- pp : product level
+- qqqq : validity code (VALD, NOTV)			
+- cccc : valid File_Class value
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_&SysProductLevelElt;&SysValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L1PublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An L1 PublishedProduct identifier following 'VE_cccc_VSC_L1qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)		
+- cccc : valid File_Class value
+-  nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_VSC_L1&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L1PrivatePublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A L1 PrivatePublishedProduct identifier following 'VE_cccc_TEC_L1qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)		
+- cccc : valid File_Class value
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_L1&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_QuickLook_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A Quick look identifier following 'VE_cccc_VSC_PDTQLK_ffffff_iiiiiiiiiiiiiiiiiiiiiiiiiii(_kkkkk)' pattern :
+- cccc : valid File_Class value
+- ffffff : File semantic of the referenced product
+- iiiiiiiiiiiiiiiiiiiiiiiiiii : Instance id of the referenced product
+- kkkkk : optional, only required when the current product contains multiple quicklooks  (inventoriedRaw products must contain one quicklook file for each tri-detector)
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_VSC_PDTQLK_&FileSemanticProductElt;_&InstanceId;(_&SerialKeyElt;)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_AnnexProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A annex product identifier following 'VE_cccc_VSC_PDTANX_ffffff_iiiiiiiiiiiiiiiiiiiiiiiiiii(_www)' pattern :
+- cccc : valid File_Class value
+- ffffff : File semantic of the referenced product
+- iiiiiiiiiiiiiiiiiiiiiiiiiii : Instance id of the referenced product
+- www : Code for identifying a type of image annex file.
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_VSC_PDTANX_&FileSemanticProductElt;_&InstanceId;(_&AnnexElt;)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_ImageProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An image product identifier following 'VE_cccc_VSC_PDTIMG_ffffff_iiiiiiiiiiiiiiiiiiiiiiiiiii(_bbb)(_ccc)' pattern :
+- cccc : valid File_Class value
+- ffffff : File semantic of the referenced product
+- iiiiiiiiiiiiiiiiiiiiiiiiiii : Instance id of the referenced product
+- bbb : band code (for inventoried raw product only, nothing for the others)
+- ccc : sub-code for system products (PIX/SAT) and L2 / L3 products indicating if slope has been corrected (SLP) or not(NSL)
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_VSC_PDTIMG_&FileSemanticProductElt;_&InstanceId;(_&BandCodeElt;)?(_&PdtImgSubCodeElt;)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GeometricModel_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A geometric model product identifier following 'VE_cccc_TEC_GEOMDL_ffffff_iiiiiiiiiiiiiiiiiiiiiiiiiii' pattern :
+- cccc : valid File_Class value
+- ffffff : File semantic of the referenced product
+- iiiiiiiiiiiiiiiiiiiiiiiiiii : Instance id of the referenced product
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_GEOMDL_&FileSemanticProductElt;_&InstanceId;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_DatationLine_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A Datation line file identifier following 'VE_cccc_TEC_LINDAT_ffffff_iiiiiiiiiiiiiiiiiiiiiiiiiii_bbb' pattern :
+- cccc : valid File_Class value
+- ffffff : File semantic of the referenced product
+- iiiiiiiiiiiiiiiiiiiiiiiiiii : Instance id of the referenced product
+- bbb : band code
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_LINDAT_&FileSemanticProductElt;_&InstanceId;_&BandCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_ProductionReport_Id_NewType">
+		<xs:annotation>
+			<xs:documentation>An ProductionReport identifier following 'VE_cccc_VSC_ppqqqq_nnnnnnnn_yyyymmdd' pattern : 
+- pp : product level : L0, 0E, 1A, IN, L1, L2, L3
+- cccc : valid File_Class value
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_PMC_(&SysProductLevelElt;|IN|&PubProductLevelElt;)REPT_&NickNameElt;(_(AUX|IMG))?(_&AbsOrbitElt;)?_&SpecialDateElt;(_&SpecialDateElt;)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_QCK_PDTQCK_File_Type_Type">
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="QCK_&PubProductLevelElt;&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_QCK_PDTANX_File_Name_Type">
+		<xs:annotation>
+			<xs:documentation>An QCK PublishedProduct identifier following 'ppqqqq_nnnnnnnn_yyyymmdd_xxxxxxxxxxxxx' pattern :
+- pp : product level : L0, 0E, 1A, IN, L1, L2, L3
+- qqqq : validity code (VALD, NOTV)     
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+- xxxxxxxxxxxxx
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&PubProductLevelElt;&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;_.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- Enumerations -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_Quality_Index_Code_Type">
+		<xs:annotation>
+			<xs:documentation>TODO list</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:enumeration value="NB_PIXELS_OK"/>
+			<xs:enumeration value="RATE_PIXELS_OK"/>
+			<xs:enumeration value="RATE_PIXELS_OK_L1A"/>
+			<xs:enumeration value="CLOUDS_RATE"/>
+			<xs:enumeration value="CORRELATION_RATE"/>
+			<xs:enumeration value="CLOUD_BAND_AVAILABLE"/>
+			<xs:enumeration value="CIRRUS_DETECTED"/>
+			<xs:enumeration value="RAIN_DETECTED"/>
+			<xs:enumeration value="SUN_GLINT_DETECTED"/>
+			<xs:enumeration value="HOT_SPOT_DETECTED"/>
+			<xs:enumeration value="..."/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_Product_Annex_Code_Type">
+		<xs:annotation>
+			<xs:documentation>A 3-letters code identifing a type of product annex.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&AnnexElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- Miscellaneous -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_System_Product_Level_Code_Type">
+		<xs:annotation>
+			<xs:documentation>A string of 2 characters "L0", "0E", "1A" = the type of the system product</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SysProductLevelElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_Published_Product_Level_Code_Type">
+		<xs:annotation>
+			<xs:documentation>A string of 2 characters "L1", "L2", "L3" = the type of the published product</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&PubProductLevelElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!--Coverage-->
+	<!-- ================= -->
+	<xs:complexType name="VE_Useful_Image_Geo_Coverage_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A geographic coverage : reference system and coordinates lon,lat in degrees</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference_System" type="ee:VE_Coordinate_Reference_System_Type">
+				<xs:annotation>
+					<xs:documentation>Geographic coordinate reference System code taken from the authoritative EPSG code list.
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Left_Corner" type="ee:VE_Extended_Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>Coordinates of the upper left corner of the useful part of the file (=the image) in the "Reference_System" 
+
+and for published products the image coordinates (in lines and columns) of the same point.
+
+The convention is that the center of the first point is called (0;0), and the type is PixelIsPoint in the geoTiff convention</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Right_Corner" type="ee:VE_Extended_Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Left_Corner" type="ee:VE_Extended_Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Right_Corner" type="ee:VE_Extended_Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Center" type="ee:VE_Extended_Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NO_VE_Carto_Coverage_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A cartographic coverage : reference system and coordinates x, y in meters
+</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="VE_Geo_Product_Coverage_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A geographic coverage with sampling information</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="false">
+			<xs:extension base="ee:VE_Geo_Ground_Coverage_Type">
+				<xs:sequence>
+					<xs:element name="Sampling_Interval">
+						<xs:annotation>
+							<xs:documentation>Sampling interval of the geo-referenced image (in row and in column) expressed in degrees in "Coordinate_Reference_System".</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="By_Line" type="ee:VE_Decimal_Geo_Coord_Type"/>
+								<xs:element name="By_Column" type="ee:VE_Decimal_Geo_Coord_Type"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Carto_Product_Coverage_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A cartographic coverage with sampling information</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent mixed="false">
+			<xs:extension base="ee:VE_Carto_Ground_Coverage_Type">
+				<xs:sequence>
+					<xs:element name="Sampling_Interval">
+						<xs:annotation>
+							<xs:documentation>Sampling interval of the geo-referenced image (in row and in column) expressed in meters in "Coordinate_Reference_System".</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="By_Line" type="ee:Distance_Type"/>
+								<xs:element name="By_Column" type="ee:Distance_Type"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!--Product information-->
+	<!-- ================= -->
+	<xs:simpleType name="VE_Product_Level_Type">
+		<xs:annotation>
+			<xs:documentation>The product level indication.
+- INVENTORIED
+- L0-EXTENDED
+- L0
+- L1A
+- L1
+- L2
+- L3
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:enumeration value="INVENTORIED"/>
+			<xs:enumeration value="L0-EXTENDED"/>
+			<xs:enumeration value="L0"/>
+			<xs:enumeration value="L1A"/>
+			<xs:enumeration value="L1"/>
+			<xs:enumeration value="L2"/>
+			<xs:enumeration value="L3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Generic-->
+	<xs:complexType name="VE_Generic_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>generic public description of a product</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Product_Level">
+				<xs:annotation>
+					<xs:documentation>Comprehensible product level : INVENTORIED, L0, L0-EXTENDED, L1A, L1, L2, L3</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Product_Level_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Acquisition_Date_Time" type="ee:UTC_Date_Time_Type">
+				<xs:annotation>
+					<xs:documentation>product data acquisition date-time. For L3 products is the first acquisition date/time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_Or_Nil_Reason_NA_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition absolute orbit. For  L3 products is the first orbit number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Processing_Information" type="ee:VE_Processing_Type">
+				<xs:annotation>
+					<xs:documentation>processing informations : date/time and GIPP files</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Web_Site_URL" type="ee:String_Type">
+				<xs:annotation>
+					<xs:documentation>reference to the Internet site of the VPDS</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Quality_Indexes">
+				<xs:annotation>
+					<xs:documentation>Quality indexes
+Quality index = value with sk=the code of the quality index (more accessible with xml parser)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Quality_Index" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Quality_Index_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Useful_Image_Geo_Coverage" type="ee:VE_Useful_Image_Geo_Coverage_Type">
+				<xs:annotation>
+					<xs:documentation>Geographic coordinates of the useful part of the product (or image).
+The 12 bands may not cover exactly the same ground area, those corners will be computed such as representing the largest ground area imaged by at least one band.
+For published products : contains also the same information expressed in image coordinates (lines, columns)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Band_Central_Wavelength" type="ee:VE_List_of_Band_Central_Wavelengths_Type">
+				<xs:annotation>
+					<xs:documentation>wave length of each band</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Solar_Angles" type="ee:VE_Solar_Angle_Information_Type">
+				<xs:annotation>
+					<xs:documentation>Information relative to solar angles.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Viewing_Angles" type="ee:VE_List_of_Product_Viewing_Angles_Informations_Type">
+				<xs:annotation>
+					<xs:documentation>Information relative to viewing angles.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Product_Sampling">
+				<xs:annotation>
+					<xs:documentation>Product sampling in meters.
+- For inv and sys products the product sampling is the along track (By_Line) and along detector (By_Column) resolutions.
+- For the published products the product_sampling is the Sampling_Interval (Geo_Referencing_Information)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="By_Line" type="ee:Distance_Type"/>
+						<xs:element name="By_Column" type="ee:Distance_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Viewing_Angles_In_Satellite_Frame" type="ee:VE_Viewing_Angles_In_Satellite_Frame_Type">
+				<xs:annotation>
+					<xs:documentation>X,Y, and XY at the center of the acquisition (which are, in the satellite reference frame, the viewing incidence angles in the satellite X (resp. Y) directions, and the global viewing incidence (arctg of the quadratic sum of tan(X) and tan(Y)).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Generic_Site_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>generic public description of a site product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="Reference_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type"/>
+					<xs:element name="Cloud_Percentage">
+						<xs:annotation>
+							<xs:documentation>Percentage of cloudy pixels</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union>
+								<xs:simpleType>
+									<xs:restriction base="ee:Decimal_Type">
+										<xs:fractionDigits value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+								<xs:simpleType>
+									<xs:restriction base="ee:VE_Nil_Reason_NA_Type"/>
+								</xs:simpleType>
+							</xs:union>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Used_DEM" type="ee:VE_DEM_Information_Type"/>
+					<xs:element name="Reflectance_Quantification_Value">
+						<xs:annotation>
+							<xs:documentation>Reflectance corresponding to one bit of quantification (for example 1/1024). For system products the value is "NONE".</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union>
+								<xs:simpleType>
+									<xs:restriction base="ee:Decimal_Type">
+										<xs:fractionDigits value="6"/>
+									</xs:restriction>
+								</xs:simpleType>
+								<xs:simpleType>
+									<xs:restriction base="ee:VE_None_Type"/>
+								</xs:simpleType>
+							</xs:union>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Generic_Product_Private_Information_Type">
+		<xs:annotation>
+			<xs:documentation>Private Data for all products (inventoriedRaw, system and L1)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Earth_Rotation_Parameters" type="ee:VE_Earth_Rotation_Parameters_Type">
+				<xs:annotation>
+					<xs:documentation>earth rotation parameters for the acquisition day (extracted from the IERS bulletin)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="List_of_Datation_Line_Models" type="ee:VE_List_of_Datation_Line_Models_Type">
+				<xs:annotation>
+					<xs:documentation>desctiption of each datation line model / band</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cape" type="ee:Angle_Type">
+				<xs:annotation>
+					<xs:documentation>Cape (orientation), at the center of the image.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Attitude" type="ee:VE_Attitude_Type">
+				<xs:annotation>
+					<xs:documentation>Roll, pitch and yaw at the center of the acquisition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nadir" type="ee:Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>The latitude and longitude of the point of the ground track (at nadir) at the middle of the acquisition.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geom_Slide_Angle" type="ee:Angle_Type">
+				<xs:annotation>
+					<xs:documentation>geometrical slip of ground pixels (orthogonality defect)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Along_Track_Resolution" type="ee:Distance_Type">
+				<xs:annotation>
+					<xs:documentation>Along track resolution at the center of the useful image (pixel size in meters)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Along_Detector_Resolution" type="ee:Distance_Type">
+				<xs:annotation>
+					<xs:documentation>Along detector resolution at the center of the useful image (pixel size in meters)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Tech_Params_Set" type="ee:VE_Acq_Tech_Params_Set_Type">
+				<xs:annotation>
+					<xs:documentation>Gain and Offset are expressed in camera referential, thus they have to be switched for bands 7 to 12 before to be used at image product</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="VE_Channel_Code_Type">
+		<xs:annotation>
+			<xs:documentation>All the codes for a channel</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&ChannelCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_Annex_Band_Code_Type">
+		<xs:annotation>
+			<xs:documentation>All the codes for an annex channel</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="ee:VE_Band_Code_Type ee:VE_Channel_Code_Type ee:VE_Solar_Angle_Grid_Band_Code_Type ee:VE_Viewing_Angle_Grid_Band_Code_Type"/>
+	</xs:simpleType>
+	<xs:complexType name="VE_Minimum_Image_Information_Type">
+		<xs:annotation>
+			<xs:documentation>minimum description for an image</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Format">
+				<xs:annotation>
+					<xs:documentation>JPEG, TIFF, GEOTIFF, ...
+HDF</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="N/A"/>
+						<xs:enumeration value="GEOTIFF"/>
+						<xs:enumeration value="TIFF"/>
+						<xs:enumeration value="JPEG"/>
+						<xs:enumeration value="HDF"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Binary_Encoding" type="ee:VE_Binary_Encoding_Type">
+				<xs:annotation>
+					<xs:documentation>LITTLE_ENDIAN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Type">
+				<xs:annotation>
+					<xs:documentation>SIGNED_SHORT for products, UNSIGNED_SHORT for inventoriedRaw product,
+UNSIGNED_BYTE for quickLooks</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Raster_Data_Type_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Number_of_Significant_Bits" type="ee:Integer_Type"/>
+			<xs:element name="Nodata_Value">
+				<xs:annotation>
+					<xs:documentation>Filler value expressed in integer or NaN</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:union memberTypes="ee:Integer_Type">
+						<xs:simpleType>
+							<xs:restriction base="ee:String_Type">
+								<xs:pattern value="NaN"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:union>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Size">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Lines">
+							<xs:annotation>
+								<xs:documentation>Number of lines OR "NIL=VARIABLE_BY_BAND" for InventoriedRaw and system products main header.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:union memberTypes="ee:PositiveInteger_Type ee:VE_Nil_Reason_Variable_By_Band_Type"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Columns">
+							<xs:simpleType>
+								<xs:restriction base="ee:PositiveInteger_Type"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Bands">
+							<xs:simpleType>
+								<xs:restriction base="ee:Integer_Type">
+									<xs:minInclusive value="0"/>
+									<xs:maxInclusive value="15"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Image_Compacting_Tool">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="NO"/>
+						<xs:enumeration value="BZIP2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Generic_Image_Information_Type">
+		<xs:annotation>
+			<xs:documentation>generic description for an image</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Minimum_Image_Information_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Bands">
+						<xs:annotation>
+							<xs:documentation>Associated band (B01 to B12) or channel names (e.g. VAP, LAI, FAPAR,...).</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Band" maxOccurs="15">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="ee:VE_Channel_Code_Type">
+												<xs:attribute name="sn" use="required">
+													<xs:annotation>
+														<xs:documentation>Band or channel code in image file</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="ee:Integer_Type">
+															<xs:minInclusive value="1"/>
+															<xs:maxInclusive value="15"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:annotation>
+									<xs:documentation>number of bands</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="1"/>
+										<xs:maxInclusive value="15"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--InventoriedRaw-->
+	<xs:complexType name="VE_Inventoried_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation> description of a InventoriedRaw product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="Coverage_Tag">
+						<xs:simpleType>
+							<xs:restriction base="ee:String_Type">
+								<xs:enumeration value="NOMINAL"/>
+								<xs:enumeration value="DATA_STRIP"/>
+								<xs:enumeration value="UNKNOWN_SITE"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="List_of_Covered_Sites">
+						<xs:annotation>
+							<xs:documentation>list of the sites covered by the inventoried product</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="Covered_Site">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="ee:VE_SiteDefinition_Id_Type">
+												<xs:attribute name="sn" type="ee:Integer_Type" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" type="ee:Integer_Type" use="required"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Toponym" type="ee:String_Type">
+						<xs:annotation>
+							<xs:documentation>Toponym at the center of the inventoried product when it belongs to no site, or empty in the other case</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Inventoried_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public organization of an inventoriedRawProduct</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="List_of_Image_Files">
+				<xs:annotation>
+					<xs:documentation>0-12 images for the inventoriedRaw and system products.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Image_File" minOccurs="0" maxOccurs="12">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>image band code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>= nb bands</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="12"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Quicklook_Files">
+				<xs:annotation>
+					<xs:documentation>0-4 quicklook  files for the inventoriedRaw and system products : one per each tri-detector source file.
+Set of detectors are : B02-B01-B05, B10-B12-B11, B07-B08-B09 and B04-B03-B06.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Quicklook_File" minOccurs="0" maxOccurs="4">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>band code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="4"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Private_Data_File" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Extension_Data_Files" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Future extensions</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Extension_Data_File" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+													<xs:maxInclusive value="100"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Inventoried_Product_Private_Information_Type">
+		<xs:annotation>
+			<xs:documentation>Private technical Data of a product (inventoriedRaw, system and L1)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Private_Information_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Line_Intervals" type="ee:VE_List_of_Line_Intervals_Type">
+						<xs:annotation>
+							<xs:documentation>The first and last lines of the greatest image which can be extracted or have been extracted (L1)  from the segment by band</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Inventoried_Product_Private_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Private description of a system (and inventoriedRaw) product organization.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_System_Product_Private_Organization_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Datation_Line_Files">
+						<xs:annotation>
+							<xs:documentation>desctiption of each datation line / band</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Datation_Line_File" minOccurs="0" maxOccurs="12">
+									<xs:annotation>
+										<xs:documentation>Reference to datation files</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+													<xs:annotation>
+														<xs:documentation>band code</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedInt">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="12"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--System products-->
+	<xs:complexType name="VE_Sys_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>system description of a product on one site</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="Reference_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type"/>
+					<xs:element name="Cloud_Percentage">
+						<xs:annotation>
+							<xs:documentation>Percentage of cloudy pixels</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union memberTypes="ee:Float_Type ee:VE_Nil_Reason_NA_Type"/>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Used_DEM" type="ee:VE_DEM_Information_Type"/>
+					<xs:element name="Used_Reference_Image">
+						<xs:annotation>
+							<xs:documentation>Logical name of the reference image used when exists (image on referenced site) ; string value for special L1 products ; else "NONE".</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union memberTypes="ee:VE_ReferenceImageData_Id_Type ee:VE_None_Type"/>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Solar_Angles" type="ee:VE_Solar_Angle_Information_Type">
+						<xs:annotation>
+							<xs:documentation>Information relative to solar angles.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="List_of_Viewing_Angles" type="ee:VE_List_of_Product_Viewing_Angles_Informations_Type">
+						<xs:annotation>
+							<xs:documentation>Information relative to viewing angles (one set for each tridetector).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Reflectance_Quantification_Value">
+						<xs:annotation>
+							<xs:documentation>Reflectance corresponding to one bit of quantification (for example 1/1024). For system products the value is "NONE".</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union memberTypes="ee:Float_Type ee:VE_None_Type"/>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="List_of_Aks" type="ee:VE_List_of_Optionnal_Aks_Type">
+						<xs:annotation>
+							<xs:documentation>The absolute radiometric calibration coefficients (one per band)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="List_of_Polarization_Coefficients" type="ee:VE_List_of_Polarization_Coefficients_Type">
+						<xs:annotation>
+							<xs:documentation>The polarization coefficients (one per band)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Viewing_Angles_In_Satellite_Frame" type="ee:VE_Viewing_Angles_In_Satellite_Frame_Type">
+						<xs:annotation>
+							<xs:documentation>X,Y, and XY at the center of the acquisition (which are, in the satellite reference frame, the viewing incidence angles in the satellite X (resp. Y) directions, and the global viewing incidence (arctg of the quadratic sum of tan(X) and tan(Y)).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Processing_Flags_And_Modes">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:annotation>
+									<xs:documentation>L1 products flags</xs:documentation>
+								</xs:annotation>
+								<xs:element name="Equalization" type="ee:Bool_Type"/>
+								<xs:element name="Bad_Pixels_Correction" type="ee:Bool_Type"/>
+								<xs:element name="Restoration" type="ee:Bool_Type"/>
+								<xs:element name="Remanence" type="ee:Bool_Type"/>
+								<xs:element name="Straylight_T1" type="ee:Bool_Type"/>
+								<xs:element name="Straylight_T2" type="ee:Bool_Type"/>
+								<xs:element name="Polarization" type="ee:Bool_Type"/>
+								<xs:element name="Geometrical_Refinement_With_Ref_Image" type="ee:Bool_Type"/>
+								<xs:element name="Interband_Geometrical_Refinement" type="ee:Bool_Type"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_System_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>system description of a product on one site</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Site_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Aks" type="ee:VE_List_of_Optionnal_Aks_Type">
+						<xs:annotation>
+							<xs:documentation>The absolute radiometric calibration coefficients (one per band)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="List_of_Polarization_Coefficients" type="ee:VE_List_of_Polarization_Coefficients_Type">
+						<xs:annotation>
+							<xs:documentation>The polarization coefficients (one per band)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Processing_Flags_And_Modes">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:annotation>
+									<xs:documentation>L1 products flags</xs:documentation>
+								</xs:annotation>
+								<xs:element name="Equalization" type="ee:Bool_Type"/>
+								<xs:element name="Bad_Pixels_Correction" type="ee:Bool_Type"/>
+								<xs:element name="Restoration" type="ee:Bool_Type"/>
+								<xs:element name="Remanence" type="ee:Bool_Type"/>
+								<xs:element name="Straylight_T1" type="ee:Bool_Type"/>
+								<xs:element name="Straylight_T2" type="ee:Bool_Type"/>
+								<xs:element name="Polarization" type="ee:Bool_Type"/>
+								<xs:element name="Geometrical_Refinement_With_Ref_Image" type="ee:Bool_Type"/>
+								<xs:element name="Interband_Geometrical_Refinement" type="ee:Bool_Type"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Used_Reference_Image">
+						<xs:annotation>
+							<xs:documentation>Logical name of the reference image used when exists (image on referenced site) ; string value for special L1 products (not valid) ; else "NONE".</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union memberTypes="ee:VE_ReferenceImageData_Id_Type ee:VE_None_Type"/>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_System_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public description of a system (and inventoriedRaw) product organization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="List_of_Image_Files">
+				<xs:annotation>
+					<xs:documentation>0-12 images for the inventoriedRaw and system products.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Image_File" minOccurs="0" maxOccurs="12">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>image band code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>= nb bands</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="12"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Quicklook_Files">
+				<xs:annotation>
+					<xs:documentation>0-4 quicklook  files for the inventoriedRaw and system products : one per each tri-detector source file.
+Set of detectors are : B02-B01-B05, B10-B12-B11, B07-B08-B09 and B04-B03-B06.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Quicklook_File" minOccurs="0" maxOccurs="4">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>band code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="4"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Mask_Files" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>required only for L1A system products : adding 2 images = SAT (saturation) and PIX (missing and aberrant pixels) masks.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Mask_File" minOccurs="0" maxOccurs="2">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_PdtImg_Sub_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>mask code</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:annotation>
+							<xs:documentation>= nb mask</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+								<xs:maxInclusive value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Private_Data_File" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="List_of_Extension_Data_Files" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Future extensions</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Extension_Data_File" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sn" use="required">
+											<xs:simpleType>
+												<xs:restriction base="ee:Integer_Type">
+													<xs:minInclusive value="1"/>
+													<xs:maxInclusive value="100"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_System_Product_Private_Information_Type">
+		<xs:annotation>
+			<xs:documentation>Private technical Data of a system product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Private_Information_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Line_Intervals" type="ee:VE_List_of_Line_Intervals_Type">
+						<xs:annotation>
+							<xs:documentation>The first and last line of the scene in the segment (in corresponding inventoried product), for each band</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Used_InventoriedRaw_Product_Id" type="ee:VE_InventoriedRawProduct_Id_Type"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_System_Product_Private_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Private description of a system product organization.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="List_of_Auxiliary_Data_Files">
+				<xs:annotation>
+					<xs:documentation>Auxiliary data : GPS, AOCS, STR, ...
+- Pointed in inventoriedRaw product
+- Copied in system products private data</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Auxiliary_Data_File" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Product_Item_Reference_Type">
+										<xs:attribute name="sk" type="ee:VE_Auxiliary_Data_Code_Type" use="required">
+											<xs:annotation>
+												<xs:documentation>Identification code for an auxiliary data type (GPS, AOCS, STR, ...)</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="0"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Geom_Refinement_File" type="ee:VE_Product_Item_Reference_Type">
+				<xs:annotation>
+					<xs:documentation>Euclide geometrical model</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!--Published Products-->
+	<xs:complexType name="VE_Published_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public description of organization of a published product.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Image_File" minOccurs="0" maxOccurs="2">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Quicklook_File" minOccurs="0">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Useful_Image_Geo_Referencing_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A geographic coverage of the useful image in the product</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference_System" type="ee:VE_Coordinate_Reference_System_Type">
+				<xs:annotation>
+					<xs:documentation>Geographic coordinate reference system code taken from the authoritative EPSG code list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Left_Corner" type="ee:Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>Coordinates of the upper left corner of the useful part of the  image expressed in degrees in the Reference_System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Right_Corner" type="ee:Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Left_Corner" type="ee:Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Right_Corner" type="ee:Geo_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Useful_Image_Carto_Referencing_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A cartographic coverage of the useful image in the product</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Reference_System" type="ee:VE_Coordinate_Reference_System_Type">
+				<xs:annotation>
+					<xs:documentation>Cartographic coordinate reference system code taken from the authoritative EPSG code list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Left_Corner" type="ee:VE_Carto_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>Coordinates of the upper left corner of the useful part of the  image expressed in meters in the Reference_System</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Upper_Right_Corner" type="ee:VE_Carto_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Left_Corner" type="ee:VE_Carto_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lower_Right_Corner" type="ee:VE_Carto_Location_2D_Type">
+				<xs:annotation>
+					<xs:documentation>see Upper_Left_Corner for information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Geo_Referencing_Type">
+		<xs:annotation>
+			<xs:documentation>generic description for geo-referencing product - for published products</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Earth Representation and localization.
+(VE_ST_GSSM_39_CNES_330 - Geo ou Carto)
+Product coverage (Same as terrain representation for the given site) and useful part of the image.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="Product_Coverage">
+				<xs:annotation>
+					<xs:documentation>The coverage (width and height) is computed from the center of the first pixel to the center of the last one.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:annotation>
+							<xs:documentation>Earth Representation and localization.
+(VE_ST_GSSM_39_CNES_330 - Geo ou Carto)
+Same as terrain representation for the given site.</xs:documentation>
+						</xs:annotation>
+						<xs:element name="Geographic" type="ee:VE_Geo_Product_Coverage_Type">
+							<xs:annotation>
+								<xs:documentation>geographic coordinates </xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cartographic" type="ee:VE_Carto_Product_Coverage_Type">
+							<xs:annotation>
+								<xs:documentation>cartographic coordinates</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Useful_Image_Coverage">
+				<xs:complexType>
+					<xs:choice>
+						<xs:annotation>
+							<xs:documentation>Coverage of the useful image in product.
+</xs:documentation>
+						</xs:annotation>
+						<xs:element name="Geographic" type="ee:VE_Useful_Image_Geo_Referencing_Type">
+							<xs:annotation>
+								<xs:documentation>geographic coordinates</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Cartographic" type="ee:VE_Useful_Image_Carto_Referencing_Type">
+							<xs:annotation>
+								<xs:documentation>cartographic coordinates</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_L1_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>public description of a L1 product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_System_Product_Information_Type"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_L1_Product_Private_Information_Type">
+		<xs:annotation>
+			<xs:documentation>Private technical Data of a system product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_System_Product_Private_Information_Type"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_L1_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public description of organization of a published product.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Published_Product_Organization_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Annex_Files">
+						<xs:annotation>
+							<xs:documentation>For L1 product, annex files are : 
+- Cloud Altitudes (CLA) ;
+- Solar angles Grid (SOL) ;
+- Viewing angles Grid (VIE) ;</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Annex_File" minOccurs="0" maxOccurs="4">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sk" type="ee:VE_Product_Annex_Code_Type" use="required">
+													<xs:annotation>
+														<xs:documentation>annex code : CLA for l1 products</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="4"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Private_Data_File" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Link to private data file. This link is only required in the internal version and must be deleted before the publication of the product.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="List_of_Extension_Data_Files" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Future extensions</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Extension_Data_File" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sn" use="required">
+													<xs:simpleType>
+														<xs:restriction base="ee:Integer_Type">
+															<xs:minInclusive value="1"/>
+															<xs:maxInclusive value="100"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--Elements-->
+	<xs:complexType name="VE_Quality_Index_Type">
+		<xs:annotation>
+			<xs:documentation>Quality indexes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code" type="ee:VE_Quality_Index_Code_Type">
+				<xs:annotation>
+					<xs:documentation>The qualtity index code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Value">
+				<xs:annotation>
+					<xs:documentation>Quality index value in string.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ee:String_Type">
+							<xs:attribute name="unit" type="ee:String_Type"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Band_Code" type="ee:VE_Band_Code_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>For the band specific indexes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_List_of_Optionnal_Aks_Type">
+		<xs:annotation>
+			<xs:documentation>Absolute radiometric coefficients (one by band)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ak" minOccurs="0" maxOccurs="12">
+				<xs:annotation>
+					<xs:documentation>absolute radiometric calibration coefficient for the current band. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ee:VE_Decimal_Ak_Type">
+							<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+								<xs:annotation>
+									<xs:documentation>band code</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="count" use="required">
+			<xs:annotation>
+				<xs:documentation>number of bands</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="ee:Integer_Type">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="12"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+		<xs:complexType name="VE_List_of_Polarization_Coefficients_Type">
+			<xs:annotation>
+				<xs:documentation>Polarization coefficients (one by band)</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="Polarization_Coefficient" minOccurs="0" maxOccurs="12">
+					<xs:annotation>
+						<xs:documentation>Polarization coefficient for the current band. </xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="ee:VE_Decimal_Polarization_Coefficient_Type">
+							<xs:attribute name="sk" type="ee:VE_Band_Code_Type" use="required">
+								<xs:annotation>
+									<xs:documentation>band code</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="count" use="required">
+			<xs:annotation>
+				<xs:documentation>number of bands</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="ee:Integer_Type">
+					<xs:minInclusive value="0"/>
+					<xs:maxInclusive value="12"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<!--Decimal values-->
+	<xs:complexType name="VE_Decimal_Solar_Angle_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>A solar angle</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Azimuth" type="ee:VE_Decimal_Azimuth_Type"/>
+			<xs:element name="Zenith" type="ee:VE_Decimal_Angle_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Azimuth_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:restriction base="ee:VE_Decimal_Angle_Type">
+				<xs:minInclusive value="-360"/>
+				<xs:maxInclusive value="360"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Solar_Angle_Information_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>All the solar angles informations</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Useful_Image">
+				<xs:annotation>
+					<xs:documentation>Solar Angle in useful image corners and center</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Upper_Left_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Upper_Right_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Lower_Left_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Lower_Right_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Image_Center" type="ee:VE_Decimal_Solar_Angle_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Product" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Solar Angle in product corners. Only required when the product is projected (published products).</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Upper_Left_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Upper_Right_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Lower_Left_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+						<xs:element name="Lower_Right_Corner" type="ee:VE_Decimal_Solar_Angle_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Viewing_Angle_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>(cf . pointing direction ?)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Azimuth" type="ee:VE_Decimal_Azimuth_Type"/>
+			<xs:element name="Zenith" type="ee:VE_Decimal_Angle_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Angle_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>Angle Type with a maximum of 6 fraction digits</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="ee:Angle_Type">
+				<xs:fractionDigits value="6"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Geo_Coord_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>Lat Long Coord Type with a maximum of 9 fraction digits</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="ee:Angle_Type">
+				<xs:fractionDigits value="9"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Ak_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>Ak Type with a maximum of 5 fraction digits</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="ee:Ak_Type">
+				<xs:fractionDigits value="5"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Ak_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="ee:Decimal_Type"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="VE_Decimal_Polarization_Coefficient_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>Polarization Coefficient Type with a maximum of 5 fraction digits</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="ee:Polarization_Coefficient_Type">
+				<xs:fractionDigits value="4"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Polarization_Coefficient_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="ee:Decimal_Type"/>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:include schemaLocation="dico/misc/misc.xsd"/>
+	<xs:include schemaLocation="dico/pos/pos.xsd"/>
+	<xs:include schemaLocation="dico/geo/geo.xsd"/>
+	<xs:element name="Useful_Image_Informations">
+		<xs:annotation>
+			<xs:documentation>fichier d'information sur les emprises utiles des scenes VENUS</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Scene_Useful_Image_Informations" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SCENE_ID" type="xs:string"/>
+							<xs:element name="Geoposition_Informations">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Coordinate_Reference_System" type="A_COORDINATE_REFERENCE_SYSTEM"/>
+										<xs:element name="Useful_Image_Geopositioning" type="A_POINT_LIST"/>
+										<xs:element name="Product_Geopositining" type="A_POINT_LIST"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Geometric_Informations">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Useful_Image_Angles_List">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sun_Angles_List">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Sun_Angles" minOccurs="5" maxOccurs="5">
+																	<xs:complexType>
+																		<xs:complexContent>
+																			<xs:extension base="A_SOLAR_ANGLES">
+																				<xs:attribute name="name" type="A_POINT_NAME" use="required"/>
+																			</xs:extension>
+																		</xs:complexContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Viewing_Incidence_Angles_List" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Viewing_Incidence_Angles" minOccurs="5" maxOccurs="5">
+																	<xs:complexType>
+																		<xs:complexContent>
+																			<xs:extension base="AN_INCIDENCE_ANGLES">
+																				<xs:attribute name="name" type="A_POINT_NAME" use="required"/>
+																			</xs:extension>
+																		</xs:complexContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="detector_id" type="A_DETECTOR_ID" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Product_Angles_List">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Sun_Angles_List">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Sun_Angles" minOccurs="4" maxOccurs="4">
+																	<xs:complexType>
+																		<xs:complexContent>
+																			<xs:extension base="A_SOLAR_ANGLES">
+																				<xs:attribute name="name" type="A_POINT_NAME" use="required"/>
+																			</xs:extension>
+																		</xs:complexContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Viewing_Incidence_Angles_List" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Viewing_Incidence_Angles" minOccurs="4" maxOccurs="4">
+																	<xs:complexType>
+																		<xs:complexContent>
+																			<xs:extension base="AN_INCIDENCE_ANGLES">
+																				<xs:attribute name="name" type="A_POINT_NAME" use="required"/>
+																			</xs:extension>
+																		</xs:complexContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="detector_id" type="A_DETECTOR_ID" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

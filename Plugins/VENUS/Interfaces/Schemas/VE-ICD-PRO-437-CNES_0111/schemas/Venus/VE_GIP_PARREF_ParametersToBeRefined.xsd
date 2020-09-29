@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xs:schema [
+  <!ENTITY Operator "(=|&gt;=|&gt;|&lt;=|&lt;)">
+  <!ENTITY Number "(\+|\-)?[0-9]+\.[0-9]+">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="PARREF_File_Type">
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:PARREF_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:PARREF_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.30"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="PARREF_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:PARREF_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:PARREF_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PARREF_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_GIPP_ParametersToBeRefined_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="ParametersToBeRefined"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="GIP_PARREF"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PARREF_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:PARREF_Instance_Id_Type"/>
+            <xs:element name="List_of_Applicable_SiteDefinition_Ids">
+              <xs:annotation>
+                <xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="ee:VE_SiteDefinition_Id_Type">
+                          <xs:attribute name="sn" use="required">
+                            <xs:simpleType>
+                              <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="count" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Integer_Type">
+                      <xs:minInclusive value="0"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PARREF_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+        <xs:annotation>
+          <xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+        <xs:annotation>
+          <xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+        <xs:annotation>
+          <xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="PARREF_Body_Type">
+    <xs:sequence>
+      <xs:element name="List_of_Refining_Configurations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Refining_Configuration" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Key">
+                    <xs:annotation>
+                      <xs:documentation>Key definition of the refining configuration
+
+For all the ranges : 
+- first value is included in the range
+- last value is always excluded.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="STR_Configuration_List" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>List of stellar sensor configurations.
+
+Valid values are 0 1 2 3</xs:documentation>
+                          </xs:annotation>
+                          <xs:simpleType>
+                            <xs:list itemType="ee:PARREF_STR_Configuration_Type"/>
+                          </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="PFOM_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of PFOM (= Position Figure Of Merit : GPS localization precision), expressed in meters.
+
+The valid INF value (= infinite) should be used only as the the second term of the pair.</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="m"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="STR_Noise_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of stellar sensor noise level expressed in radians</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="rad"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="T1_Temperature_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of tridetector 1 temperature</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="T2_Temperature_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of tridetector 2 temperature</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="T3_Temperature_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of tridetector 3 temperature</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="T4_Temperature_Range" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Range of tridetector 4 temperature</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="ee:PARREF_Double_Pair_Type">
+                                <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Uncertainties">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Satellite_Position" type="ee:PARREF_Uncertainty_XYZ_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the satellite position (expressed in meters) in the local satellite reference frame.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIF_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the satellite attitudes (roll/picth/yaw expressed in radians) and  the spacecraft to instrument transformation</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIF_Homothety" type="ee:PARREF_Uncertainty_Z_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the spacecraft to instrument homothety transformation (= focal length correction)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T2_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 2 transformation</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T2_Homothety" type="ee:PARREF_Uncertainty_Z_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the instrument to tridetector 2 homothety transformation (= local focal length correction)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T3_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 3 transformation</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T3_Homothety" type="ee:PARREF_Uncertainty_Z_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the instrument to tridetector 3 homothety transformation (= local focal length correction)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T4_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 4 transformation</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="EIM_T4_Homothety" type="ee:PARREF_Uncertainty_Z_Type" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Uncertainties about the instrument to tridetector 4 homothety transformation (= local focal length correction)</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="sn" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Integer_Type">
+                      <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="1"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Default_Uncertainties">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Satellite_Position" type="ee:PARREF_Uncertainty_XYZ_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the satellite position (expressed in meters) in the local satellite reference frame.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIF_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the satellite attitudes (roll/picth/yaw expressed in radians) and  the spacecraft to instrument transformation</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIF_Homothety" type="ee:PARREF_Uncertainty_Z_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the spacecraft to instrument homothety transformation (= focal length correction)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T2_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 2 transformation</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T2_Homothety" type="ee:PARREF_Uncertainty_Z_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the instrument to tridetector 2 homothety transformation (= local focal length correction)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T3_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 3 transformation</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T3_Homothety" type="ee:PARREF_Uncertainty_Z_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the instrument to tridetector 3 homothety transformation (= local focal length correction)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T4_Rotation" type="ee:PARREF_Uncertainty_XYZ_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the angular biases (expressed in radians) in the instrument to tridetector 4 transformation</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="EIM_T4_Homothety" type="ee:PARREF_Uncertainty_Z_Type">
+              <xs:annotation>
+                <xs:documentation>Uncertainties about the instrument to tridetector 4 homothety transformation (= local focal length correction)</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="PARREF_STR_Configuration_Type">
+    <xs:restriction base="ee:String_Type">
+      <xs:enumeration value="0"/>
+      <xs:enumeration value="1"/>
+      <xs:enumeration value="2"/>
+      <xs:enumeration value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PARREF_Double_Pair_Type">
+    <xs:restriction base="ee:Double_List_Type">
+      <xs:length value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="PARREF_Uncertainty_XYZ_Type">
+    <xs:sequence>
+      <xs:element name="X" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Polynom_Degree" type="ee:Integer_Type"/>
+            <xs:element name="Polynom_Coef_Values">
+              <xs:simpleType>
+                <xs:list itemType="ee:Float_Type"/>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Y" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Polynom_Degree" type="ee:Integer_Type"/>
+            <xs:element name="Polynom_Coef_Values">
+              <xs:simpleType>
+                <xs:list itemType="ee:Float_Type"/>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Z" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Polynom_Degree" type="ee:Integer_Type"/>
+            <xs:element name="Polynom_Coef_Values">
+              <xs:simpleType>
+                <xs:list itemType="ee:Float_Type"/>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PARREF_Uncertainty_Z_Type">
+    <xs:sequence>
+      <xs:element name="Z" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Polynom_Degree" type="ee:Integer_Type"/>
+            <xs:element name="Polynom_Coef_Values">
+              <xs:simpleType>
+                <xs:list itemType="ee:Float_Type"/>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

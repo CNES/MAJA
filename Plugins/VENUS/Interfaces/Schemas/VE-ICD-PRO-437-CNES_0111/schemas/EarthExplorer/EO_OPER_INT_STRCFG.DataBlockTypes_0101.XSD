@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="GeoLocationTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Star Tracker Configuration Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:36 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Star_Tracker_Configuration_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Satellite_Name" type="String_Type"></xsd:element>
+			<xsd:element name="Mispointing" type="Mispointing_Type"></xsd:element>
+			<xsd:sequence minOccurs="0">
+				<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"
+				></xsd:any>
+			</xsd:sequence>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Star_Tracker_Configuration_Data_Block_Type"></xsd:element>
+	<xsd:complexType name="Max_Time_Gap_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="s"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Star_Tracker_Limits_Type">
+		<xsd:sequence>
+			<xsd:element name="Max_Penalty" type="Integer_Type"></xsd:element>
+			<xsd:element name="Quaternion_Norm_Threshold" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Max_Time_Gap" type="Max_Time_Gap_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Star_Tracker_Priority_Type">
+		<xsd:sequence>
+			<xsd:element name="File_Type_1" type="String_Type"></xsd:element>
+			<xsd:element name="File_Type_2" type="String_Type"></xsd:element>
+			<xsd:element name="File_Type_3" type="String_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Mispointing_Type">
+		<xsd:sequence>
+			<xsd:element name="Aberration_Correction" type="String_Type"></xsd:element>
+			<xsd:element name="Star_Trackers_Limits" type="Star_Tracker_Limits_Type"></xsd:element>
+			<xsd:element name="Star_Trackers_Priority" type="Star_Tracker_Priority_Type"></xsd:element>
+			<xsd:element name="List_of_Star_Trackers" type="List_of_Star_Trackers_Type"></xsd:element>
+			<xsd:element name="Satellite_Mechanical_To_Antenna_Bench" type="Star_Tracker_Type"></xsd:element>
+			<xsd:element name="Satellite_Control_To_Satellite_Mechanical"
+				type="Rotation_Angles_Type"></xsd:element>
+			<xsd:element name="Satellite_Attitude_To_Satellite_Control" type="Rotation_Angles_Type"
+			></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Rotation_Angles_Type">
+		<xsd:sequence>
+			<xsd:element name="X_Rotation" type="Angle_Type"></xsd:element>
+			<xsd:element name="Y_Rotation" type="Angle_Type"></xsd:element>
+			<xsd:element name="Z_Rotation" type="Angle_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Star_Tracker_Type">
+		<xsd:sequence>
+			<xsd:element name="Pre_Launch_Angles" type="Rotation_Angles_Type"></xsd:element>
+			<xsd:element name="Post_Launch_Misalignment" type="Rotation_Angles_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Star_Trackers_Type">
+		<xsd:sequence maxOccurs="3">
+			<xsd:element name="Star_Tracker" type="Star_Tracker_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="Decimal_Type" use="required" fixed="3"></xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

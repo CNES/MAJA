@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Muscate_Metadata_Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="Muscate_Metadata.xsd">
+	<Metadata_Identification>
+		<METADATA_FORMAT version="1.16">METADATA_MUSCATE</METADATA_FORMAT>
+		<METADATA_PROFILE>USER</METADATA_PROFILE>
+		<METADATA_INFORMATION>EXPERT</METADATA_INFORMATION>
+	</Metadata_Identification>
+	<Dataset_Identification>
+		<IDENTIFIER>NOT_INITIALIZED
+			SENTINEL2A_20091211-165850-593_L2A_T15SVD_C</IDENTIFIER>
+		<AUTHORITY>NOT_INITIALIZED THEIA</AUTHORITY>
+		<PRODUCER>NOT_INITIALIZED MUSCATE</PRODUCER>
+		<PROJECT>Sentinel</PROJECT>
+		<GEOGRAPHICAL_ZONE type="Tile">NOT_INITIALIZED T15SVD
+		</GEOGRAPHICAL_ZONE>
+		<ORIGINAL_DATA_DIFFUSER>SGS_</ORIGINAL_DATA_DIFFUSER>
+	</Dataset_Identification>
+	<Product_Characteristics>
+		<PRODUCT_ID>NOT_INITIALIZED
+			SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0</PRODUCT_ID>
+		<ACQUISITION_DATE>NOT_INITIALIZED 2009-12-11T16:58:50.5
+		</ACQUISITION_DATE>
+		<PRODUCTION_DATE>NOT_INITIALIZED 2013-12-05T09:06:40.0
+		</PRODUCTION_DATE>
+		<PRODUCT_VERSION>NOT_INITIALIZED 1.0</PRODUCT_VERSION>
+		<PRODUCT_LEVEL>L2A</PRODUCT_LEVEL>
+		<PLATFORM>NOT_INITIALIZED SENTINEL2A</PLATFORM>
+		<ORBIT_NUMBER type="Orbit">NOT_INITIALIZED 65</ORBIT_NUMBER>
+		<UTC_Acquisition_Range>
+			<MEAN>NOT_INITIALIZED 2009-12-11T16:58:50.5</MEAN>
+			<DATE_PRECISION unit="s">NOT_INITIALIZED 0.0000001
+			</DATE_PRECISION>
+		</UTC_Acquisition_Range>
+		<Band_Global_List count="10">
+			<BAND_ID>B2</BAND_ID>
+			<BAND_ID>B3</BAND_ID>
+			<BAND_ID>B4</BAND_ID>
+			<BAND_ID>B5</BAND_ID>
+			<BAND_ID>B6</BAND_ID>
+			<BAND_ID>B7</BAND_ID>
+			<BAND_ID>B8</BAND_ID>
+			<BAND_ID>B8A</BAND_ID>
+			<BAND_ID>B11</BAND_ID>
+			<BAND_ID>B12</BAND_ID>
+		</Band_Global_List>
+		<Band_Group_List>
+			<Group group_id="R1">
+				<Band_List count="4">
+					<BAND_ID>B2</BAND_ID>
+					<BAND_ID>B3</BAND_ID>
+					<BAND_ID>B4</BAND_ID>
+					<BAND_ID>B8</BAND_ID>
+				</Band_List>
+			</Group>
+			<Group group_id="R2">
+				<Band_List count="6">
+					<BAND_ID>B5</BAND_ID>
+					<BAND_ID>B6</BAND_ID>
+					<BAND_ID>B7</BAND_ID>
+					<BAND_ID>B8A</BAND_ID>
+					<BAND_ID>B11</BAND_ID>
+					<BAND_ID>B12</BAND_ID>
+				</Band_List>
+			</Group>
+		</Band_Group_List>
+	</Product_Characteristics>
+	<Product_Organisation>
+		<Muscate_Product>
+			<QUICKLOOK bands_id="NOT_INITIALIZED B4,B3,B2">NOT_INITIALIZED
+				SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_QKL_ALL.jpg
+			</QUICKLOOK>
+			<Image_List>
+				<Image>
+					<Image_Properties>
+						<NATURE>Surface_Reflectance</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>int16</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>None</COMPRESSION>
+					</Image_Properties>
+					<Image_File_List>
+						<IMAGE_FILE band_id="B2">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B2.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B3">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B3.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B4">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B4.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B5">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B5.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B6">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B6.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B7">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B7.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B8">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B8.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B8A">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B8A.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B11">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B11.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B12">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SRE_B12.tif
+						</IMAGE_FILE>
+					</Image_File_List>
+				</Image>
+				<Image_MACC_template_temporary_node_Flat_Reflectance>
+					<Image_Properties>
+						<NATURE>Flat_Reflectance</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>int16</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>None</COMPRESSION>
+					</Image_Properties>
+					<Image_File_List>
+						<IMAGE_FILE band_id="B2">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B2.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B3">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B3.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B4">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B4.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B5">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B5.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B6">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B6.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B7">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B7.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B8">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B8.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B8A">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B8A.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B11">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B11.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE band_id="B12">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_FRE_B12.tif
+						</IMAGE_FILE>
+					</Image_File_List>
+				</Image_MACC_template_temporary_node_Flat_Reflectance>
+				<Image>
+					<Image_Properties>
+						<NATURE>Water_Vapor_Content</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>None</COMPRESSION>
+					</Image_Properties>
+					<Image_File_List>
+						<IMAGE_FILE group_id="R1" band_number="1">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_ATB_R1.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE group_id="R2" band_number="1">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_ATB_R2.tif
+						</IMAGE_FILE>
+					</Image_File_List>
+				</Image>
+				<Image>
+					<Image_Properties>
+						<NATURE>Aerosol_Optical_Thickness</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>None</COMPRESSION>
+					</Image_Properties>
+					<Image_File_List>
+						<IMAGE_FILE group_id="R1" band_number="2">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_ATB_R1.tif
+						</IMAGE_FILE>
+						<IMAGE_FILE group_id="R2" band_number="2">NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_ATB_R2.tif
+						</IMAGE_FILE>
+					</Image_File_List>
+				</Image>
+			</Image_List>
+			<Mask_List>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>WVC_Interpolation</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_IAB_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_IAB_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>AOT_Interpolation</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_IAB_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_IAB_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Detailed_Cloud</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1">MASKS/SENTINEL2B_20171008-105012-463_L2A_T31TCH_C_V1-0_CLM_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2">MASKS/SENTINEL2B_20171008-105012-463_L2A_T31TCH_C_V1-0_CLM_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Defective_Pixel</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE band_id="B2" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B2.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B3" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B3.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B4" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B4.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B8" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B8.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B5" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B5.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B6" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B6.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B7" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B7.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B8A" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B8A.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B11" bit_number="5">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B11.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B12" bit_number="6">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_DFP_B12.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Detector_Footprint</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Edge</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_EDG_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_EDG_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Saturation</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE band_id="B2" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B2.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B3" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B3.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B4" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B4.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B8" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B8.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B5" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B5.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B6" bit_number="2">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B6.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B7" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B7.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B8A" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B8A.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B11" bit_number="5">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B11.tif
+						</MASK_FILE>
+						<MASK_FILE band_id="B12" bit_number="6">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SAT_B12.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Water</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_WTR_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="1">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_WTR_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Cloud</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="2">MASKS/SENTINEL2B_20171008-105012-463_L2A_T31TCH_C_V1-0_CLM_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="2">MASKS/SENTINEL2B_20171008-105012-463_L2A_T31TCH_C_V1-0_CLM_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Snow</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SNW_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="3">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SNW_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Cloud_Shadow</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SNW_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="4">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SNW_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Topography_Shadow</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="5">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SHD_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="5">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_SHD_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Hidden_Surface</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="6">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_HID_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="6">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_HID_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Sun_Too_Low</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="7">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_STL_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="7">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_STL_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+				<Mask>
+					<Mask_Properties>
+						<NATURE>Tangent_Sun</NATURE>
+						<FORMAT>image/tiff</FORMAT>
+						<ENCODING>byte</ENCODING>
+						<ENDIANNESS>LittleEndian</ENDIANNESS>
+						<COMPRESSION>DEFLATE</COMPRESSION>
+					</Mask_Properties>
+					<Mask_File_List>
+						<MASK_FILE group_id="R1" bit_number="8">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_TGS_R1.tif
+						</MASK_FILE>
+						<MASK_FILE group_id="R2" bit_number="8">NOT_INITIALIZED
+							MASKS/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_TGS_R2.tif
+						</MASK_FILE>
+					</Mask_File_List>
+				</Mask>
+			</Mask_List>
+			<Data_List>
+				<Data>
+					<Data_Properties>
+						<NATURE>Private_Directory</NATURE>
+						<FORMAT>application/vnd+muscate</FORMAT>
+					</Data_Properties>
+					<Data_File_List>
+						<DATA_FILE group_id="ALL">NOT_INITIALIZED
+							DATA/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_PVD_ALL
+						</DATA_FILE>
+					</Data_File_List>
+				</Data>
+				<Data>
+					<Data_Properties>
+						<NATURE>Job_Processing_Informations_File</NATURE>
+						<FORMAT>application/xml</FORMAT>
+					</Data_Properties>
+					<Data_File_List>
+						<DATA_FILE group_id="ALL">NOT_INITIALIZED
+							DATA/SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0_JPI_ALL.xml
+						</DATA_FILE>
+					</Data_File_List>
+				</Data>
+			</Data_List>
+		</Muscate_Product>
+	</Product_Organisation>
+	  <Geoposition_Informations>
+        <Coordinate_Reference_System>
+            <GEO_TABLES>NOT_INITIALIZED EPSG</GEO_TABLES>
+            <Horizontal_Coordinate_System>
+                <HORIZONTAL_CS_TYPE>NOT_INITIALIZED PROJECTED</HORIZONTAL_CS_TYPE>
+                <HORIZONTAL_CS_NAME>NOT_INITIALIZED WGS 84 / UTM zone 31N
+                </HORIZONTAL_CS_NAME>
+                <HORIZONTAL_CS_CODE>NOT_INITIALIZED 32631</HORIZONTAL_CS_CODE>
+            </Horizontal_Coordinate_System>
+        </Coordinate_Reference_System>
+        <Raster_CS>
+            <RASTER_CS_TYPE>NOT_INITIALIZED CELL</RASTER_CS_TYPE>
+            <PIXEL_ORIGIN>NOT_INITIALIZED 0</PIXEL_ORIGIN>
+        </Raster_CS>
+        <Metadata_CS>
+            <METADATA_CS_TYPE>NOT_INITIALIZED CELL</METADATA_CS_TYPE>
+            <PIXEL_ORIGIN>NOT_INITIALIZED 0</PIXEL_ORIGIN>
+        </Metadata_CS>
+        <Geopositioning>
+            <Global_Geopositioning>
+                <Point name="upperLeft">
+                    <LAT>NOT_INITIALIZED 44.2465509345</LAT>
+                    <LON>NOT_INITIALIZED 4.25248087222</LON>
+                    <X>NOT_INITIALIZED 600000.0</X>
+                    <Y>NOT_INITIALIZED 4900020.0</Y>
+                </Point>
+                <Point name="upperRight">
+                    <LAT>NOT_INITIALIZED 44.2232097399</LAT>
+                    <LON>NOT_INITIALIZED 5.6266459737</LON>
+                    <X>NOT_INITIALIZED 709800.0</X>
+                    <Y>NOT_INITIALIZED 4900020.0</Y>
+                </Point>
+                <Point name="lowerRight">
+                    <LAT>NOT_INITIALIZED 43.2356009597</LAT>
+                    <LON>NOT_INITIALIZED 5.58380827957</LON>
+                    <X>NOT_INITIALIZED 709800.0</X>
+                    <Y>NOT_INITIALIZED 4790220.0</Y>
+                </Point>
+                <Point name="lowerLeft">
+                    <LAT>NOT_INITIALIZED 43.2581553186</LAT>
+                    <LON>NOT_INITIALIZED 4.23203270004</LON>
+                    <X>NOT_INITIALIZED 600000.0</X>
+                    <Y>NOT_INITIALIZED 4790220.0</Y>
+                </Point>
+                <Point name="center">
+                    <LAT>NOT_INITIALIZED 43.7429332781</LAT>
+                    <LON>NOT_INITIALIZED 4.92374204516</LON>
+                    <X>NOT_INITIALIZED 654900.0</X>
+                    <Y>NOT_INITIALIZED 4845120.0</Y>
+                </Point>
+            </Global_Geopositioning>
+            <Group_Geopositioning_List>
+                <Group_Geopositioning group_id="R1">
+                    <ULX>NOT_INITIALIZED 600000</ULX>
+                    <ULY>NOT_INITIALIZED 4900020</ULY>
+                    <XDIM>NOT_INITIALIZED 10</XDIM>
+                    <YDIM>NOT_INITIALIZED -10</YDIM>
+                    <NROWS>NOT_INITIALIZED 10980</NROWS>
+                    <NCOLS>NOT_INITIALIZED 10980</NCOLS>
+                </Group_Geopositioning>
+                <Group_Geopositioning group_id="R2">
+                    <ULX>NOT_INITIALIZED 600000</ULX>
+                    <ULY>NOT_INITIALIZED 4900020</ULY>
+                    <XDIM>NOT_INITIALIZED 20</XDIM>
+                    <YDIM>NOT_INITIALIZED -20</YDIM>
+                    <NROWS>NOT_INITIALIZED 5490</NROWS>
+                    <NCOLS>NOT_INITIALIZED 5490</NCOLS>
+                </Group_Geopositioning>
+                <Group_Geopositioning group_id="R3">
+                    <ULX>NOT_INITIALIZED 600000</ULX>
+                    <ULY>NOT_INITIALIZED 4900020</ULY>
+                    <XDIM>NOT_INITIALIZED 60</XDIM>
+                    <YDIM>NOT_INITIALIZED -60</YDIM>
+                    <NROWS>NOT_INITIALIZED 1830</NROWS>
+                    <NCOLS>NOT_INITIALIZED 1830</NCOLS>
+                </Group_Geopositioning>
+            </Group_Geopositioning_List>
+        </Geopositioning>
+    </Geoposition_Informations>	
+	<Geometric_Informations>
+		<Mean_Value_List>
+			<Sun_Angles>
+				<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 39.9718067456829
+				</ZENITH_ANGLE>
+				<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 154.744010242116
+				</AZIMUTH_ANGLE>
+			</Sun_Angles>
+			<Mean_Viewing_Incidence_Angle_List>
+				<Mean_Viewing_Incidence_Angle band_id="B1">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.38024519461993
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.957675962953
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B2">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.13251372090341
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 104.89645517294
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B3">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.17506889779567
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.165378449963
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B4">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.21002238694603
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.433978864552
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B5">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.24692920870959
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.523067030827
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B6">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.27416493583513
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.604716662323
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B7">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.30650334529933
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.715783673913
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B8">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.15250250352571
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.032010271408
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B8A">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.34162025662261
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.808105972986
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B9">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.42191700283737
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 106.041176230103
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B10">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.19561217115105
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.395813216056
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B11">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.25371062849697
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.622653587008
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+				<Mean_Viewing_Incidence_Angle band_id="B12">
+					<ZENITH_ANGLE unit="deg">NOT_INITIALIZED 7.34014164093171
+					</ZENITH_ANGLE>
+					<AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED 105.902089229824
+					</AZIMUTH_ANGLE>
+				</Mean_Viewing_Incidence_Angle>
+			</Mean_Viewing_Incidence_Angle_List>
+		</Mean_Value_List>
+		<Angles_Grids_List>
+			<Sun_Angles_Grids>
+				<Zenith step_unit="m" values_unit="deg">
+					<COL_STEP>NOT_INITIALIZED 5000</COL_STEP>
+					<ROW_STEP>NOT_INITIALIZED 5000</ROW_STEP>
+					<Values_List />
+				</Zenith>
+				<Azimuth step_unit="m" values_unit="deg">
+					<COL_STEP>NOT_INITIALIZED 5000</COL_STEP>
+					<ROW_STEP>NOT_INITIALIZED 5000</ROW_STEP>
+					<Values_List />
+				</Azimuth>
+			</Sun_Angles_Grids>
+			<Viewing_Incidence_Angles_Grids_List />
+		</Angles_Grids_List>
+	</Geometric_Informations>
+	<Radiometric_Informations>
+		<REFLECTANCE_QUANTIFICATION_VALUE>NOT_INITIALIZED 1462
+		</REFLECTANCE_QUANTIFICATION_VALUE>
+		<WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>NOT_INITIALIZED 10
+		</WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>
+		<AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>NOT_INITIALIZED 200
+		</AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>
+		<Special_Values_List>
+			<SPECIAL_VALUE name="nodata">NOT_INITIALIZED -10000
+			</SPECIAL_VALUE>
+			<SPECIAL_VALUE name="water_vapor_content_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+			<SPECIAL_VALUE name="aerosol_optical_thickness_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+		</Special_Values_List>
+	<Spectral_Band_Informations_List>
+            <Spectral_Band_Informations band_id="B1">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 4.05527341384536</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1913.57</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 60</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B2">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 3.7964516982687</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1941.63</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 10</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B3">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 4.1882113399837</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1822.61</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 10</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B4">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 4.51428845376946</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1512.79</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 10</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B5">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 5.2017870880135</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1425.56</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B6">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 4.87092882606862</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1288.32</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B7">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 4.53560928178878</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1163.19</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B8">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 6.19624497601613</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 1036.39</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 10</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B8A">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 5.13659931885953</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 955.19</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B9">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 8.53745905372521</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 813.04</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 60</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B10">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 54.9408646556179</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 367.15</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 60</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B11">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 35.182247234289</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 245.59</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B12">
+                <Calibration_Coefficients_Lists>
+                    <Native_Coefficients_List>
+                        <COEFFICIENT name="PhysicalGain">NOT_INITIALIZED 105.882924589482</COEFFICIENT>
+                    </Native_Coefficients_List>
+                </Calibration_Coefficients_Lists>
+                <SOLAR_IRRADIANCE unit="W/m²/µm">NOT_INITIALIZED 85.25</SOLAR_IRRADIANCE>
+                <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED 20</SPATIAL_RESOLUTION>
+                <Wavelength/>
+                <Spectral_Response/>
+            </Spectral_Band_Informations>
+        </Spectral_Band_Informations_List>	
+	</Radiometric_Informations>
+	<Quality_Informations>
+		<Current_Product>
+			<Product_Quality_List level="N2">
+				<Product_Quality>
+					<Source_Product>
+						<PRODUCT_ID>NOT_INITIALIZED
+							SENTINEL2A_20091211-165850-593_L2A_T15SVD_C_V1-0</PRODUCT_ID>
+						<ACQUISITION_DATE>NOT_INITIALIZED 2009-12-11T16:58:50.5Z
+						</ACQUISITION_DATE>
+						<PRODUCTION_DATE>NOT_INITIALIZED 2015-04-02T09:51:36.0Z
+						</PRODUCTION_DATE>
+					</Source_Product>
+					<Global_Index_List>
+						<QUALITY_INDEX name="CloudPercent">NOT_INITIALIZED 0
+						</QUALITY_INDEX>
+						<QUALITY_INDEX name="SnowPercent">NOT_INITIALIZED 0
+						</QUALITY_INDEX>
+						<QUALITY_INDEX name="RainDetected">NOT_INITIALIZED False
+						</QUALITY_INDEX>
+						<QUALITY_INDEX name="HotSpotDetected">NOT_INITIALIZED False
+						</QUALITY_INDEX>
+						<QUALITY_INDEX name="SunGlintDetected">NOT_INITIALIZED False
+						</QUALITY_INDEX>
+					</Global_Index_List>
+				</Product_Quality>
+			</Product_Quality_List>
+		</Current_Product>
+	</Quality_Informations>
+	<Production_Informations>
+	   <Processing_Jobs_List>
+		<Job>
+			<WORKPLAN_ID>NOT_INITIALIZED generique_l2_20160614_11</WORKPLAN_ID>
+			<STEP_ID>conv_mL1</STEP_ID>
+			<JOB_ID>1</JOB_ID>
+			<PRODUCER_NAME>NOT_INITIALIZED MUSCATE</PRODUCER_NAME>
+			<START_PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:45:05.132689Z
+			</START_PRODUCTION_DATE>
+			<END_PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:51:35.715320Z
+			</END_PRODUCTION_DATE>
+			<Products_List>
+				<Inputs_List>
+					<PRODUCT>
+						<PRODUCT_ID>NOT_INITIALIZED
+							SENTINEL2B_20160215-103211-968_L1C_T31TFJ_H_V1-0</PRODUCT_ID>
+						<ACQUISITION_DATE>NOT_INITIALIZED 2016-02-15T10:32:11.968Z
+						</ACQUISITION_DATE>
+						<PRODUCTION_DATE>NOT_INITIALIZED 2016-05-03T13:16:53.436209Z
+						</PRODUCTION_DATE>
+					</PRODUCT>
+				</Inputs_List>
+				<Outputs_List>
+					<PRODUCT>
+						<PRODUCT_ID>NOT_INITIALIZED
+							SENTINEL2B_20160215-103211-968_L1C_T31TFJ_C_V1-0</PRODUCT_ID>
+						<ACQUISITION_DATE>NOT_INITIALIZED 2016-02-15T10:32:11.968Z
+						</ACQUISITION_DATE>
+						<PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:51:24.843178Z
+						</PRODUCTION_DATE>
+					</PRODUCT>
+				</Outputs_List>
+			</Products_List>
+		</Job>
+	   </Processing_Jobs_List>
+    </Production_Informations>
+</Muscate_Metadata_Document>

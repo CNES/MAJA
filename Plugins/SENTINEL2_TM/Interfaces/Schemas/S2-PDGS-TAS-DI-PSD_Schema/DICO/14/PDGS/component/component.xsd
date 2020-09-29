@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by AppsPortables.com (AppsPortables.com) -->
+<xsd:schema xmlns:component="http://gs2.esa.int/DICO/1.0/PDGS/component/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://gs2.esa.int/DICO/1.0/PDGS/component/"  targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/component/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>Component types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.3 $ $Date: 2016/07/14 12:47:01 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="test_OP" type="OPMonComposant_type"/>
+	<xsd:simpleType name="OPMonComposant_type">
+		<xsd:restriction base="S2Component_Composite_Type">
+			<xsd:maxLength value="6"/>
+			<xsd:pattern value="OP.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="S2Component_Type">
+		<xsd:restriction base="S2Component_Composite_Type">
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="S2Component_Composite_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value=".*DAGB.*"/>
+			<xsd:pattern value=".*DAGS.*"/>
+			<xsd:pattern value=".*DAGC.*"/>
+			<xsd:pattern value=".*S2MP.*"/>
+			<xsd:pattern value=".*DPC_.*"/>
+			<xsd:pattern value=".*IDP_.*"/>
+			<xsd:pattern value=".*OLQC.*"/>
+			<xsd:pattern value=".*NPOD.*"/>
+			<!-- see POD FFS-->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ExternalComponent_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="G1MPS"/>
+			<xsd:pattern value="GMCS"/>
+			<xsd:pattern value="EDDS"/>
+			<xsd:pattern value="NAPEOS"/>
+			<xsd:pattern value="FD"/>
+			<xsd:pattern value="OBSM"/>
+			<xsd:pattern value="OPOD"/>
+			<!-- NPIF_CC /FOS -->
+			<!-- NPIF /FOS -->
+			<!-- TC_History /FOS -->
+			<!-- Pred-Res Orbit /FOS -->
+			<!-- Manoeuver /FOCC (FOS) -->
+			<!-- Table /FOS -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Source_Creator_Component">
+		<xsd:union memberTypes="S2Component_Type ExternalComponent_Type"/>
+	</xsd:simpleType>
+</xsd:schema>

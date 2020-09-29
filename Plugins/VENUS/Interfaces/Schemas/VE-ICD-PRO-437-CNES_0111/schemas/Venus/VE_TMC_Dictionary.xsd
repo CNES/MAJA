@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xs:schema [
+	<!-- File_Name element patterns -->
+	<!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)">
+	<!ENTITY NickNameElt "([0-9A-Z_]{12})">
+	<!ENTITY SerialKeyElt "([0-9]{5})">
+	<!ENTITY AbsOrbitElt "([0-9]{5})">
+	<!ENTITY AbsOrbitRangeElt "(&AbsOrbitElt;_&AbsOrbitElt;)">
+	<!ENTITY StatusElt "(O|F)">
+	<!ENTITY TsdType "(A|D)">
+	<!ENTITY CycleElt "(1|2)C">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.1">
+  <xs:include schemaLocation="VE_Dictionary.xsd" />
+  <xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd" />
+  <!--*********************TMC*************************-->
+  <!--***********************************************************************************************************************************-->
+  <!--- - - - - - - VE_TechnologicalScenarioDefinition_Id_Type (TSD)-->
+  <xs:simpleType name="VE_TechnologicalScenarioDefinition_Id_Type">
+    <xs:annotation>
+      <xs:documentation>TechnologicalScenarioDefinition identifier following 'VE_cccc_MPL_TSDEFN_ID_Cycle_Nickname_T' pattern :
+- ID : id number 00001-99999
+- cccc : valid File_Class 
+- Nickname - 12 tokens
+-T- A(Auto), D(Direct)
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="VE_(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)_MPL_TSDEFN_([0-9]{5})_(1|2)C_([0-9A-Z_]{12})_(A|D)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--- - - - - - - - -VE_TMCSimulationReferenceDataSet_Id_Type (TSRS)-->
+  <xs:simpleType name="VE_TMCSimulationReferenceDataSet_Id_Type">
+    <xs:annotation>
+      <xs:documentation>A TMCSimulationReferenceDataSet identifier following 'VE_cccc_MPL_TSRSET_id_vvvvv pattern :
+- cccc : valid File_Class value
+- id : id number  
+-vvvvv:Validity first orbit
+			</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="VE_(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)_MPL_TSRSET_([0-9]{5})_([0-9]{5})" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--- - - - - - - - - VE_TechnologicalScenarioFeasibilityReport_Id_Type (TSFR)-->
+  <xs:simpleType name="VE_TechnologicalScenarioFeasibilityReport_Id_Type">
+    <xs:annotation>
+      <xs:documentation>TechnologicalScenarioFeasibilityReport identifier following 'VE_cccc_MPL_TSFREP_id_Cycle_nickname_T_ST' pattern :
+- id : id of TSD
+- cccc : valid File_Class value
+-ST: O (OK),F(FAILED)
+-nickname of TSD
+-vvvvv_vvvvv:Validity absolute number orbit range
+
+
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="VE_(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)_MPL_TSFREP_([0-9]{5})_(1|2)C_([0-9A-Z_]{12})_(A|D)_(O|F)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--- - - - - - - - - - - - - - - -VE_TechnologicalScenarioRequest_Id_Type (TSR)-->
+  <xs:simpleType name="VE_TechnologicalScenarioRequest_Id_Type">
+    <xs:annotation>
+      <xs:documentation>VE_TechnologicalScenarioRequest_Id_Type identifier following 'VE_cccc_MPL_TSREQT_idR_vvvvv_idS_nickname_T' pattern :
+- idS : id number 00001-99999 of TSD
+-idR : id of TSR
+- cccc : valid File_Class 
+-nickname of TSD
+-vvvvv:  start orbit
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="VE_(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)_MPL_TSREQT_([0-9]{5})_([0-9]{5})_([0-9]{5})_(1|2)C_([0-9A-Z_]{12})_(A|D)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--- - - - - - - - - - -VE_TechnologicalScenarioRequestReport_Is_Type (TSRR)-->
+  <xs:simpleType name="VE_TechnologicalScenarioRequestReport_Id_Type">
+    <xs:annotation>
+      <xs:documentation>VE_TechnologicalScenarioRequestReport_Id_Type identifier following 'VE_cccc_MPL_TSRREP_id_vvvvv_vvvvv_ST' pattern :
+-id : id of TSR
+-ST:status O or F
+- cccc : valid File_Class 
+-vvvvv_vvvvv:Validity absolute number orbit range
+</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="VE_(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[0-3]|DROB)_MPL_TSRREP_([0-9]{5})_(([0-9]{5})_([0-9]{5}))_(O|F)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--***********************************************************************************************************************************-->
+  <!--******************************-->
+  <!-- TIME TYPE-->
+  <!--*******************************-->
+  <!--***********************-->
+  <!--Time_Type-->
+  <!--************************-->
+  <xs:complexType name="TMC_Relative_Time_Type">
+    <xs:sequence>
+      <xs:element name="Rev">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:documentation>For information only (not in use in SCC)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Relative_Orbit_Number_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="rel" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Sec" default="0">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Relative_Time_Sec_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="sec" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--***********************-->
+  <!--Time_Type_Rev-->
+  <!--************************-->
+  <xs:complexType name="TMC_Relative_Time_Rev_Type">
+    <xs:sequence>
+      <xs:element name="Relative_Orbit">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Relative_Orbit_Number_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="rel" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--***********************************************************************************************************************************-->
+  <!--******************************-->
+  <!-- ABS ORBIT NUMBER TYPE-->
+  <!--*******************************-->
+  <xs:simpleType name="TMC_Orbit_Number_Type">
+    <xs:restriction base="ee:NonNegativeInteger_Type">
+      <xs:minInclusive value="00001" />
+      <xs:maxInclusive value="99999" />
+      <xs:pattern value="([0-9]{5})" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--******************************-->
+  <!-- RELATIVE ORBIT NUMBER TYPE-->
+  <!--*******************************-->
+  <xs:simpleType name="TMC_Relative_Orbit_Number_Type">
+    <xs:restriction base="ee:NonNegativeInteger_Type">
+      <xs:minInclusive value="01" />
+      <xs:maxInclusive value="58" />
+      <xs:pattern value="([0-9]{2})" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--******************************-->
+  <!-- RELATIVE TIME SEC TYPE-->
+  <!--*******************************-->
+  <xs:simpleType name="TMC_Relative_Time_Sec_Type">
+    <xs:restriction base="ee:NonNegativeInteger_Type">
+      <xs:minInclusive value="0" />
+      <xs:maxInclusive value="10000" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--***********************************************************************************************************************************-->
+  <!--******************************-->
+  <!-- SERIAL KEY TYPE-->
+  <!--*******************************-->
+  <xs:simpleType name="TMC_Serial_Key_Type">
+    <xs:restriction base="ee:NonNegativeInteger_Type">
+      <xs:minInclusive value="00001" />
+      <xs:maxInclusive value="99999" />
+      <xs:pattern value="([0-9]{5})" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--******************************-->
+  <!-- NICKNAME TYPE-->
+  <!--*******************************-->
+  <xs:simpleType name="TMC_Nickname_Type">
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="(([0-9A-Z_]{12}))" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--========================================================-->
+  <!--TSDType_Type-->
+  <!--========================================================-->
+  <xs:simpleType name="TMC_TSDType_Type">
+    <xs:restriction base="ee:String_Type">
+      <xs:enumeration value="A_AUTO" />
+      <xs:enumeration value="D_DIRECT" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--========================================================-->
+  <!--CycleNumber_Type-->
+  <!--========================================================-->
+  <xs:simpleType name="TMC_CycleNumber_Type">
+    <xs:restriction base="ee:String_Type">
+      <xs:pattern value="(1|2)C" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--***********************************************************************************************************************************-->
+  <!--========================================================-->
+  <!--Orbit_Vector_Type-->
+  <!--========================================================-->
+  <xs:complexType name="TMC_Orbit_Vector_Type">
+    <xs:sequence>
+      <xs:element name="EPOCH" type="ee:TMC_Epoch_Type" />
+      <xs:element name="X" type="ee:Double_Type" />
+      <xs:element name="Y" type="ee:Double_Type" />
+      <xs:element name="Z" type="ee:Double_Type" />
+      <xs:element name="X_DOT" type="ee:Double_Type" />
+      <xs:element name="Y_DOT" type="ee:Double_Type" />
+      <xs:element name="Z_DOT" type="ee:Double_Type" />
+    </xs:sequence>
+  </xs:complexType>
+  <!--***********************************************************************************************************************************-->
+  <!--========================================================-->
+  <!--REP_TMM_Waive_Events_Type-->
+  <!--========================================================-->
+  <xs:complexType name="REP_TMM_Waive_Event_Type">
+    <xs:sequence>
+      <xs:element name="Time" type="ee:UTC_Date_Time_Type" />
+      <xs:element name="Code">
+        <xs:simpleType>
+          <xs:restriction base="ee:NonNegativeInteger_Type">
+            <xs:minInclusive value="2304" />
+            <xs:maxInclusive value="2399" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--========================================================-->
+  <!--REP_TMM_Events_Type-->
+  <!--========================================================-->
+  <xs:complexType name="REP_TMM_Event_Type">
+    <xs:sequence>
+      <xs:element name="Time" type="ee:UTC_Date_Time_Type" />
+      <xs:element name="Code">
+        <xs:simpleType>
+          <xs:restriction base="ee:NonNegativeInteger_Type">
+            <xs:minInclusive value="2304" />
+            <xs:maxInclusive value="2399" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--========================================================-->
+  <!--REP_DHC_Events_Type-->
+  <!--========================================================-->
+  <xs:complexType name="REP_DHC_Event_Type">
+    <xs:sequence>
+      <xs:element name="Time" type="ee:UTC_Date_Time_Type" />
+      <xs:element name="Code">
+        <xs:simpleType>
+          <xs:restriction base="ee:NonNegativeInteger_Type">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="4095" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--========================================================-->
+  <!--REP_CNC_Events_Type-->
+  <!--========================================================-->
+  <xs:complexType name="REP_CNC_Event_Type">
+    <xs:sequence>
+      <xs:element name="Time" type="ee:UTC_Date_Time_Type" />
+      <xs:element name="Code">
+        <xs:simpleType>
+          <xs:restriction base="ee:NonNegativeInteger_Type">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="4095" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--========================================================-->
+  <!--TMC_Epoch_Type -->
+  <!--========================================================-->
+  <xs:simpleType name="TMC_Epoch_Type">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="UTC=\-?\d{4}\d*-((\d{2}\-\d{2})|\d{3})T\d{2}:\d{2}:\d{2}(\.\d{3})" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

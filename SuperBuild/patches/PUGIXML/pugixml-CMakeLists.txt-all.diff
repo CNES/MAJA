@@ -1,0 +1,8 @@
+diff -burN pugixml-1.5-modified-v1.orig/CMakeLists.txt pugixml-1.5-modified-v1/CMakeLists.txt
+--- pugixml-1.5-modified-v1.orig/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
++++ pugixml-1.5-modified-v1/CMakeLists.txt	2017-12-05 11:10:27.000000000 +0100
+@@ -0,0 +1,4 @@
++project(pugixml-bootstrap)
++cmake_minimum_required(VERSION 2.6)
++option(BUILD_SHARED_LIBS "Build shared instead of static library" ON)
++add_subdirectory(scripts)

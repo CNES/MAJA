@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xs:schema xmlns="http://gs2.esa.int/DICO/1.0/PDGS/header/" xmlns:header="http://gs2.esa.int/DICO/1.0/PDGS/header/" xmlns:center="http://gs2.esa.int/DICO/1.0/PDGS/center/" xmlns:component="http://gs2.esa.int/DICO/1.0/PDGS/component/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:date_time="http://gs2.esa.int/DICO/1.0/SY/date_time/" xmlns:filename="http://gs2.esa.int/DICO/1.0/PDGS/fileNaming/" xmlns:misc="http://gs2.esa.int/DICO/1.0/SY/misc/" targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/header/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/component/" schemaLocation="../component/component.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/center/" schemaLocation="../center/center.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/SY/date_time/" schemaLocation="../../SY/date_time/date_time.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/SY/misc/" schemaLocation="../../SY/misc/misc.xsd"/>
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/fileNaming/" schemaLocation="../fileNaming/fileNaming.xsd"/>
+	<xs:annotation>
+		<xs:documentation>Earth Explorer Header data types</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>$Revision: 1.3 $ $Date: 2016/07/14 12:47:01 $</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="Earth_Explorer_Header_Type">
+		<xs:sequence>
+			<xs:element name="Fixed_Header" type="Fixed_Header_Type"/>
+			<xs:element name="Variable_Header" type="misc:AnyType_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="filename:FileName"/>
+			<xs:element name="File_Description" type="xs:string"/>
+			<xs:element name="Notes" type="xs:string"/>
+			<xs:element name="Mission" type="Mission_Type"/>
+			<xs:element name="File_Class" type="filename:FileClass"/>
+			<xs:element name="File_Type" type="filename:FileType"/>
+			<xs:element name="Validity_Period" type="Validity_Period_Type"/>
+			<xs:element name="File_Version" type="filename:File_Version_Type"/>
+			<xs:element name="Source" type="Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Fixed_Header_Type_EOM">
+		<xs:sequence>
+			<xs:element name="File_Name" type="filename:FileName"/>
+			<xs:element name="File_Description" type="xs:string"/>
+			<xs:element name="Notes" type="xs:string"/>
+			<xs:element name="Mission" type="Mission_Type"/>
+			<xs:element name="File_Class" type="filename:FileClass"/>
+			<xs:element name="File_Type" type="filename:FileType"/>
+			<xs:element name="Validity_Period" type="Validity_Period_EOM_Type"/>
+			<xs:element name="File_Version" type="filename:File_Version_Type"/>
+			<xs:element name="Source" type="Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Fixed_Header_Type_BOM_EOM">
+		<xs:sequence>
+			<xs:element name="File_Name" type="filename:FileName"/>
+			<xs:element name="File_Description" type="xs:string"/>
+			<xs:element name="Notes" type="xs:string"/>
+			<xs:element name="Mission" type="Mission_Type"/>
+			<xs:element name="File_Class" type="filename:FileClass"/>
+			<xs:element name="File_Type" type="filename:FileType"/>
+			<xs:element name="Validity_Period" type="Validity_Period_BOM_EOM_Type"/>
+			<xs:element name="File_Version" type="filename:File_Version_Type"/>
+			<xs:element name="Source" type="Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Mission_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="11"/>
+			<xs:enumeration value="Sentinel-2"/>
+			<xs:enumeration value="Sentinel-2A"/>
+			<xs:enumeration value="Sentinel-2B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Source_Type">
+		<xs:sequence>
+			<xs:element name="System" type="center:All_S2PDGS_System_Center"/>
+			<xs:element name="Creator" type="component:Source_Creator_Component"/>
+			<xs:element name="Creator_Version" type="xs:string"/>
+			<xs:element name="Creation_Date" type="Creation_Date_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Creation_Date_Type">
+		<xs:restriction base="date_time:UTC_Date_Time_Type">
+			<xs:length value="23"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Validity_Period_Type" mixed="false">
+		<xs:sequence>
+			<xs:element name="Validity_Start" type="Validity_Time_Type"/>
+			<xs:element name="Validity_Stop" type="Validity_Time_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Validity_Period_EOM_Type">
+		<xs:sequence>
+			<xs:element name="Validity_Start" type="Validity_Time_Type"/>
+			<xs:element name="Validity_Stop" type="date_time:UTC_EOM_Date_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Validity_Period_BOM_EOM_Type">
+		<xs:sequence>
+			<xs:element name="Validity_Start" type="date_time:UTC_BOM_Date_Type"/>
+			<xs:element name="Validity_Stop" type="date_time:UTC_EOM_Date_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Validity_Time_Type">
+		<xs:restriction base="date_time:UTC_Date_Time_Type">
+			<xs:length value="23"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Software_Version_Type">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

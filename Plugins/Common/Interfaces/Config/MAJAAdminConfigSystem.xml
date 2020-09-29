@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-0-0 : FA : LAIG-FA-MAC-117040-CS : 13 mars 2014 : Modifications mineures                     *
+ * VERSION : 3-2-0 : FA : LAIG-FA-MAC-713-CNES : Clarification du MU. Suppression d'un paramètre obsolète   *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 17 avril 2012 : Creation                                   *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maja.fr ./MAJAAdminConfigSystem.xsd" xmlns="http://maja.fr">
+    <!-- System : operational center name -->
+    <System>MAJA</System>
+    <!-- Setting tolerances in MAJA -->
+    <Tolerances>
+        <!-- For footprint matching between the L1, L2, L2Coarse and DEM -->
+        <FootprintTolerances> 
+            <!-- Use to set the ITK threshold "SetGlobalDefaultCoordinateTolerance" -->
+            <Coordinate>0.000001</Coordinate>
+            <!-- Use to set the ITK threshold "SetGlobalDefaultDirectionTolerance" -->
+            <Direction>0.000001</Direction>
+        </FootprintTolerances>
+    </Tolerances>
+    <DevelopmentConfiguration>
+        <!-- Option to measure the performance of the chain (time processing and memory footprint) -->
+        <EnablePerformanceMeasureAlgorithms>false</EnablePerformanceMeasureAlgorithms>
+    </DevelopmentConfiguration>
+</Config>

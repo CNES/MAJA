@@ -1,0 +1,325 @@
+# -*- coding: utf-8 -*-
+
+                   ###########################################
+                   #                                         #
+                   #   DOSSIER DESCRIPTIF DE CONFIGURATION   #
+                   #                                         #
+                   ###########################################
+
+0- Identification
+-----------------
+
+MAJA
+Auteur : Equipe CS System d'Information
+Date   : 07/05/2020
+
+Ce fichier contient la description complete de la configuration de l'article decrit ci-apres.
+
+1- Description de l'article
+---------------------------
+
+IDENTIFICATION DE L'ARTICLE
+---------------------------
+Code article                : SETG 
+Libelle article             : MAJA
+Code OT                     : MAJA
+Criticite article           : PCC
+Confidentialite article     : NC
+Fournisseur version         : CS
+Rappel de la fonction       : MAJA constitue la chaîne de niveaux 2 multi-mission (MACCS-ATCOR Joint Algorithm).
+
+
+IDENTIFICATION DE LA VERSION
+----------------------------
+Date version                : 07/05/2020
+Numero version              : 4.2.0
+Numero version Superbuild-Archive : 4.2.0
+Numero version reference    : 4.1.0
+Etat version                : Teste, opérationnel.
+Justification               : Livraison MAJA V4.2.0
+Type de livraison           : Complete
+
+
+Liste des composants constituant MAJA pour cette version :
+
+      +----------------------------------+----------------------+------------------------------------------------------+
+      |                                  |                      |                                                      |
+      |  Nom module ou Plugin            |  Version Logicielle  |          Version Interface  (File_Version)           |
+      |                                  |                      |          _          _          _          _          |
+      |                                  |                      |    L2    |    L3    |  L1QCK   |  L2QCK   |  L3QCK   |
+      |----------------------------------|----------------------+----------+----------+----------+----------+----------+
+      |  plugin-venus                    |        1.0.0         |   0008   |   0003   |   0003   |   0003   |   0003   |
+      |  plugin-venus_muscate            |        1.0.0         |   0007   |    -     |   0002   |   0002   |    -     |
+      |  plugin-sentinel2                |        1.0.0         |   0007   |    -     |   0002   |   0002   |    -     |
+      |  plugin-sentinel2_muscate        |        1.0.0         |   0007   |    -     |   0002   |   0003   |    -     |
+      |  plugin-landsat8                 |        1.0.0         |   0006   |    -     |   0002   |   0002   |    -     |
+      |  plugin-landsat8_muscate         |        1.0.0         |   0007   |    -     |   0002   |   0002   |    -     |
+      +----------------------------------+----------------------+----------+----------+----------+----------+----------+
+
+
+2- Referentiel Applicable
+-------------------------
+
+REMARQUE : cette rubrique n'est pas renseignee dans le cadre d'une livraison de patch
+Referentiel applicable decrit dans la LD : SETG-LD-MAJA-010-CS
+
+
+3- Moyens requis (ou 'utilises') pour developper/generer/exploiter
+------------------------------------------------------------------
+
+    Cf. document "USER, INSTALLATION, and OPERATING MANUAL, MAJA L2 & L3 CHAINS" (document "SETG-MU-MAJA-010-CS").
+
+
+
+4- Instructions detaillees de prise en compte
+---------------------------------------------
+
+4.1- Recuperation de la livraison
+---------------------------------
+    Le fichier livre est au format "tgz" constitue sous Linux.
+    Pour lire ce fichier, il faut taper, sous Linux, la commande:
+    "tar xzf "
+
+    Cf. document "USER, INSTALLATION, and OPERATING MANUAL, MAJA L2 & L3 CHAINS" (document "SETG-MU-MAJA-010-CS").
+
+4.2- Environnements de generation
+---------------------------------
+
+    MAJA se compile sur l'OS RHEL pour les versions 5.x, 6.x, 7.x ainsi que sur Ubuntu 16.04
+    Le code source est en C++ et python (GNU gcc standard disponible avec la version de l'OS).
+
+5- Generation - Installation - Mise a disposition pour l'utilisateur
+--------------------------------------------------------------------
+
+    5.1 Generation, construction du produit
+    ---------------------------------------
+
+        5.1.1 Pre-requis 
+        - - - - - - - - -
+            La génération des binaires de MAJA repose sur l'utilisation de cmake.
+            Aucun paquet spécifique autre que cmake n'est nécessaire à la génération des binaires:
+            - La version minimale nécessaire au build de MAJA est 3.10.2, 
+            - La version minimale nécessaire au packaging de MAJA est 3.10.2.
+            - La version recommandée à la validation de MAJA est la version 3.11.3
+                
+        
+        5.1.2 Generation du paquet "maja"  
+        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			La release se compose des éléments suivants:
+			- MAJA : sources de MAJA (issu de la décompression de MAJA_V*.*.*.tgz)
+			- Superbuild-archives : sources des cots (issu de la décompression de MAJA-SuperbuildArchive_V*.*.*.tgz)
+			
+			Soient BUILD et INSTALL deux répertoires créés pour la génération,
+			Pour generer un paquet MAJA il suffit d'utiliser CMAKE comme décrit dans l'exemple ci-dessous:
+            
+			# mkdir BUILD
+			# mkdir INSTALL			
+			# cd BUILD
+			# cmake <CheminVersDecompressionMAJA>/MAJA/SuperBuild \
+				-DDOWNLOAD_DIR=<PathTo>/Superbuild-archives \
+				-DENABLE_TV=OFF \
+				-DENABLE_TVA=OFF \
+				-DCMAKE_INSTALL_PREFIX=<PathTo>/opt
+			# make –j<NbThreads>
+			
+			Les plugins étant en Python il n'est plus necessaire de selectionner ceux qui seront activés.			
+			
+     		Enfin lancer la commande suivante pour générer le paquet binaire:
+            
+			# make binpkg
+            
+            Le paquet résultant se trouvera dans le répertoire BUILD/binpkg.dir/
+            sous la forme MAJA-<MAJA_VERSION>.run            
+
+        5.1.3 Generation du paquet "maja" pour la validation
+        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			La release se compose des éléments suivants:
+			- MAJA : sources de MAJA (issu de la décompression de MAJA_V*.*.*.tgz)
+			- Superbuild-archives : sources des cots (issu de la décompressione de MAJA-SuperbuildArchive_V*.*.*.tgz)
+			- MAJA-Validation : environement de validation (issu de la décompression de MAJA-Validation_V*.*.*.tgz)
+			- MAJA-DATA : données de références (livrées via le cluster)
+			
+			Soient BUILD, INSTALL et TEST trois répertoires créés pour la génération.
+			Le répértoire de TEST contiendra les sortie des test et necessite un certain espace libre pour fonctionner.
+			Pour generer un paquet MAJA il suffit d'utiliser CMAKE comme décrit dans l'exemple ci-dessous:
+            
+			# mkdir BUILD
+			# mkdir INSTALL
+			# mkdir TEST
+			# cd BUILD
+			# cmake <PathTo>/MAJA/SuperBuild \
+				-DMAJADATA_SOURCE_DIR=<PathTo>/MAJA-DATA \
+				-DMAJA_TEST_OUTPUT_ROOT=<PathTo>/TEST \
+				-DMAJA_VALIDATION_SRC_DIR=<PathTo>/MAJA-Validation \
+				-DDOWNLOAD_DIR=<PathTo>/Superbuild-archives \
+				-DENABLE_TV=ON \
+				-DENABLE_TVA=ON \
+				-DCMAKE_INSTALL_PREFIX=<PathTo>/opt
+			# make –j12
+			
+			Les plugins étant en Python il n'est plus necessaire de selectionner ceux qui seront activés.				
+			
+     		Les tests peuvent ensuite être lancés en utilisant les commande ctest standard:
+			- Afficher la liste des Tests :
+				# ctest -N
+			- Executer un test :
+				# ctest -R <NomDuTest>
+
+
+    5.2 Installation et mise a disposition pour l'utilisateur
+    ---------------------------------------------------------
+
+        Cf. section $3.3 du document "USER, INSTALLATION, and OPERATING MANUAL, MAJA L2 & L3 CHAINS" (document "SETG-MU-MAJA-010-CS").
+
+
+6- Modifications apportees par rapport a la version precedente
+--------------------------------------------------------------
+
+Modifications principales
+-------------------------
+
+Liste des FA corrigees
+----------------------
+
+      FA tracees dans le code source
+      ------------------------------
+      151 ::               Remove deprecated build options 			|   #CS 
+      147 ::               Venus masks in float and CLD mask wrong 		|   #CS 
+      146 ::               Quicklook Sentinel2 TM/Muscate fichier .aux.xml 	|   #CS 
+      144 ::               Method object not subscriptable 			|   #CS 
+      143 ::               Maja 4.2 Venus Backward no .mha 			|   #CS 
+      142 ::               Retrofit FA Maja 2 produits sur une même date 	|   #CS 
+      141 ::               Muscate Sentinel2 images/masks in float 		|   #CS 
+      140 ::               Maja 4.2 Missing viewing angles 			|   #CS 
+      139 ::               Maja 4.2 CAMS FileNotFoundError 			|   #CS 
+      138 ::               Maja 4.2 binpkg failing 				|   #CS 
+      137 ::               Retrofit Maja FA Perfo RH7 				|   #CS 
+      136 ::               Maja 4.1 Job killed at L2Writing 			|   #CS 
+      134 ::               Update Documentation 				|   #CS 
+      132 ::               Maja 4.1 XML Invalid 				|   #CS 
+      130 ::               Maja 4.1 Empty images and ATB mask !=0 		|   #CS 
+      129 ::               Maja 4.1 Venus out of region 			|   #CS 
+      126 ::               Maja 4.1 120m Error 					|   #CS 
+      125 ::               Maja 4.1 SnowRate Error 				|   #CS 
+     
+
+      FA non tracees dans le code source
+      ------------------------------
+      Néant    
+
+      FA incluant une nouvelle bibliotheque
+      --------------------------------------
+
+      Néant
+
+
+      FA sur documentation
+      --------------------
+      Néant
+ 
+
+Liste des FA non reproductbiles ou annulees
+-------------------------------------------
+
+      FA non reproductibles
+      ---------------------
+      Néant
+
+      FA annulees
+      -----------
+      Néant
+
+Liste des DM prises en compte
+-----------------------------
+
+      DM tracees dans le code source
+      ------------------------------
+
+      154 :: Ajout de start-maja					|   #CS 
+      145 :: Supprimer le paramètre L2Coarse dans le fichier userconf	|   #CS 
+      127 :: Monter en version de l'OTB					|   #CS 
+      75  :: Amélioration des performances générale   			|   #CS 
+    
+      DM incluant une nouvelle bibliotheque
+      --------------------------------------
+
+      Néant
+
+
+      DM sur documentation
+      --------------------
+
+      Néant
+
+
+Liste des DR/DV n'ayant plus cours
+----------------------------------
+
+      Néant
+
+
+
+7- Etat des faits techniques connus
+-----------------------------------
+
+Liste des FA ouvertes
+---------------------
+      136 :: Maja 4.1 Job killed at L2Writing					|   #CS 	
+
+
+Liste des DM ouvertes
+---------------------
+
+      Néant
+
+
+Liste des DR/DV acceptees
+-------------------------
+
+      Néant
+
+
+Liste des DR/DV en attente de decision
+--------------------------------------
+
+      Néant
+
+
+8- Informations complementaires
+-------------------------------
+
+    Ce paragraphe apporte des informations complementaires pouvant aider le
+    service de gestion de configuration ou les operateurs sur des points
+    particuliers et relatifs a la version livree.
+    Il contient la liste des extensions (suffixes) utilises sur le projet, leur nature,
+        si il vont contenir le marqueur "Id", et si il auront le cartouche de tracabilite.
+
+    * Les fichiers .cmake, .cmake.in et CMakeLists.txt sont des fichers utilises pour generer les Makefiles, et contiennent le marqueur "Id"
+
+    * Les fichiers .h, .txx et .cxx sont des fichiers de codes source C++, et contiennent le marqueur "Id"
+
+    * Les fichiers dans le repertoire /Doxygen sont des fichiers de configuration Doxygen, et ne contiennent pas le marqueur "Id"
+
+    * Les fichiers dans le repertoire Plugins/Orchestrator/Interfaces/Data sont des donnees XML, et contiennent le marqueur "Id"
+    * Les fichiers dans le repertoire Plugins/Orchestrator/Interfaces/Config sont des donnees XML, et contiennent le marqueur "Id"
+    * Les fichiers dans le repertoire Plugins/Orchestrator/Interfaces/Schemas sont des donnees XSD de reference, et ne contiennent pas le marqueur "Id"
+
+    * Les fichiers dans le repertoire Plugins/<CAPTEUR>/Interfaces/Config sont des donnees XML, et contiennent le marqueur "Id"
+    * Les fichiers dans le repertoire Plugins/<CAPTEUR>/Interfaces/Data sont des donnees XML/XSD, et ne contiennent pas le marqueur "Id"
+    * Les fichiers dans le repertoire Plugins/<CAPTEUR>/Interfaces/Schemas sont des donnees XSD de reference, et ne contiennent pas le marqueur "Id"
+
+    * Les fichiers .sh sont des fichiers scripts, et contiennent le marqueur "Id"
+
+    * Les fichiers binaires identifies sont :
+        ./Checking/Data/Input/VE_TEST_VSC_PDTANX_L1VALD_CRAUCAME_20110104_SOL.DBL.HDF
+        ./Checking/Data/Baseline/checkingSDSimage1.tif
+        ./Plugins/<CAPTEUR>/Interfaces/Data/, fichiers d'extensions .DBL, tous les fichiers contenus dans les sous-repertoires DBL.DIR
+        ./Plugins/Orchestrator/Interfaces/Config/LucidaBrightDemiItalic.ttf
+
+JUSTIFICATION du NON TRACE des FT dans les cartouches
+-----------------------------------------------------
+
+    Neant.
+    

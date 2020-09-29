@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Thales (THALES INFORMATION SYSTEMS) -->
+<xsd:schema xmlns="http://gs2.esa.int/DICO/1.0/PDGS/fileNaming/" xmlns:center="http://gs2.esa.int/DICO/1.0/PDGS/center/" xmlns:spacecraft="http://gs2.esa.int/DICO/1.0/PDGS/spacecraft/" xmlns:component="http://gs2.esa.int/DICO/1.0/PDGS/component/" xmlns:date_time="http://gs2.esa.int/DICO/1.0/SY/date_time/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://gs2.esa.int/DICO/1.0/PDGS/fileNaming/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/component/" schemaLocation="../component/component.xsd"/>
+	<xsd:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/center/" schemaLocation="../center/center.xsd"/>
+	<xsd:import namespace="http://gs2.esa.int/DICO/1.0/PDGS/spacecraft/" schemaLocation="../spacecraft/spacecraft.xsd"/>
+	<xsd:import namespace="http://gs2.esa.int/DICO/1.0/SY/date_time/" schemaLocation="../../SY/date_time/date_time.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation>Filename template and derived types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.3 $ $Date: 2016/07/14 12:47:02 $</xsd:documentation>
+	</xsd:annotation>
+	<!--..............................................................................................................................................-->
+	<!-- File Name Type : full Name -->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="FileName">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(S2[AB_])_([A-Z0-9_]){4}_([A-Z0-9_]){10}_([A-Z0-9_]){1,90}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FOS_File_Name_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([A-Z0-9_]){3}_([A-Z0-9_]){4}_([A-Z0-9_]){10}_([A-Z0-9_]){1,90}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!-- File Class Type : 2nd part of the filename  -->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="FileClass">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value=".*OPER.*"/>
+			<xsd:pattern value=".*TEST.*"/>
+			<xsd:pattern value=".*S[0-9]{3}.*"/>
+			<xsd:pattern value=".*TD[0-9]{2}.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!-- File Class Type : 3rd part of the filename  -->
+	<!--..............................................................................................................................................-->
+	<xsd:element name="test" type="FileType"/>
+	<xsd:simpleType name="FileType">
+		<xsd:union memberTypes="File_Type_Type_WithoutConstraint File_Type_Type_Dependant_From_Component File_Type_Type_Dependant_From_BasicCGS File_Type_Type_Dependant_From_FullCGS"/>
+	</xsd:simpleType>
+	<!-- File type which contains a composant Id -->
+	<xsd:simpleType name="File_Type_Type_Dependant_From_Component">
+		<xsd:restriction base="component:S2Component_Composite_Type">
+			<xsd:maxLength value="10"/>
+			<xsd:pattern value="CNF_OP.*"/>
+			<xsd:pattern value="LOG_.*__"/>
+			<xsd:pattern value="REP_OP.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- File type which contains a station Id (4 characters) -->
+	<xsd:simpleType name="File_Type_Type_Dependant_From_BasicCGS">
+		<xsd:restriction base="center:A_Basic_CGS_Composite_Type">
+			<xsd:maxLength value="10"/>
+			<xsd:pattern value="MPL_FS.*"/>
+			<xsd:pattern value="MPL_SP.*"/>
+			<xsd:pattern value="MPL_PP.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="File_Type_Type_Dependant_From_FullCGS">
+		<xsd:restriction base="center:A_Full_CGS_Composite_Type">
+			<xsd:maxLength value="10"/>
+			<xsd:pattern value="MPL_FS.*"/>
+			<xsd:pattern value="MPL_SP.*"/>
+			<xsd:pattern value="MPL_PP.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="File_Type_Type_WithoutConstraint">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="AUX_ENV___"/>
+			<xsd:pattern value="AUX_UT1UTC"/>
+			<xsd:pattern value="AUX_ATMCOR"/>
+			<xsd:pattern value="AUX_GPS___"/>
+			<xsd:pattern value="AUX_SAD___"/>
+			<xsd:pattern value="AUX_ORBPRE"/>
+			<xsd:pattern value="AUX_ORBRES"/>
+			<xsd:pattern value="DEM_GLOBEF"/>
+			<xsd:pattern value="DEM_SRTMFO"/>
+			<xsd:pattern value="DEM_GEOIDF"/>
+			<xsd:pattern value="GIP_ATMIMA"/>
+			<xsd:pattern value="GIP_ATMSAD"/>
+			<xsd:pattern value="GIP_DATATI"/>
+			<xsd:pattern value="GIP_LREXTR"/>
+			<xsd:pattern value="GIP_INVLOC"/>
+			<xsd:pattern value="GIP_VIEDIR"/>
+			<xsd:pattern value="GIP_SPAMOD"/>
+			<xsd:pattern value="GIP_BLINDP"/>
+			<xsd:pattern value="GIP_CLOINV"/>
+			<xsd:pattern value="GIP_PRDLOC"/>
+			<xsd:pattern value="GIP_R2PARA"/>
+			<xsd:pattern value="GIP_R2SWIR"/>
+			<xsd:pattern value="GIP_R2EQOB"/>
+			<xsd:pattern value="GIP_R2EQOG"/>
+			<xsd:pattern value="GIP_R2DEPI"/>
+			<xsd:pattern value="GIP_R2DEFI"/>
+			<xsd:pattern value="GIP_R2WAFI"/>
+			<xsd:pattern value="GIP_R2DEBA"/>
+			<xsd:pattern value="GIP_R2L2NC"/>
+			<xsd:pattern value="GIP_R2DENT"/>
+			<xsd:pattern value="GIP_R2DECT"/>
+			<xsd:pattern value="GIP_R2MACO"/>
+			<xsd:pattern value="GIP_R2NOMO"/>
+			<xsd:pattern value="GIP_R2ABCA"/>
+			<xsd:pattern value="GIP_R2BINN"/>
+			<xsd:pattern value="GIP_R2CRCO"/>
+			<xsd:pattern value="GIP_G2PARA"/>
+			<xsd:pattern value="GIP_G2PARE"/>
+			<xsd:pattern value="GIP_EARMOD"/>
+			<xsd:pattern value="GIP_GEOPAR"/>
+			<xsd:pattern value="GIP_INTDET"/>
+			<xsd:pattern value="GIP_TILPAR"/>
+			<xsd:pattern value="GIP_RESPAR"/>
+			<xsd:pattern value="GIP_MASPAR"/>
+			<xsd:pattern value="GIP_GENPAR"/>
+			<xsd:pattern value="GRI_IQPL1B"/>
+			<xsd:pattern value="MTD_METARC"/>
+			<xsd:pattern value="MTD_METUPD"/>
+			<xsd:pattern value="MTD_METDEL"/>
+			<xsd:pattern value="MTD_QCCMPI"/>
+			<xsd:pattern value="REP_STNACQ"/>
+			<xsd:pattern value="REP_PASS_n"/>
+			<xsd:pattern value="REP_STNUNV"/>
+			<xsd:pattern value="REP_EDRUNV"/>
+			<xsd:pattern value="REP_AIUNV_"/>
+			<xsd:pattern value="REP_PERFO_"/>
+			<xsd:pattern value="REP_OAR___"/>
+			<xsd:pattern value="REP_DISCLA"/>
+			<xsd:pattern value="REP_ARC___"/>
+			<xsd:pattern value="REP_UPD___"/>
+			<xsd:pattern value="REP_E2EMPR"/>
+			<xsd:pattern value="REP_E2EPER"/>
+			<xsd:pattern value="REP_QCCPER"/>
+			<xsd:pattern value="REP_METARC"/>
+			<xsd:pattern value="REP_METUPD"/>
+			<xsd:pattern value="REP_METDEL"/>
+			<xsd:pattern value="REP_BRW_NG"/>
+			<xsd:pattern value="REP_BRW_OL"/>
+			<xsd:pattern value="REP_TCI___"/>
+			<xsd:pattern value="TLM_EDDSHK"/>
+			<xsd:pattern value="PRD_DTSTRP"/>
+			<xsd:pattern value="PRD_HKTM__"/>
+			<xsd:pattern value="PRD_TORRNT"/>
+			<xsd:pattern value="REQ_PRDDWN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="FOS_File_Type_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="AUX_ENV___"/>
+			<xsd:pattern value="MPL_EDRPOI"/>
+			<xsd:pattern value="MPL_EDRAVS"/>
+			<xsd:pattern value="MPL_EDRBKP"/>
+			<xsd:pattern value="MPL__NPPF_"/>
+			<xsd:pattern value="MPL__NPIF_"/>
+			<xsd:pattern value="MPL_ORBREF"/>
+			<xsd:pattern value="MPL_ORBPRE"/>
+			<xsd:pattern value="MPL_ORBRES"/>
+			<xsd:pattern value="MPL_SCCF__"/>
+			<xsd:pattern value="MPL_TLEPRE"/>
+			<xsd:pattern value="MPL_MSIIPT"/>
+			<xsd:pattern value="OBS_MMIG__"/>
+			<xsd:pattern value="REP__MCSF_"/>
+			<xsd:pattern value="REP__MACP_"/>
+			<xsd:pattern value="REP__SMPR_"/>
+			<xsd:pattern value="REP_GNDTRK"/>
+			<xsd:pattern value="REP_MPRED_"/>
+			<xsd:pattern value="REP__SUP__"/>
+			<xsd:pattern value="REP_PASS_n"/>
+			<xsd:pattern value="REP_EDRUNV"/>
+			<xsd:pattern value="REP_NPIFCC"/>
+			<xsd:pattern value="REP__CHF__"/>
+			<xsd:pattern value="REP__FCHF_"/>
+			<xsd:pattern value="SOR_ORIxxx"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- File Version Type : Used in the FOS filemame and inside the EOFFS header  -->
+	<xsd:simpleType name="File_Version_Type">
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:pattern value="[0-9]{4}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- Types kept from the previous version -->
+	<xsd:simpleType name="Mission">
+		<xsd:annotation>
+			<xsd:documentation>Mission Id</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="spacecraft:S2_SATELLITE_ID">
+			<xsd:maxLength value="3"/>
+			<xsd:minLength value="3"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ValidityDate">
+		<xsd:annotation>
+			<xsd:documentation>UTC time yyyy-mm-ddThh:mm:ss</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="date_time:AN_UTC_DATE_TIME"/>
+	</xsd:simpleType>
+</xsd:schema>

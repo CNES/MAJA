@@ -1,0 +1,12 @@
+[Maja_Inputs]
+repWork=./start_maja_work
+repGipp=./start_maja_gipp
+repL1  =./L1-Products
+repL2  =./L2-Products
+repMNT =./start_maja_dem
+exeMaja=/path/to/maja
+repCAMS=./start_maja_cams
+
+[DTM_Creation]
+repRAW =./start_maja_rawdem
+repGSW =./start_maja_gsw

@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Muscate_Metadata_Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Muscate_Metadata.xsd">
+    <Metadata_Identification>
+        <METADATA_FORMAT version="1.0">METADATA_MUSCATE</METADATA_FORMAT>
+        <METADATA_PROFILE>USER</METADATA_PROFILE>
+        <METADATA_INFORMATION>EXPERT</METADATA_INFORMATION>
+    </Metadata_Identification>
+    <Dataset_Identification>
+        <IDENTIFIER>NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C</IDENTIFIER>
+        <AUTHORITY>NOT_INITIALIZED THEIA</AUTHORITY>
+        <PRODUCER>NOT_INITIALIZED MUSCATE</PRODUCER>
+        <PROJECT>LANDSAT8</PROJECT>
+        <GEOGRAPHICAL_ZONE type="Tile">NOT_INITIALIZED EU93066200A00B</GEOGRAPHICAL_ZONE>
+        <ORIGINAL_DATA_DIFFUSER>NOT_INITIALIZED</ORIGINAL_DATA_DIFFUSER>
+    </Dataset_Identification>
+    <Product_Characteristics>
+        <PRODUCT_ID>NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0</PRODUCT_ID>
+        <ACQUISITION_DATE>NOT_INITIALIZED 2010-01-18T10:30:00.0</ACQUISITION_DATE>
+        <PRODUCTION_DATE>NOT_INITIALIZED 2014-12-17T09:37:57.0</PRODUCTION_DATE>
+        <PRODUCT_VERSION>NOT_INITIALIZED 1.0</PRODUCT_VERSION>
+        <PRODUCT_LEVEL>L2A</PRODUCT_LEVEL>
+        <PLATFORM>NOT_INITIALIZED LANDSAT5</PLATFORM>
+        <INSTRUMENT>NOT_INITIALIZED TM</INSTRUMENT>
+        <SPECTRAL_CONTENT>XS</SPECTRAL_CONTENT>
+        <ORBIT_NUMBER type="Path">NOT_INITIALIZED 999</ORBIT_NUMBER>
+        <UTC_Acquisition_Range>
+            <MEAN>NOT_INITIALIZED 2010-01-18T10:30:00.0</MEAN>
+            <DATE_PRECISION unit="s">NOT_INITIALIZED 0.0000001</DATE_PRECISION>
+        </UTC_Acquisition_Range>
+        <Band_Global_List count="7">
+            <BAND_ID>B1</BAND_ID>
+            <BAND_ID>B2</BAND_ID>
+            <BAND_ID>B3</BAND_ID>
+            <BAND_ID>B4</BAND_ID>
+            <BAND_ID>B5</BAND_ID>
+            <BAND_ID>B6</BAND_ID>
+            <BAND_ID>B7</BAND_ID>
+        </Band_Global_List>
+        <Band_Group_List>
+            <Group group_id="XS">
+                <Band_List count="7">
+                    <BAND_ID>B1</BAND_ID>
+                    <BAND_ID>B2</BAND_ID>
+                    <BAND_ID>B3</BAND_ID>
+                    <BAND_ID>B4</BAND_ID>
+                    <BAND_ID>B5</BAND_ID>
+                    <BAND_ID>B6</BAND_ID>
+                    <BAND_ID>B7</BAND_ID>
+                </Band_List>
+            </Group>
+        </Band_Group_List>
+    </Product_Characteristics>
+    <Product_Organisation>
+        <Muscate_Product>
+            <QUICKLOOK bands_id="NOT_INITIALIZED B3,B2,B1">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_QKL_ALL.jpg</QUICKLOOK>
+            <Image_List>
+                <Image>
+                    <Image_Properties>
+                        <NATURE>Surface_Reflectance</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>int16</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                    </Image_Properties>
+                    <Image_File_List>
+                        <IMAGE_FILE band_id="B1">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B1.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B2">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B2.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B3">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B3.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B4">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B4.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B5">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B5.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B6">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B6.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B7">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SRE_B7.tif</IMAGE_FILE>
+                    </Image_File_List>
+                </Image>
+                <Image_MACC_template_temporary_node_Flat_Reflectance>
+                    <Image_Properties>
+                        <NATURE>Flat_Reflectance</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>int16</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                    </Image_Properties>
+                    <Image_File_List>
+                        <IMAGE_FILE band_id="B1">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B1.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B2">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B2.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B3">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B3.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B4">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B4.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B5">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B5.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B6">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B5.tif</IMAGE_FILE>
+                        <IMAGE_FILE band_id="B7">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_FRE_B7.tif</IMAGE_FILE>
+                    </Image_File_List>
+                </Image_MACC_template_temporary_node_Flat_Reflectance>
+                <Image>
+                    <Image_Properties>
+                        <NATURE>Water_Vapor_Content</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                    </Image_Properties>
+                    <Image_File_List>
+                        <IMAGE_FILE band_number="1" group_id="XS">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_ATB_ALL.tif</IMAGE_FILE>
+                    </Image_File_List>
+                </Image>
+                <Image>
+                    <Image_Properties>
+                        <NATURE>Aerosol_Optical_Thickness</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                    </Image_Properties>
+                    <Image_File_List>
+                        <IMAGE_FILE band_number="2" group_id="XS">NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_ATB_ALL.tif</IMAGE_FILE>
+                    </Image_File_List>
+                </Image>
+            </Image_List>
+            <Mask_List>
+                <Mask>
+                  <Mask_Properties>
+                    <NATURE>WVC_Interpolation</NATURE>
+                    <FORMAT>image/tiff</FORMAT>
+                    <ENCODING>byte</ENCODING>
+                    <ENDIANNESS>LittleEndian</ENDIANNESS>
+                    <COMPRESSION>DEFLATE</COMPRESSION>
+                  </Mask_Properties>
+                  <Mask_File_List>
+                    <MASK_FILE bit_number="1" group_id="XS">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_IAB_ALL.tif</MASK_FILE>
+                  </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>AOT_Interpolation</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE bit_number="2" group_id="XS">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_IAB_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Detailed_Cloud</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_CLM_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Edge</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_EDG_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Saturation</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE band_id="B1" bit_number="1">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B1.tif</MASK_FILE>
+                        <MASK_FILE band_id="B2" bit_number="2">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B2.tif</MASK_FILE>
+                        <MASK_FILE band_id="B3" bit_number="3">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B3.tif</MASK_FILE>
+                        <MASK_FILE band_id="B4" bit_number="4">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B4.tif</MASK_FILE>
+                        <MASK_FILE band_id="B5" bit_number="5">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B5.tif</MASK_FILE>
+                        <MASK_FILE band_id="B6" bit_number="6">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B7.tif</MASK_FILE>
+                        <MASK_FILE band_id="B7" bit_number="7">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_SAT_B7.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Water</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="1">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Cloud</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="2">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Snow</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="3">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Cloud_Shadow</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="4">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Topography_Shadow</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="5">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Hidden_Surface</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="6">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Sun_Too_Low</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="7">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+                <Mask>
+                    <Mask_Properties>
+                        <NATURE>Tangent_Sun</NATURE>
+                        <FORMAT>image/tiff</FORMAT>
+                        <ENCODING>byte</ENCODING>
+                        <ENDIANNESS>LittleEndian</ENDIANNESS>
+                        <COMPRESSION>DEFLATE</COMPRESSION>
+                    </Mask_Properties>
+                    <Mask_File_List>
+                        <MASK_FILE group_id="XS" bit_number="8">NOT_INITIALIZED MASKS/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_MG2_ALL.tif</MASK_FILE>
+                    </Mask_File_List>
+                </Mask>
+            </Mask_List>
+            <Data_List>
+                <Data>
+                    <Data_Properties>
+                        <NATURE>Private_Directory</NATURE>
+                        <FORMAT>application/vnd+muscate</FORMAT>
+                    </Data_Properties>
+                    <Data_File_List>
+                        <DATA_FILE group_id="ALL">NOT_INITIALIZED DATA/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_PVD_ALL</DATA_FILE>
+                    </Data_File_List>
+                </Data>
+                <Data>
+                    <Data_Properties>
+                        <NATURE>Job_Processing_Informations_File</NATURE>
+                        <FORMAT>application/xml</FORMAT>
+                    </Data_Properties>
+                    <Data_File_List>
+                        <DATA_FILE group_id="ALL">NOT_INITIALIZED DATA/LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0_JPI_ALL.xml</DATA_FILE>
+                    </Data_File_List>
+                </Data>
+            </Data_List>
+        </Muscate_Product>
+    </Product_Organisation>
+    <Geoposition_Informations>
+        <Coordinate_Reference_System>
+          <GEO_TABLES>NOT_INITIALIZED</GEO_TABLES>
+          <Horizontal_Coordinate_System>
+            <HORIZONTAL_CS_TYPE>NOT_INITIALIZED</HORIZONTAL_CS_TYPE>
+            <HORIZONTAL_CS_NAME>NOT_INITIALIZED</HORIZONTAL_CS_NAME>
+            <HORIZONTAL_CS_CODE>NOT_INITIALIZED</HORIZONTAL_CS_CODE>
+          </Horizontal_Coordinate_System>
+        </Coordinate_Reference_System>
+        <Raster_CS>
+          <RASTER_CS_TYPE>CELL</RASTER_CS_TYPE>
+          <PIXEL_ORIGIN>0</PIXEL_ORIGIN>
+        </Raster_CS>
+        <Metadata_CS>
+          <METADATA_CS_TYPE>POINT</METADATA_CS_TYPE>
+          <PIXEL_ORIGIN>1</PIXEL_ORIGIN>
+        </Metadata_CS>
+        <Geopositioning>
+          <Global_Geopositioning>
+            <Point name="upperLeft">
+              <LAT>NOT_INITIALIZED</LAT>
+              <LON>NOT_INITIALIZED</LON>
+              <X>NOT_INITIALIZED</X>
+              <Y>NOT_INITIALIZED</Y>
+            </Point>
+            <Point name="lowerLeft">
+              <LAT>NOT_INITIALIZED</LAT>
+              <LON>NOT_INITIALIZED</LON>
+              <X>NOT_INITIALIZED</X>
+              <Y>NOT_INITIALIZED</Y>
+            </Point>
+            <Point name="lowerRight">
+              <LAT>NOT_INITIALIZED</LAT>
+              <LON>NOT_INITIALIZED</LON>
+              <X>NOT_INITIALIZED</X>
+              <Y>NOT_INITIALIZED</Y>
+            </Point>
+            <Point name="upperRight">
+              <LAT>NOT_INITIALIZED</LAT>
+              <LON>NOT_INITIALIZED</LON>
+              <X>NOT_INITIALIZED</X>
+              <Y>NOT_INITIALIZED</Y>
+            </Point>
+            <Point name="center">
+              <LAT>NOT_INITIALIZED</LAT>
+              <LON>NOT_INITIALIZED</LON>
+              <X>NOT_INITIALIZED</X>
+              <Y>NOT_INITIALIZED</Y>
+            </Point>
+          </Global_Geopositioning>
+          <Group_Geopositioning_List>
+            <Group_Geopositioning group_id="XS">
+              <ULX>NOT_INITIALIZED</ULX>
+              <ULY>NOT_INITIALIZED</ULY>
+              <XDIM>NOT_INITIALIZED</XDIM>
+              <YDIM>NOT_INITIALIZED</YDIM>
+              <NROWS>NOT_INITIALIZED</NROWS>
+              <NCOLS>NOT_INITIALIZED</NCOLS>
+            </Group_Geopositioning>
+          </Group_Geopositioning_List>
+        </Geopositioning>
+    </Geoposition_Informations>
+    <Geometric_Informations>
+        <Mean_Value_List>
+          <Sun_Angles>
+            <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+            <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+          </Sun_Angles>
+          <Incidence_Angles>
+            <ZENITH_ANGLE unit="deg">NOT_INITIALIZED</ZENITH_ANGLE>
+            <AZIMUTH_ANGLE unit="deg">NOT_INITIALIZED</AZIMUTH_ANGLE>
+          </Incidence_Angles>
+        </Mean_Value_List>
+    </Geometric_Informations>
+    <Radiometric_Informations>
+        <REFLECTANCE_QUANTIFICATION_VALUE>NOT_INITIALIZED 1000</REFLECTANCE_QUANTIFICATION_VALUE>
+        <WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>NOT_INITIALIZED 0.05</WATER_VAPOR_CONTENT_QUANTIFICATION_VALUE>
+        <AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>NOT_INITIALIZED 0.005</AEROSOL_OPTICAL_THICKNESS_QUANTIFICATION_VALUE>
+        <Special_Values_List>
+            <SPECIAL_VALUE name="nodata">NOT_INITIALIZED -10000</SPECIAL_VALUE>
+            <SPECIAL_VALUE name="water_vapor_content_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+            <SPECIAL_VALUE name="aerosol_optical_thickness_nodata">NOT_INITIALIZED 0</SPECIAL_VALUE>
+        </Special_Values_List>
+        <Spectral_Band_Informations_List>
+            <Spectral_Band_Informations band_id="B1">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B2">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B3">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B4">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B5">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B6">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B7">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B8">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B9">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B10">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+            <Spectral_Band_Informations band_id="B11">
+              <Calibration_Coefficients_Lists>
+                <Native_Coefficients_List>
+                  <COEFFICIENT name="LuminanceMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="LuminanceMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMax">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="QuantizeCalMin">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="RadianceMult">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceAdd">NOT_INITIALIZED</COEFFICIENT>
+                  <COEFFICIENT name="ReflectanceMult">NOT_INITIALIZED</COEFFICIENT>
+                </Native_Coefficients_List>
+              </Calibration_Coefficients_Lists>
+              <SPATIAL_RESOLUTION unit="m">NOT_INITIALIZED</SPATIAL_RESOLUTION>
+            </Spectral_Band_Informations>
+        </Spectral_Band_Informations_List>
+    </Radiometric_Informations>
+    <Quality_Informations>
+        <Current_Product>
+            <Product_Quality_List level="N2">
+                <Product_Quality>
+                    <Source_Product>
+                        <PRODUCT_ID>NOT_INITIALIZED LANDSAT5-TM-XS_20100118-103000-000_L2A_EU93066200A00B_C_V1-0</PRODUCT_ID>
+                        <ACQUISITION_DATE>NOT_INITIALIZED 2010-01-18T10:30:00.0Z</ACQUISITION_DATE>
+                        <PRODUCTION_DATE>NOT_INITIALIZED 2014-12-17T09:37:57.0Z</PRODUCTION_DATE>
+                    </Source_Product>
+                    <Global_Index_List>
+                        <QUALITY_INDEX name="CloudPercent">NOT_INITIALIZED 28</QUALITY_INDEX>
+                        <QUALITY_INDEX name="SnowPercent">NOT_INITIALIZED 0</QUALITY_INDEX>
+                        <QUALITY_INDEX name="RainDetected">NOT_INITIALIZED No</QUALITY_INDEX>
+                        <QUALITY_INDEX name="HotSpotDetected">NOT_INITIALIZED No</QUALITY_INDEX>
+                        <QUALITY_INDEX name="SunGlintDetected">NOT_INITIALIZED No</QUALITY_INDEX>
+                    </Global_Index_List>
+                </Product_Quality>
+            </Product_Quality_List>
+            <Product_Quality_List level="Geo"/>
+        </Current_Product>
+    </Quality_Informations>
+    <Production_Informations>
+      <Processing_Jobs_List>
+        <Job>
+          <WORKPLAN_ID>NOT_INITIALIZED generique_l2_20160614_11</WORKPLAN_ID>
+          <STEP_ID>conv_mL1</STEP_ID>
+          <JOB_ID>1</JOB_ID>
+          <PRODUCER_NAME>NOT_INITIALIZED MUSCATE</PRODUCER_NAME>
+          <START_PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:45:05.132689Z
+          </START_PRODUCTION_DATE>
+          <END_PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:51:35.715320Z
+          </END_PRODUCTION_DATE>
+          <Products_List>
+            <Inputs_List>
+              <PRODUCT>
+                <PRODUCT_ID>NOT_INITIALIZED
+                  SENTINEL2B_20160215-103211-968_L1C_T31TFJ_H_V1-0</PRODUCT_ID>
+                <ACQUISITION_DATE>NOT_INITIALIZED 2016-02-15T10:32:11.968Z</ACQUISITION_DATE>
+                <PRODUCTION_DATE>NOT_INITIALIZED 2016-05-03T13:16:53.436209Z</PRODUCTION_DATE>
+              </PRODUCT>
+            </Inputs_List>
+            <Outputs_List>
+              <PRODUCT>
+                <PRODUCT_ID>NOT_INITIALIZED
+                  SENTINEL2B_20160215-103211-968_L1C_T31TFJ_C_V1-0</PRODUCT_ID>
+                <ACQUISITION_DATE>NOT_INITIALIZED 2016-02-15T10:32:11.968Z</ACQUISITION_DATE>
+                <PRODUCTION_DATE>NOT_INITIALIZED 2016-06-14T13:51:24.843178Z</PRODUCTION_DATE>
+              </PRODUCT>
+            </Outputs_List>
+          </Products_List>
+        </Job>
+      </Processing_Jobs_List>
+    </Production_Informations>
+</Muscate_Metadata_Document>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="GeoLocationTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Ground Station Database Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:37 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="List_of_Mask_Points_Type">
+		<xsd:sequence>
+			<xsd:element name="Mask_Point" type="Pointing_Direction_Type" minOccurs="0"
+				maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="NonNegativeInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Frequency_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:decimal">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="Hz"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Ground_Station_Definition_Type">
+		<xsd:sequence>
+			<xsd:element name="Station_id" type="Station_Id_Type"></xsd:element>
+			<xsd:element name="Descriptor" type="String_Type"></xsd:element>
+			<xsd:element name="Antenna" type="String_Type"></xsd:element>
+			<xsd:element name="Frequency" type="Frequency_Type" minOccurs="0"></xsd:element>
+			<xsd:element name="Purpose" type="String_Type"></xsd:element>
+			<xsd:element name="Type" type="String_Type"></xsd:element>
+			<xsd:element name="Location" type="Geo_Location_Type"></xsd:element>
+			<xsd:element name="Default_El" type="Elevation_Type"></xsd:element>
+			<xsd:element name="List_of_Mask_Points" type="List_of_Mask_Points_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Ground_Stations_Type">
+		<xsd:sequence>
+			<xsd:element name="Ground_Station" type="Ground_Station_Definition_Type" minOccurs="0"
+				maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="NonNegativeInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Ground_Station_Database_Data_Block_Type">
+		<xsd:sequence>
+			<xsd:element name="List_of_Ground_Stations" type="List_of_Ground_Stations_Type">
+				<xsd:unique name="Station_Id">
+					<xsd:selector xpath="./Ground_Station"></xsd:selector>
+					<xsd:field xpath="Station_Id"></xsd:field>
+				</xsd:unique>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Ground_Station_Database_Data_Block_Type"></xsd:element>
+</xsd:schema>

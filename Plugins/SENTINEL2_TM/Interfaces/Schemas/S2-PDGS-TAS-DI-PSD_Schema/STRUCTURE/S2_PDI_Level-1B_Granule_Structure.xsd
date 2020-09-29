@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="https://psd-13.sentinel2.eo.esa.int/PSD/S2_PDI_Level-1B_Granule_Structure.xsd" targetNamespace="https://psd-13.sentinel2.eo.esa.int/PSD/S2_PDI_Level-1B_Granule_Structure.xsd" elementFormDefault="qualified" version="13">
+	<xs:element name="Level-1B_Granule" type="Level-1B_Granule"/>
+	<xs:complexType name="Level-1B_Granule">
+		<xs:annotation>
+			<xs:documentation>Folder</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Level-1B_Granule_Metadata_File">
+				<xs:annotation>
+					<xs:documentation>XML Metadata File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="General_Info"/>
+						<xs:element name="Geometric_Info">
+							<xs:complexType/>
+						</xs:element>
+						<xs:element name="Quality_Indicators_Info">
+							<xs:complexType/>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IMG_DATA">
+				<xs:annotation>
+					<xs:documentation>Image Folder</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Image_Files">
+							<xs:annotation>
+								<xs:documentation>Image data in JPEG2000 format, one file per band.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Bands_10m" type="xs:string" maxOccurs="4">
+										<xs:annotation>
+											<xs:documentation>4 Files</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Bands_20m" type="xs:string" maxOccurs="6">
+										<xs:annotation>
+											<xs:documentation>6 Files</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="Bands_60m" type="xs:string" maxOccurs="3">
+										<xs:annotation>
+											<xs:documentation>3 Files</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QI_DATA">
+				<xs:annotation>
+					<xs:documentation>Folder</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OLQC_Report"/>
+						<xs:element name="Quality_Masks"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Inventory_Metadata">
+				<xs:annotation>
+					<xs:documentation>XML File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="manifest.safe">
+				<xs:annotation>
+					<xs:documentation>XML File</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+			<xs:element name="rep_info">
+				<xs:annotation>
+					<xs:documentation>Folder</xs:documentation>
+				</xs:annotation>
+				<xs:complexType/>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" 
+	attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="EO_OPER_MPL_SWTREF.HeaderTypes_0101.XSD"/>
+	<xsd:include schemaLocation="EO_OPER_MPL_SWTREF.DataBlockTypes_0101.XSD"/>
+	<xsd:annotation>
+		<xsd:documentation>Swath Template File</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.2 $ $Date: 2007/07/31 17:08:43 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="SWTREF_File_Type">
+		<xsd:sequence>
+			<xsd:element name="Earth_Explorer_Header" type="SWTREF_Header_Type"/>
+			<xsd:element name="Data_Block" type="SWTREF_Data_Block_Type"/>
+		</xsd:sequence>
+		<xsd:attribute name="schemaVersion" type="Decimal_Type" use="required"/>
+	</xsd:complexType>
+	<xsd:element name="Earth_Explorer_File" type="SWTREF_File_Type"/>
+</xsd:schema>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Attitude Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:32 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Max_Gap_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="s"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Attitude_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Attitude_File_Type" type="String_Type"></xsd:element>
+			<xsd:element name="Attitude_Data_Type" type="String_Type"></xsd:element>
+			<xsd:element name="Max_Gap" type="Max_Gap_Type"></xsd:element>
+			<xsd:choice>
+				<xsd:element name="Attitude_Angles_Data" type="Attitude_Angles_Data_Type"></xsd:element>
+				<xsd:element name="Quaternion_Data" type="Quaternion_Data_Type"></xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="Attitude_Data_Block_Type"></xsd:element>
+	<xsd:complexType name="Angle_Time_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Mission_Date_Time_Type">
+				<xsd:attribute name="ref" type="Time_Reference_Type" use="required"></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Angles_Data_Type">
+		<xsd:sequence>
+			<xsd:element name="Time" type="Angle_Time_Type"></xsd:element>
+			<xsd:element name="Pitch" type="Angle_Type"></xsd:element>
+			<xsd:element name="Roll" type="Angle_Type"></xsd:element>
+			<xsd:element name="Yaw" type="Angle_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Quaternion_Component_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type"></xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Quaternion_Type">
+		<xsd:sequence>
+			<xsd:element name="Time" type="Angle_Time_Type"></xsd:element>
+			<xsd:element name="Q1" type="Quaternion_Component_Type"></xsd:element>
+			<xsd:element name="Q2" type="Quaternion_Component_Type"></xsd:element>
+			<xsd:element name="Q3" type="Quaternion_Component_Type"></xsd:element>
+			<xsd:element name="Q4" type="Quaternion_Component_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Quaternions_Type">
+		<xsd:sequence>
+			<xsd:element name="Quaternions" type="Quaternion_Type" maxOccurs="unbounded"
+			></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="Integer_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Attitude_Angles_Type">
+		<xsd:sequence>
+			<xsd:element name="Attitude_Angles" type="Angles_Data_Type" maxOccurs="unbounded"
+			></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="Integer_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Attitude_Angles_Data_Type">
+		<xsd:sequence>
+			<xsd:element name="List_of_Attitude_Angles" type="List_of_Attitude_Angles_Type"
+			></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Quaternion_Data_Type">
+		<xsd:sequence>
+			<xsd:element name="Inertial_Ref_Frame" type="String_Type"></xsd:element>
+			<xsd:element name="List_of_Quaternions" type="List_of_Quaternions_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

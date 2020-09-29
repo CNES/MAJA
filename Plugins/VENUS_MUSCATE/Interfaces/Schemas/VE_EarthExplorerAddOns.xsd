@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.41">
+	<xs:include schemaLocation="../EarthExplorer/HeaderTypes_0101.XSD"/>
+	<xs:include schemaLocation="../EarthExplorer/GeoLocationTypes_0101.XSD"/>
+	<!--
+This schema adds convenient global elements and missing data types to the Earth Explorer namespace
+-->
+	<!-- ================= -->
+	<!--Earth_Explorer_File / Earth_Explorer_Header root and corresponding abstract types-->
+	<!-- ================= -->
+	<xs:element name="Earth_Explorer_File" type="ee:Abstract_Earth_Explorer_File_Type"/>
+	<xs:complexType name="Abstract_Earth_Explorer_File_Type" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract type of Earth_Explorer_File global element.
+
+Must be extended by the base type of every interface having a 'Earth_Explorer_File' root element.
+
+Declaring this type as abstract forces the instance documents to explicit the real type of its root element with a xsi:type attribute. 
+Cf. http://www.w3.org/TR/xmlschema-0 (§4.7 'Abstract Elements and Types').</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:element name="Earth_Explorer_Header" type="ee:Abstract_Earth_Explorer_Header_Type"/>
+	<xs:complexType name="Abstract_Earth_Explorer_Header_Type" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Abstract type of Earth_Explorer_Header global element.
+
+Must be extended by the base type of every interface having a 'Earth_Explorer_Header' root element.
+
+Declaring this type as abstract forces the instance documents to explicit the real type of its root element with a xsi:type attribute. 
+Cf. http://www.w3.org/TR/xmlschema-0 (§4.7 'Abstract Elements and Types').</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Basic types Add-ons -->
+	<!-- ================= -->
+	<xs:simpleType name="UnsignedByte_Type">
+		<xs:annotation>
+			<xs:documentation>An unsigned byte value [0-255]</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedByte"/>
+	</xs:simpleType>
+	<xs:simpleType name="UnsignedShort_Type">
+		<xs:annotation>
+			<xs:documentation>An unsigned short (i.e. 2-bytes integer) value [0-65535]</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedShort"/>
+	</xs:simpleType>
+	<xs:simpleType name="UnsignedShort_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of unsigned short values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:UnsignedShort_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="UnsignedInt_Type">
+		<xs:annotation>
+			<xs:documentation>An unsigned integer (i.e. 4-bytes integer) value [0-4294967295]</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="UnsignedByte_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of unsigned bytes values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:UnsignedByte_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Bool_Type">
+		<xs:annotation>
+			<xs:documentation>A boolean value. Note : This type should be used instead of the native Earth Explorer Boolean_Type (values are not compatible with xs:boolean and allow an empty string)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean">
+			<xs:pattern value="true|false"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Float_Type">
+		<xs:annotation>
+			<xs:documentation>A float (i.e. 32-bit floating point) value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float"/>
+	</xs:simpleType>
+	<xs:simpleType name="Float_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of float values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:Float_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Double_Type">
+		<xs:annotation>
+			<xs:documentation>A double value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:double"/>
+	</xs:simpleType>
+	<xs:simpleType name="Double_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of double values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:Double_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Integer_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of integer values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:Integer_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Decimal_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of decimal values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:Decimal_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="NonNegativeDecimal_Type">
+		<xs:annotation>
+			<xs:documentation>A non-negative decimal value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:Decimal_Type">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NonNegativeDouble_Type">
+		<xs:annotation>
+			<xs:documentation>A non-negative double value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:Double_Type">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NonNegativeDouble_List_Type">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of non-negative double values</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="ee:NonNegativeDouble_Type"/>
+	</xs:simpleType>
+	<xs:complexType name="Angle_List_Type" mixed="false">
+		<xs:annotation>
+			<xs:documentation>An unbounded list of angle values expressed in degrees</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="ee:Decimal_List_Type">
+				<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- TimeTypes Add-ons -->
+	<!-- ================= -->
+	<xs:complexType name="Microseconds_Time_Type">
+		<xs:annotation>
+			<xs:documentation>A time expressed in microseconds (unit attribute = '10-6s')</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="ee:Integer_Type">
+				<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="10-6s"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Microseconds_Duration_Type">
+		<xs:annotation>
+			<xs:documentation>A duration expressed in microseconds (unit attribute = '10-6s')</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="ee:Microseconds_Time_Type">
+				<xs:minInclusive value="0"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>

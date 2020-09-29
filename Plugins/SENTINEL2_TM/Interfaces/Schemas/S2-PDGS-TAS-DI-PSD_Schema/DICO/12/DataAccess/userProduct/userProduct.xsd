@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2006 U (http://www.altova.com) by user (EMBRACE) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:userProduct="http://gs2.esa.int/DICO/1.0/DataAccess/userProduct/" xmlns:S2="http://gs2.esa.int/DICO/1.0/PDGS/logical_definition/" xmlns:item="http://gs2.esa.int/DICO/1.0/DataAccess/item/" targetNamespace="http://gs2.esa.int/DICO/1.0/DataAccess/userProduct/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://gs2.esa.int/DICO/1.0/DataAccess/item/" schemaLocation="../item/item.xsd"/>
+	<xs:simpleType name="PDIphysicalId">
+		<xs:annotation>
+			<xs:documentation>A PDI physical Url or a PDI consolidated ID</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="userProduct:PDIphysicalUrl userProduct:PDIConsolidatedId"/>
+	</xs:simpleType>
+	<xs:simpleType name="PDIphysicalUrl">
+		<xs:annotation>
+			<xs:documentation>A PDI physical Url (https://-dag server url-/download?PdiID=-PDIid-&amp;dsPdiID=-DsPDIid-)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value="https?://.+/download\?PdiID=.+&amp;dsPdiID=.+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PDIConsolidatedId">
+		<xs:annotation>
+			<xs:documentation>A Consolidated PDI identifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value=".+CONS.+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PDIArchiveStatus">
+		<xs:annotation>
+			<xs:documentation>The archive status of the product specified by the PhysicalIdentifier: available / temporaryUnavailable / expected</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="available"/>
+			<xs:enumeration value="temporaryUnavailable"/>
+			<xs:enumeration value="expected"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TranslateLogicalPDIsRequest">
+		<xs:annotation>
+			<xs:documentation>The request to translate Logical PDI-ids in Physical PDI-ids.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="List_Of_LogicalIdentifiers">
+				<xs:annotation>
+					<xs:documentation>Request for Logical items translation</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="LogicalIdentifier" type="item:PDI_ID">
+							<xs:annotation>
+								<xs:documentation>This field represents the logical identifier (granules only) as received through the ngEO IF 329</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="tileConsolidation" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Request the translation for Consolidated Tiles</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="S2UserProductUri">
+		<xs:annotation>
+			<xs:documentation>The s2 uri originated by ngEO</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value="s2://.+/.+\?.+&amp;ngEO_DO=.+&amp;GroupID=.+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="S2UserId">
+		<xs:annotation>
+			<xs:documentation>The s2 user id</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="ngEOAuthorization">
+		<xs:annotation>
+			<xs:documentation>The needed info to request an authorization to ngEO</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UserId" type="userProduct:S2UserId">
+				<xs:annotation>
+					<xs:documentation>The S2 user id</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="S2ProductUri" type="userProduct:S2UserProductUri">
+				<xs:annotation>
+					<xs:documentation>The S2 Product Uri originated by ngEO.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="enabled" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Do the ngEO authorization</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 30 novembre 2011 : Creation                                     *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.00">
+    <xs:include schemaLocation="MAJAConfigCommon.xsd"/>
+    <!--
+This schema adds convenient global elements and missing data types to the Earth Explorer namespace
+-->
+    <xs:complexType name="List_of_Band_Theoretical_Wavelengths_Type">
+        <xs:annotation>
+            <xs:documentation>Theoretical wave length of the bands</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>           
+            <xs:element name="Band_Theoretical_Wavelength" minOccurs="1" maxOccurs="unbounded" >
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="NonNegativeInteger_Type">
+                            <xs:attribute name="sk" type="Band_Code_Type" use="required"/>
+                            <xs:attribute name="unit" type="String_Type" use="required" fixed="nanometer"/>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="count" use="required">
+            <xs:annotation>
+                <xs:documentation>= number of bands</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="NonNegativeInteger_Type">
+                    <xs:minInclusive value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                         __  __    __    ___  ___  ___                                    *
+ *                                        (  \/  )  /__\  / __)/ __)/ __)                                   *
+ *                                         )    (  /(__)\( (__( (__ \__ \                                   *
+ *                                        (_/\/\_)(__)(__)\___)\___)(___/                                   *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-1-0 : DM : LAIG-DM-MAC-745-CNES : 18 juin 2014 : Creation du fichier                            *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="./MAJAAdminConfig.xsd">
+    <Composite>
+        <!-- List of the bands with the theoretical wavelengths -->
+        <!-- Used for composite algorithms -->
+        <List_of_Band_Theoretical_Wavelength count="13">
+            <Band_Theoretical_Wavelength sk="B1" unit="nanometer">443</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B2" unit="nanometer">490</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B3" unit="nanometer">560</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B4" unit="nanometer">665</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B5" unit="nanometer">705</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B6" unit="nanometer">740</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B7" unit="nanometer">780</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B8" unit="nanometer">840</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B8A" unit="nanometer">865</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B9" unit="nanometer">940</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B10" unit="nanometer">1380</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B11" unit="nanometer">1600</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B12" unit="nanometer">2200</Band_Theoretical_Wavelength>
+        </List_of_Band_Theoretical_Wavelength>
+    </Composite>
+</Config>

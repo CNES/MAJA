@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="./DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="PDTQLK_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:PDTQLK_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:PDTQLK_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="PDTQLK_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_QuickLook_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="QuickLook"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+            <xs:element name="File_Type" type="ee:VE_File_Type_PDTQLK_Type"/>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTQLK_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:PDTQLK_Instance_Id_Type"/>
+						<xs:element name="Reference_Product_Header_Id">
+							<xs:simpleType>
+								<xs:union memberTypes="ee:VE_Id_Type ee:VE_InventoriedRawProduct_Id_Type"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Quick_Look_Information">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Minimum_Image_Information_Type">
+										<xs:sequence>
+											<xs:element name="List_of_Bands">
+												<xs:annotation>
+													<xs:documentation>Band names : B01 to B12 </xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="Band" maxOccurs="3">
+															<xs:annotation>
+																<xs:documentation>Band name for each quicklook channel</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="ee:VE_Band_Code_Type">
+																		<xs:attribute name="sn" use="required">
+																			<xs:annotation>
+																				<xs:documentation>Index of quick look channel</xs:documentation>
+																			</xs:annotation>
+																			<xs:simpleType>
+																				<xs:restriction base="ee:Integer_Type">
+																					<xs:minInclusive value="1"/>
+																					<xs:maxInclusive value="3"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+													<xs:attribute name="count" use="required">
+														<xs:annotation>
+															<xs:documentation>number of quick look channels</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+																<xs:maxInclusive value="15"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Subsampling_Factor" type="ee:Float_Type">
+												<xs:annotation>
+													<xs:documentation>subsampling factor relative to image source (10 = scale of 1/10)</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Colorspace">
+												<xs:annotation>
+													<xs:documentation>Quick looks are JPEG files.
+Colorspace indicate the type of file (according to the number of channels).
+A "RGB" image has 3 channels (pixel order : R,G,B,R,G, ...) and a "GRAYSCALE" image has 1 channel.
+
+See Bands_Order for more information.</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="ee:String_Type">
+														<xs:enumeration value="RGB"/>
+														<xs:enumeration value="GRAYSCALE"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+											<xs:element name="Bands_Order" fixed="RGB" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>For information. Only required for RGB colorspace.
+
+In JPEG file the default  channels order in "RGB colorspace" is R=0,  G=1, B=2 but it can be modified.
+For Venus application, the order will always be R G B.</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="ee:String_Type"/>
+												</xs:simpleType>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTQLK_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Reference_Product_Semantic" type="ee:VE_Product_File_Semantic_Code_Type">
+				<xs:annotation>
+					<xs:documentation>File semantic of the referenced product</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Reference_Product_Instance" type="ee:VE_Instance_Id_Type"/>
+			<xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Only required when the product contains multiple quicklook files</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

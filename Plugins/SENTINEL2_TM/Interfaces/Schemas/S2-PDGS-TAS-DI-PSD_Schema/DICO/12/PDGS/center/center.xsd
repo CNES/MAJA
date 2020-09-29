@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema xmlns:center="https://psd-12.sentinel2.eo.esa.int/DICO/12/PDGS/center/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="https://psd-12.sentinel2.eo.esa.int/DICO/12/PDGS/center/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/PDGS/center/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:simpleType name="All_S2PDGS_System_Center">
+		<xsd:union memberTypes="A_S2_CENTER A_S2_EXTERNAL_CENTRE"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_CENTER">
+		<xsd:annotation>
+			<xsd:documentation>Site Centres and Processing Archiving Centre</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="A_S2_ACQUISITION_CENTER A_S2_PAC A_S2_MPCC A_S2_PDMC A_S2_RP"/>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!--................................... CGS (Acq Center / Full CGS /  Basic CGS) ...........................................-->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="A_Full_CGS">
+		<xsd:annotation>
+			<xsd:documentation> Center used for Acquisition and Processing</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="A_Full_CGS_Composite_Type">
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_Basic_CGS">
+		<xsd:annotation>
+			<xsd:documentation> center used only for acquisition</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="A_Basic_CGS_Composite_Type">
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_Full_CGS_Composite_Type">
+		<xsd:annotation>
+			<xsd:documentation> Center used for Acquisition and Processing</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=".*SGS_.*"/>
+			<xsd:enumeration value=".*MPS_.*"/>
+			<xsd:enumeration value=".*MTI_.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_Basic_CGS_Composite_Type">
+		<xsd:annotation>
+			<xsd:documentation> center used only for acquisition</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=".*PDBY.*"/>
+			<xsd:enumeration value=".*SGS_.*"/>
+			<xsd:enumeration value=".*MPS_.*"/>
+			<xsd:enumeration value=".*MTI_.*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_ShortCode_ACQ_CENTER_Composite_Type">
+		<xsd:annotation>
+			<xsd:documentation> Acquistion Center coded on 3 characters</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=".*SGS"/>
+			<xsd:enumeration value=".*MPS"/>
+			<xsd:enumeration value=".*MTI"/>
+			<xsd:enumeration value=".*PDB"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!--- ............................................ PAC (PAC1 / PAC2 / PAC ) ............................................-->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="A_S2_PAC">
+		<xsd:annotation>
+			<xsd:documentation> PAC1 (assigned to Spanish PAC) PAC2 (assigned to UK PAC)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union memberTypes="A_S2_PAC1 A_S2_PAC2"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_PAC1">
+		<xsd:annotation>
+			<xsd:documentation>Processing and archiving Center N°1 (assigned to Spanish PAC)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EPA_"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_PAC2">
+		<xsd:annotation>
+			<xsd:documentation>Processing and archiving Center N°2 (assigned to UK PAC)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UPA_"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!--............................................ Other S2PDGS Center (PDMC / MPCC / RP) ............................................-->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="A_S2_PDMC">
+		<xsd:annotation>
+			<xsd:documentation>PDMC</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PDMC"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_MPCC">
+		<xsd:annotation>
+			<xsd:documentation>MPCC</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MPC_"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="A_S2_RP">
+		<xsd:annotation>
+			<xsd:documentation>Reference Platform</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="RP__"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!--.......................................................... External Centers  .........................................................-->
+	<!--..............................................................................................................................................-->
+	<xsd:simpleType name="A_S2_EXTERNAL_CENTRE">
+		<xsd:annotation>
+			<xsd:documentation>External Center</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EDRS"/>
+			<xsd:enumeration value="FOS"/>
+			<xsd:enumeration value="POD_"/>
+			<xsd:enumeration value="CDS_"/>
+			<xsd:enumeration value="CNES"/>
+			<xsd:enumeration value="XXXX"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--....................................................................................................    ..........................................-->
+	<!--.......................................................... Archiving Centers (new vs EOFFS-PDGS V1.2)...................-->
+	<!--...............................................................................................................................    ...............-->
+	<xsd:simpleType name="A_S2_ARCHIVING_CENTRE">
+		<xsd:annotation>
+			<xsd:documentation>Archiving Center</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SGS_"/>
+			<xsd:enumeration value="MPS_"/>
+			<xsd:enumeration value="MTI_"/>
+			<xsd:enumeration value="EPA_"/>
+			<xsd:enumeration value="UPA_"/>
+			<xsd:enumeration value="CDAM"/>
+			<xsd:enumeration value="MPC_"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--..............................................................................................................................................-->
+	<!--.......................................................... Processing Centers  (new vs EOFFS-PDGS V1.2)...............-->
+	<!--..................................................................................................................................................-->
+	<xsd:simpleType name="A_S2_PROCESSING_CENTRE">
+		<xsd:annotation>
+			<xsd:documentation>Processing Center</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="MTI_"/>
+					<xsd:enumeration value="SGS_"/>
+					<xsd:enumeration value="MPS_"/>
+					<xsd:enumeration value="EPA_"/>
+					<xsd:enumeration value="MPC_"/>
+					<xsd:enumeration value="UPA_"/>
+					<xsd:enumeration value="XXXX"/>
+					<xsd:enumeration value="EDRS"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:pattern value="[\w{Lu}_]{3}L"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>
+	<!--..................................................................................................................................................-->
+	<!--.......................................................... Acquisition Centers  (new vs EOFFS-PDGS V1.2)................-->
+	<!--..............................................................................................................................................    -->
+	<xsd:simpleType name="A_S2_ACQUISITION_CENTER">
+		<xsd:annotation>
+			<xsd:documentation>Processing Center</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MTI_"/>
+			<xsd:enumeration value="SGS_"/>
+			<xsd:enumeration value="MPS_"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

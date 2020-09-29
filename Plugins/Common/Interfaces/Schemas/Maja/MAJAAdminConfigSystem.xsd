@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 3-2-0 : FA : LAIG-FA-MAC-713-CNES : Clarification du MU. Suppression d'un paramètre obsolète   *
+ * VERSION : 2-0-0 : DM : LAIG-DM-MAC-146-CNES : 30 novembre 2011 : Creation                                     *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://maja.fr" xmlns:maja="http://maja.fr" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="MAJAConfigCommon.xsd"/>
+        <xs:element name="Config" type="maja:ConfigType"/>
+        <xs:complexType name="ConfigType">
+            <xs:sequence>
+                <xs:element name="System" type="xs:string"/>
+                <xs:element name="Tolerances">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="FootprintTolerances">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Coordinate" type="xs:double"/>
+                                        <xs:element name="Direction" type="xs:double"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="DevelopmentConfiguration">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="EnablePerformanceMeasureAlgorithms" type="xs:boolean"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>        

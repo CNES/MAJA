@@ -1,0 +1,34 @@
+diff -burN InsightToolkit-4.13.1.orig/Modules/IO/Meta/src/itkMetaImageIO.cxx InsightToolkit-4.13.1/Modules/IO/Meta/src/itkMetaImageIO.cxx
+--- InsightToolkit-4.13.1.orig/Modules/IO/Meta/src/itkMetaImageIO.cxx	2020-02-17 16:38:42.898358578 +0100
++++ InsightToolkit-4.13.1/Modules/IO/Meta/src/itkMetaImageIO.cxx	2020-02-17 16:52:40.474350591 +0100
+@@ -80,6 +80,15 @@
+     return false;
+     }
+
++  if (  fname.size() >= 1024 )
++   {
++    itkExceptionMacro( << "File cannot be read: "<< fname << std::endl
++			 << "Reason: Maximum length of file name(fullpath) for metaio image is 1024"
++			 << std::endl );
++    return false;
++   }
++
++
+   return m_MetaImage.CanRead(filename);
+ }
+
+@@ -509,6 +518,14 @@
+     {
+     return false;
+     }
++  if (  filename.size() >= 1024 )
++    {
++      itkExceptionMacro( << "File cannot be written: "<< filename << std::endl
++			 << "Reason: Maximum length of file name(fullpath) for metaio image is 1024"
++			 << std::endl );
++      return false;
++    }
++
+
+   std::string::size_type mhaPos = filename.rfind(".mha");
+   if ( ( mhaPos != std::string::npos )

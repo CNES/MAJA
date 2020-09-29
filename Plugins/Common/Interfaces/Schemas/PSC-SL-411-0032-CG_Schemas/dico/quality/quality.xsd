@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<!--xs:simpleType name="A_QUALITY_INDEX_NAME">
+		<xs:annotation>
+			<xs:documentation>
+			Indices qualités calculés par MUSCATE lors des traitements :
+			- N2 : CloudPercent, RainDetected, HotSpotDetected, SunGlintDetected
+			- Geo : QualityGeo, StatusProduction, PerfoSuperpoCE90, PerfoSuperpoCE67, PerfLocInitX, PerfLocInitY, PerfLocInitXY, NbImgtDispo, NbImgtFiltrees, NbPtsAppui, PrecPlani, MoyResX, MoyResY, MoyResZ, SigmaResX, SigmaResY, SigmaResZ
+			- Radio : QualityRadio, GroundUsefulPercent, WaterPercent, CloudPercent, SnowPercent, UsefulPercent, SaturationPercent, NodataPercent, NbColInterpolationError, ColInterpolationError, Mean, Std, Min, Max, Threshold99Percent, Threshold95Percent, Threshold90Percent, Threshold80Percent, Histogram, ReflectanceMean, ReflectanceStd, ReflectanceMin, ReflectanceMax, HistogramReflectance, HistogramSnow
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CloudPercent"/>
+			<xs:enumeration value="SnowPercent"/>
+			<xs:enumeration value="WaterPercent"/>
+			<xs:enumeration value="GroundUsefulPercent"/>
+			<xs:enumeration value="UsefulPercent"/>
+			<xs:enumeration value="SaturationPercent"/>
+			<xs:enumeration value="NodataPercent"/>
+			<xs:enumeration value="RainDetected"/>
+			<xs:enumeration value="HotSpotDetected"/>
+			<xs:enumeration value="SunGlintDetected"/>
+			<xs:enumeration value="QualityGeo"/>
+			<xs:enumeration value="StatusProduction"/>
+			<xs:enumeration value="PerfoSuperpoCE90"/>
+			<xs:enumeration value="PerfoSuperpoCE67"/>
+			<xs:enumeration value="PerfLocInitX"/>
+			<xs:enumeration value="PerfLocInitY"/>
+			<xs:enumeration value="PerfLocInitXY"/>
+			<xs:enumeration value="NbImgtDispo"/>
+			<xs:enumeration value="NbImgtFiltrees"/>
+			<xs:enumeration value="NbPtsAppui"/>
+			<xs:enumeration value="PrecPlani"/>
+			<xs:enumeration value="MoyResX"/>
+			<xs:enumeration value="MoyResY"/>
+			<xs:enumeration value="MoyResZ"/>
+			<xs:enumeration value="SigmaResX"/>
+			<xs:enumeration value="SigmaResY"/>
+			<xs:enumeration value="SigmaResZ"/>
+			<xs:enumeration value="QualityRadio"/>
+			<xs:enumeration value="NbColInterpolationError"/>
+			<xs:enumeration value="ColInterpolationError"/>
+			<xs:enumeration value="Mean"/>
+			<xs:enumeration value="Std"/>
+			<xs:enumeration value="Min"/>
+			<xs:enumeration value="Max"/>
+			<xs:enumeration value="Threshold99Percent"/>
+			<xs:enumeration value="Threshold95Percent"/>
+			<xs:enumeration value="Threshold90Percent"/>
+			<xs:enumeration value="Threshold80Percent"/>
+			<xs:enumeration value="Histogram"/>
+			<xs:enumeration value="ReflectanceMean"/>
+			<xs:enumeration value="ReflectanceStd"/>
+			<xs:enumeration value="ReflectanceMin"/>
+			<xs:enumeration value="ReflectanceMax"/>
+			<xs:enumeration value="HistogramReflectance"/>
+			<xs:enumeration value="ZS"/>
+			<xs:enumeration value="CirrusDetected"/-->
+			<!--xs:enumeration value="CloudCoverage"/-->
+			<!--xs:enumeration value="PercentGroundUsefulPixels"/>
+			<xs:enumeration value="PercentWaterPixels"/>
+			<xs:enumeration value="PercentCloudyPixels"/>
+			<xs:enumeration value="PercentSnowPixels"/>
+			<xs:enumeration value="PercentUsefulPixels"/>
+			<xs:enumeration value="PercentSaturatedPixels"/>
+			<xs:enumeration value="PercentNodataPixels"/-->
+			<!-- AJOUT VENUS -->
+			<!--xs:enumeration value="CorrelationPercent"/>
+            <xs:enumeration value="PercentPixelsL1AOK"/-->
+		<!--/xs:restriction>
+	</xs:simpleType-->
+	<xs:simpleType name="A_QUALITY_LEVEL_NAME">
+		<xs:annotation>
+			<xs:documentation>Liste de noms de niveaux qualité à définir</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Natif"/>
+			<xs:enumeration value="Radio"/>
+			<xs:enumeration value="Geo"/>
+			<xs:enumeration value="N2"/>
+			<xs:enumeration value="N2B"/>
+			<xs:enumeration value="N2B_SNOW"/>
+			<xs:enumeration value="N2B_WATER"/>
+			<xs:enumeration value="N3"/>
+			<xs:enumeration value="N3B"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_QUALITY_INDEX">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="name" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="A_QUALITY_INDEXES_LIST">
+		<xs:sequence>
+			<xs:element name="QUALITY_INDEX" type="A_QUALITY_INDEX" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_BAND_INDEXES_LIST">
+		<xs:complexContent>
+			<xs:extension base="A_QUALITY_INDEXES_LIST">
+				<xs:attribute name="band_id" type="A_BAND_ID" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AN_ORIGIN_PRODUCT_QUALITY_INDEXES"/>
+	<xs:complexType name="AN_ORIGIN_PRODUCT_QUALITY_INDEXES_LIST">
+		<xs:sequence/>
+		<xs:attribute name="level" type="A_QUALITY_LEVEL_NAME" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="A_LEVEL_ORIGIN_PRODUCT_LIST">
+		<xs:sequence>
+			<xs:element name="Quality_Level" type="AN_ORIGIN_PRODUCT_QUALITY_INDEXES_LIST"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_CURRENT_PRODUCT">
+		<xs:sequence>
+			<xs:element name="Product_Quality_List" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AN_ORIGIN_PRODUCT_QUALITY_INDEXES">
+							<xs:sequence>
+								<xs:element name="Product_Quality" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Source_Product">
+												<xs:complexType>
+													<xs:group ref="A_PRODUCT_IDENTIFICATION"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Global_Index_List" type="A_QUALITY_INDEXES_LIST"/>
+											<xs:element name="Band_Index_List" type="A_BAND_INDEXES_LIST" minOccurs="0" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="level" type="A_QUALITY_LEVEL_NAME" use="required"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_CONTRIBUTING_PRODUCT">
+		<xs:sequence>
+			<xs:element name="Product">
+				<xs:complexType>
+					<xs:group ref="A_PRODUCT_IDENTIFICATION"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Product_Quality_List" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="AN_ORIGIN_PRODUCT_QUALITY_INDEXES">
+							<xs:sequence>
+								<xs:element name="Product_Quality" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Source_Product">
+												<xs:complexType>
+													<xs:group ref="A_PRODUCT_IDENTIFICATION"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Global_Index_List" type="A_QUALITY_INDEXES_LIST"/>
+											<xs:element name="Band_Index_List" type="A_BAND_INDEXES_LIST" minOccurs="0" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="level" type="A_QUALITY_LEVEL_NAME" use="required"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_CONTRIBUTING_PRODUCTS_LIST">
+		<xs:sequence>
+			<xs:element name="Contributing_Product" type="A_CONTRIBUTING_PRODUCT" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_QUALITY_INFORMATIONS">
+		<xs:sequence>
+			<xs:element name="Current_Product" type="A_CURRENT_PRODUCT" minOccurs="0"/>
+			<xs:element name="Contributing_Products_List" type="A_CONTRIBUTING_PRODUCTS_LIST" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

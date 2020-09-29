@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:gs2="https://psd-12.sentinel2.eo.esa.int/doc/1.0/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:representation="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/representation/" xmlns:misc="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/representation/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/SY/misc/" schemaLocation="../misc/misc.xsd"/>
+	<xs:simpleType name="AN_EPSG_CODE">
+		<xs:annotation>
+			<xs:documentation>EPSG code : it should follow the 'EPSG:xxxx' pattern where xxxx is the unique identification code in the EPSG tables.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Za-z]+:[0-9A-Za-z]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AN_HORIZONTAL_CS_TYPES">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PROJECTED"/>
+			<xs:enumeration value="GEOGRAPHIC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="A_GEO_TABLES">
+		<xs:annotation>
+			<xs:documentation>Identifier of the organization responsible for tables used for identifying coordinate sytem parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:restriction base="misc:A_STRING_WITH_VERSION_ATTR">
+				<xs:enumeration value="EPSG"/>
+				<xs:attribute name="version" type="xs:string" use="required"/>
+			</xs:restriction>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="AN_HORIZONTAL_CS">
+		<xs:annotation>
+			<xs:documentation>Horizontal coordinate reference system</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HORIZONTAL_CS_TYPE" type="representation:AN_HORIZONTAL_CS_TYPES"/>
+			<xs:element name="HORIZONTAL_CS_NAME" type="xs:string"/>
+			<xs:element name="HORIZONTAL_CS_CODE" type="representation:AN_EPSG_CODE">
+				<xs:annotation>
+					<xs:documentation>Code of horizontal coordinate reference system. It should follow the 'EPSG:xxxx' pattern where xxxx is the unique identification code in the EPSG tables.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_PROJECTION_CODE">
+		<xs:annotation>
+			<xs:documentation>Projection Code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

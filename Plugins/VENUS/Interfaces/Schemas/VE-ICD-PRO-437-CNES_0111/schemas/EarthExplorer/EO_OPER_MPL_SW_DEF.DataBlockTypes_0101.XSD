@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.3 : DM : VE-FT-847 : 05/08/2015 : Passage au format UNIX
+ 
+  FIN-HISTORIQUE
+ -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:include schemaLocation="GeoLocationTypes_0101.XSD"></xsd:include>
+	<xsd:include schemaLocation="TimeTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Swath Definition Reference Data Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:44 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="Attitude_Transformation_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:enumeration value="sat_nom"></xsd:enumeration>
+			<xsd:enumeration value="sat_att"></xsd:enumeration>
+			<xsd:enumeration value="instr_att"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Time_Window_Type">
+		<xsd:sequence>
+			<xsd:element name="Time_0" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Time_1" type="Decimal_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="time_ref" type="Time_Reference_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Time_Selection_Type">
+		<xsd:choice>
+			<xsd:element name="Select_File" type="Null_Type"></xsd:element>
+			<xsd:element name="Time_Window" type="Time_Window_Type"></xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="Point_Geometry_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Azimuth" type="Azimuth_Type"></xsd:element>
+			<xsd:element name="Elevation" type="Elevation_Type"></xsd:element>
+			<xsd:element name="Altitude" type="Height_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Inertial_Point_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Azimuth" type="Azimuth_Type"></xsd:element>
+			<xsd:element name="Altitude" type="Height_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Window_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="10-6s"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Pulse_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="10-6s"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Asar_Pulse_Data_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Window" type="Window_Type"></xsd:element>
+			<xsd:element name="Pulse" type="Pulse_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Line_Geometry_Type">
+		<xsd:sequence>
+			<xsd:element name="Left_Pt" type="Point_Geometry_Type"></xsd:element>
+			<xsd:element name="Mid_Pt" type="Point_Geometry_Type"></xsd:element>
+			<xsd:element name="Right_Pt" type="Point_Geometry_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Limb_Geometry_Type">
+		<xsd:sequence>
+			<xsd:element name="Left_Pt" type="Inertial_Point_Type"></xsd:element>
+			<xsd:element name="Mid_Pt" type="Inertial_Point_Type"></xsd:element>
+			<xsd:element name="Right_Pt" type="Inertial_Point_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Dist_Geometry_Type">
+		<xsd:complexContent>
+			<xsd:extension base="Point_Geometry_Type">
+				<xsd:sequence>
+					<xsd:element name="Distance" type="Distance_Type"></xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="Distance_Geometry_Type">
+		<xsd:sequence>
+			<xsd:element name="Left_Pt" type="Dist_Geometry_Type"></xsd:element>
+			<xsd:element name="Mid_Pt" type="Dist_Geometry_Type"></xsd:element>
+			<xsd:element name="Right_Pt" type="Dist_Geometry_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Position_Offset_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m"
+				></xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Offsets_Type">
+		<xsd:sequence>
+			<xsd:element name="Offset_X" type="Position_Offset_Type" default="0"></xsd:element>
+			<xsd:element name="Offset_Y" type="Position_Offset_Type" default="0"></xsd:element>
+			<xsd:element name="Offset_Z" type="Position_Offset_Type" default="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Harmonic_Type">
+		<xsd:sequence>
+			<xsd:element name="Harmonic_Type" type="Integer_Type"></xsd:element>
+			<xsd:element name="Harmonic_Coef" type="Decimal_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Harmonics_Type">
+		<xsd:sequence>
+			<xsd:element name="Harmonic" type="Harmonic_Type" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="PositiveInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="Harmonic_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="Angle_Type" type="Integer_Type"></xsd:element>
+			<xsd:element name="List_of_Harmonics_Pitch" type="List_of_Harmonics_Type"></xsd:element>
+			<xsd:element name="List_of_Harmonics_Roll" type="List_of_Harmonics_Type"></xsd:element>
+			<xsd:element name="List_of_Harmonics_Yaw" type="List_of_Harmonics_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Parameters_Type">
+		<xsd:sequence>
+			<xsd:element name="Parameter" type="String_Type" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="NonNegativeInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+
+	<xsd:complexType name="Param_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="Model" type="Integer_Type"></xsd:element>
+			<xsd:element name="List_of_Parameters" type="List_of_Parameters_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="List_of_Files_Type">
+		<xsd:sequence>
+			<xsd:element name="File" type="String_Type" maxOccurs="unbounded"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="count" type="PositiveInteger_Type" use="required"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="File_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="List_of_Files" type="List_of_Files_Type"></xsd:element>
+			<xsd:element name="Auxiliary_File" type="String_Type"></xsd:element>
+			<xsd:element name="Time_Selection" type="Time_Selection_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Angle_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="Angle_1" type="Angle_Type"></xsd:element>
+			<xsd:element name="Angle_2" type="Angle_Type"></xsd:element>
+			<xsd:element name="Angle_3" type="Angle_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Row_Type">
+		<xsd:sequence>
+			<xsd:element name="Column_1" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Column_2" type="Decimal_Type"></xsd:element>
+			<xsd:element name="Column_3" type="Decimal_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Matrix_Model_Type">
+		<xsd:sequence>
+			<xsd:element name="Row_1" type="Row_Type"></xsd:element>
+			<xsd:element name="Row_2" type="Row_Type"></xsd:element>
+			<xsd:element name="Row_3" type="Row_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="Attitude_Model_Type">
+		<xsd:choice>
+			<xsd:element name="None" type="Null_Type"></xsd:element>
+			<xsd:element name="AOCS_Model" type="NonNegativeInteger_Type"></xsd:element>
+			<xsd:element name="Parameter_Model" type="Param_Model_Type"></xsd:element>
+			<xsd:element name="Harmonic_Model" type="Harmonic_Model_Type"></xsd:element>
+			<xsd:element name="File_Model" type="File_Model_Type"></xsd:element>
+			<xsd:element name="Angle_Model" type="Angle_Model_Type"></xsd:element>
+			<xsd:element name="Matrix_Model" type="Matrix_Model_Type"></xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:simpleType name="Swath_Type_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:enumeration value="point"></xsd:enumeration>
+			<xsd:enumeration value="line"></xsd:enumeration>
+			<xsd:enumeration value="inertial"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Swath_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Output_File_Description" type="String_Type"></xsd:element>
+			<xsd:element name="Output_File_Type" type="String_Type" fixed="MPL_SWTREF"></xsd:element>
+			<xsd:element name="Swath_Type" type="Swath_Type_Type"></xsd:element>
+			<xsd:element name="Num_Swath_Records" type="PositiveInteger_Type"></xsd:element>
+			<xsd:element name="Refraction" type="Refraction_Type"></xsd:element>
+			<xsd:choice>
+				<xsd:element name="Point_Geometry" type="Point_Geometry_Type"></xsd:element>
+				<xsd:element name="Line_Geometry" type="Line_Geometry_Type"></xsd:element>
+				<xsd:element name="Limb_Geometry" type="Limb_Geometry_Type"></xsd:element>
+				<xsd:element name="Distance_Geometry" type="Distance_Geometry_Type"></xsd:element>
+			</xsd:choice>
+			<xsd:element name="Sat_Nominal_Att" type="Sat_Nominal_Att_Type"></xsd:element>
+			<xsd:element name="Sat_Att" type="Sat_Att_Type"></xsd:element>
+			<xsd:element name="Instr_Att" type="Instr_Att_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SWDEF_Data_Block_Type" mixed="false">
+		<xsd:sequence>
+			<xsd:element name="Swath" type="Swath_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="String_Type" use="required" fixed="xml"></xsd:attribute>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Data_Block" type="SWDEF_Data_Block_Type"></xsd:element>
+	<xsd:complexType name="Sat_Nominal_Att_Type">
+		<xsd:choice>
+			<xsd:element name="None" type="Null_Type"></xsd:element>
+			<xsd:element name="AOCS_Model" type="NonNegativeInteger_Type"></xsd:element>
+			<xsd:element name="Parameter_Model" type="Param_Model_Type"></xsd:element>
+			<xsd:element name="Harmonic_Model" type="Harmonic_Model_Type"></xsd:element>
+			<xsd:element name="File_Model" type="File_Model2_Type"></xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="Sat_Att_Type">
+		<xsd:choice>
+			<xsd:element name="None" type="Null_Type"></xsd:element>
+			<xsd:element name="Harmonic_Model" type="Harmonic_Model_Type"></xsd:element>
+			<xsd:element name="File_Model" type="File_Model_Type"></xsd:element>
+			<xsd:element name="Angle_Model" type="Angle_Model_Type"></xsd:element>
+			<xsd:element name="Matrix_Model" type="Matrix_Model_Type"></xsd:element>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="Instr_Att_Type">
+		<xsd:choice>
+			<xsd:element name="None" type="Null_Type"></xsd:element>
+			<xsd:sequence>
+				<xsd:element name="Harmonic_Model" type="Harmonic_Model_Type"></xsd:element>
+				<xsd:element name="Offsets" type="Offsets_Type"></xsd:element>
+			</xsd:sequence>
+			<xsd:element name="File_Model" type="File_Model2_Type"></xsd:element>
+			<xsd:sequence>
+				<xsd:element name="Angle_Model" type="Angle_Model_Type"></xsd:element>
+				<xsd:element name="Offsets" type="Offsets_Type"></xsd:element>
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="Matrix_Model" type="Matrix_Model_Type"></xsd:element>
+				<xsd:element name="Offsets" type="Offsets_Type"></xsd:element>
+			</xsd:sequence>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="File_Model2_Type">
+		<xsd:sequence>
+			<xsd:element name="List_of_Files" type="List_of_Files_Type"></xsd:element>
+			<xsd:element name="Time_Selection" type="Time_Selection_Type"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

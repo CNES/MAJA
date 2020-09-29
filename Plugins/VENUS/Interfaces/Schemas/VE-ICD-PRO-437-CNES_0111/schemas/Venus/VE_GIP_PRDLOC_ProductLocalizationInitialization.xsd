@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+  <xs:include schemaLocation="VE_Dictionary.xsd"/>
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="PRDLOC_File_Type">
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:PRDLOC_Header_Type"/>
+          <xs:element name="Data_Block" type="ee:PRDLOC_Body_Type"/>
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.30"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="PRDLOC_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:PRDLOC_Fixed_Header_Type"/>
+      <xs:element name="Variable_Header" type="ee:PRDLOC_Variable_Header_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PRDLOC_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_GIPP_ProductLocalizationInitialization_Id_Type"/>
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="ProductLocalizationInitialization"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type"/>
+      <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="GIP_PRDLOC"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+      <xs:element name="File_Version" type="ee:File_Version_Type"/>
+      <xs:element name="Source" type="ee:VE_Source_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PRDLOC_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:PRDLOC_Instance_Id_Type"/>
+            <xs:element name="List_of_Applicable_SiteDefinition_Ids">
+              <xs:annotation>
+                <xs:documentation>List of the ids of the sites this GIPP is applicable to.
+
+The content of this element should be set in accordance with the value of the Applicability_NickName element in Instance_Id.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="Applicable_SiteDefinition_Id" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="ee:VE_SiteDefinition_Id_Type">
+                          <xs:attribute name="sn" use="required">
+                            <xs:simpleType>
+                              <xs:restriction base="ee:Integer_Type">
+                                <xs:minInclusive value="1"/>
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="count" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="ee:Integer_Type">
+                      <xs:minInclusive value="0"/>
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PRDLOC_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="Applicability_NickName_Type" type="ee:VE_NickName_Type_Type">
+        <xs:annotation>
+          <xs:documentation>Defines the type of the applicability nick name.
+
+- if S_SITE : this GIPP is applicable to one site only, defined by the Applicability_NickName element 
+- if L_LIST : this GIPP is applicable to a list of site. The Applicability_NickName element defines, in this case, the list nick name.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Applicability_NickName" type="ee:VE_Applicability_List_Nick_Name_Type">
+        <xs:annotation>
+          <xs:documentation>This element is mostly provided for human search (applications should rely on List_of_Applicable_SiteDefinition_Id content to determine applicability). Its significance depends of the previous Applicability_NickName_Type. The content List_of_Applicable_SiteDefinition_Ids must be set in accordance with this element.
+
+In case of a site nick name : 
+- this GIPP is applicable to one particular site only. List_of_Applicable_SiteDefinition_Ids should contain only one element whose value must be the complete SiteDefinition_Id corresponding to this nick name. 
+
+In case of a list nick name : 
+- if value is 'ALLSITES' : this GIPP is applicable to all the sites. List_of_Applicable_SiteDefinition_Ids must be empty.
+- if value is 'NOTNAMED' : this GIPP is applicable to a "unnnamed" list of sites (ie. no nick name is  affected to this list). List_of_Applicable_SiteDefinition_Ids must contain the SiteDefinition_Id of every site this GIPP is applicable to.
+- otherwise the value if the (informative) list nick name.  List_of_Applicable_SiteDefinition_Ids must contain the (applicable) SiteDefinition_Id of every site this GIPP is applicable to.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Serial_Key" type="ee:VE_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>unique Serial key in this GIPP series</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type">
+        <xs:annotation>
+          <xs:documentation>Validity period : content must be identical to the Validity_Period element of the Fixed_Header.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- body -->
+  <!-- ================= -->
+  <xs:complexType name="PRDLOC_Body_Type">
+    <xs:sequence>
+      <xs:element name="Grid_On_DTM_Resampling_Ratio" type="ee:Double_Type">
+        <xs:annotation>
+          <xs:documentation>K grille/mnt</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Grid_On_Ortho_Resampling_Ratio" type="ee:Double_Type">
+        <xs:annotation>
+          <xs:documentation>default value for "flat earth" option
+
+K grille/ortho
+</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Auxiliary_Data_Extrapolation">
+        <xs:annotation>
+          <xs:documentation>Thresholds for position and attitude giving the maximum extrapolation duration allowed. 
+
+Used for the beginning and end of segments.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Position_Extrapolation_Threshold">
+              <xs:annotation>
+                <xs:documentation>
+expressed in seconds</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="s"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Attitude_Extrapolation_Threshold">
+              <xs:annotation>
+                <xs:documentation>
+expressed in seconds</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="s"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Auxiliary_Data_Interpolation">
+        <xs:annotation>
+          <xs:documentation>Thresholds for position and attitude giving the maximum interpolation duration allowed. 
+
+Used for holes in the auxiliary data in the segment.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Position_Interpolation_Threshold">
+              <xs:annotation>
+                <xs:documentation>
+expressed in seconds</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="s"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Attitude_Interpolation_Threshold">
+              <xs:annotation>
+                <xs:documentation>
+expressed in seconds</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="s"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Out_Of_Site_Production">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Terrain_Enveloppe_Quantization_Step" type="ee:Double_Type">
+              <xs:annotation>
+                <xs:documentation>Expressed in Pixel level 1
+
+Pas de discrétisation enveloppe terrain</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Terrain_Enveloppe_Final_Margin" type="ee:Double_Type">
+              <xs:annotation>
+                <xs:documentation>Expressed in Pixel level 1
+
+Marge finale enveloppe</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Default_Reference_System" type="ee:VE_Coordinate_Reference_System_Type">
+              <xs:annotation>
+                <xs:documentation>système de projection par défaut</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="Column_L1_Product_Pixel_Size">
+              <xs:annotation>
+                <xs:documentation>Ortho image column pixel size (expressed in meters) </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="m"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Line_L1_Product_Pixel_Size">
+              <xs:annotation>
+                <xs:documentation>Ortho image line pixel size (expressed in meters) </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:Double_Type">
+                    <xs:attribute name="unit" use="required">
+                      <xs:simpleType>
+                        <xs:restriction base="ee:String_Type">
+                          <xs:enumeration value="m"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

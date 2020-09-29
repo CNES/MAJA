@@ -1,0 +1,130 @@
+<h1>Introduction</h1>
+<p>This folder contains cmake scripts  used to configure, build and install MAJA + MAJA-COTS.
+To build MAJA (+COTS) with default configuration, you can follow below steps.</p>
+<ul>
+<li>open a terminal and move to a build directory.</li>
+<li>run cmake configure on <code>SuperBuild</code> source.</li>
+<li>run make to configure, build and install MAJA.</li>
+</ul>
+<h1>Usage and examples</h1>
+<p>We assume some directories given below:</p>
+<ul>
+<li>maja repository is cloned in  <code>/MAJA_SHARED_FOLDER/Logiciel/MAJA</code></li>
+<li>maja data source directory is available at  <code>/MAJA_SHARED_FOLDER/Logiciel/MAJA-Data</code></li>
+<li>maja validation repository is cloned in  <code>/MAJA_SHARED_FOLDER/Logiciel/MAJA-Validation</code></li>
+<li>maja-cots's source archives are available at <code>/MAJA_SHARED_FOLDER/superbuild-archives</code></li>
+<li>build directory of choice is <code>$HOME/projects/maja/build</code></li>
+</ul>
+<pre><code class="language-bash"><span class="hljs-built_in">cd</span> ~/projects/maja/build
+cmake /MAJA_SHARED_FOLDER/Logiciel/MAJA/SuperBuild \
+-DMAJADATA_SOURCE_DIR=/MAJA_SHARED_FOLDER/MAJA-Data \
+-DMAJA_TEST_OUTPUT_ROOT=/MAJA_SHARED_FOLDER/$(hostname <span class="hljs-operator">-s</span>) \
+-DDOWNLOAD_DIR=/MAJA_SHARED_FOLDER/superbuild-archives
+</code></pre>
+<p>Default values are set for <code>MAJADATA_SOURCE_DIR, DMAJA_TEST_OUTPUT_ROOT, DOWNLOAD_DIR</code>. This is to ease building for developers and users. one has to make sure these directories exists and serve their purpose. So on your host machine, download directory must be a copy of <code>/MAJA_SHARED_FOLDER/superbuild-archives</code>. A typical configure command with default values is a simple one liner!
+<code>cd ~/projects/maja/build &amp;&amp; cmake /MAJA_SHARED_FOLDER/Logiciel/MAJA/SuperBuild</code>
+Default install prefix is set to <code>/opt/maja/&lt;MAJA_VERSION&gt;</code>. To install to a different directory, one can set cmake's <code>CMAKE_INSTALL_PREFIX</code> variable.
+For example <code>cmake -DCMAKE_INSTALL_PREFIX=$HOME/local</code></p>
+<p>The above command will install MAJA and MAJA-COTS to <code>$HOME/local/maja/&lt;MAJA_VERSION&gt;</code>. Here MAJA and its COTS are always installed onto
+<code>&lt;whatever install prefix&gt;/maja/&lt;MAJA_VERSION&gt;</code>. This is non-optional and must be remembered.</p>
+<p>During configure step, it creates directories required to configure, build and install
+all of MAJA-Cots and then MAJA!. CMake configure ends with generation of makefiles that will allows users to build projects.
+So you have individual targets like GDAL, ITK, OTB which can be build using <code>make &lt;TARGET_NAME&gt;</code> where name of target can be GDAL, ITK or MAJA!</p>
+<p>Running <code>make</code> is sufficient enough to build and install everything!</p>
+<p>It is important to note here that "make" will actually do a "make install".</p>
+<h1>MAJA-COTS</h1>
+<p>A custom cmake target called COTS is available in superbuild's binary directory.
+It allows one to build and install all of MAJA-COTS. The purpose of this special target is to have easy install all of COTS without installing MAJA.
+Users does not need to remember names and other details of individual dependencies to MAJA.
+One can setup a development environment with a single make command. ( <code>make COTS</code> ).</p>
+<h1>NOTES</h1>
+<ul>
+<li>Source archives for all projects except MAJA are search in <code>DOWNLOAD_DIR</code>.</li>
+<li>value of DOWNLOAD_DIR is set to:
+<ul>
+<li>cmake variable DOWNLOAD_DIR if defined through cmake argument. (see above code)</li>
+<li>An Environment variable <code>DOWNLOAD_DIR</code> if present</li>
+<li>or <code>&lt;CMAKE_CURRENT_BINARY_DIR&gt;/downloads</code>  where  <code>CMAKE_CURRENT_BINARY_DIR</code> is your build directory</li>
+</ul>
+</li>
+<li>By default install prefix is set to <code>/opt/maja/MAJA_VERSION_STRING</code>.</li>
+<li>dependencies are handled in a clean way using cmake's dependency logic.</li>
+<li><code>make MAJA</code> will build and install all projects</li>
+<li><code>make GDAL</code> will only build upto GDAL. i.e, no ITK, OTB, MAJA</li>
+<li>All dependencies of MAJA (a.k.a MAJA-COTS) are configured exclusively for MAJA project.</li>
+<li>Output from build, configure, install are save to file in build directory <code>&lt;PROJECT_NAME&gt;/stamp/GDAL-build-err.log</code>.</li>
+<li>Example for GDAL
+<ul>
+<li>GDAL/stamp/GDAL-configure-out.log</li>
+<li>GDAL/stamp/GDAL-configure-err.log</li>
+<li>GDAL/stamp/GDAL-build-out.log</li>
+<li>GDAL/stamp/GDAL-build-err.log</li>
+<li>GDAL/stamp/GDAL-install-out.log</li>
+<li>GDAL/stamp/GDAL-install-err.log</li>
+</ul>
+</li>
+</ul>
+<h1>Testing</h1>
+<p>Tests must be executed from MAJA build directory which is different from superbuild's build directory.
+Build directory of MAJA will always be relative to superbuild's.
+In the above case where we have superbuild binary directory as <code>$HOME/projects/maja/build</code>
+MAJA build directory is <code>$HOME/projects/maja/build/MAJA/build</code></p>
+<p>ctest must be launched from this directory. (assuming user is on build directory already)</p>
+<pre><code class="language-bash"><span class="hljs-built_in">cd</span> MAJA/build
+ctest -VV
+</code></pre>
+<h2>Listing available tests</h2>
+<p>list of tests that will be executed by ctest command can be known by running <code>ctest -N</code></p>
+<h2>Listing ctest labels</h2>
+<p>Starting MAJA-3.1.0, all TV tests are labeled depending on "test type" and spectral camera (a.k.a plugin)
+In order to list tests that are only related to a single spectral camera, one can use below command:</p>
+<pre><code class="language-bash">ctest -N -L SENTINEL2_CHAIN
+</code></pre>
+<p>To print all available labels:</p>
+<pre><code class="language-bash">ctest --print-lables
+</code></pre>
+<h1>Creating package</h1>
+<p>MAJA superbuild also comes with support of creating binary packages for users and developers!.
+These packages of-course can be distributed easily. Installation of such packages requires zero administrative privileges
+unlike traditional unix or linux packages. And the installation itself is dead simple and is basically running ".run" file!</p>
+<p>NOTE: FOR COMPATIBILITY REASONS, PACKAGES MUST BE GENERATED WITH AN OLD VERSION OF C AND C++ RUNTIME.
+THIS ALLOW US TO DISTRIBUTE PACKAGES TO DIFFERENT LINUX (X86_64) DISTROS EASILY.
+C AND C++ RUNTIME PROVIDES BACKWARD COMPATIBILITY FOR BINARIES.
+FOR MORE ON THIS ISSUE SEE MANY Q&amp;As, BLOG ARCTILES AND DOCUMENTATIONS AVAILABLE FREELY ON INTERNET.</p>
+<h2>Binary package (for users)</h2>
+<p>Starting from MAJA 3.1.0, there is a custom target called <code>binpkg</code> in your superbuild's binary directory.
+Creation of package is same as running any cmake target!. This can be done by running <code>make binpkg</code>
+Once above command finished successfully, you will have <code>bin_pkg/MAJA-&lt;MAJA_VERSION&gt;.run</code></p>
+<h3>Installation and usage</h3>
+<p>Execute <code>./bin_pkg/MAJA-3.1.0.run</code>.</p>
+<p>You now have maja processing executable in /opt/maja/3.1.0/bin/maja.
+To launch processing you don't need to set any extra environment variables such as <code>PATH</code>,<code>LD_LIBRARY_PATH</code> et al.
+The binary package is supposed to work as standalone and without having a zero conflict with any other libraries or even a different installation of MAJA.</p>
+<p>By default packages are installed to <code>/opt/maja/&lt;MAJA_VERSION&gt;</code>. To install to a different directory you can pass <code>--target</code> argument.
+For example, below command will install validation package to /tmp/bin_pkg!</p>
+<pre><code class="language-bash"><span class="hljs-built_in">cd</span> /tmp/
+./MAJA-<span class="hljs-number">3.1</span>.<span class="hljs-number">0</span>.run --target /tmp/maja_install
+</code></pre>
+<p>The above command gives maja executable in <code>/tmp/maja_install/bin/maja</code></p>
+<h2>Validation package (for developers)</h2>
+<p>Starting from MAJA 3.1.0, there is a custom target called <code>valpkg</code> in your superbuild's binary directory.
+Creation of package is same as running any cmake target!. This can be done by running <code>make valpkg</code>
+Once above command finished successfully, you will have <code>val_pkg/MAJA-&lt;MAJA_VERSION&gt;-VALIDATION.run</code></p>
+<h3>Installation and usage</h3>
+<p>Execute <code>MAJA-3.1.0-VALIDATION.run</code></p>
+<pre><code class="language-bash"><span class="hljs-built_in">cd</span> /tmp/
+~/projects/maja/build/val_pkg/MAJA-<span class="hljs-number">3.1</span>.<span class="hljs-number">0</span>-VALIDATION.run
+</code></pre>
+<p>You now have validation processing executables in ./MAJA-3.1.0-VALIDATION/bin/maja. To execute test or run processing you don't need to set any extra environment variables such as <code>PATH</code>, <code>LD_LIBRARY_PATH</code> et al.
+Package is supposed to work as standalone and without having a zero conflict with any other libraries or even a different installation of MAJA.
+Default installation path for validation package is ./MAJA-3.1.0-VALIDATION and not <code>/opt/maja/3.1.0</code>.
+This is to avoid accidental overwrites to existing maja installation.
+You are at liberty to install in any other directory of choice using <code>--target</code> argument.
+For example, below command will install validation package to /tmp/validation_pkg!</p>
+<p><code>~/projects/maja/build/val_pkg/MAJA-3.1.0-VALIDATION.run --target /tmp/validation_pkg</code></p>
+<p>Validation package comes with a copy of <code>MAJA-Validation</code> repository, a CMakeLists.txt and other files required to configure, build and run TV and TVA tests.
+To run TVA from validation package do the following command:</p>
+<pre><code class="language-bash">mkdir <span class="hljs-variable">$HOME</span>/projects/valpkg <span class="hljs-comment">#(create build directory)</span>
+<span class="hljs-built_in">cd</span> <span class="hljs-variable">$HOME</span>/projects/valpkg
+cmake <span class="hljs-variable">$HOME</span>/projects/MAJA-<span class="hljs-number">3.1</span>.<span class="hljs-number">0</span>-VALIDATION
+</code></pre>

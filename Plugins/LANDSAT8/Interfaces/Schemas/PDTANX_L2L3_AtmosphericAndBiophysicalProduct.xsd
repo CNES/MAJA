@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="./L2L3_DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="PDTANX_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:PDTANX_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:PDTANX_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="PDTANX_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name">
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_AnnexProduct_Id_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="AnnexProduct"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_Product_File_Class_Type"/>
+            <xs:element name="File_Type" type="ee:VE_File_Type_PDTANX_Type"/>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTANX_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:PDTANX_Instance_Id_Type"/>
+						<xs:element name="Reference_Product_Header_Id" type="ee:VE_Product_Id_Type"/>
+						<xs:element name="Annex_Complete_Name" type="ee:VE_Annex_Complete_Name_Type" default="Other"/>
+						<xs:element name="Annex_Information">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_ATB_Image_Information_Type">
+										<xs:sequence>
+											<xs:element name="List_of_Bands">
+												<xs:annotation>
+													<xs:documentation>The code can be :
+- an annex product code when the annex product contains only one band (VAP, AOT) ;</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="Band" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="ee:VE_Annex_Band_Code_Type">
+																		<xs:attribute name="sn" use="required">
+																			<xs:simpleType>
+																				<xs:restriction base="ee:Integer_Type">
+																					<xs:minInclusive value="1"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+													<xs:attribute name="count" use="required">
+														<xs:annotation>
+															<xs:documentation>number of bands</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="ee:Integer_Type">
+																<xs:minInclusive value="1"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Subsampling_Factor">
+												<xs:annotation>
+													<xs:documentation>subsampling factor relative to image source (10 = scale of 1/10)</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="By_Line">
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="ee:Float_Type"/>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="By_Column">
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="ee:Float_Type"/>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Values_Unit" type="ee:String_Type" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Unit of the values. Only for annexs : VAP (g/cm2), CLA(m), SOL (pixels/m of altitude or m/m of altitude), VIE (degrees). 
+NONE for others.</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTANX_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Reference_Product_Semantic">
+				<xs:annotation>
+					<xs:documentation>File semantic of the referenced product</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Product_File_Semantic_Code_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reference_Product_Instance" type="ee:VE_Instance_Id_Type"/>
+			<xs:element name="Annex_Code" type="ee:VE_Product_Annex_Code_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Only required when the file contains information associated with one type of annex.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+    <!-- ==================================================================================== -->
+    <!-- VE_ATB_Image_Information_Type -->
+    <!-- ==================================================================================== -->
+    <xs:complexType name="VE_ATB_Image_Information_Type">
+        <xs:annotation>
+            <xs:documentation>Description for ATB image</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Format">
+                <xs:annotation>
+                    <xs:documentation>TIFF</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="GEOTIFF"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Binary_Encoding" type="ee:VE_Binary_Encoding_Type">
+                <xs:annotation>
+                    <xs:documentation>LITTLE_ENDIAN</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Data_Type">
+                <xs:annotation>
+                    <xs:documentation>UNSIGNED_BYTE for ATB</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+			        <xs:restriction base="ee:String_Type">
+			            <xs:enumeration value="UNSIGNED_BYTE"/>
+			        </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Number_of_Significant_Bits" type="ee:Integer_Type"/>
+            <xs:element name="VAP_Nodata_Value">
+                <xs:simpleType>
+                    <xs:annotation>
+                        <xs:documentation>VAP No data value</xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="ee:UnsignedByte_Type">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="VAP_Quantification_Value"  type="ee:Decimal_3_Type"/>
+            <xs:element name="AOT_Nodata_Value">
+                <xs:simpleType>
+                    <xs:annotation>
+                        <xs:documentation>AOT No data value</xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="ee:UnsignedByte_Type">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="AOT_Quantification_Value"  type="ee:Decimal_3_Type"/>
+            <xs:element name="Size">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Lines">
+                            <xs:annotation>
+                                <xs:documentation>Number of lines OR "NIL=VARIABLE_BY_BAND" for InventoriedRaw and system products main header.</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:union memberTypes="ee:PositiveInteger_Type ee:VE_Nil_Reason_Variable_By_Band_Type"/>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="Columns">
+                            <xs:simpleType>
+                                <xs:restriction base="ee:PositiveInteger_Type"/>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="Bands">
+                            <xs:simpleType>
+                                <xs:restriction base="ee:Integer_Type">
+                                    <xs:minInclusive value="0"/>
+                                    <xs:maxInclusive value="15"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Image_Compacting_Tool">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="NO"/>
+                        <xs:enumeration value="BZIP2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

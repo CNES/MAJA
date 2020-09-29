@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:annotation>
+		<xsd:documentation>Basic data types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.2 $ $Date: 2007/07/31 17:08:27 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="String_Type">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="Integer_Type">
+		<xsd:restriction base="xsd:integer"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="PositiveInteger_Type">
+		<xsd:restriction base="xsd:positiveInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="NonNegativeInteger_Type">
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="Decimal_Type">
+		<xsd:restriction base="xsd:decimal"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="Time_Type">
+		<xsd:restriction base="xsd:time"/>
+	</xsd:simpleType>
+	<xsd:complexType name="AnyType_Type">
+		<xsd:complexContent>
+			<xsd:restriction base="xsd:anyType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="Null_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Non_Null_String_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Boolean_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TRUE"/>
+			<xsd:enumeration value="FALSE"/>
+			<xsd:enumeration value=""/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Angle_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="deg"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Distance_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="m"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Height_Type" mixed="false">
+		<xsd:simpleContent>
+			<xsd:extension base="Distance_Type"/>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:simpleType name="File_Type_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:pattern value="[A-Z0-9_]{10}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="File_Version_Type">
+		<xsd:restriction base="PositiveInteger_Type">
+			<xsd:pattern value="[0-9]{4}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Station_Id_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:length value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Zone_Id_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:length value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Refraction_Model_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:enumeration value="NO_REF"/>
+			<xsd:enumeration value="STD_REF"/>
+			<xsd:enumeration value="USER_REF"/>
+			<xsd:enumeration value="PRED_REF"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Model_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Refraction_Model_Type"/>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Freq_Type">
+		<xsd:simpleContent>
+			<xsd:extension base="Decimal_Type">
+				<xsd:attribute name="unit" type="String_Type" use="required" fixed="MHz"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Refraction_Type">
+		<xsd:sequence>
+			<xsd:element name="Model" type="Model_Type"/>
+			<xsd:element name="Freq" type="Freq_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="Phone_Number_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:pattern value="\+?([0-9]|\s)*"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Email_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:pattern value="((\w|\W)+@((\w|\W)+\.)+(\w|\W)+)?"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="File_Name_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:pattern value="([A-Z_]){2}_([A-Z0-9_]){4}_([A-Z0-9_]){10}_([A-Z0-9_]){1,41}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="File_Class_Type">
+		<xsd:restriction base="String_Type">
+			<xsd:pattern value="OPER"/>
+			<xsd:pattern value="OFFL"/>
+			<xsd:pattern value="NRT_"/>
+			<xsd:pattern value="RPRO"/>
+			<xsd:pattern value="STV[0-3]"/>
+			<xsd:pattern value="GSOV"/>
+			<xsd:pattern value="TEST"/>
+			<xsd:pattern value="TD[0-9][0-9]"/>
+			<xsd:pattern value="Routine Operations"/>
+			<xsd:pattern value="Off-Line Processing"/>
+			<xsd:pattern value="near-real-Time Processing"/>
+			<xsd:pattern value="Re-Processing"/>
+			<xsd:pattern value="Satellite Validation Test [0-3]"/>
+			<xsd:pattern value="Ground Segment Overall Validation test"/>
+			<xsd:pattern value="Generated test files"/>
+			<xsd:pattern value="Test Data Set [0-9][0-9]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="Right_Asc">
+		<xsd:simpleContent>
+			<xsd:extension base="Angle_Type"/>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="Declination">
+		<xsd:simpleContent>
+			<xsd:extension base="Angle_Type"/>
+		</xsd:simpleContent>
+	</xsd:complexType>
+</xsd:schema>

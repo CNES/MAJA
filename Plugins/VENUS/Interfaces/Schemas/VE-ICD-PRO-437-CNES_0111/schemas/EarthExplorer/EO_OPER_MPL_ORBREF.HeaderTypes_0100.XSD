@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://eop-cfi.esa.int/CFI" xmlns="http://eop-cfi.esa.int/CFI"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:include schemaLocation="HeaderTypes_0101.XSD"></xsd:include>
+	<xsd:annotation>
+		<xsd:documentation>Reference Orbit Event Header Types</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>$Revision: 1.1 $ $Date: 2007/07/31 17:08:40 $</xsd:documentation>
+	</xsd:annotation>
+	<xsd:complexType name="Orbit_Event_Header_Type">
+		<xsd:sequence>
+			<xsd:element name="Fixed_Header" type="Fixed_Header_Type"></xsd:element>
+			<xsd:element name="Variable_Header" type="AnyType_Type"></xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="schemaVersion" type="xsd:decimal" use="optional"></xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="Earth_Explorer_Header" type="Orbit_Event_Header_Type"></xsd:element>
+</xsd:schema>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="./DictionaryProducts.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="PDTIMG_Header_Type">
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:PDTIMG_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:PDTIMG_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="PDTIMG_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_ImageProduct_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="ImageProduct"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_Product_File_Class_Type"/>
+			<xs:element name="File_Type" type="ee:VE_File_Type_PDTIMG_Type"/>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTIMG_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:PDTIMG_Instance_Id_Type"/>
+						<xs:element name="Reference_Product_Header_Id">
+							<xs:annotation>
+								<xs:documentation>Link to the main header of this product : VSC_PDTxxx</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:union memberTypes="ee:VE_Product_Id_Type ee:VE_InventoriedRawProduct_Id_Type"/>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Image_Information">
+							<xs:complexType>
+								<xs:complexContent>
+									<xs:extension base="ee:VE_Generic_Image_Information_Type">
+										<xs:sequence minOccurs="0">
+											<xs:element name="Pre_Post_Scan_Pixels" type="ee:VE_Pre_Post_Scan_Type" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Only for inventoriedRaw and L0E images</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:extension>
+								</xs:complexContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PDTIMG_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Reference_Product_Semantic">
+				<xs:annotation>
+					<xs:documentation>File semantic of the referenced product</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="ee:VE_Product_File_Semantic_Code_Type"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reference_Product_Instance" type="ee:VE_Instance_Id_Type"/>
+			<xs:element name="Band_Code" type="ee:VE_Band_Code_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Used only for inventoried raw products which contain one image for each band</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sub_Code" type="ee:VE_PdtImg_Sub_Code_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Used for : 
+- system products (PIX and SAT files) 
+- L2/L3 products (SLP/NSL : slope correction flag)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

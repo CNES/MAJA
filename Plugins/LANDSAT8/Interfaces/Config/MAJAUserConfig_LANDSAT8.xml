@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                         __  __    __    ___  ___  ___                                    *
+ *                                        (  \/  )  /__\  / __)/ __)/ __)                                   *
+ *                                         )    (  /(__)\( (__( (__ \__ \                                   *
+ *                                        (_/\/\_)(__)(__)\___)\___)(___/                                   *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-4-0 : DM : LAIG-DM-MAC-1284-CNES : 27 mai 2015 : Création du plug-in Landsat8 natif          *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$                                                                                                     *
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="./MAJAUserConfig.xsd" xmlns="http://maja.fr">
+    <Business>
+        <!-- Image divisions size (number of lines) -->
+	    <ImageDivision method="strips">
+	      <NbStrips>
+            <!-- Image divisions size (in number of lines) for the L2 Init Processing -->
+	        <L2InitProcessing>500</L2InitProcessing>
+            <!-- Image divisions size (in number of lines) for the L2 Nominal Processing -->
+	        <L2NominalProcessing>500</L2NominalProcessing>
+            <!-- Image divisions size (in number of lines) L2 Backward Processing -->
+	        <L2BackwardProcessing>500</L2BackwardProcessing>
+            <!-- Image divisions size (in number of lines) L3 Processing -->
+	        <L3Processing>200</L3Processing>
+            <!-- Image divisions size (in number of lines) Checktool -->
+	        <ChecktoolProcessing>500</ChecktoolProcessing>
+	      </NbStrips>
+	    </ImageDivision>
+	    <!-- L2 coarse resolution in meter -->
+	    <L2CoarseResolution>240</L2CoarseResolution>
+    </Business>
+    <Algorithms>
+      <GRID_Reference_Altitudes>
+        <!-- First reference altitude of solar grid (in meter) -->
+        <SOLH1>3000</SOLH1>
+        <!-- First reference altitude of solar direction (in meter) -->
+        <SOLHRef>4000</SOLHRef>
+        <!-- Reference altitude of viewing direction (in meter) -->
+        <VIEHRef>3000</VIEHRef>
+      </GRID_Reference_Altitudes>
+      <Atmospheric_Absorption_Correction>
+        <!-- Option to use default constant value available in GIPP instead of meteorological data to determine the ozone amount -->
+        <Use_Default_Constant_Ozone_Amount>true</Use_Default_Constant_Ozone_Amount>
+      </Atmospheric_Absorption_Correction>
+    </Algorithms>
+</Config>

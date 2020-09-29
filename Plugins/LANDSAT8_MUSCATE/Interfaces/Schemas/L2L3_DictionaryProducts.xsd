@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by C.N.E.S. (C.N.E.S.) -->
+<!DOCTYPE xs:schema [
+	<!-- File_Name element patterns -->
+    <!ENTITY SatelliteClass "(L8)">
+	<!ENTITY FileClass "(OPER|DEGR|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE)">
+    <!-- MACCS new -->
+    <!ENTITY SpectralCameraClass "(L8C)">
+	<!-- Instance_Id sub-element patterns -->
+	<!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+	<!ENTITY NickNameElt "([0-9A-Za-z_]*|THE_MOON|ONEORBIT)">
+	<!ENTITY PubValidityCodeElt "(VALD|NOTV)">
+	<!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+	<xs:include schemaLocation="DictionaryProducts.xsd"/>
+    <!-- ================= -->
+    <!-- Data Types   -->
+    <!-- ================= -->
+  	<xs:simpleType name="VE_L2_Published_Product_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENuS specific File_Type for L2 published products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SpectralCameraClass;_L2&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L2_Published_Product_Tec_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENuS specific File_Type for L2 technical files of published products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="TEC_L2&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L3_Published_Product_File_Type_Type">
+		<xs:annotation>
+			<xs:documentation>VENuS specific File_Type for L3 published products</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SpectralCameraClass;_L3&PubValidityCodeElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- Identifiers -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_L2PublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An L2 PublishedProduct identifier following 'VE_cccc_sss_L2qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)                
+- cccc : valid File_Class value
+-  nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_&SpectralCameraClass;_L2&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L2PrivatePublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A L2 PrivatePublishedProduct identifier following 'VE_cccc_TEC_L2qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)            
+- cccc : valid File_Class value
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_L2&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L3PublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>An L3 PublishedProduct identifier following 'VE_cccc_sss_L3qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)            
+- cccc : valid File_Class value
+-  nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : central date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_&SpectralCameraClass;_L3&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_L3PrivatePublishedProduct_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A L3PrivatePublishedProduct identifier following 'VE_cccc_TEC_L3qqqq_nnnnnnnn_yyyymmdd' pattern : 
+- qqqq : validity code (VALD, NOTV)            
+- cccc : valid File_Class value
+- nnnnnnnn :  nick name of the SiteDefinition
+- yyyymmdd : central date
+</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="&SatelliteClass;_&FileClass;_TEC_L3&PubValidityCodeElt;_&NickNameElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- Enumerations -->
+	<!-- ================= -->
+	<!-- ================= -->
+	<!-- Miscellaneous -->
+	<!-- ================= -->
+	<xs:complexType name="VE_L2_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>public description of a L2 product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Site_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Aks" type="ee:VE_List_of_Optionnal_Aks_Type">
+						<xs:annotation>
+							<xs:documentation>The absolute radiometric calibration coefficients (one per band)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Processing_Flags_And_Modes">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Processing_Mode" type="ee:VE_Processing_Mode_Type">
+									<xs:annotation>
+										<xs:documentation>enumerated values : 
+INIT_MODE
+BACKWARD_MODE
+STANDARD_MODE</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="Adjacency_Effects_And_Slope_Correction" type="ee:Bool_Type"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="List_of_Used_Product_Ids">
+						<xs:annotation>
+							<xs:documentation>Reference to each product used to generate the current one.
+- For L2 products : L1 and L2 products used
+- For L3 products : L2 products used
+The id of the product indicates the level.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Used_Product_Id" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="ee:VE_GenericPublishedProduct_Id_Type">
+												<xs:attribute name="sn" type="ee:Integer_Type" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VE_L2_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public description of organization of a published product.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Published_Product_Organization_Type">
+				<xs:sequence>
+					<xs:element name="Ozone_Data_File" type="ee:VE_Product_Item_Reference_Type" minOccurs="0"/>
+					<xs:element name="Meteo_Data_File" type="ee:VE_Product_Item_Reference_Type" minOccurs="0"/>
+					<xs:element name="List_of_Annex_Files">
+						<xs:annotation>
+							<xs:documentation>For L2 product, 3 annex files :
+- ATB (atmospheric and biophysic variables)
+- MSK (Geophysical masks)
+- QLT (quality masks)  
++ the same annex files than in L1
+- SOL (solar angles)
+- VIE (viewing angles)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Annex_File" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sk" use="required">
+													<xs:annotation>
+														<xs:documentation>annex code</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="ee:VE_Product_Annex_Code_Type"/>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Private_Data_File" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Link to private data file. This link is only required in the internal version and must be deleted before the publication of the product.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="ee:VE_Product_Item_Reference_Type"/>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="List_of_Extension_Data_Files" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Future extensions</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Extension_Data_File" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sn" use="required">
+													<xs:simpleType>
+														<xs:restriction base="ee:Integer_Type">
+															<xs:minInclusive value="1"/>
+															<xs:maxInclusive value="100"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    <xs:complexType name="VE_L2_Product_L1_Product_Header_Type">
+        <xs:choice>
+            <xs:any namespace="##any" processContents="skip"/>  
+        </xs:choice>
+    </xs:complexType>
+	<xs:complexType name="VE_L3_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>public description of a L3 product</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Product_Information_Type">
+				<xs:sequence>
+					<xs:element name="Reference_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type"/>
+					<xs:element name="Cloud_Percentage">
+						<xs:annotation>
+							<xs:documentation>Percentage of cloudy pixels</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:union>
+								<xs:simpleType>
+									<xs:restriction base="ee:Decimal_Type">
+										<xs:fractionDigits value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+								<xs:simpleType>
+									<xs:restriction base="ee:VE_Nil_Reason_NA_Type"/>
+								</xs:simpleType>
+							</xs:union>
+						</xs:simpleType>
+					</xs:element>
+					<!--					<xs:element name="Used_DEM" type="ee:VE_DEM_Information_Type"/> -->
+                    <xs:element name="Reflectance_Quantification_Value" type="ee:Decimal_6_Type">
+                        <xs:annotation>
+                            <xs:documentation>Reflectance corresponding to one bit of quantification (for example 1/1024). For system products the value is "NONE".</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+		<!--		<xs:complexContent>
+			<xs:extension base="ee:VE_Generic_Site_Product_Information_Type">
+			</xs:extension>
+		</xs:complexContent>-->
+	</xs:complexType>
+	<xs:complexType name="VE_L3_Product_Organization_Type">
+		<xs:annotation>
+			<xs:documentation>Public description of organization of a published product.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:VE_Published_Product_Organization_Type">
+				<xs:sequence>
+					<xs:element name="List_of_Annex_Files">
+						<xs:annotation>
+							<xs:documentation>For L3 product, 2 annex files :
+- MSK (Geophysical masks)
+- QLT (qulity masks)  
+                </xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Annex_File" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sk" use="required">
+													<xs:annotation>
+														<xs:documentation>annex code</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="ee:VE_Product_Annex_Code_Type"/>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="List_of_Extension_Data_Files" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Future extensions</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Extension_Data_File" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="ee:VE_Product_Item_Reference_Type">
+												<xs:attribute name="sn" use="required">
+													<xs:simpleType>
+														<xs:restriction base="ee:Integer_Type">
+															<xs:minInclusive value="1"/>
+															<xs:maxInclusive value="100"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="count" use="required">
+								<xs:simpleType>
+									<xs:restriction base="ee:Integer_Type">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ==================================================================================== -->
+	<!-- ==================================================================================== -->
+	<!-- Global information for the Central L2 product  -->
+	<!-- VE_L3_Central_Input_L2_Product_Information_Type -->
+	<!-- ==================================================================================== -->
+	<!-- ==================================================================================== -->
+	<xs:complexType name="VE_L3_Central_Input_L2_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>Central Input L2 Product Information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Product_Level" type="ee:VE_Published_Product_Level_Code_Type"/>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type"/>
+			<xs:element name="Processing_Information" type="ee:VE_Processing_Type"/>
+			<xs:element name="Web_Site_URL" type="ee:String_Type"/>
+			<xs:element name="Useful_Image_Geo_Coverage" type="ee:VE_Useful_Image_Geo_Coverage_Type"/>
+			<xs:element name="Viewing_Angles_In_Satellite_Frame" type="ee:VE_Viewing_Angles_In_Satellite_Frame_Type"/>
+			<xs:element name="List_of_Band_Central_Wavelength" type="ee:VE_List_of_Band_Central_Wavelengths_Type"/>
+			<xs:element name="Product_Sampling">
+				<xs:annotation>
+					<xs:documentation>Product sampling in meters.
+- For inv and sys products the product sampling is the along track (By_Line) and along detector (By_Column) resolutions.
+- For the published products the product_sampling is the Sampling_Interval (Geo_Referencing_Information)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="By_Line" type="ee:Distance_Type"/>
+						<xs:element name="By_Column" type="ee:Distance_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Used_DEM" type="ee:VE_DEM_Information_Type"/>
+			<xs:element name="List_of_Aks" type="ee:VE_List_of_Optionnal_Aks_Type">
+				<xs:annotation>
+					<xs:documentation>The absolute radiometric calibration coefficients (one per band)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Processing_Flags_And_Modes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Processing_Mode" type="ee:VE_Processing_Mode_Type">
+							<xs:annotation>
+								<xs:documentation>enumerated values : 
+INIT_MODE
+BACKWARD_MODE
+STANDARD_MODE</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Adjacency_Effects_And_Slope_Correction" type="ee:Bool_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Image_Information">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_Generic_Image_Information_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ==================================================================================== -->
+	<!-- ==================================================================================== -->
+	<!-- For each date of all L2 Product  -->
+	<!-- VE_L3_List_of_Inputs_L2_Product_Information_Type -->
+	<!-- ==================================================================================== -->
+	<!-- ==================================================================================== -->
+	<xs:complexType name="VE_L3_List_of_Inputs_L2_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>List of Input L2 Product Information (one by band)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Input_L2_Product_Information" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Input L2 Product Information.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ee:VE_L3_Input_L2_Product_Information_Type"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="count" use="required">
+			<xs:simpleType>
+				<xs:restriction base="ee:Integer_Type">
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<!-- ==================================================================================== -->
+	<!-- VE_L3_Input_L2_Product_Information_Type -->
+	<!-- ==================================================================================== -->
+	<xs:complexType name="VE_L3_Input_L2_Product_Information_Type">
+		<xs:annotation>
+			<xs:documentation>generic description for geo-referencing product - for published products</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Acquisition_Date" type="ee:VE_Special_Date_Type"/>
+			<xs:element name="Acquisition_Date_Time" type="ee:UTC_Date_Time_Type">
+				<xs:annotation>
+					<xs:documentation>product data acquisition date-time. For L3 products is the first acquisition date/time.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_Or_Nil_Reason_NA_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition absolute orbit. For  L3 products is the first orbit number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Solar_Angle">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Useful_Image">
+							<xs:annotation>
+								<xs:documentation>Solar Angle in useful image corners and center</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Image_Center" type="ee:VE_Solar_Angle_Type"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Viewing_Angle">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>Viewing incidence for the 3th tri detector</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="Useful_Image">
+							<xs:annotation>
+								<xs:documentation>Viewing Angle in useful image center</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Image_Center" type="ee:VE_Viewing_Angle_Type"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Cloud_Percentage" type="ee:NonNegativeInteger_Type"/>
+			<xs:element name="List_of_Used_Product_Ids">
+				<xs:annotation>
+					<xs:documentation>Reference to each product used to generate the L2 product.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Used_Product_Id" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="ee:VE_GenericPublishedProduct_Id_Type">
+										<xs:attribute name="sn" type="ee:Integer_Type" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="count" use="required">
+						<xs:simpleType>
+							<xs:restriction base="ee:Integer_Type">
+								<xs:minInclusive value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="sn" use="required">
+			<xs:simpleType>
+				<xs:restriction base="ee:Integer_Type">
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+    <xs:complexType name="QCK_PDTQCK_Fixed_Header_Type">
+        <xs:annotation>
+            <xs:documentation>For QCK main header and sub header product</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="File_Name" type="ee:VE_QCK_PDTQCK_Id_Type"/>
+            <xs:element name="File_Description">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="QualityCheckDataProduct"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Notes" type="ee:String_Type"/>
+            <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+            <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+            <xs:element name="File_Type" type="ee:VE_QCK_PDTQCK_File_Type_Type"/>
+            <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+            <xs:element name="File_Version" type="ee:File_Version_Type"/>
+            <xs:element name="Source" type="ee:VE_Source_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

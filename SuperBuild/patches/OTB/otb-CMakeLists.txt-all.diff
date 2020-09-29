@@ -1,0 +1,12 @@
+diff -burN OTB-7.0.0.orig/CMakeLists.txt diff OTB-7.0.0/CMakeLists.txt
+--- OTB-7.0.0.orig/CMakeLists.txt	2020-03-10 11:26:13.249865126 +0100
++++ OTB-7.0.0/CMakeLists.txt	2020-03-11 14:24:30.620416927 +0100
+@@ -430,7 +430,7 @@
+ configure_file(VERSION VERSION @ONLY)
+ install(FILES ${OTB_BINARY_DIR}/VERSION DESTINATION ${OTB_INSTALL_DOC_DIR})
+
+-install(DIRECTORY ${OTB_BINARY_DIR}/${OTB_INSTALL_DATA_DIR} DESTINATION share)
++#install(DIRECTORY ${OTB_BINARY_DIR}/${OTB_INSTALL_DATA_DIR} DESTINATION share)
+
+ if(BUILD_TESTING)
+   add_subdirectory(Utilities/InstallTest)

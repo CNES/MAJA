@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.1 : DM : VE-FT-636 : 07/01/2015 : Portage maccs 4.1
+ 
+  FIN-HISTORIQUE
+ -->
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by USER USER (CS SYSTEMES D INFORMATION) -->
+<!DOCTYPE xs:schema [
+	<!-- File_Name element patterns -->
+	<!ENTITY FileClass "(OPER|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE|VM0[1-3]|DROB)">
+	<!ENTITY AOTMethod "(MULTITEMPORAL|MULTISPECTRAL|SPECTROTEMPORAL)">
+	<!ENTITY NickNameElt "([0-9A-Z_]{8}|THE_MOON|ONEORBIT)">
+	<!ENTITY NickNameTypeElt "(S|L)">
+	<!ENTITY ListNickNameElt "(&NickNameElt;|NOTNAMED|ALLSITES)">
+	<!ENTITY SerialKeyElt "([0-9]{5})">
+	<!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+	<!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+	<!ENTITY PubProductLevelElt "(L2|L3)">
+    <!ENTITY FreenameElt "([0-9A-Z_]{4,10}|THE_MOON|ONEORBIT)">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!-- Data Types   -->
+	<!-- ================= -->
+	<xs:simpleType name="Decimal_1_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="List_of_Decimal_1_Type">
+		<xs:list itemType="ee:Decimal_1_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Decimal_2_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="List_of_Decimal_2_Type">
+		<xs:list itemType="ee:Decimal_2_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="List_of_Decimal_3_Type">
+		<xs:list itemType="ee:Decimal_3_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Decimal_6_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="List_of_Decimal_6_Type">
+		<xs:list itemType="ee:Decimal_6_Type"/>
+	</xs:simpleType>
+	<xs:simpleType name="Decimal_9_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="List_of_Decimal_9_Type">
+		<xs:list itemType="ee:Decimal_9_Type"/>
+	</xs:simpleType>
+	<xs:complexType name="Decimal_6_Angle_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="ee:Decimal_6_Type">
+				<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="Decimal_9_Angle_Type" mixed="false">
+		<xs:simpleContent>
+			<xs:extension base="ee:Decimal_9_Type">
+				<xs:attribute name="unit" type="ee:String_Type" use="required" fixed="deg"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="Band_Code_Type">
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="B[0-1][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	 <xs:simpleType name="Interpolation_Type">
+        <xs:annotation>
+            <xs:documentation>Interpolation method
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="LINEAR"/>
+        </xs:restriction>
+    </xs:simpleType>
+	<!-- ================= -->
+	<!-- L2 FileTypes   -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_GIPP_L2COMM_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2COMM identifier following 'VE_cccc_GIP_L2COMM_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2COMM_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+    <xs:simpleType name="VE_GIPP_L2PSAT_Id_Type">
+        <xs:annotation>
+            <xs:documentation>A GIPP L2PSAT identifier following 'VE_cccc_GIP_L2COMM_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="ee:String_Type">
+            <xs:pattern value="VE_&FileClass;_GIP_L2PSAT_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+        </xs:restriction>
+    </xs:simpleType>
+	<xs:simpleType name="VE_GIPP_L2TOCR_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2TOCR identifier following 'VE_cccc_GIP_L2TOCR_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2TOCR_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_HDR_LUTANX_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A HDR LUTANX identifier following 'VE_cccc_VSC_LUTANX_ppqqqq_nnnnnnnn_yyyymmdd_LTC' pattern :
+- cccc : valid File_Class value
+- pp : product level : L2, L3
+- cccc : valid File_Class value
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- yyyymmdd : date
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_VSC_LUTANX_(IN|&PubProductLevelElt;)VALD_&NickNameElt;_&SpecialDateElt;_LTC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LUTANX_Reference_Product_Header_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A HDR LUTANX Product Headeridentifier following 'VE_cccc_VSC_LUTANX_ppqqqq_nnnnnnnn_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- pp : product level : L2, L3
+- cccc : valid File_Class value
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- yyyymmdd : date
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_VSC_(IN|&PubProductLevelElt;)VALD_&NickNameElt;_&SpecialDateElt;"/>
+			<!--xs:pattern value="VE_&FileClass;_VSC_LUTANX_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/-->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GIPP_CKEXTL_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP CKEXTL identifier following 'VE_cccc_GIP_CKEXTL_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_CKEXTL_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GIPP_CKQLTL_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP CKQLTL identifier following 'VE_cccc_GIP_CKQLTL_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_CKQLTL_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GIPP_L2ALBD_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2ALBD identifier following 'VE_cccc_GIP_L2ALBD_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2ALBD_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GIPP_L2DIFT_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2DIFT identifier following 'VE_cccc_GIP_L2DIFT_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2DIFT_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VE_GIPP_L2DIRT_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2DIRT identifier following 'VE_cccc_GIP_L2DIRT_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2DIRT_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="VE_GIPP_L2SITE_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2SITE identifier following 'VE_cccc_GIP_L2SITE_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2SITE_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+    <xs:simpleType name="VE_GIPP_L2SMAC_Id_Type">
+      <xs:annotation>
+        <xs:documentation>A GIPP L2SMAC identifier following 'VE_cccc_GIP_L2SMAC_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+          - cccc : valid File_Class value
+          - n : nick name type (site or list)
+          - nnnnnnnn :  applicability nick name (site nick name or list nick name)
+          - kkkkk : serial key
+          - yyyymmdd_yyyymmdd : validity range (short dates)
+        </xs:documentation>
+      </xs:annotation>
+      <xs:restriction base="ee:String_Type">
+        <xs:pattern value="VE_&FileClass;_GIP_L2SMAC_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+      </xs:restriction>
+    </xs:simpleType>
+	<xs:simpleType name="VE_GIPP_L2WATV_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L2WATV identifier following 'VE_cccc_GIP_L2WATV_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L2WATV_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================= -->
+	<!-- L2COMM DataTypes   -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_L2_No_Data_Type">
+		<xs:annotation>
+			<xs:documentation>L2 No data type. 
+           </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:Integer_Type">
+			<!-- xs:enumeration value="-9999"/ -->
+		</xs:restriction>
+	</xs:simpleType>
+
+ 	<xs:simpleType name="VE_AOT_Method_Type">
+        <xs:annotation>
+            <xs:documentation>AOT Methods : 
+- MULTITEMPORAL (MT), 
+- MULTISPECTRAL (MS), 
+- SPECTROTEMPORAL (ST)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="ee:String_Type">
+            <xs:pattern value="&AOTMethod;"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<!-- ================= -->
+	<!-- L3 FileTypes   -->
+	<!-- ================= -->
+	<xs:simpleType name="VE_GIPP_L3COMM_Id_Type">
+		<xs:annotation>
+			<xs:documentation>A GIPP L3COMM identifier following 'VE_cccc_GIP_L3COMM_n_nnnnnnnn_kkkkk_yyyymmdd_yyyymmdd' pattern :
+- cccc : valid File_Class value
+- n : nick name type (site or list)
+- nnnnnnnn :  applicability nick name (site nick name or list nick name)
+- kkkkk : serial key
+- yyyymmdd_yyyymmdd : validity range (short dates)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="ee:String_Type">
+			<xs:pattern value="VE_&FileClass;_GIP_L3COMM_&NickNameTypeElt;_&ListNickNameElt;_&SerialKeyElt;_&SpecialDateElt;_&SpecialDateElt;"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+    <!-- ================= -->
+    <!-- Checktool Type -->
+    <!-- ================= -->
+    <xs:simpleType name="VE_Free_Name_Type">
+        <xs:annotation>
+            <xs:documentation>A generic identifier</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="ee:String_Type">
+            <xs:pattern value="&FreenameElt;"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="VE_List_of_Free_Name">
+        <xs:annotation>
+            <xs:documentation>An unbounded list of freename</xs:documentation>
+        </xs:annotation>
+        <xs:list itemType="ee:VE_Free_Name_Type"/>
+    </xs:simpleType>
+
+</xs:schema>
+
+
+
+

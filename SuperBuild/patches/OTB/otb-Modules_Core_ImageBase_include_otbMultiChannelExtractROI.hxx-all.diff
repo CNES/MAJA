@@ -1,0 +1,31 @@
+diff -burN OTB-7.0.0.orig/Modules/Core/ImageBase/include/otbMultiChannelExtractROI.hxx OTB-7.0.0/Modules/Core/ImageBase/include/otbMultiChannelExtractROI.hxx
+--- OTB-7.0.0.orig/Modules/Core/ImageBase/include/otbMultiChannelExtractROI.hxx	2020-03-10 11:26:15.841865190 +0100
++++ OTB-7.0.0/Modules/Core/ImageBase/include/otbMultiChannelExtractROI.hxx	2020-03-10 14:42:48.418157594 +0100
+@@ -280,14 +280,14 @@
+     unsigned int channelOut(0);
+     unsigned int nbChannels(0);
+
+-    InputImagePixelType pixelInput;
+-    while (!outIt.IsAtEnd())
+-    {
+       OutputImagePixelType pixelOutput;
+       pixelOutput.Reserve(outputPtr->GetVectorLength());
+-      pixelInput = inIt.Get();
++      const unsigned int l_NbChannelsWorks = m_ChannelsWorks.size();
++      while (!outIt.IsAtEnd())
++      {
++      InputImagePixelType const& pixelInput = inIt.Get();
+       channelOut = 0;
+-      for (nbChannels = 0; nbChannels < m_ChannelsWorks.size(); ++nbChannels)
++      for (nbChannels = 0; nbChannels < l_NbChannelsWorks; ++nbChannels)
+       {
+         channelIn               = m_ChannelsWorks[nbChannels] - 1;
+         pixelOutput[channelOut] = static_cast<OutputValueType>(pixelInput[channelIn]);
+@@ -296,7 +296,6 @@
+       outIt.Set(pixelOutput);
+       ++outIt;
+       ++inIt;
+-      progress.CompletedPixel();
+     }
+   }
+ }

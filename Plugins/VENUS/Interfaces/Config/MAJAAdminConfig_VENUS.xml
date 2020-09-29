@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                         __  __    __    ___  ___  ___                                    *
+ *                                        (  \/  )  /__\  / __)/ __)/ __)                                   *
+ *                                         )    (  /(__)\( (__( (__ \__ \                                   *
+ *                                        (_/\/\_)(__)(__)\___)\___)(___/                                   *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-1-0 : DM : LAIG-DM-MAC-745-CNES : 18 juin 2014 : Creation du fichier                            *
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maja.fr ./MAJAAdminConfig.xsd">
+    <Composite>
+        <!-- List of the bands with the theoretical wavelengths -->
+        <!-- Used for composite algorithms -->
+        <List_of_Band_Theoretical_Wavelength count="12">
+            <Band_Theoretical_Wavelength sk="B01" unit="nanometer">415</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B02" unit="nanometer">443</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B03" unit="nanometer">490</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B04" unit="nanometer">560</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B05" unit="nanometer">638</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B06" unit="nanometer">638</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B07" unit="nanometer">665</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B08" unit="nanometer">705</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B09" unit="nanometer">740</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B10" unit="nanometer">780</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B11" unit="nanometer">865</Band_Theoretical_Wavelength>
+            <Band_Theoretical_Wavelength sk="B12" unit="nanometer">910</Band_Theoretical_Wavelength>
+        </List_of_Band_Theoretical_Wavelength>
+     </Composite>
+</Config>

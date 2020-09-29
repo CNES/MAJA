@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.18">
+	<xs:include schemaLocation="../misc/misc.xsd"/>
+	<xs:complexType name="A_METADATA_IDENTIFICATION">
+		<xs:sequence>
+			<xs:element name="METADATA_FORMAT">
+				<xs:annotation>
+					<xs:documentation>Indique qu'il s'agit d'une METADATA_MUSCATE (seule valeur possible)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="A_MUSCATE_METADATA_FORMAT_RESTRICTION">
+							<xs:attribute name="version" type="xs:string" use="required">
+								<xs:annotation>
+									<xs:documentation>indique la version du schema de métadonnée.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="METADATA_PROFILE">
+				<xs:annotation>
+					<xs:documentation>indique s'il s'agit d'un produit hybride, complet (standard, utilisateur, ou générique) ou distribué.
+Enuméré : HYBRID, COMPLETE, DISTRIBUTED, USER, GENERIC</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="HYBRID"/>
+						<xs:enumeration value="COMPLETE"/>
+						<xs:enumeration value="DISTRIBUTED"/>
+						<xs:enumeration value="USER"/>
+						<xs:enumeration value="GENERIC"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="METADATA_INFORMATION">
+				<xs:annotation>
+					<xs:documentation>Indique le niveau d'information contenu dans la donnée
+Enuméré : EXPERT,PUBLIC</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EXPERT"/>
+						<xs:enumeration value="PUBLIC"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="A_DATASET_IDENTIFICATION">
+		<xs:sequence>
+			<xs:element name="IDENTIFIER" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Identifiant du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AUTHORITY">
+				<xs:annotation>
+					<xs:documentation>Organisme responsable du produit 
+Enum avec une seule valeur : THEIA</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="THEIA"/>
+						<xs:enumeration value="CNES"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PRODUCER" type="A_PRODUCER_NAME">
+				<xs:annotation>
+					<xs:documentation>Centre de production du produit 
+Enum avec une seule valeur : MUSCATE</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PROJECT" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Projet auquel est rattaché le produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GEOGRAPHICAL_ZONE" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Description de la zone géographique du produit
+					- K-J/SAT SPOT 
+					- PATH-ROW LANDSAT (path et row sont des entiers codés sur 3 caractères)
+					- TILE S2,
+					- TUILE MUSCATE,
+					- ...</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="type" type="A_GEOGRAPHICAL_ZONE_TYPE" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TITLE" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Titre du produit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DESCRIPTION" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Description du produit </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ORIGINAL_DATA_DIFFUSER" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Organisme de diffusion d'orgine du produit (ESA, CNES, USGS, ...)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="A_MUSCATE_METADATA_FORMAT_RESTRICTION">
+		<xs:annotation>
+			<xs:documentation>ce type intermédiaire est nécessaire pour restreindre la valeur à METADATA_MUSCATE avant d'ajouter un attribut version</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="METADATA_MUSCATE"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

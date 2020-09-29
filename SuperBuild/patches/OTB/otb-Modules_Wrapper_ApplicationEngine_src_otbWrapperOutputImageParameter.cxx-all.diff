@@ -1,0 +1,214 @@
+--- OTB-7.0.0.orig/Modules/Wrappers/ApplicationEngine/src/otbWrapperOutputImageParameter.cxx	2019-10-29 10:11:39.000000000 +0100
++++ OTB-7.0.0/Modules/Wrappers/ApplicationEngine/src/otbWrapperOutputImageParameter.cxx	2020-04-26 19:33:54.826404184 +0200
+@@ -178,6 +178,10 @@
+ {
+   ImageBaseType* image = m_Image.GetPointer();
+ 
++  // Guess the image type
++  std::string className(image->GetNameOfClass());
++  if (className == "VectorImage") {
++
+   CAST_IMAGE_BASE(UInt8VectorImageType, image);
+   CAST_IMAGE_BASE(Int16VectorImageType, image);
+   CAST_IMAGE_BASE(UInt16VectorImageType, image);
+@@ -191,6 +195,7 @@
+   CAST_IMAGE_BASE(ComplexInt32VectorImageType, image);
+   CAST_IMAGE_BASE(ComplexFloatVectorImageType, image);
+   CAST_IMAGE_BASE(ComplexDoubleVectorImageType, image);
++  } else {
+ 
+   CAST_IMAGE_BASE(UInt8ImageType, image);
+   CAST_IMAGE_BASE(Int16ImageType, image);
+@@ -208,6 +213,7 @@
+ 
+   CAST_IMAGE_BASE(UInt8RGBImageType, image);
+   CAST_IMAGE_BASE(UInt8RGBAImageType, image);
++  }
+ 
+   itkExceptionMacro("Unknown image-base type.");
+ }
+@@ -302,6 +308,7 @@
+   m_OutputCaster = clamp.ocif;
+ 
+   m_Writer = writer;
++  m_ImageCasted = clamp.out;
+ }
+ 
+ 
+@@ -309,57 +316,114 @@
+ void OutputImageParameter::SwitchInput(TInputImage* image)
+ {
+   assert(image);
++  // Guess the image type
++  std::string className(image->GetNameOfClass());
++  if (className == "VectorImage") {
++
++	  switch (m_PixelType)
++	  {
++	  case ImagePixelType_uint8:
++		  ClampAndWriteVectorImage<UInt8VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_int16:
++		  ClampAndWriteVectorImage<Int16VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_uint16:
++		  ClampAndWriteVectorImage<UInt16VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_int32:
++
++		  ClampAndWriteVectorImage<Int32VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_uint32:
++		  ClampAndWriteVectorImage<UInt32VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_float:
++		  ClampAndWriteVectorImage<FloatVectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_double:
++		  ClampAndWriteVectorImage<DoubleVectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_cint16:
++		  ClampAndWriteVectorImage<ComplexInt16VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_cint32:
++		  ClampAndWriteVectorImage<ComplexInt32VectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_cfloat:
++		  ClampAndWriteVectorImage<ComplexFloatVectorImageType>(image);
++		  break;
++
++	  case ImagePixelType_cdouble:
++		  ClampAndWriteVectorImage<ComplexDoubleVectorImageType>(image);
++		  break;
++
++	  default:
++		  assert(false && "Unexpected image-type.");
++		  break;
++	  }
++  } else {
++	  switch (m_PixelType)
++	  {
++	  case ImagePixelType_uint8:
++		  ClampAndWriteVectorImage<UInt8ImageType>(image);
++		  break;
++
++	  case ImagePixelType_int16:
++		  ClampAndWriteVectorImage<Int16ImageType>(image);
++		  break;
++
++	  case ImagePixelType_uint16:
++		  ClampAndWriteVectorImage<UInt16ImageType>(image);
++		  break;
++
++	  case ImagePixelType_int32:
++
++		  ClampAndWriteVectorImage<Int32ImageType>(image);
++		  break;
++
++	  case ImagePixelType_uint32:
++		  ClampAndWriteVectorImage<UInt32ImageType>(image);
++		  break;
++
++	  case ImagePixelType_float:
++		  ClampAndWriteVectorImage<FloatImageType>(image);
++		  break;
++
++	  case ImagePixelType_double:
++		  ClampAndWriteVectorImage<DoubleImageType>(image);
++		  break;
++
++	  case ImagePixelType_cint16:
++		  ClampAndWriteVectorImage<ComplexInt16ImageType>(image);
++		  break;
++
++	  case ImagePixelType_cint32:
++		  ClampAndWriteVectorImage<ComplexInt32ImageType>(image);
++		  break;
++
++	  case ImagePixelType_cfloat:
++		  ClampAndWriteVectorImage<ComplexFloatImageType>(image);
++		  break;
++
++	  case ImagePixelType_cdouble:
++		  ClampAndWriteVectorImage<ComplexDoubleImageType>(image);
++		  break;
++
++	  default:
++		  assert(false && "Unexpected image-type.");
++		  break;
+ 
+-  switch (m_PixelType)
+-  {
+-  case ImagePixelType_uint8:
+-    ClampAndWriteVectorImage<UInt8VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_int16:
+-    ClampAndWriteVectorImage<Int16VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_uint16:
+-    ClampAndWriteVectorImage<UInt16VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_int32:
+-
+-    ClampAndWriteVectorImage<Int32VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_uint32:
+-    ClampAndWriteVectorImage<UInt32VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_float:
+-    ClampAndWriteVectorImage<FloatVectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_double:
+-    ClampAndWriteVectorImage<DoubleVectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_cint16:
+-    ClampAndWriteVectorImage<ComplexInt16VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_cint32:
+-    ClampAndWriteVectorImage<ComplexInt32VectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_cfloat:
+-    ClampAndWriteVectorImage<ComplexFloatVectorImageType>(image);
+-    break;
+-
+-  case ImagePixelType_cdouble:
+-    ClampAndWriteVectorImage<ComplexDoubleVectorImageType>(image);
+-    break;
+-
+-  default:
+-    assert(false && "Unexpected image-type.");
+-    break;
++	  }
+   }
+ }
+ 
+@@ -383,6 +447,11 @@
+ 
+ ImageBaseType* OutputImageParameter::GetValue()
+ {
++  if (m_PixelType != m_DefaultPixelType && m_Image)
++  {
++	  this->InitializeWriters();
++	  return m_ImageCasted;
++  }
+   return m_Image;
+ }
+ 

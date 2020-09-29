@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.40">
+	<xs:include schemaLocation="VE_Dictionary.xsd"/>
+	<!-- ================= -->
+	<!--Root (Header)-->
+	<!-- ================= -->
+	<xs:complexType name="AUXSRD_Header_Type">
+		<xs:annotation>
+			<xs:documentation>The AuxiliarySourceRawData is the Auxiliary Source Raw Data extracted by the VRS from the PayloadTelemetry and transmitted to the VIP (and through VIP to the TMC and the GCS), after each download.
+
+Auxiliary data can be related to one site or one orbit</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+				<xs:sequence>
+					<xs:element name="Fixed_Header" type="ee:AUXSRD_Fixed_Header_Type"/>
+					<xs:element name="Variable_Header" type="ee:AUXSRD_Variable_Header_Type"/>
+				</xs:sequence>
+				<xs:attribute name="schema_version" use="required">
+					<xs:simpleType>
+						<xs:restriction base="ee:Decimal_Type">
+							<xs:minInclusive value="0.30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================= -->
+	<!-- Header -->
+	<!-- ================= -->
+	<xs:complexType name="AUXSRD_Fixed_Header_Type">
+		<xs:sequence>
+			<xs:element name="File_Name" type="ee:VE_AuxiliarySourceRawData_Id_Type"/>
+			<xs:element name="File_Description">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="AuxiliarySourceRawData"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="ee:String_Type"/>
+			<xs:element name="Mission" type="ee:VE_Mission_Type"/>
+			<xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+			<xs:element name="File_Type">
+				<xs:simpleType>
+					<xs:restriction base="ee:String_Type">
+						<xs:enumeration value="TLM_AUXSRD"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+			<xs:element name="File_Version" type="ee:File_Version_Type"/>
+			<xs:element name="Source" type="ee:VE_Source_Type"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AUXSRD_Variable_Header_Type">
+		<xs:sequence>
+			<xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+			<xs:element name="Specific_Product_Header">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Instance_Id" type="ee:AUXSRD_Instance_Id_Type"/>
+						<xs:element name="Related_DownlinkPlan_Id" type="ee:VE_DownlinkPlan_Id_Type"/>
+						<xs:element name="Related_DownlinkReport_Id" type="ee:VE_DownlinkReport_Id_Type"/>
+						<xs:element name="Related_SiteDefinition_Id" type="ee:VE_SiteDefinition_Id_Type">
+							<xs:annotation>
+								<xs:documentation>if Auxiliary_Data_Type = O_ORBIT, site definition id should have the special nickname value of 'ONEORBIT'.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="DBL_Organization" type="ee:VE_DBL_Organization_Type"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AUXSRD_Instance_Id_Type">
+		<xs:sequence>
+			<xs:element name="Site_Type" type="ee:VE_Site_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nick_Name" type="ee:VE_Nick_Name_Type">
+				<xs:annotation>
+					<xs:documentation>NickName of the site</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Acquisition_Orbit_Number" type="ee:VE_Absolute_Orbit_Number_With_Unit_Type">
+				<xs:annotation>
+					<xs:documentation>Acquisition absolute orbit number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Auxiliary_Data_Type" type="ee:VE_Auxiliary_Data_Type_Type">
+				<xs:annotation>
+					<xs:documentation>type of the auxiliary data (O_ORBIT or S_SITE)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Data_Element_Id" type="ee:VE_Data_Element_Id_Type">
+				<xs:annotation>
+					<xs:documentation>Data ElementId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

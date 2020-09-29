@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/************************************************************************************************************
+ *                                                                                                          *
+ *                                        __  __    __     ____   __                                        *
+ *                                       (  \/  )  /__\   (_  _) /__\                                       *
+ *                                        )    (  /(__)\ .-_)(  /(__)\                                      *
+ *                                       (_/\/\_)(__)(__)\____)(__)(__)                                     *
+ *                                                                                                          *
+ *                                                                                                          *
+ ************************************************************************************************************
+ *                                                                                                          *
+ * Author: CS Systemes d'Information  (France)                                                              * 
+ *                                                                                                          * 
+ ************************************************************************************************************ 
+ * HISTORIQUE                                                                                               *
+ *                                                                                                          *
+ * VERSION : 4-0-0 : DM : LAIG-DM-MAC-748-CNES : 4 mars 2014 : Optimisation de la suppression des DBL après *
+ *                                  génération du DBL.DIR afin de réduire le volume du répertoire d'entrée  *
+ * VERSION : 4-0-0 : DM : LAIG-DM-MAC-747-CNES : 3 mars 2014 : Vidage repertoire Caching en PreProcessing.  *
+ * VERSION : 1-0-0-3 : DM : 251 : 2 septembre 2011 : Modif. pour prise en compte DM 251 Checktools dans SMIGS *
+ * VERSION : 1-0-0-1 : DM : 238 : 6 mai 2011 : Fichier de configuration et produit HDR. Web_Site_URL et Notes   *
+ * VERSION : 1-0-0-1 : FA : 240 : 6 mai 2011 : Le nom du Processing est utilise pour remplir le champ "Creator" *
+ * VERSION : 1-0-0-1 : FA : 213 : 3 mai 2011 : Les schémas XML en entrée ne sont pas controlés                  *
+ * VERSION : 1-0-0 : <TypeFT> : <NumFT> : 28 juillet 2010 : Creation
+ *                                                                                                          *
+ * FIN-HISTORIQUE                                                                                           *
+ *                                                                                                          *
+ * $Id$
+ *                                                                                                          *
+ ************************************************************************************************************/  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://maja.fr" xmlns:maja="http://maja.fr" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="MAJAConfigCommon.xsd"/>
+    <!-- ================= -->
+    <!-- Root -->
+    <!-- ================= -->
+        <xs:element name="Config" type="maja:ConfigType"/>
+        <xs:complexType name="ConfigType">
+            <xs:sequence>
+                <xs:element name="Notes">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="L2Note" type="xs:string"/>
+                            <xs:element name="L3Note" type="xs:string"/>
+                            <xs:element name="CheckToolsNote" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Computing">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="NbThreads" type="xs:positiveInteger"/>
+                            <xs:element name="EnableL2ResolutionProcessing" type="xs:boolean"/>
+			                <xs:element name="Caching">
+			                    <xs:complexType>
+			                        <xs:sequence>
+                                        <xs:element name="EnableCleaningCachingDirectoryBeforeProcessing" type="xs:boolean"/>
+                                        <xs:element name="EnableCleaningCachingDirectoryAfterProcessing" type="xs:boolean"/>
+			                            <xs:element name="EnableCachingConvertReflectanceData" type="xs:boolean"/>
+			                        </xs:sequence>
+			                    </xs:complexType>
+			                </xs:element>
+                            <xs:element name="EnableCleaningTemporaryDirectory" type="xs:boolean"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Processing">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="CheckXMLFilesWithSchema" type="xs:boolean"/>
+                            <xs:element name="PreProcessing">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="CleanInputZipFiles" type="xs:boolean"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="PostProcessing">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="ZipFiles" type="xs:boolean"/>
+                                        <xs:element name="CleanFiles" type="xs:boolean"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>        

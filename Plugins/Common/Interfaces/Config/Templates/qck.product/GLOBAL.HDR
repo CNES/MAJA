@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <?xml-stylesheet type="text/xsl" href="DISPLAY/display.xsl"?>
+  <Earth_Explorer_Header schema_version="0.41" xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="" xsi:type="QCK_PDTQCK_Header_Type">
+    <Fixed_Header>
+      <File_Name>NOT_INITIALIZED  VE_TEST_QCK_L3VALD_CAMARGUE_20120101</File_Name>
+      <File_Description>QualityCheckDataProduct</File_Description>
+      <Notes>NOT_INITIALIZED  Checktool note</Notes>
+      <Mission>NOT_INITIALIZED  VENuS</Mission>
+      <File_Class>NOT_INITIALIZED  TEST</File_Class>
+      <File_Type>NOT_INITIALIZED  QCK_L3VALD</File_Type>
+      <Validity_Period>
+        <Validity_Start>NOT_INITIALIZED  UTC=2012-01-01T10:51:44</Validity_Start>
+        <Validity_Stop>NOT_INITIALIZED  UTC=2012-01-01T10:51:51</Validity_Stop>
+      </Validity_Period>
+      <File_Version>NOT_INITIALIZED  0001</File_Version>
+      <Source>
+        <System>NOT_INITIALIZED  VIP</System>
+        <Creator>NOT_INITIALIZED  MACCS_L3_CHECKTOOL_CHAIN</Creator>
+        <Creator_Version>NOT_INITIALIZED  00.00</Creator_Version>
+        <Creation_Date>NOT_INITIALIZED  UTC=2014-09-01T02:07:38</Creation_Date>
+      </Source>
+    </Fixed_Header>
+    <Variable_Header>
+      <Main_Product_Header>
+        <List_of_Consumers count="0"/>
+        <List_of_Extensions count="0"/>
+      </Main_Product_Header>
+      <Specific_Product_Header>
+        <Instance_Id>
+          <Nick_Name>NOT_INITIALIZED  CAMARGUE</Nick_Name>
+          <Acquisition_Date>NOT_INITIALIZED  20120101</Acquisition_Date>
+        </Instance_Id>
+        <Reference_SiteDefinition_Id>NOT_INITIALIZED  VE_VM01_MPL_SITDEF_S_CAMARGUE</Reference_SiteDefinition_Id>
+        <Related_PublishedProduct_Id>NOT_INITIALIZED  VE_TEST_VSC_L3VALD_CAMARGUE_20120101</Related_PublishedProduct_Id>
+        <Product_Organization>
+          <Common_GIPP>
+            <Nature>NOT_INITIALIZED  GIP_L2COMM</Nature>
+            <File_Location>NOT_INITIALIZED  ./VE_TEST_QCK_L3VALD_CAMARGUE_20120101.DBL.DIR/VE_TEST_GIP_L2COMM_L_ALLSITES_00001_00000000_99999999.EEF</File_Location>
+            <Logical_Name>NOT_INITIALIZED  VE_TEST_GIP_L2COMM_L_ALLSITES_00001_00000000_99999999</Logical_Name>
+          </Common_GIPP>
+          <List_of_Quicklook_Files count="0"/>
+          <Quicklook_Files_GIPP>
+            <Nature>NOT_INITIALIZED  GIP_CKQLTL</Nature>
+            <File_Location>NOT_INITIALIZED  ./VE_TEST_QCK_L3VALD_CAMARGUE_20120101.DBL.DIR/VE_TEST_GIP_CKQLTL_S_CAMARGUE_00001_00000000_99999999.EEF</File_Location>
+            <Logical_Name>NOT_INITIALIZED  VE_TEST_GIP_CKQLTL_S_CAMARGUE_00001_00000000_99999999</Logical_Name>
+          </Quicklook_Files_GIPP>
+          <List_of_Point_Files count="0"/>
+          <Point_Files_GIPP>
+            <Nature>NOT_INITIALIZED GIP_CKEXTL</Nature>
+            <File_Location>NOT_INITIALIZED ./VE_TEST_QCK_L3VALD_CAMARGUE_20120101.DBL.DIR/VE_TEST_GIP_CKEXTL_S_CAMARGUE_00001_00000000_99999999.EEF</File_Location>
+            <Logical_Name>NOT_INITIALIZED VE_TEST_GIP_CKEXTL_S_CAMARGUE_00001_00000000_99999999</Logical_Name>
+          </Point_Files_GIPP>
+        </Product_Organization>
+      </Specific_Product_Header>
+    </Variable_Header>
+  </Earth_Explorer_Header>

@@ -1,0 +1,71 @@
+#
+# Copyright (C) 2020 Centre National d'Etudes Spatiales (CNES)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+
+if(NOT EXISTS "@CMAKE_BINARY_DIR@/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: @CMAKE_BINARY_DIR@/install_manifest.txt")
+  return()
+endif()
+
+file(READ "@CMAKE_BINARY_DIR@/install_manifest.txt" files)
+string(REGEX REPLACE "\n" ";" files "${files}")
+foreach(file ${files})
+  message(STATUS "Uninstalling $ENV{DESTDIR}${file}")
+  if(IS_SYMLINK "$ENV{DESTDIR}${file}" OR EXISTS "$ENV{DESTDIR}${file}")
+    execute_process(COMMAND
+      "@CMAKE_COMMAND@" -E remove "$ENV{DESTDIR}${file}"
+      OUTPUT_VARIABLE out_var
+      RESULT_VARIABLE res_var
+      )
+    if(NOT "${res_var}" STREQUAL 0)
+      message(FATAL_ERROR "Problem when removing $ENV{DESTDIR}${file}")
+    endif()
+  else()
+    message(STATUS "File $ENV{DESTDIR}${file} does not exist.")
+  endif()
+endforeach(file)
+
+function(uninstall_dir dir_path)
+  message(STATUS "Uninstalling ${dir_path}")
+  if(EXISTS "${dir_path}" AND IS_DIRECTORY "${dir_path}")
+    execute_process(COMMAND
+      "@CMAKE_COMMAND@" -E remove_directory "${dir_path}"
+      OUTPUT_VARIABLE out_rmdir
+      RESULT_VARIABLE res_rmdir
+      )
+    if(NOT "${res_rmdir}" STREQUAL 0)
+      message(FATAL_ERROR "Problem when removing ${dir_path}")
+    endif()
+  endif()  
+endfunction()
+
+foreach(camera @MAJA_LIST_OF_SPECTRAL_CAMERA@)
+  foreach(share_dir "config" "examples" "schemas")
+    uninstall_dir("@CMAKE_INSTALL_PREFIX@/share/${share_dir}/${camera}")
+  endforeach()
+endforeach()
+
+foreach(extra_dir
+    "etc/conf" "share/schemas/Maja"
+    "share/ddc" "share/config/Fonts" "share/config/Templates")
+  uninstall_dir("@CMAKE_INSTALL_PREFIX@/${extra_dir}")
+endforeach()
+
+foreach(include_dir @MAJA_INCLUDE_RELATIVE_DIRS@)
+  uninstall_dir( "@CMAKE_INSTALL_PREFIX@/include/${include_dir}")
+endforeach()
+
+uninstall_dir( "@CMAKE_INSTALL_PREFIX@/include/TestingMiscellaneous")

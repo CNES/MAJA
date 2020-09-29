@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLNotepad by USER (TMC) -->
+<xs:schema xmlns:ccsds="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ee="http://eop-cfi.esa.int/CFI" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.07">
+  <xs:include schemaLocation="VE_TMC_Dictionary.xsd" />
+  <xs:include schemaLocation="VE_RCV_LTPPLN_LongTermPassPlan.xsd" />
+  <xs:import namespace="urn:ccsds:recommendation:navigation:schema:ndmxml:R1.2" schemaLocation="../CCSDS/ndmxml-oem-R1.2.xsd" />
+  <!-- ================= -->
+  <!-- Root -->
+  <!-- ================= -->
+  <xs:complexType name="TSREQT_File_Type">
+    <xs:annotation>
+      <xs:documentation>The TSR is sent by the TMC to the SCC to activate a predefined TSD, and includes time-dependant parameters for the TMM</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ee:Abstract_Earth_Explorer_File_Type">
+        <xs:sequence>
+          <xs:element name="Earth_Explorer_Header" type="ee:TSREQT_Header_Type" />
+          <xs:element name="Data_Block" type="ee:TSREQT_Body_Type" />
+        </xs:sequence>
+        <xs:attribute name="schema_version" use="required">
+          <xs:simpleType>
+            <xs:restriction base="ee:Decimal_Type">
+              <xs:minInclusive value="0.07" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- ================= -->
+  <!-- Header -->
+  <!-- ================= -->
+  <xs:complexType name="TSREQT_Header_Type">
+    <xs:sequence>
+      <xs:element name="Fixed_Header" type="ee:TSREQT_Fixed_Header_Type" />
+      <xs:element name="Variable_Header" type="ee:TSREQT_Variable_Header_Type" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSREQT_Fixed_Header_Type">
+    <xs:sequence>
+      <xs:element name="File_Name" type="ee:VE_TechnologicalScenarioRequest_Id_Type" />
+      <xs:element name="File_Description">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="TechnologicalScenarioRequest" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notes" type="ee:String_Type" />
+      <xs:element name="Mission" type="ee:VE_Mission_Type" />
+      <xs:element name="File_Class" type="ee:VE_File_Class_Type" />
+      <xs:element name="File_Type">
+        <xs:simpleType>
+          <xs:restriction base="ee:String_Type">
+            <xs:enumeration value="MPL_TSREQT" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Validity_Period" type="ee:Validity_Period_Type" />
+      <xs:element name="File_Version" type="ee:File_Version_Type" />
+      <xs:element name="Source" type="ee:VE_Source_Type" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TSREQT_Variable_Header_Type">
+    <xs:sequence>
+      <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type" />
+      <xs:element name="Specific_Product_Header">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Instance_Id" type="ee:TSREQT_Instance_Id_Type" />
+            <xs:element name="Technological_Period_End_Orbit">
+              <xs:annotation>
+                <xs:documentation>The end (rev ) of the whole technological period (99999 for VM2 and VM3)</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="ee:TMC_Orbit_Number_Type">
+                    <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="abs" />
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Related_TechnologicalScenarioDefinition_Id" type="ee:VE_TechnologicalScenarioDefinition_Id_Type" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--- - - - - - - - - -TSREQT_Instance_Id_Type-->
+  <xs:complexType name="TSREQT_Instance_Id_Type">
+    <xs:sequence>
+      <xs:element name="TMC_Serial_Key" type="ee:TMC_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>Unique ID for TSR
+min - 00001
+max - 99999
+</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TSD_Activation_Start_Orbit">
+        <xs:annotation>
+          <xs:documentation>-The scenario operation time -Start of the TSD activation in absolute revs.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Orbit_Number_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="abs" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TSD_Serial_Key" type="ee:TMC_Serial_Key_Type">
+        <xs:annotation>
+          <xs:documentation>Unique ID of activated TSD
+min - 00001
+max - 99999
+</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Cycle_Number" type="ee:TMC_CycleNumber_Type">
+        <xs:annotation>
+          <xs:documentation>cycle number</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TSD_Nickname" type="ee:TMC_Nickname_Type">
+        <xs:annotation>
+          <xs:documentation>Nickname of TSD</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TSD_Type" type="ee:TMC_TSDType_Type">
+        <xs:annotation>
+          <xs:documentation>TSD type (A_AUTO) (D_DIRECT)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- ============================================================================== -->
+  <!-- body -->
+  <!-- ============================================================================= -->
+  <xs:complexType name="TSREQT_Body_Type">
+    <xs:annotation>
+      <xs:documentation>the Technological Scenario Request (TSREQT) Body Type</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <!--=====================================================-->
+      <!--ABSOLUTE DOWNLINK REVS FOR X_TELEMETRY -->
+      <!--======================================================-->
+      <xs:element name="List_of_Download_Revs">
+        <xs:annotation>
+          <xs:documentation>Description of the different download revs</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Download" minOccurs="0" maxOccurs="10">
+              <xs:annotation>
+                <xs:documentation>the description of each download rev</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="ee:TSREQT_Download_Orbit_Type">
+                    <xs:attribute name="sn" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Serial number of the download rev within the list</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="ee:Integer_Type">
+                          <xs:minInclusive value="1" />
+                          <xs:maxInclusive value="10" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:annotation>
+              <xs:documentation>the number of downloads contained in this downlink plan</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="0" />
+                <xs:maxInclusive value="10" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <!--=====================================================-->
+      <!--EXPECTED ORBITS -->
+      <!--======================================================-->
+      <xs:element name="List_of_Expected_Orbits">
+        <xs:annotation>
+          <xs:documentation>Description of the expected orbits</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Expected_Orbit" minOccurs="0" maxOccurs="220">
+              <xs:annotation>
+                <xs:documentation>the description of each orbit</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="ee:TSREQT_Expected_Orbit_Type">
+                    <xs:attribute name="sn" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Serial number of the expected orbit within the list</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="ee:Integer_Type">
+                          <xs:minInclusive value="1" />
+                          <xs:maxInclusive value="220" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:attribute>
+                  </xs:extension>
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="count" use="required">
+            <xs:annotation>
+              <xs:documentation>the number of orbits</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="ee:Integer_Type">
+                <xs:minInclusive value="0" />
+                <xs:maxInclusive value="220" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--***********************-->
+  <!--TSREQT_Expected_Orbit_Type-->
+  <!--************************-->
+  <xs:complexType name="TSREQT_Expected_Orbit_Type">
+    <xs:sequence>
+      <xs:element name="Expected_Orbit_Number">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Orbit_Number_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="abs" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="State_Vector" type="ee:TMC_Orbit_Vector_Type" />
+    </xs:sequence>
+  </xs:complexType>
+  <!--***********************-->
+  <!--TSREQT_Download_Rev_Type-->
+  <!--************************-->
+  <xs:complexType name="TSREQT_Download_Orbit_Type">
+    <xs:sequence>
+      <xs:element name="Download_Rev">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:TMC_Orbit_Number_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="abs" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Offset_After_AOS">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:NonNegativeInteger_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="sec" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Offset_Before_LOS">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="ee:NonNegativeInteger_Type">
+              <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="sec" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,7 +1,0 @@
-[PATH]
-repWork=None
-repGipp=None
-repL1  =None
-repL2  =None
-repMNT =None
-exeMaja=None

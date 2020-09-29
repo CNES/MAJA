@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- 
+ 
+  HISTORIQUE
+ 
+  VERSION : 1.2 : FA : VE-FT-790 : 01/04/2015 : Change AbsolutOrbitNumber type to integer
+  VERSION : 1.1 : DM : VE-FT-636 : 10/12/2014 : Add the empty value. The PDS use this value in place of DEM_Globe
+ 
+  FIN-HISTORIQUE
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.1">
+	<xs:element name="Parameter_File">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AbsolutOrbitNumber" type="xs:integer" nillable="true"/>
+				<xs:element name="SiteID" type="xs:string" nillable="true"/>
+				<xs:element name="Extended" type="xs:boolean" nillable="true"/>
+				<xs:element name="MNT_Option" nillable="true">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value=""/>
+							<xs:enumeration value="DEM_Site"/>
+							<xs:enumeration value="DEM_Globe"/>
+							<xs:enumeration value="Flat_Earth"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

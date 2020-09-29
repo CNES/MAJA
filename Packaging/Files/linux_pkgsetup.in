@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# Copyright (C) 2020 Centre National d'Etudes Spatiales (CNES)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+set -e
+# verify basic tools are here
+for tool in dirname find file grep cut sed chmod readlink ; do
+  if [ -z "$(command -v $tool)" ] ; then
+    echo "ERROR: Missing tool '${tool}'"
+    echo "Please install it and make sure it can be found from PATH"
+    exit -1;
+  fi
+done
+
+# find current dir (resolve symlinks)
+CUR_DIR=$(readlink -f "$(dirname "$0")")
+cd  "$CUR_DIR"
+
+# NOTE: $OUT_DIR is also used in make_sylinks script (see below)
+# Avoid any pre-mature optimization on variable names here.
+OUT_DIR=$(pwd)
+
+PATCH_ELF_EXE="$OUT_DIR/patchelf"
+unset LD_LIBRARY_PATH
+binaries=$(find "$OUT_DIR/lib" "$OUT_DIR/bin" -type f -exec file {} \; | grep -i elf| grep -i dynamically | cut -f1 -d':')
+for bfile in $binaries; do
+    echo "adding rpath to $bfile"
+    if [ -f "$bfile" ]; then
+        "$PATCH_ELF_EXE" "--set-rpath" "$OUT_DIR/lib" "$bfile"
+    fi
+done
+echo "Seeding .majaenv"
+sed -i "s,OUT_DIR,$OUT_DIR,g" "$OUT_DIR/bin/.majaenv.sh"
+echo "Chmoding install with chmod 755"
+chmod -R a-x,a+rwX,g-w,o-w "$OUT_DIR"
+chmod +x "$OUT_DIR/bin/.majaenv.sh"
+chmod -R +x "$OUT_DIR/bin/"
+
+
+. ./make_symlinks
+
+echo "You can now run $OUT_DIR/bin/maja"
+
+echo "You can now run $OUT_DIR/bin/startmaja"
+echo "Maja Digital-Elevation-Models (DEMs) can be created by running $OUT_DIR/bin/dtmcreation"
+echo "Maja CAMS data can be downloaded by running $OUT_DIR/bin/camsdownload"
+echo "More documentation on how to set up maja/startmaja can be found in $OUT_DIR/README"
+
+
+
+if [ -f "$OUT_DIR/CMakeLists.txt" ]; then
+    sed -i "s,OUT_DIR,$OUT_DIR,g" "$OUT_DIR/CMakeLists.txt"
+    echo "To test validation:"
+    echo "mkdir $OUT_DIR/test_build"
+    echo "cd $OUT_DIR/test_build"
+    echo "cmake .. -DENABLE_TVA=ON -DMAJA_TEST_OUTPUT_ROOT=/path/to/test/output_dir (must exists)"
+    echo "cmake .. -DENABLE_TV=ON -DMAJA_TEST_OUTPUT_ROOT=/path/to/test/output_dir (must exists)"
+fi
+
+rm -f  "$OUT_DIR/make_symlinks"
+rm -f  "$OUT_DIR/patchelf"
+rm -f  "$OUT_DIR/pkgsetup"
+

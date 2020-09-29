@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xs:schema [
+    <!ENTITY SatelliteClass "(L8)">
+    <!ENTITY FileClass "(OPER|DEGR|TEST|SVT[0-9A-Z_]|TD[0-9A-Z_]{2}|GSOV|IOTE)">
+    <!ENTITY NickNameElt "([0-9A-Za-z_]*|THE_MOON|ONEORBIT)">
+    <!-- MACCS new -->
+    <!ENTITY SpectralCameraClass "(L8C)">
+    <!ENTITY PubProductLevelElt "(L2|L3)">
+    <!ENTITY SpecialDateElt "(&DateElt;|00000000|99999999)">
+    <!ENTITY DateElt "(\d{4}(((01|03|05|07|08|10|12)(0[1-9]|[1,2][0-9]|3[0,1]))|((04|06|09|11)(0[1-9]|[1,2][0-9]|30))|(02(0[1-9]|[1,2][0-9]))))">
+    <!ENTITY LutAnx_Id "&SatelliteClass;_&FileClass;_&SpectralCameraClass;_LUTANX_(IN|&PubProductLevelElt;)VALD_&NickNameElt;_&SpecialDateElt;_LTC">
+    <!ENTITY FreeLutAnx_Id "[0-9A-Za-z_]*_&FileClass;_[0-9A-Za-z_]*_LUTANX_(IN|&PubProductLevelElt;)VALD_&NickNameElt;_&SpecialDateElt;_LTC">
+    <!ENTITY FreeLutAnx "[0-9A-Za-z_]*_LUTANX">
+    <!ENTITY Band_Code_Id "B[1-4]">
+]>
+<!-- edited with XMLSpy v2007 (http://www.altova.com) by DCT/PS/TIS (C.N.E.S.) -->
+<xs:schema xmlns:ee="http://eop-cfi.esa.int/CFI" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://eop-cfi.esa.int/CFI" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.00">
+    <xs:include schemaLocation="./L2L3_Dictionary.xsd"/>
+    <!-- ================= -->
+    <!-- Header -->
+    <!-- ================= -->
+    <xs:complexType name="LUTANX_Header_Type">
+        <xs:complexContent>
+            <xs:extension base="ee:Abstract_Earth_Explorer_Header_Type">
+                <xs:sequence>
+                     <xs:element name="Fixed_Header" type="ee:LUTANX_Fixed_Header_Type"/>
+                    <xs:element name="Variable_Header" type="ee:LUTANX_Variable_Header_Type"/>
+                </xs:sequence>
+                <xs:attribute name="schema_version" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="ee:Decimal_Type">
+                            <xs:minInclusive value="0.40"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--         ================= -->
+    <!--         Fixed Header -->
+    <!--         ================= -->
+    <xs:complexType name="LUTANX_Fixed_Header_Type">
+        <xs:sequence>
+            <xs:element name="File_Name" type="ee:VE_HDR_LUTANX_Id_Type"/>
+            <xs:element name="File_Description">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="AnnexLUT"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Notes" type="ee:String_Type"/>
+            <xs:element name="Mission" type="ee:VE_Mission_Type"/>
+            <xs:element name="File_Class" type="ee:VE_File_Class_Type"/>
+            <xs:element name="File_Type">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:enumeration value="L8C_LUTANX"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Validity_Period" type="ee:Validity_Period_Type"/>
+            <xs:element name="File_Version" type="ee:File_Version_Type"/>
+            <xs:element name="Source" type="ee:VE_Source_Type"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!--         ================= -->
+    <!--         Variable Header -->
+    <!--         ================= -->
+    <xs:complexType name="LUTANX_Variable_Header_Type">
+        <xs:sequence>
+            <xs:element name="Main_Product_Header" type="ee:VE_Main_Product_Header_Type"/>
+            <xs:element name="Specific_Product_Header">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Instance_Id" type="ee:LUTANX_Instance_Id_Type"/>
+                        <xs:element name="Reference_Product_Header_Id" type="ee:LUTANX_Reference_Product_Header_Id_Type"/>
+                        <xs:element name="Annex_Complete_Name" type="ee:String_Type"/>
+                        <xs:element name="LUT_Indexes" type="ee:LUT_Indexes_Type"/>
+                        <xs:element name="List_of_Band_Theoretical_Wavelength">
+                            <xs:annotation>
+                                <xs:documentation>The code can be a Theoretical_Wavelength value [400.... ]) for RCR, RTC and RTA annexes</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Band_Theoretical_Wavelength" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:simpleContent>
+                                                <xs:extension base="ee:Integer_Type">
+                                                    <xs:attribute name="sn" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="ee:Integer_Type">
+                                                                <xs:minInclusive value="1"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
+                                                    <xs:attribute name="unit" type="ee:String_Type" use="required" fixed="nanometer"/>
+                                                </xs:extension>
+                                            </xs:simpleContent>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="count" use="required">
+                                    <xs:annotation>
+                                        <xs:documentation>number of bands</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:simpleType>
+                                        <xs:restriction base="ee:Integer_Type">
+                                            <xs:minInclusive value="1"/>
+                                        </xs:restriction>
+                                    </xs:simpleType>
+                                </xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="List_of_LTC" type="ee:List_of_LTC_Type"/>
+                        <xs:element name="DBL_Organization">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="List_of_Packaged_DBL_Files">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Packaged_DBL_File" type="ee:Packaged_DBL_File_Type" maxOccurs="unbounded"/>
+                                            </xs:sequence>
+                                            <xs:attribute name="count" type="ee:Integer_Type"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LUTANX_Instance_Id_Type">
+        <xs:sequence>
+            <xs:element name="Reference_Product_Semantic">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:pattern value="L2VALD"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Reference_Product_Instance">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:pattern value="[0-9A-Za-z_]*_&SpecialDateElt;"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="Annex_Code">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:pattern value="LTC"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Packaged_DBL_File_Type">
+        <xs:sequence>
+            <xs:element name="Relative_File_Path">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:pattern value="&FreeLutAnx_Id;.DBL.DIR/&FreeLutAnx_Id;.DBL.mha"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="File_Definition">
+                <xs:simpleType>
+                    <xs:restriction base="ee:String_Type">
+                        <xs:pattern value="&FreeLutAnx;"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="sn" type="ee:Integer_Type"/>
+    </xs:complexType>
+    <xs:complexType name="LUT_Indexes_Type">
+                <xs:sequence>
+                    <xs:element name="Altitude_Indexes" type="ee:List_of_Decimal_6_Type"/>
+                    <xs:element name="AOT_Indexes" type="ee:List_of_Decimal_6_Type"/>
+                    <xs:element name="TOA_Reflectance_Indexes" type="ee:List_of_Decimal_6_Type"/>
+                </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="List_of_LTC_Type">
+            <xs:sequence>
+                <xs:element name="LTC" type="ee:LTC_Type" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="count" type="ee:Integer_Type"/>
+    </xs:complexType>
+    <xs:complexType name="LTC_Type">
+        <xs:sequence>
+            <xs:element name="Date" type="ee:Validity_Time_Type"/>
+            <xs:element name="Solar_Angles" type="ee:Solar_Viewing_Angles_Type"/>
+            <xs:element name="Viewing_Angles" type="ee:Solar_Viewing_Angles_Type"/>
+        </xs:sequence>
+        <xs:attribute name="sn" type="ee:Integer_Type"/>
+    </xs:complexType>
+    <xs:complexType name="Solar_Viewing_Angles_Type">
+        <xs:sequence>
+            <xs:element name="Image_Center">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Azimuth" type="ee:Decimal_9_Angle_Type"/>
+                        <xs:element name="Zenith" type="ee:Decimal_9_Angle_Type"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

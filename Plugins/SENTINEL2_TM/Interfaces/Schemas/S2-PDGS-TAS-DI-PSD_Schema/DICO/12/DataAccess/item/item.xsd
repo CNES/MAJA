@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:item="https://psd-12.sentinel2.eo.esa.int/DICO/12/DataAccess/item/" targetNamespace="https://psd-12.sentinel2.eo.esa.int/DICO/12/DataAccess/item/" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="13">
+	<!--Granule ID (L0/L1A/L1B)-->
+	<xs:simpleType name="GRANULE_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_D\d{2}_N\d{2}\.\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IMAGE_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_D\d{2}_B(8A|\d{2})"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}_B(8A|\d{2})"/>
+			<xs:pattern value="T[\w{Lu}_]{5}_\d{8}T\d{6}_B(8A|\d{2})"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}_TCI"/>
+			<xs:pattern value="T[\w{Lu}_]{5}_\d{8}T\d{6}_TCI"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Tile ID (L1C)-->
+	<xs:simpleType name="TILE_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="L1C_T[\w{Lu}_]{5}_A\d{6}_\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--PVI ID-->
+	<xs:simpleType name="PVI_ID">
+		<xs:annotation>
+			<xs:documentation>Preview Image identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_PVI_L1C_TL_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}PVI_L1C_CO[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}"/>
+			<xs:pattern value="T[\w{Lu}_]{5}_\d{8}T\d{6}_PVI"/>
+			<xs:pattern value="GRANULE/L1C_T[\w{Lu}_]{5}_A\d{6}_\d{8}T\d{6}/QI_DATA/T[\w{Lu}_]{5}_\d{8}T\d{6}_PVI"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--DataStrip ID (L0/L1A/L1B/L1C)-->
+	<xs:simpleType name="DATASTRIP_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_N\d{2}\.\d{2} S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6} S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--GIPP-->
+	<xs:simpleType name="GIPP_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2[AB_]_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_B(00|01|02|03|04|05|06|07|08|8A|09|10|11|12)"/>
+			<xs:pattern value="GIPP.tar"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--DEM-->
+	<xs:simpleType name="DEM_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2[AB_]_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--GRI-->
+	<xs:simpleType name="GRI_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2[AB_]_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--IERS-->
+	<xs:simpleType name="IERS_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2[AB_]_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--POD -->
+	<xs:simpleType name="POD_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--ECMWF-->
+	<xs:simpleType name="ECMWF_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2[AB_]_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--HKTM-->
+	<xs:simpleType name="HKTM_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_PRD_HKTM___\d{8}T\d{6}_\d{8}T\d{6}_\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Partial SAD ID-->
+	<xs:simpleType name="SAD_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_A[\w{Lu}_]{6}_W[FP]_L[ND]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--Global SAD ID-->
+	<xs:simpleType name="GLOBAL_SAD_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_AUX_SADATA_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_A[\w{Lu}_]{6}_W[FP]_L[ND]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--DATATAKE_ID-->
+	<xs:simpleType name="DATATAKE_ID">
+		<xs:annotation>
+			<xs:documentation>Datatake identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="GS2(A|B)_\d{8}T\d{6}_\d{6}_N\d{2}\.\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GRANULE_TILE_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_D\d{2}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}_N\d{2}\.\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--List of PDI_ID-->
+	<xs:simpleType name="PDI_ID">
+		<xs:annotation>
+			<xs:documentation>Product Data Item identification list: Granule, Tile, DataStrip, GIPP, DEM, GRI, IERS, POD, ECMWF, HKTM, SAD)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_D\d{2}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_T[\w{Lu}_]{5}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}_N\d{2}\.\d{2}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_B(00|01|02|03|04|05|06|07|08|8A|09|10|11|12)"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_S\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_A\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_PRD_HKTM___\d{8}T\d{6}_\d{8}T\d{6}_\d{4}"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_[\w{Lu}_]{10}_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_A[\w{Lu}_]{6}_W[FP]_L[ND]"/>
+			<xs:pattern value="S2(A|B)_[\w{Lu}_]{4}_AUX_SADATA_[\w{Lu}_]{4}_\d{8}T\d{6}_V\d{8}T\d{6}_\d{8}T\d{6}_A[\w{Lu}_]{6}_W[FP]_L[ND]"/>
+			<!-- S2PDGS EOF Naming Convention -->
+			<!-- FOS Naming convention -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Product_ID">
+		<xs:annotation>
+			<xs:documentation>Product Identifier in the archive (auxiliary, DEM, GIPP,...)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="Item_ID" final="union">
+		<xs:annotation>
+			<xs:documentation>a PDI_ID or a Product ID</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="item:PDI_ID item:Product_ID"/>
+	</xs:simpleType>
+	<xs:simpleType name="File_Type">
+		<xs:annotation>
+			<xs:documentation>The file type used by the Archive to discriminate Items (PDIs, products, auxiliary)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="Latency">
+		<xs:annotation>
+			<xs:documentation>The archive latency (On-line / Off-line)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="On-line"/>
+			<xs:enumeration value="Off-line"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
