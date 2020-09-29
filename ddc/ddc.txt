@@ -11,7 +11,7 @@
 
 MAJA
 Auteur : Equipe CS System d'Information
-Date   : 07/05/2020
+Date   : 29/09/2020
 
 Ce fichier contient la description complete de la configuration de l'article decrit ci-apres.
 
@@ -31,12 +31,12 @@ Rappel de la fonction       : MAJA constitue la chaîne de niveaux 2 multi-missi
 
 IDENTIFICATION DE LA VERSION
 ----------------------------
-Date version                : 07/05/2020
-Numero version              : 4.2.0
+Date version                : 29/09/2020
+Numero version              : 4.2.1
 Numero version Superbuild-Archive : 4.2.0
-Numero version reference    : 4.1.0
+Numero version reference    : 4.2.0
 Etat version                : Teste, opérationnel.
-Justification               : Livraison MAJA V4.2.0
+Justification               : Livraison MAJA V4.2.1
 Type de livraison           : Complete
 
 
@@ -185,25 +185,11 @@ Liste des FA corrigees
 
       FA tracees dans le code source
       ------------------------------
-      151 ::               Remove deprecated build options 			|   #CS 
-      147 ::               Venus masks in float and CLD mask wrong 		|   #CS 
-      146 ::               Quicklook Sentinel2 TM/Muscate fichier .aux.xml 	|   #CS 
-      144 ::               Method object not subscriptable 			|   #CS 
-      143 ::               Maja 4.2 Venus Backward no .mha 			|   #CS 
-      142 ::               Retrofit FA Maja 2 produits sur une même date 	|   #CS 
-      141 ::               Muscate Sentinel2 images/masks in float 		|   #CS 
-      140 ::               Maja 4.2 Missing viewing angles 			|   #CS 
-      139 ::               Maja 4.2 CAMS FileNotFoundError 			|   #CS 
-      138 ::               Maja 4.2 binpkg failing 				|   #CS 
-      137 ::               Retrofit Maja FA Perfo RH7 				|   #CS 
-      136 ::               Maja 4.1 Job killed at L2Writing 			|   #CS 
-      134 ::               Update Documentation 				|   #CS 
-      132 ::               Maja 4.1 XML Invalid 				|   #CS 
-      130 ::               Maja 4.1 Empty images and ATB mask !=0 		|   #CS 
-      129 ::               Maja 4.1 Venus out of region 			|   #CS 
-      126 ::               Maja 4.1 120m Error 					|   #CS 
-      125 ::               Maja 4.1 SnowRate Error 				|   #CS 
-     
+      161 ::               Landsat8 debug message format error 			|   #CS 
+      163 ::               Venus CAMS not subscriptable (1) 			|   #CS
+      165 ::               Not all CAMS models present       			|   #CS
+      170 ::               Wrong folder.txt.in			                |   #CS
+           
 
       FA non tracees dans le code source
       ------------------------------
@@ -212,7 +198,7 @@ Liste des FA corrigees
       FA incluant une nouvelle bibliotheque
       --------------------------------------
 
-      Néant
+      166 ::               Maja 4.2 Performance difference RH6 <-> RH7 			|   #CS
 
 
       FA sur documentation
@@ -229,18 +215,15 @@ Liste des FA non reproductbiles ou annulees
 
       FA annulees
       -----------
-      Néant
+      164 ::               Venus CAMS not subscriptable (2) 			|   #CS
+      
 
 Liste des DM prises en compte
 -----------------------------
 
       DM tracees dans le code source
       ------------------------------
-
-      154 :: Ajout de start-maja					|   #CS 
-      145 :: Supprimer le paramètre L2Coarse dans le fichier userconf	|   #CS 
-      127 :: Monter en version de l'OTB					|   #CS 
-      75  :: Amélioration des performances générale   			|   #CS 
+      Néant
     
       DM incluant une nouvelle bibliotheque
       --------------------------------------
@@ -266,7 +249,7 @@ Liste des DR/DV n'ayant plus cours
 
 Liste des FA ouvertes
 ---------------------
-      136 :: Maja 4.1 Job killed at L2Writing					|   #CS 	
+      162 ::               Venus backward products not valid 			|   #CS 	
 
 
 Liste des DM ouvertes
