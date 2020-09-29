@@ -1,10 +1,5 @@
 # MAJA
-<img  title="Ambaro Bay, Madagascar" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png" width="300" height="300" align="right"  />
-<img  title="logo MAJA" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/11/logo_maja.png" alt="" width="80"  /> 
-<img  title="logo CNES" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/03/Logo-CNES-horizontal-bleu-300-e1425986175723.png" alt="" width="130"  />
-<img  title="logo CESBIO" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2012/12/logo_cesbio.png" alt="" width="110"  />
-<img  title="logo CSSI" src="https://www.embedded-france.org/wp-content/uploads/2018/06/cs_2008_fr-1.jpg" alt="" width="150"  /> 
-<img  title="logo DLR" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/11/logo_DLR.jpg" alt="" width="90"  />
+<img  title="Ambaro Bay, Madagascar" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2017/05/20160406.png" width="300" height="300" align="right"  /> <img  title="logo MAJA" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/11/logo_maja.png" alt="" width="80"  />  <img  title="logo CNES" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/03/Logo-CNES-horizontal-bleu-300-e1425986175723.png" alt="" width="130"  /> <img  title="logo CESBIO" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2012/12/logo_cesbio.png" alt="" width="110"  /> <img  title="logo CSSI" src="https://www.embedded-france.org/wp-content/uploads/2018/06/cs_2008_fr-1.jpg" alt="" width="150"  />  <img  title="logo DLR" src="https://labo.obs-mip.fr/wp-content-labo/uploads/sites/19/2015/11/logo_DLR.jpg" alt="" width="90"  />
 
 
 1. [Installing Maja](#Requirements)
