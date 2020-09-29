@@ -9,9 +9,9 @@
 
 1. [Installing Maja](#Requirements)
 2. [MAJA output format](#format)
-3. [Running Maja](#run)
+3. [Running Maja as standalone](#run)
 4. [Running Maja with Start_maja](#run_startmaja)
-5. [Generation the documentation](#doc)
+5. [Generate the documentation](#doc)
 6. [Running the tests](#tests)
 7. [FAQ](#faq)
 8. [Contributors](#contrib)
@@ -23,19 +23,30 @@ MAJA (for Maccs-Atcor Joint Algorithm), is an atmospheric correction and cloud s
 In 2017, thanks to an agreement between CNES and DLR and to some funding from ESA, we started adding methods from DLR 's atmospheric correction software ATCOR into MACCS.
 MACCS then became MAJA. 
 
-Currently, Maja is allows the following processing steps:
+Currently, Maja allows the following processing steps:
 * Atmospheric correction
 * Cloud detection
 * Estimation of the Aerosol-Optical-Depth (AOT)
 * Correction of environmental- and slope-effects
 
 Maja is based on a **multi-temporal** method - allowing to refine the outputs using the previous inputs.
-Check the chapters ['Running Maja'](#run) and ['Generating the documentation'](#doc) in order to get more information about the method.
+Check the chapters ['Running Maja'](#run) and ['Generating the documentation'](#doc) in order to get more information about this.
 
 <a name="Requirements"></a>
 ## 1 - Installing Maja
 
 The following instructions will set you up to get a working copy on your system.
+
+### Precompiled binaries
+
+Maja is available as a self-extracting archive via the following link:
+
+[**Download Maja**](https://logiciels.cnes.fr/en/content/maja)
+
+You just have to unzip the provided package and use the following command :
+```
+./MAJA-4-x.run --target /path/to/install
+```
 
 ### Requirements
 
@@ -71,23 +82,19 @@ If you wish to install maja on another system without re-compiling, you can gene
 cd Maja-4-x-archive/build
 make binpkg
 ```
-This will create the file `binpkg.dir/MAJA-4-x.run` inside your build/ folder. You just have to unzip the provided package and use
-the following command :
-```
-bash binpkg.dir/MAJA-4-x.run --target /path/to/install
-```
+This will create the file `binpkg.dir/MAJA-4-x.run` inside your build folder.
 
 ### Setting additional environment variables for Maja
 
 All necessary environment variables can be found inside the file `/path/to/maja/install/bin/.majaenv.sh`.
 
-In the case where you used e.g. a different compiler for maja, you can append your own variables to it.
+In the case where you used e.g. a different compiler for maja, you have to append your own variables to it.
 
 
 <a name="format"></a>
 ## 2 - Maja output format
 
-Maja currently supports 3 different platforms with 2 format types (called plugins) each:
+Maja currently supports 3 different platforms, each with 2 format types (called plugins):
 
 | Plugin name | Additional info |
 | :--------: | --------: |
@@ -99,20 +106,12 @@ Maja currently supports 3 different platforms with 2 format types (called plugin
 | Landsat8-Muscate   | [Format description](https://labo.obs-mip.fr/multitemp/landsat/theias-landsat-8-l2a-product-format/)  |
 
 <a name="run"></a>
-## 3 - Running Maja
+## 3 - Running Maja as standalone
 
 After compiling, you will be able to run maja in the following path: `<path/to/maja-install>/maja/4.x/bin/maja`.
 Run `maja --help` to see a full list of parameters.
 
-We recommend the use of a basic orchestrator, called Start_maja in order to process a time-series of images. Check the chapters ['Running Maja with Start_maja'](#run_startmaja)  in order to get more information about the method.
-
-
-### GIPPs files
-
-MAJA uses GIPPs files to configure the different algorithms of the chain. You can find some sets here : 
-
-http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/
-
+We recommend the use of our basic orchestrator, called Start_maja in order to process a time-series of images. Check the chapters ['Running Maja with Start_maja'](#run_startmaja)  in order to get more information.
 
 <a name="run_startmaja"></a>
 ## 4 - Running Maja with Start_maja
@@ -139,63 +138,69 @@ repCAMS=/path/to/CAMS
 repRAW=./dtm/raw 
 repGSW=./dtm/gsw 
 ```
-- repWork is a directory to store the temporary files
-- repL1 is where to find the L1C data (without the site name which is added aferward optionally)
-  - Les produits .SAFE doivent donc être stockés à l'emplacement suivant : repL1  = repL1/site
-- repL2 is for the L2A data (without the site name which is added aferwards, optionally again)
-- exeMaja is where the Maja binary code is
-- repCAMS is where CAMS data are stored. You do not need to specify this directory.
-
+* repWork is a directory to store the temporary files
+* repGipp is the folder where Start_maja automatically downloads the GIPP-set for each plugin.
+* repMNT stores the DTM (MNT in french) in Maja format
+* repL1 is where to find the L1C data (without the site name which is added aferward optionally)
+* repL2 is for the L2A data (without the site name which is added aferwards, optionally again)
+* exeMaja is where the Maja binary exe is located
+* repCAMS is where CAMS data is stored. You do not need to specify this directory if you decide to not process with CAMS option.
+* repRAW stores the raw DTM archives (such as the ones for SRTM, which have the name `srtm_37_04.zip`)
+* repGSW stores the raw Water-Mask files (such as the one for GSW, which have the name `occurrence_0E_50N*.tif`)
 
 To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode.
 <details><summary>Click to expand folder structure. </summary>
 <p>
-To run MAJA, Start_maja copies all the necessary data in a temporary input folder. Here is an example of its content in nominal mode:
 
 ```
-S2A_MSIL1C_20180316T103021_N0206_R108_T32TMR_20180316T123927.SAFE
-S2A_TEST_GIP_CKEXTL_S_31TJF____10001_20150703_21000101.EEF
-S2A_TEST_GIP_CKQLTL_S_31TJF____10005_20150703_21000101.EEF
-S2A_TEST_GIP_L2ALBD_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2A_TEST_GIP_L2ALBD_L_CONTINEN_10005_20150703_21000101.HDR
-S2A_TEST_GIP_L2COMM_L_ALLSITES_10008_20150703_21000101.EEF
-S2A_TEST_GIP_L2DIFT_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2A_TEST_GIP_L2DIFT_L_CONTINEN_10005_20150703_21000101.HDR
-S2A_TEST_GIP_L2DIRT_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2A_TEST_GIP_L2DIRT_L_CONTINEN_10005_20150703_21000101.HDR
-S2A_TEST_GIP_L2SMAC_L_ALLSITES_10005_20150703_21000101.EEF
-S2A_TEST_GIP_L2TOCR_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2A_TEST_GIP_L2TOCR_L_CONTINEN_10005_20150703_21000101.HDR
-S2A_TEST_GIP_L2WATV_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2A_TEST_GIP_L2WATV_L_CONTINEN_10005_20150703_21000101.HDR
-S2B_OPER_SSC_L2VALD_32TMR____20180308.DBL.DIR
-S2B_OPER_SSC_L2VALD_32TMR____20180308.HDR
-S2B_TEST_GIP_CKEXTL_S_31TJF____10001_20150703_21000101.EEF
-S2B_TEST_GIP_CKQLTL_S_31TJF____10005_20150703_21000101.EEF
-S2B_TEST_GIP_L2ALBD_L_CONTINEN_10003_20150703_21000101.DBL.DIR
-S2B_TEST_GIP_L2ALBD_L_CONTINEN_10003_20150703_21000101.HDR
-S2B_TEST_GIP_L2COMM_L_ALLSITES_10008_20150703_21000101.EEF
-S2B_TEST_GIP_L2DIFT_L_CONTINEN_10002_20150703_21000101.DBL.DIR
-S2B_TEST_GIP_L2DIFT_L_CONTINEN_10002_20150703_21000101.HDR
-S2B_TEST_GIP_L2DIRT_L_CONTINEN_10002_20150703_21000101.DBL.DIR
-S2B_TEST_GIP_L2DIRT_L_CONTINEN_10002_20150703_21000101.HDR
-S2B_TEST_GIP_L2SMAC_L_ALLSITES_10005_20150703_21000101.EEF
-S2B_TEST_GIP_L2TOCR_L_CONTINEN_10002_20150703_21000101.DBL.DIR
-S2B_TEST_GIP_L2TOCR_L_CONTINEN_10002_20150703_21000101.HDR
-S2B_TEST_GIP_L2WATV_L_CONTINEN_10005_20150703_21000101.DBL.DIR
-S2B_TEST_GIP_L2WATV_L_CONTINEN_10005_20150703_21000101.HDR
-S2__TEST_AUX_REFDE2_T32TMR_0001.DBL.DIR
-S2__TEST_AUX_REFDE2_T32TMR_0001.HDR
-S2__TEST_GIP_L2SITE_S_31TJF____10001_00000000_99999999.EEF
+S2A_MSIL1C_20200313T095031_N0209_R079_T33UYQ_20200313T102505.SAFE
+S2A_TEST_GIP_CKEXTL_S_ALLSITES_00001_20190626_21000101.EEF
+S2A_TEST_GIP_CKEXTL_S_ALLSITES_10001_20190626_21000101.EEF
+S2A_TEST_GIP_CKQLTL_S_ALLSITES_00001_20190626_21000101.EEF
+S2A_TEST_GIP_CKQLTL_S_ALLSITES_10001_20190626_21000101.EEF
+S2A_TEST_GIP_L2ALBD_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2A_TEST_GIP_L2ALBD_L_CONTINEN_00001_20190626_21000101.HDR
+S2A_TEST_GIP_L2COMM_L_ALLSITES_00001_20190626_21000101.EEF
+S2A_TEST_GIP_L2COMM_L_ALLSITES_10001_20190626_21000101.EEF
+S2A_TEST_GIP_L2DIFT_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2A_TEST_GIP_L2DIFT_L_CONTINEN_00001_20190626_21000101.HDR
+S2A_TEST_GIP_L2DIRT_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2A_TEST_GIP_L2DIRT_L_CONTINEN_00001_20190626_21000101.HDR
+S2A_TEST_GIP_L2SMAC_L_ALLSITES_00001_20190626_21000101.EEF
+S2A_TEST_GIP_L2TOCR_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2A_TEST_GIP_L2TOCR_L_CONTINEN_00001_20190626_21000101.HDR
+S2A_TEST_GIP_L2WATV_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2A_TEST_GIP_L2WATV_L_CONTINEN_00001_20190626_21000101.HDR
+S2B_TEST_GIP_CKEXTL_S_ALLSITES_00001_20190626_21000101.EEF
+S2B_TEST_GIP_CKEXTL_S_ALLSITES_10001_20190626_21000101.EEF
+S2B_TEST_GIP_CKQLTL_S_ALLSITES_00001_20190626_21000101.EEF
+S2B_TEST_GIP_CKQLTL_S_ALLSITES_10001_20190626_21000101.EEF
+S2B_TEST_GIP_L2ALBD_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2B_TEST_GIP_L2ALBD_L_CONTINEN_00001_20190626_21000101.HDR
+S2B_TEST_GIP_L2COMM_L_ALLSITES_00001_20190626_21000101.EEF
+S2B_TEST_GIP_L2COMM_L_ALLSITES_10001_20190626_21000101.EEF
+S2B_TEST_GIP_L2DIFT_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2B_TEST_GIP_L2DIFT_L_CONTINEN_00001_20190626_21000101.HDR
+S2B_TEST_GIP_L2DIRT_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2B_TEST_GIP_L2DIRT_L_CONTINEN_00001_20190626_21000101.HDR
+S2B_TEST_GIP_L2SMAC_L_ALLSITES_00001_20190626_21000101.EEF
+S2B_TEST_GIP_L2TOCR_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2B_TEST_GIP_L2TOCR_L_CONTINEN_00001_20190626_21000101.HDR
+S2B_TEST_GIP_L2WATV_L_CONTINEN_00001_20190626_21000101.DBL.DIR
+S2B_TEST_GIP_L2WATV_L_CONTINEN_00001_20190626_21000101.HDR
+S2__TEST_AUX_REFDE2_33UYQ_0001.DBL.DIR
+S2__TEST_AUX_REFDE2_33UYQ_0001.HDR
+S2__TEST_GIP_L2SITE_S_ALLSITES_00001_20190626_21000101.EEF
+SENTINEL2B_20200308-095659-128_L2A_T33UYQ_C_V1-0
 ```
 
-* .SAFE file is the input product
-* L2VALD files are the L2A products, which is the result from a previous execution  of MAJA
-* GIP are parameter files for S2A and S2B, that you will find in this repository
-* REFDE2 files are the DTM files. How to obtain them is explained in `prepare_dtm`. 
+* .SAFE file is the input L1C product
+* `SENTINEL2_*_L2A_*` files are the L2A products, which is the result from a previous run of MAJA
+Then for each of the following items you will have a `DIR` or `DBL` folder/archive and a `HDR` file:
+* GIP are parameter files for each satellite (S2A or S2B in this example)
+* REFDE2 files are the DTM (Digital Terrain Model) files. How to obtain them is explained in `prepare_dtm`. 
 
-A "userconf" folder is also necessary, but it is also provided in this repository.
-
+A "userconf" folder is also necessary, but it is already provided by Start_Maja.
 </p>
 </details>
 
@@ -205,45 +210,13 @@ The use of peps_download.py to download Sentinel-2 L1C products is recommended :
 - For instance, with peps_download.py (you need to have registered at https://peps.cnes.fr and store the account and password in peps.txt file.
 `python ./peps_download.py -c S2ST -l 'Avignon' -a peps.txt -d 2017-01-01 -f 2017-04-01 -w /path/to/L1C_DATA/Avignon`
 
-- I tend to store the data per site. A given site can contain several tiles. All the L1C tiles corresponding to a site are stored in a directory named /path/to/L1C_DATA/Site
+- Some users tend to store the data per site. A given site can contain several S2-tiles. All the L1C tiles corresponding to a site are stored in a directory named /path/to/L1C_DATA/Site
 
-- Unzip the LIC files in /path/to/L1C_DATA/Avignon
 
 <a name="parameters"></a>
-
-### Parameters
-The tool needs a lot of configuration files which are provided in three directories "userconf", "GIPP_S2AS2B_xxx" LUT_S2AS2B_xxx. I tend to never change the "userconf", the Look_up tables in the LUT directory depend on the satellitre, but do not change frequently with time, but the GIPP_S2AS2B, which contains the parameters, may  change often. Most of the parameters lie within the L2COMM file. When I want to test different sets of parameters, I create a new GIPP folder, which I name GIPP_xxx, where *GIPP_xxx* is passed as a parameter of the command line with option -g . 
-
-**GIPP**
-
-We provide two sets of parameters, one to work without CAMS data, and one to work with CAMS data. The latter needs a lot of disk space (~1.5 GB), as the LUT are provided not only for one aerosol type, but for for 5 aerosol types, and 6 water vapour contents. As Github limits the repository size to 1 GB, we are using a gitlab repository to distribute the parameters (GIPP):  
-- Parameters without CAMS : http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/SENTINEL2_TM_CAMS
-- Parameters with CAMS: http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/SENTINEL2_TM
-
-You can retrieve the data with command lines using git
-'''
-git clone http://tully.ups-tlse.fr/olivier/gipp_maja.git
-'''
-This command will download all our GIPP folders, and then you will only need to move the right one to your <repCode> directory.
-  
-**LUT**
-
-The look-up tables are too big to be but on our gitlab server, we provide them on zenodo DOI server : , and unzip them in a LUT_S2A_S2B_xxx folder (I know, it's a bit complicated). They contain all the LUTS, whAtever the option you choose (with or without CAMS).
-
-- Look-up tables for Sentinel2: https://zenodo.org/record/2636694  
-You can download them directly with curl utility:
-
-```
-curl -o LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190410.tgz https://zenodo.org/record/2636694/files/LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190411.tgz?download=1
-cd <repCode>
-tar  xvf LUT_MAJA_S2A_S2B_CAMS_H2ONew_20190411.tgz
-```
-The file is a rather big one, 1GB, so downloading it will take a while. But as you are prepared to process time series of Sentinel-2, I know you have a good network and a lot of disk space.
-
-
 ### Create DTM
-A DTM folder is needed to process data with MAJA. Of course, it depends on the tile you want to process. This DTM must be stored in the DTM folder, which is defined within the code. 
-A tool exists to create this DTM, [it is available in the "prepare_mnt" folder](StartMaja/prepare_mnt/Readme.md).
+A DTM folder is needed to process data with MAJA which needs to have the same geographical extent as the L1C input product - It depends on the tile you want to process. A tool exists to create this DTM, [it is available in the "prepare_mnt" folder](StartMaja/prepare_mnt/Readme.md).
+When using Start_maja the creation of the folder in Maja-format is automatically attempted. For this the `repRAW` and `repGSW` directories in your `folders.txt` file need to be set.
 
 
 ### Download CAMS data
@@ -253,11 +226,25 @@ CAMS data can be downloaded after a simple registration, but these days, probabl
 
 if you want to use CAMS option, follow [cams_download tool instructions](StartMaja/cams_download)
 
+### GIPP Files
+
+MAJA uses GIPP-files (Ground Image Processing Parameters) to configure the different algorithms of the chain without having to recompile the code. You can find all sets here : 
+
+http://osr-cesbio.ups-tlse.fr/gitlab_cesbio/kettigp/maja-gipp
+
+Start_Maja automatically downloads the GIPPs necessary for each plugin and links them to the folder.
+You only need to modify the parameters if you want to change the behavior of the processing chain.
+
+### userconf
+
+On top of the GIPP files, a global user configuration folder is used, named `userconf`. Should you want to debug the processing chain,
+we recommend to check the parameters that are listed in the `MAJAUserConfigSystem.xml` or for each plugin `MAJAUserConfig_*xml`.
 
 ### Execute start_maja.py
 
-After compiling, you will be able to run startmaja in the following path: <path/to/maja-install>/maja/4.x/bin/startmaja. Run startmaja --help to see a full list of parameters.
-Here is an example of command line.
+After installing Maja, you will be able to run startmaja in the following path: <path/to/maja-install>/maja/4.x/bin/startmaja.
+Run `startmaja --help` to see a full list of parameters.
+Here is an example of a command line.
 ```
 Usage   : <path/to/maja-install>/maja/4.x/bin/startmaja -f <folder_file> -t <tile name> -s <Site Name> -d <start date>
 Example : <path/to/maja-install>/maja/4.x/bin/startmaja -f folders.txt -t 31TFJ -s Avignon -d 20170101 -e 20180101
@@ -268,29 +255,15 @@ Description of command line options :
 * -s is the site name
 * -d (aaaammdd) is the first date to process within the time series
 * -e (aaaammdd) is the last date to process within the time serie-s
-* -z directly uses zipped L1C files
 
-Caution, *when a product has more than 90% of clouds, the L2A is not issued*. However, a folder with _NOTVALD_ in the filename is created.
+Caution, *when a product has more than 90% of clouds, the L2A is not issued* - This results in the output folders to contain only a metadata (MTD*xml) file but no rasters/images.
 
 ### Known Errors
 
-Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despite repeated asks from my side). You should remove them from the folder which contains the list of L1C products to process. 
-
-We still have some difficulties with detecting the edges of the swath, which results in false detections of clouds or shadows on the edges. We hope to solve this shortly.
-
-
-
+Some Sentinel-2 L1C products lack the angle information which is required by MAJA. In this case, MAJA stops processing with an error message. This causes issues particularly in the backward mode. These products were acquired in February and March 2016 and have not been reprocessed by ESA (despite repeated requests). You should remove them from the folder which contains the list of L1C products to process. 
 
 <a name="doc"></a>
-## GIPPs files
-
-MAJA uses GIPPs files to configure the different algorithms of the chain. You can find some sets here : 
-
-http://tully.ups-tlse.fr/olivier/gipp_maja/tree/master/
-
-
-<a name="doc"></a>
-## 5 - Generation the documentation
+## 5 - Generate the documentation
 
 The documentation can be compiled by setting the cmake flag `BUILD_DOCS=ON`.
 It is deactivated by default.
@@ -336,7 +309,9 @@ It will serve as a forum.
 <a name="contrib"></a>
 ## 8 - Contributors
 
-TBD
+* **Centre National d'Etudes Spatiales (CNES)** 
+* **Centre d'Etudes Spatiales de la Biosphère (CESBIO)**
+* **CS-SI France**
 
 <a name="references"></a>
 ## 9 - References :
