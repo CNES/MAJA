@@ -13,6 +13,8 @@
 9. [References](#references)
 
 
+**IMPORTANT NOTICE**: the 4.2 release sets the coarse resolution to 120m, unless you use pre-existing DTM at 240m. **If you plan to use Maja at 120m**, you should modify the default GIPP files downloaded by startmaja named "*L2COMM*" such that the parameter <Env_Corr_Radius> is set to 10. This issue will be fixed in a coming release, we apologize for any inconvenience.
+
 
 MAJA (for Maccs-Atcor Joint Algorithm), is an atmospheric correction and cloud screening software based on [the MACCS processor](https://labo.obs-mip.fr/multitemp/maccs-how-it-works/), developped for CNES by CS-SI, from a method and a prototype developped at CESBIO, <sup>[1](#ref1)</sup> <sup>[2](#ref2)</sup> <sup>[3](#ref3)</sup>.
 In 2017, thanks to an agreement between CNES and DLR and to some funding from ESA, we started adding methods from DLR 's atmospheric correction software ATCOR into MACCS.
