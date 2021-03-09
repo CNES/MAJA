@@ -15,7 +15,9 @@
 <p align="center">
 ===========
 </p>
+
 **IMPORTANT NOTICE**: the 4.2 release sets the coarse resolution to 120m, unless you use pre-existing DTM at 240m. **If you plan to use Maja at 120m**, you should modify the default GIPP files downloaded by startmaja named "*L2COMM*" such that the parameter <Env_Corr_Radius> is set to 10. This issue will be fixed in a coming release, we apologize for any inconvenience.
+
 <p align="center">
 ===========
 </p>
