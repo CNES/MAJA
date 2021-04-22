@@ -146,7 +146,7 @@ repGSW=./dtm/gsw
 * repMNT stores the DTM (MNT in french) in Maja format
 * repL1 is where to find the L1C data (without the site name which is added aferward optionally)
 * repL2 is for the L2A data (without the site name which is added aferwards, optionally again)
-* exeMaja is the full path to maja's executable file (including executable name 'maja').
+* exeMaja is the path to maja's executable file (not its folder, sorry for the inconsstency with the file name).
 * repCAMS is where CAMS data is stored. You do not need to specify this directory if you decide to not process with CAMS option.
 * repRAW stores the raw DTM archives (such as the ones for SRTM, which have the name `srtm_37_04.zip`)
 * repGSW stores the raw Water-Mask files (such as the one for GSW, which have the name `occurrence_0E_50N*.tif`)
