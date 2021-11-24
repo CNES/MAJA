@@ -1,6 +1,6 @@
 **This is not the main development repository, although we keep pushing new releases here. To report an issue, interact with the development team or contribute to the code, please go the main GitLab repository hosted here : https://gitlab.orfeo-toolbox.org/maja/maja/**
 
-**We plan to open a forum dedicated to MAJA and move all the discussions we have with our community, appearing here in the issue section, into this new forum. We'll keep you updated. Until then , we apologize if it all seems a bit confusing.**
+**We plan to open a forum dedicated to MAJA and move all the discussions we have with our community of users, appearing here in the issue section, into this new forum. We'll keep you updated. Until then , we apologize if it all seems a bit confusing.**
 
 
 
