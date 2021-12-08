@@ -1,6 +1,6 @@
 **This is not the main development repository, although we keep pushing new releases here. To report an issue, interact with the development team or contribute to the code, please go the main GitLab repository hosted here : https://gitlab.orfeo-toolbox.org/maja/maja/**
 
-**MAJA's forum has also moved from github issues to the (OTB Forum)[https://forum.orfeo-toolbox.org/c/otb-chains/maja/10].**
+**MAJA's forum has also moved from github issues to the [OTB Forum](https://forum.orfeo-toolbox.org/c/otb-chains/maja/10).**
 
 
 
